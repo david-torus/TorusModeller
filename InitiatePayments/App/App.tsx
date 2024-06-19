@@ -45,60 +45,26 @@ interface obj {
 import {colors} from '../utils/colors';
 import {fonts} from '../utils/fonts';
 import {Controller, useForm} from 'react-hook-form';
+const URL = '103.26.110.7:4000';
 
 let date = new Date().toISOString();
 date = date.split('T')[0];
-
 let data = [
-  {
-    label: 'Channel ID',
-    dataType: 'default',
-    type: 'input',
-    isRequired: true,
-    isDisabled: true,
-    defaultValue: 'IBMB',
-  },
-  {
-    label: 'Channel Ref No',
-    dataType: 'default',
-    type: 'input',
-    isRequired: true,
-    defaultValue: '',
-  },
-  {
-    label: 'train Ref No',
-    dataType: 'default',
-    type: 'input',
-    isRequired: true,
-    defaultValue: '',
-  },
-  {
-    label: 'Core Banking Ref No',
-    dataType: 'default',
-    type: 'input',
-    isRequired: true,
-    defaultValue: '',
-  },
-  {
-    label: 'Passport No',
-    dataType: 'default',
-    type: 'input',
-    isRequired: true,
-    defaultValue: '',
-  },
   {
     label: 'Ordering Account',
     dataType: 'default',
     type: 'input',
     isRequired: true,
-    defaultValue: '',
+    isDisabled: true,
+    defaultValue: '61111110001',
   },
   {
     label: 'Ordering Account Name',
     dataType: 'default',
     type: 'input',
     isRequired: true,
-    defaultValue: '',
+    isDisabled: true,
+    defaultValue: 'Kevin Brian',
   },
   {
     label: 'Beneficiary Account',
@@ -152,7 +118,6 @@ let data = [
     defaultValue: '',
   },
 ];
-
 const CustomInput = (data: obj, control: any) => {
   return (
     <StyledView key={data.label} className={`flex flex-col justify-between  `}>
@@ -265,7 +230,7 @@ const CustomDropdown = (data: obj, control: any) => {
   const getData = async (datas: any) => {
     return await axios
       .get(
-        `http://103.26.110.7:4000/initiate-payment/${
+        `http://${URL}/initiate-payment/${
           datas.label == 'Beneficiary Routing No' ? 'bankNames' : 'purposeCodes'
         }`,
       )
@@ -281,7 +246,19 @@ const CustomDropdown = (data: obj, control: any) => {
       .then(res => {
         if (res && res.data) {
           setDropdownData(
-            res.data.map((item: any) => ({label: item, value: item})),
+            res.data.map((item: any) => {
+              if (typeof item == 'object') {
+                return {
+                  label: item.bank_name,
+                  value: item.bic_code,
+                };
+              } else {
+                return {
+                  label: item,
+                  value: item,
+                };
+              }
+            }),
           );
         } else {
           setDropdownData([]);
@@ -300,6 +277,7 @@ const CustomDropdown = (data: obj, control: any) => {
       </StyledText>
       <View className="bg-slate-50 h-[45px] flex items-center justify-center px-4 border border-slate-600 rounded-md w-[100%]">
         <Controller
+          defaultValue={data.defaultValue}
           control={control}
           name={data.label}
           render={({field: {onChange, onBlur, value}}) => (
@@ -334,6 +312,7 @@ function App(): React.JSX.Element {
   const {
     control,
     handleSubmit,
+    reset,
     formState: {errors, isValid},
   } = useForm({mode: 'onBlur'});
 
@@ -366,16 +345,17 @@ function App(): React.JSX.Element {
       hideSubscription.remove();
     };
   }, []);
+
   const onSubmit = async (data: any) => {
     try {
       console.log(data, 'data');
       let tranformedData = {
-        senderID: data['Channel ID'],
-        channelReferenceNumber: data['Channel Ref No'],
+        senderID: 'MB',
+        channelReferenceNumber: '1111',
         countryOfOrigin: 'US',
         transactionDateTime: new Date().toISOString(),
-        middlewareReferenceNumber: data['train Ref No'],
-        coreBankReferenceNumber: data['Core Banking Ref No'],
+        middlewareReferenceNumber: '1111',
+        coreBankReferenceNumber: '1111',
         localInstrument: 'INST',
         organizationId: '',
         organizationSchemeCode: '',
@@ -383,7 +363,7 @@ function App(): React.JSX.Element {
         BirthDate: '1901-01-01',
         cityOfBirth: 'NewYork',
         countryOfBirth: 'US',
-        individualIdentification: data['Passport No'] + '-1100',
+        individualIdentification: '1111',
         IndividualIdentificationCode: 'NIDN',
         individualIdentificationIssuer: 'US',
         orderingCustomer: {
@@ -441,8 +421,8 @@ function App(): React.JSX.Element {
             'X-Request-ID': 'fXv5kxJCiyCQI7LBY7DHFFom066',
             language: 'EN',
             timestamp: '2024-04-10T09:00:00.000',
-            'channel-Id': data['Channel ID'],
-            'channel-Refno': data['Channel Ref No'],
+            'channel-Id': 'MB',
+            'channel-Refno': '1111',
             'channel-UserId': 'Gss',
             channel_product: 'cp',
             channel_sub_product: 'csp',
@@ -452,28 +432,78 @@ function App(): React.JSX.Element {
       );
       console.log(response.data);
       if (response.data && response.data.responsecode === '00000') {
-        Alert.alert('Success', 'Initiated payment request');
+        Alert.alert('Success', 'Initiated payment request', [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+          {
+            text: 'OK',
+            onPress: () => reset(undefined, {keepDefaultValues: true}),
+          },
+        ]);
       } else if (response.data && response.data.responsecode === '00001') {
         Alert.alert(
           'Error',
           'Unable to Process request ' + response.data.responseDescription,
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+            {
+              text: 'OK',
+              onPress: () => reset(undefined, {keepDefaultValues: true}),
+            },
+          ],
         );
       } else if (response.data && response.data.responsecode === '00002') {
-        Alert.alert('Error', 'Duplicate Transaction');
+        Alert.alert('Error', 'Duplicate Transaction', [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+          {
+            text: 'OK',
+            onPress: () => reset(undefined, {keepDefaultValues: true}),
+          },
+        ]);
       } else if (response.data && response.data.responsecode === '00003') {
         Alert.alert(
           'Error',
           'Participant bank not available :' + data['Beneficiary Routing No'],
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+            {
+              text: 'OK',
+              onPress: () => reset(undefined, {keepDefaultValues: true}),
+            },
+          ],
         );
       } else if (response.data && response.data.responsecode === '00004') {
-        Alert.alert('Error', 'Invalid Purpose  code :' + data['Purpose Code']);
+        Alert.alert('Error', 'Invalid Purpose  code :' + data['Purpose Code'], [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+          {
+            text: 'OK',
+            onPress: () => reset(undefined, {keepDefaultValues: true}),
+          },
+        ]);
       } else if (response.data && response.data.responsecode === '00005') {
-        Alert.alert('Error', 'Invalid Request');
+        Alert.alert('Error', 'Invalid Request', [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+          {
+            text: 'OK',
+            onPress: () => reset(undefined, {keepDefaultValues: true}),
+          },
+        ]);
       } else {
-        Alert.alert('Error', 'Invalid Request');
+        Alert.alert('Error', 'Invalid Request', [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+          {
+            text: 'OK',
+            onPress: () => reset(undefined, {keepDefaultValues: true}),
+          },
+        ]);
       }
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      Alert.alert('Error', error.message, [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        {
+          text: 'OK',
+          onPress: () => reset(undefined, {keepDefaultValues: true}),
+        },
+      ]);
     }
   };
   return (
