@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Input, Label, TextField } from "react-aria-components";
 
-export default function TorusModifiedInput(props) {
+export function TorusModifiedInput(props) {
   const [clicked, setClicked] = useState(false);
   const [value, setValue] = useState(props.value || "");
 
@@ -42,9 +42,11 @@ export default function TorusModifiedInput(props) {
         onClick={toggleClicked}
         onChange={handleInputChange}
         value={value}
-        className={`bg-transparent border-2 border-b-black ${
-          clicked ? "border-transparent" : ""
-        } px-3 py-1`}
+        className={`bg-transparent  outline-none border-2 border-b-slate-500/30
+            border-t-transparent border-l-transparent border-r-transparent
+ torus-focus:border-b-purple-500  transition-all ease-linear duration-75 ${
+   clicked ? "border-transparent" : ""
+ } px-3 py-1`}
       />
     </TextField>
   );
