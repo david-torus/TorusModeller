@@ -6,15 +6,18 @@ const buttonChildren = ["Testing", "writing", "coding", "reading"];
 export default function Testing() {
   return (
     <div className="flex flex-col">
-      {buttonChildren.map((value) => (
-        <ButtonComponent
-          value={value}
-          isDisabled={false}
-          Children={value}
-          autoFocus={false}
-          gap={1}
-        />
-      ))}
+      <ButtonComponent
+        width={"13%"}
+        height={"70px"}
+        pressedHeight={"45px"}
+        pressedWidth={"15%"}
+        isDisabled={false}
+        Children={"Create a Artifact"}
+        autoFocus={false}
+        gap={1}
+        slot={buttonChildren}
+        onPress={() => console.log("clicked")}
+      />
     </div>
   );
 }
