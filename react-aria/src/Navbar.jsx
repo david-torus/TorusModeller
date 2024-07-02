@@ -13,6 +13,15 @@ import { Button } from "react-aria-components";
 import { FaRegUser } from "react-icons/fa";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { IoIosArrowDown } from "react-icons/io";
+import {
+  Dialog,
+  DialogTrigger,
+  Heading,
+  Input,
+  Label,
+  Modal,
+  TextField,
+} from "react-aria-components";
 
 export default function Navbar() {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
@@ -106,38 +115,46 @@ export default function Navbar() {
         />
       </div>
       <div className="w-[40%] xl:ml-[280px] lg:ml-[280px] flex items-center justify-end ">
-        <Button
-          className={`bg-white font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
+        <DialogTrigger>
+          <Button
+            className={`bg-white font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
          torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center`}
-        >
-          <span className="mt-[2px]">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 17 17"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8.5 3.83325V13.1666"
-                stroke="black"
-                stroke-width="1.55555"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M3.83301 8.5H13.1663"
-                stroke="black"
-                stroke-width="1.33333"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="text-black  font-semibold text-xs">
-            Create a Artifacte
-          </span>
-        </Button>
+          >
+            <span className="mt-[2px]">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 17 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M8.5 3.83325V13.1666"
+                  stroke="black"
+                  stroke-width="1.55555"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.83301 8.5H13.1663"
+                  stroke="black"
+                  stroke-width="1.33333"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span className="text-black  font-semibold text-xs">
+              Create a Artifacte
+            </span>
+          </Button>
+          <Modal className="flex items-center justify-center mt-[70px]">
+            <Dialog className="bg-white shadow-xl shadow-slate-300/60 torus-focus:outline-none w-[600px] h-[400px]  ">
+              hello
+            </Dialog>
+          </Modal>
+        </DialogTrigger>
+
         <div className="flex items-center gap-2 ml-[15px]">
           <Reload />
           <Eye />
