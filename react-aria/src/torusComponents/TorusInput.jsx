@@ -42,7 +42,9 @@ export default function TorusUnderLinedInput(props) {
       setValue(e.target.value);
       if (e.target.value.length === 0) {
         setClicked(true);
-      } else setClicked(false);
+      } else {setClicked(false);
+        props.onChange(e.target.value);
+      };
     };
   
     return (

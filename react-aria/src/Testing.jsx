@@ -1,5 +1,5 @@
 import React from "react";
-import ButtonComponent from "./ButtonComponent";
+import ButtonComponent from "./torusComponents/TorusButton";
 
 const buttonChildren = ["Testing", "writing", "coding", "reading"];
 

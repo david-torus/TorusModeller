@@ -5,9 +5,12 @@ import TorusUnderLinedInput from "./torusComponents/TorusInput";
 import TorusModifiedInput from "./torusComponents/TorusInput";
 import { useState } from "react";
 import TorusRadio from "./torusComponents/TorusRadio";
+import TorusButton from "./torusComponents/TorusButton";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   const handleChange = (value) => {
     setSelectedValues((prev) =>
@@ -17,12 +20,22 @@ export default function SignIn() {
     );
   };
 
+  const finalValues= {
+    firstName,
+    lastName,
+
+  }
+
+  const outPutFn = () => {
+    console.log(finalValues);
+  }
+
   return (
     <div className="w-full h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
-      <div className="w-[40%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3">
+      <div className="w-[30%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3">
         <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
 
-        <div className="w-[40%]  flex flex-col justify-center items">
+        <div className="w-[80%]  flex flex-col justify-center items">
           <TorusUnderLinedInput
             label="First Name"
             placeholder="enter your First name"
@@ -30,6 +43,8 @@ export default function SignIn() {
             marginT="mt-8"
             labelColor="text-teal-600"
             borderColor="torus-focus:border-b-teal-600/50"
+            onChange={setFirstName}
+            
           />
 
           <TorusUnderLinedInput
@@ -39,6 +54,7 @@ export default function SignIn() {
             marginT="mt-6"
             labelColor="text-teal-600"
             borderColor="torus-focus:border-b-teal-600/50"
+            onChange={setLastName}
           />
 
           <TorusDateTimePickers
@@ -47,30 +63,14 @@ export default function SignIn() {
             label="Date of Birth"
           />
 
-          {/* <div className="w-[40%] mt-6  flex flex-col justify-center items">
-            <Label className="pl-5">Gender</Label>
-            <TorusCheckBox
-              isSelected={selectedValues.includes("Male")}
-              value="Male"
-              onChange={() => handleChange("Male")}
-            >
-              Male
-            </TorusCheckBox>
-            <TorusCheckBox
-              isSelected={selectedValues.includes("Female")}
-              value="Female"
-              onChange={() => handleChange("Female")}
-            >
-              Female
-            </TorusCheckBox>
-            <TorusCheckBox
-              isSelected={selectedValues.includes("Others")}
-              value="Others"
-              onChange={() => handleChange("Others")}
-            >
-              Others
-            </TorusCheckBox>
-          </div> */}
+          
+
+          <TorusCheckBox
+            marginT="mt-6"
+            content={["Male", "Female", "Others"]}
+            orientation="horizontal"
+            label="Gender"
+          />
 
           <TorusRadio
             content={[
@@ -81,8 +81,10 @@ export default function SignIn() {
             ]}
             marginT="mt-5"
             label="Select your profession"
-
           />
+          
+
+          <TorusButton gap={"p-3"} Children="Submit" marginT="mt-6" onPress={outPutFn} />
         </div>
       </div>
     </div>

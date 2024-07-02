@@ -21,13 +21,14 @@ import { GrCaretPrevious } from "react-icons/gr";
 import { GrCaretNext } from "react-icons/gr";
 import { FaCaretDown } from "react-icons/fa";
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { SlCalender } from "react-icons/sl";
 import { useState } from "react";
 
 const TorusCalendar = (props) => {
   return (
     <Calendar aria-label="Appointment date w-[100%]">
       <header className="flex justify-center w-[100%]">
-        <div className="flex justify-around gap-2">
+        <div className="flex justify-around gap-2 w-[100%]">
           <Button slot="previous" className={"bg-blue-600 p-[3px] rounded-md"}>
             <GrCaretPrevious size={15} color="white" />
           </Button>
@@ -52,6 +53,7 @@ const TorusCalendar = (props) => {
               borderRadius: "50%",
             }}
             date={date}
+            
           />
         )}
       </CalendarGrid>
@@ -59,9 +61,9 @@ const TorusCalendar = (props) => {
   );
 };
 
-const TorusDateField = ({ slot }) => {
+const TorusDateField = (props) => {
   return (
-    <DateInput className="flex justify-around gap-2 w-full" slot={slot}>
+    <DateInput className="flex justify-around gap-2 w-1/2" slot={props.slot}>
       {(segment) => (
         <DateSegment
           className="torus-focus-within:border-transparent torus-focus:border-transparent torus-pressed:border-transparent"
@@ -105,13 +107,17 @@ const TorusDatePicker = ({props}) => {
             <Label className="text-start">{props.label}</Label>
           </div>
           <Group className="flex justify-around gap-2 w-full">
+            <div className="w-[80%]">
+
             <TorusDateField slot={props.slot} />
+            </div>
+            <div className="w-[20%]">
             {props.openBtn && (
               <Button
-                className="w-6 h-6 bg-blue-600 p-[3px] rounded-md"
+                className="w-6 h-6 bg-blue-600 p-[3px] rounded-md flex justify-center items-center"
                 onClick={togglePopover}
               >
-                <FaCaretDown  
+                <SlCalender  
                   size={15}
                   color="white"
                   className={`transition-all ease-in-out duration-150 
@@ -121,6 +127,7 @@ const TorusDatePicker = ({props}) => {
                 />
               </Button>
             )}
+            </div>
           </Group>
         </div>
       </div>
