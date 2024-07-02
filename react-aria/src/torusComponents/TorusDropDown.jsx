@@ -12,10 +12,16 @@ import {
   Select,
   Switch,
 } from "react-aria-components";
+import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../ButtonComponent";
 export default function TorusDropDown({
+  buttonClassName = "p-2",
+  buttonHeight = "15px",
+  buttonWidth = "15px",
   setSelected,
   seleected,
+  endContent,
+  renderEmptyState,
   items = [
     { key: "Item 1", label: "Item 1" },
     { key: "Item 2", label: "Item 2" },
@@ -24,31 +30,28 @@ export default function TorusDropDown({
   selectionMode = "multiple",
 }) {
   return (
-    <Select>
+    <DialogTrigger>
       <ButtonComponent
         Children={
           (seleected && Array.from(seleected).join(", ")) || "Select item"
         }
-        buttonClassName={"p-2"}
-        height={"15px"}
-        width={"15px"}
+        buttonClassName={buttonClassName}
+        height={buttonHeight}
+        width={buttonWidth}
       />
       <Popover
         placement="bottom"
         className={
-          "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose  "
+          "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40"
         }
       >
         <ListBox
-          className={
-            " bg-slate-300 transition-all p-1  rounded-md gap-1 w-24 flex flex-col items-center "
-          }
+          className={`w-full bg-slate-200 border-2 border-gray-300 transition-all p-1  rounded-md gap-1  flex flex-col items-center `}
           selectionMode={selectionMode}
           onSelectionChange={(keys) => {
             setSelected(keys);
-            if (selectionMode === "single") {
-            }
           }}
+          renderEmptyState={() => renderEmptyState}
           selectedKeys={seleected}
           items={items}
         >
@@ -56,14 +59,29 @@ export default function TorusDropDown({
             <ListBoxItem
               key={item.key}
               className={
-                "  p-1 torus-selected:bg-purple-100 rounded-md torus-hover:bg--300 cursor-pointer transition-colors duration-300"
+                "  p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300  rounded-md  cursor-pointer transition-colors duration-300"
               }
             >
-              <Heading>{item.label}</Heading>
+              {({ isSelected }) => (
+                <div className="w-full flex justify-between items-center">
+                  <Heading>{item.label}</Heading>
+
+                  <div className="flex items-center justify-center  ">
+                    <span
+                      className={` transition-all duration-150  ${
+                        isSelected ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <IoIosCheckmark size={20} className="text-black " />
+                    </span>
+                    {endContent}
+                  </div>
+                </div>
+              )}
             </ListBoxItem>
           )}
         </ListBox>
       </Popover>
-    </Select>
+    </DialogTrigger>
   );
 }
