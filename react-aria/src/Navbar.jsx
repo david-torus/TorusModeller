@@ -72,7 +72,7 @@ export default function Navbar() {
           </TabList>
         </Tabs>
       </div>
-      <div className="w-[30%] flex items-center justify-center gap-2 ">
+      <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span className="text-white text-sm font-semibold">DataFabric</span>
         <span className="text-white text-sm  ">/</span>
         <TorusDropDown
@@ -115,7 +115,7 @@ export default function Navbar() {
           ]}
         />
       </div>
-      <div className="w-[40%] xl:ml-[280px] lg:ml-[280px] flex items-center justify-end ">
+      <div className="w-[40%]  flex items-center justify-end ">
         <DialogTrigger>
           <Button
             className={`bg-white font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
