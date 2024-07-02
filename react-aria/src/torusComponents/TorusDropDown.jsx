@@ -14,7 +14,7 @@ import {
 } from "react-aria-components";
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../ButtonComponent";
-let defaultTropdownClassNames = {
+const defaultTropdownClassNames = {
   buttonClassName: "p-2 torus-pressed:animate-torusButtonActive",
   popoverClassName:
     "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
