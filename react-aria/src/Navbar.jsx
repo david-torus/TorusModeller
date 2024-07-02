@@ -12,13 +12,14 @@ import { Tabs, TabList, Tab } from "react-aria-components";
 import { Button } from "react-aria-components";
 import { FaRegUser } from "react-icons/fa";
 import TorusDropDown from "./torusComponents/TorusDropDown";
+import { IoIosArrowDown } from "react-icons/io";
 
 export default function Navbar() {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
     <div className="top-0 flex bg-[#0736C4] w-full h-[45px]">
-      <div>
+      <div className="w-[20%] ">
         <Tabs orientation="vertical" className=" cursor-pointer ml-[10px]">
           <TabList aria-label="tabs" className="flex flex-row gap-2 ">
             <Tab
@@ -62,12 +63,24 @@ export default function Navbar() {
           </TabList>
         </Tabs>
       </div>
-      <div className=" flex items-center justify-center gap-2 lg:ml-[300px] xl:ml-[400px] 2xl:ml[450px]">
+      <div className="w-[20%] flex items-center justify-center gap-2 lg:ml-[300px] xl:ml-[400px] 2xl:ml[450px]">
         <span className="text-white text-sm font-semibold">DataFabric</span>
         <span className="text-white text-sm  ">/</span>
-        {/* <span className="text-white text-sm   "> BankMaster</span> */}
         <TorusDropDown
-          buttonClassName="bg-transparent  text-white torus-pressed:animate-torusButtonActive "
+          title={
+            <div className="flex flex-row items-center gap-2">
+              <div>
+                {(selectededArtifacts && Array.from(selectededArtifacts)[0]) ||
+                  "*"}
+              </div>
+              <IoIosArrowDown />
+            </div>
+          }
+          classNames={{
+            buttonClassName:
+              "bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive ",
+            listBoxClassName: "bg-white text-black ",
+          }}
           seleected={selectededArtifacts}
           setSelected={setSelectedArtifacts}
           selectionMode="single"
@@ -77,7 +90,12 @@ export default function Navbar() {
           ]}
         />
         <TorusDropDown
-          buttonClassName="bg-white  text-black rounded-md font-semibold font-sm w-[30px] torus-pressed:animate-torusButtonActive "
+          title={(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+          classNames={{
+            buttonClassName:
+              " bg-white flex items-center justify-center text-black rounded-md font-semibold font-sm h-[30px] torus-pressed:animate-torusButtonActive ",
+            listBoxClassName: "bg-white text-black ",
+          }}
           seleected={selectedVersion}
           setSelected={setSelectedVersion}
           selectionMode="single"
@@ -87,7 +105,7 @@ export default function Navbar() {
           ]}
         />
       </div>
-      <div className="xl:ml-[280px] lg:ml-[280px] flex items-center justify-end ">
+      <div className="w-[40%] xl:ml-[280px] lg:ml-[280px] flex items-center justify-end ">
         <Button
           className={`bg-white font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
          torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center`}
@@ -120,15 +138,15 @@ export default function Navbar() {
             Create a Artifacte
           </span>
         </Button>
-      </div>
-      <div className="flex items-center gap-2 ml-[15px]">
-        <Reload />
-        <Eye />
-        <Play />
-      </div>
-      <div className=" flex items-center ml-[3px]">
-        <div className="w-[40px] h-[40px] rounded-full bg-[#3961da] border-2 flex items-center justify-center border-[#052997]">
-          <FaRegUser color="white" />
+        <div className="flex items-center gap-2 ml-[15px]">
+          <Reload />
+          <Eye />
+          <Play />
+          <div className=" flex items-center ml-[3px]">
+            <div className="w-[40px] h-[40px] rounded-full bg-[#3961da] border-2 flex items-center justify-center border-[#052997]">
+              <FaRegUser color="white" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
