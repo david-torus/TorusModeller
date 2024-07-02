@@ -18,6 +18,7 @@ const defaultTropdownClassNames = {
   buttonClassName: "p-2 torus-pressed:animate-torusButtonActive",
   popoverClassName:
     "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
+  dialogClassName: " outline-none w-full",
   listBoxClassName: `w-full bg-slate-200 border-2 border-gray-300 transition-all p-1  rounded-md gap-1  flex flex-col items-center `,
   listBoxItemClassName:
     " p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300  rounded-md  cursor-pointer transition-colors duration-300",
@@ -36,6 +37,9 @@ export default function TorusDropDown({
     { key: "Item 2", label: "Item 2" },
     { key: "Item 3", label: "Item 3" },
   ],
+  popOverProps,
+  listBoxProps,
+
   selectionMode = "multiple",
 }) {
   return (
@@ -50,6 +54,7 @@ export default function TorusDropDown({
         height={buttonHeight}
         width={buttonWidth}
       />
+
       <Popover
         placement="bottom"
         className={
@@ -57,49 +62,64 @@ export default function TorusDropDown({
           " " +
           classNames?.popoverClassName
         }
+        {...popOverProps}
       >
-        <ListBox
+        <Dialog
           className={
-            defaultTropdownClassNames.listBoxClassName +
+            defaultTropdownClassNames.dialogClassName +
             " " +
-            classNames?.listBoxClassName
+            classNames?.dialogClassName
           }
-          selectionMode={selectionMode}
-          onSelectionChange={(keys) => {
-            setSelected(keys);
-          }}
-          renderEmptyState={() => renderEmptyState}
-          selectedKeys={selected}
-          items={items}
         >
-          {(item) => (
-            <ListBoxItem
-              key={item.key}
+          {({ close }) => (
+            <ListBox
               className={
-                defaultTropdownClassNames.listBoxItemClassName +
+                defaultTropdownClassNames.listBoxClassName +
                 " " +
-                classNames?.listBoxItemClassName
+                classNames?.listBoxClassName
               }
+              selectionMode={selectionMode}
+              onSelectionChange={(keys) => {
+                setSelected(keys);
+                if (selectionMode === "single") {
+                  close();
+                }
+              }}
+              renderEmptyState={() => renderEmptyState}
+              selectedKeys={selected}
+              items={items}
+              {...listBoxProps}
             >
-              {({ isSelected }) => (
-                <div className="w-full flex justify-between items-center">
-                  <Heading>{item.label}</Heading>
+              {(item) => (
+                <ListBoxItem
+                  key={item.key}
+                  className={
+                    defaultTropdownClassNames.listBoxItemClassName +
+                    " " +
+                    classNames?.listBoxItemClassName
+                  }
+                >
+                  {({ isSelected }) => (
+                    <div className="w-full flex justify-between items-center">
+                      <Heading>{item.label}</Heading>
 
-                  <div className="flex items-center justify-center  ">
-                    <span
-                      className={` transition-all duration-150  ${
-                        isSelected ? "opacity-100" : "opacity-0"
-                      }`}
-                    >
-                      <IoIosCheckmark size={20} className="text-black " />
-                    </span>
-                    {endContent}
-                  </div>
-                </div>
+                      <div className="flex items-center justify-center  ">
+                        <span
+                          className={` transition-all duration-150  ${
+                            isSelected ? "opacity-100" : "opacity-0"
+                          }`}
+                        >
+                          <IoIosCheckmark size={20} className="text-black " />
+                        </span>
+                        {endContent}
+                      </div>
+                    </div>
+                  )}
+                </ListBoxItem>
               )}
-            </ListBoxItem>
+            </ListBox>
           )}
-        </ListBox>
+        </Dialog>
       </Popover>
     </DialogTrigger>
   );
