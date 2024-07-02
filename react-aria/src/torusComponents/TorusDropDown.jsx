@@ -15,7 +15,7 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../ButtonComponent";
 export default function TorusDropDown({
-  buttonClassName = "p-2",
+  buttonClassName = "p-2 torus-pressed:animate-torusButtonActive ",
   buttonHeight = "15px",
   buttonWidth = "15px",
   setSelected,
