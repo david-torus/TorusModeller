@@ -21,7 +21,7 @@ import { GrCaretNext } from "react-icons/gr";
 
 const TorusCalendar = () => {
   return (
-    <Calendar aria-label="Appointment date">
+    <Calendar aria-label="Appointment date w-[100%]">
       <header className="flex justify-center w-[100%]">
         <div className="flex justify-around gap-2">
           <Button slot="previous" className={"bg-blue-600 p-[3px] rounded-md"}>
@@ -82,7 +82,6 @@ const TorusDatePicker = () => {
   );
 };
 
-
 const TorusDateRangePicker = () => {
   return (
     <DateRangePicker>
@@ -137,9 +136,9 @@ const TorusTimeField = () => {
   );
 };
 
-export default function TorusDateTimePickers({ onChange, value }) {
+export default function TorusDateTimePickers(props) {
   return (
-    <div>
+    <div className={`${props.marginT}`}>
       <TorusCalendar />
     </div>
   );

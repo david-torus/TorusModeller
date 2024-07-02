@@ -5,7 +5,7 @@ import TorusModifiedInput from "./torusComponents/TorusInput";
 export default function SignIn() {
   return (
     <div className="w-full h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
-      <div className="w-[40%] h-[60%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3">
+      <div className="w-[40%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3">
         <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
 
         <div className="w-[40%]  flex flex-col justify-center items">
@@ -28,7 +28,7 @@ export default function SignIn() {
           />
 
 
-<TorusDateTimePickers/>
+<TorusDateTimePickers marginT="mt-6"/>
 
         </div>
       </div>
