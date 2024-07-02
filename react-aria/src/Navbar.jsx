@@ -81,7 +81,7 @@ export default function Navbar() {
               "bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive ",
             listBoxClassName: "bg-white text-black ",
           }}
-          seleected={selectededArtifacts}
+          selected={selectededArtifacts}
           setSelected={setSelectedArtifacts}
           selectionMode="single"
           items={[
@@ -96,7 +96,7 @@ export default function Navbar() {
               " bg-white flex items-center justify-center text-black rounded-md font-semibold font-sm h-[30px] torus-pressed:animate-torusButtonActive ",
             listBoxClassName: "bg-white text-black ",
           }}
-          seleected={selectedVersion}
+          selected={selectedVersion}
           setSelected={setSelectedVersion}
           selectionMode="single"
           items={[
