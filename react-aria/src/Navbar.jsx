@@ -28,7 +28,7 @@ export default function Navbar() {
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
     <div className=" flex bg-[#0736C4] w-full h-[45px]  justify-between">
-      <div className="w-[30%] ">
+      <div className="w-[40%] ">
         <Tabs orientation="vertical" className=" cursor-pointer ml-[10px]">
           <TabList aria-label="tabs" className="flex flex-row gap-2 ">
             <Tab
