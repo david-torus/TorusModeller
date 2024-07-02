@@ -15,20 +15,18 @@ export default function ButtonComponent({
   buttonClassName,
 }) {
   return (
-    <div className="flex items-center justify-center mt-2">
-      <Button
-        className={
-          `bg-purple-300 font-lg w-[${width}] h-[${height}]     rounded-lg ${gap}
+    <Button
+      className={
+        `bg-purple-300 font-lg w-[${width}] h-[${height}]     rounded-lg ${gap}
            torus-focus:outline-none transition-all ease-in-out duration-300 ` +
-          buttonClassName
-        }
-        value={value}
-        isDisabled={isDisabled}
-        autoFocus={autoFocus}
-        onPress={onPress}
-      >
-        {Children}
-      </Button>
-    </div>
+        buttonClassName
+      }
+      value={value}
+      isDisabled={isDisabled}
+      autoFocus={autoFocus}
+      onPress={onPress}
+    >
+      {Children}
+    </Button>
   );
 }

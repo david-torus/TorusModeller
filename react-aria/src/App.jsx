@@ -19,12 +19,12 @@ export default function App() {
   const [selected, setSelected] = React.useState(new Set());
   return (
     <div>
-      {/* <Layout /> */}
-      <TorusDropDown
+      <Layout />
+      {/* <TorusDropDown
         seleected={selected}
         setSelected={setSelected}
         items={data}
-      />
+      /> */}
     </div>
   );
 }
