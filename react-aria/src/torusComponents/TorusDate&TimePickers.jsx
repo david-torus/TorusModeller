@@ -9,6 +9,7 @@ import {
   DateRangePicker,
   DateSegment,
   Dialog,
+  DialogTrigger,
   Group,
   Heading,
   Label,
@@ -18,8 +19,11 @@ import {
 } from "react-aria-components";
 import { GrCaretPrevious } from "react-icons/gr";
 import { GrCaretNext } from "react-icons/gr";
+import { FaCaretDown } from "react-icons/fa";
+import { IoIosCloseCircleOutline } from "react-icons/io";
+import { useState } from "react";
 
-const TorusCalendar = () => {
+const TorusCalendar = (props) => {
   return (
     <Calendar aria-label="Appointment date w-[100%]">
       <header className="flex justify-center w-[100%]">
@@ -36,9 +40,17 @@ const TorusCalendar = () => {
       <CalendarGrid>
         {(date) => (
           <CalendarCell
-            className={
-              "bg-slate-300/80 rounded-full flex items-center justify-center p-2 torus-pressed:bg-blue-500 torus-hover:bg-blue-400 torus-focus:border-transparent torus-focus:bg-blue-700 torus-focus:text-white "
-            }
+            className={`w-7 h-7 flex text-sm items-center justify-center p-2 
+              torus-pressed:bg-blue-500 
+              torus-hover:bg-blue-400 torus-hover:rounded-full
+              torus-focus:border-transparent
+               torus-focus:bg-blue-700  torus-focus:rounded-full
+               torus-focus:text-white
+             transition-all ease-in-out duration-300 data-[outside-visible-range]:bg-slate-300/70  data-[outside-visible-range]:text-slate-500/20
+            `}
+            style={{
+              borderRadius: "50%",
+            }}
             date={date}
           />
         )}
@@ -47,37 +59,86 @@ const TorusCalendar = () => {
   );
 };
 
-const TorusDateField = () => {
+const TorusDateField = ({ slot }) => {
   return (
-    <DateField>
-      <Label>Birth date</Label>
-      <DateInput>{(segment) => <DateSegment segment={segment} />}</DateInput>
-    </DateField>
+    <DateInput className="flex justify-around gap-2 w-full" slot={slot}>
+      {(segment) => (
+        <DateSegment
+          className="torus-focus-within:border-transparent torus-focus:border-transparent torus-pressed:border-transparent"
+          segment={segment}
+        />
+      )}
+    </DateInput>
   );
 };
 
-const TorusDatePicker = () => {
+const TorusDateRange = () => {
+  return (
+    <DateRangePicker>
+      <div>
+        <TorusDatePicker slot="start" />
+        <TorusDatePicker slot="end" />
+      </div>
+    </DateRangePicker>
+  );
+};
+
+const TorusDatePicker = ({props}) => {
+  const [rotate, setRotate] = useState(false);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const togglePopover = () => {
+    setIsPopoverOpen(!isPopoverOpen);
+    setRotate(!rotate);
+  };
+
+  const closePopover = () => {
+    setIsPopoverOpen(false);
+    setRotate(false);
+  };
+
   return (
     <DatePicker>
-      <Label>Date</Label>
-      <Group>
-        <DateInput>{(segment) => <DateSegment segment={segment} />}</DateInput>
-        <Button>▼</Button>
-      </Group>
-      <Popover>
-        <Dialog>
-          <Calendar>
-            <header>
-              <Button slot="previous">◀</Button>
-              <Heading />
-              <Button slot="next">▶</Button>
-            </header>
-            <CalendarGrid>
-              {(date) => <CalendarCell date={date} />}
-            </CalendarGrid>
-          </Calendar>
-        </Dialog>
-      </Popover>
+      <div className="flex justify-start w-[100%]">
+        <div className="w-full flex flex-col justify-between gap-2 items-center">
+          <div className="w-full flex justify-start pl-[20px]">
+            <Label className="text-start">{props.label}</Label>
+          </div>
+          <Group className="flex justify-around gap-2 w-full">
+            <TorusDateField slot={props.slot} />
+            {props.openBtn && (
+              <Button
+                className="w-6 h-6 bg-blue-600 p-[3px] rounded-md"
+                onClick={togglePopover}
+              >
+                <FaCaretDown  
+                  size={15}
+                  color="white"
+                  className={`transition-all ease-in-out duration-150 
+                    torus-pressed:border-transparent torus-focus:border-transparent
+                    torus-focus:bg-blue-700 torus-focus:text-white
+                 `}
+                />
+              </Button>
+            )}
+          </Group>
+        </div>
+      </div>
+
+      {isPopoverOpen && props.openBtn && (
+        <Popover className="py-5 flex-col items-center w-[25%] bg-slate-100 rounded-md shadow-xl flex justify-center pl-3">
+          <div className="w-full flex justify-end pr-6 items-center">
+            <Button onClick={closePopover} autoFocus>
+              <IoIosCloseCircleOutline
+                size={20}
+                color="red"
+                className="torus-focus-within:border-transparent torus-focus:border-transparent torus-pressed:border-transparent"
+              />
+            </Button>
+          </div>
+          <TorusCalendar />
+        </Popover>
+      )}
     </DatePicker>
   );
 };
@@ -87,27 +148,12 @@ const TorusDateRangePicker = () => {
     <DateRangePicker>
       <Label>Trip dates</Label>
       <Group>
-        <DateInput slot="start">
-          {(segment) => <DateSegment segment={segment} />}
-        </DateInput>
-        <span aria-hidden="true">–</span>
-        <DateInput slot="end">
-          {(segment) => <DateSegment segment={segment} />}
-        </DateInput>
+        <TorusDateRange />
         <Button>▼</Button>
       </Group>
       <Popover>
         <Dialog>
-          <RangeCalendar>
-            <header>
-              <Button slot="previous">◀</Button>
-              <Heading />
-              <Button slot="next">▶</Button>
-            </header>
-            <CalendarGrid>
-              {(date) => <CalendarCell date={date} />}
-            </CalendarGrid>
-          </RangeCalendar>
+          <TorusCalendar />
         </Dialog>
       </Popover>
     </DateRangePicker>
@@ -139,7 +185,7 @@ const TorusTimeField = () => {
 export default function TorusDateTimePickers(props) {
   return (
     <div className={`${props.marginT}`}>
-      <TorusCalendar />
+      <TorusDatePicker props={props} />
     </div>
   );
 }
