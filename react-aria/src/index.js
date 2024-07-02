@@ -7,6 +7,8 @@ import Testing from "./Testing";
 import Layout from "./Layout";
 
 import SignIn from "./SigninPage";
+import TorusDropDown from "./torusComponents/TorusDropDown";
+import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +17,7 @@ root.render(
     {/* <TorusModifiedInput value="test" placeholder="test" label="test" /> */}
     <Router>
       <Routes>
-        <Route path="/" element={<Layout />} />
+        <Route path="/" element={<App />} />
         <Route path="/login" element={<SignIn />} />
       </Routes>
     </Router>
