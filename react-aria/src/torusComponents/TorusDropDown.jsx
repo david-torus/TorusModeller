@@ -14,9 +14,17 @@ import {
 } from "react-aria-components";
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../ButtonComponent";
+let defaultTropdownClassNames = {
+  buttonClassName: "p-2 torus-pressed:animate-torusButtonActive",
+  popoverClassName:
+    "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
+  listBoxClassName:
+    "w-full bg-slate-200 border-2 border-gray-300 transition-all p-1  rounded-md gap-1  flex flex-col items-center ",
+  listBoxItemClassName: "flex items-center justify-center",
+};
 export default function TorusDropDown({
   title,
-  buttonClassName = "p-2 torus-pressed:animate-torusButtonActive bg-transparent ",
+  classNames,
   buttonHeight = "15px",
   buttonWidth = "15px",
   setSelected,
@@ -34,18 +42,28 @@ export default function TorusDropDown({
     <DialogTrigger>
       <ButtonComponent
         Children={title}
-        buttonClassName={buttonClassName}
+        buttonClassName={
+          defaultTropdownClassNames.buttonClassName +
+          " " +
+          classNames?.buttonClassName
+        }
         height={buttonHeight}
         width={buttonWidth}
       />
       <Popover
         placement="bottom"
         className={
-          "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40"
+          defaultTropdownClassNames.popoverClassName +
+          " " +
+          classNames?.popoverClassName
         }
       >
         <ListBox
-          className={`w-full bg-slate-200 border-2 border-gray-300 transition-all p-1  rounded-md gap-1  flex flex-col items-center `}
+          className={
+            defaultTropdownClassNames.listBoxClassName +
+            " " +
+            classNames?.listBoxClassName
+          }
           selectionMode={selectionMode}
           onSelectionChange={(keys) => {
             setSelected(keys);
@@ -58,7 +76,9 @@ export default function TorusDropDown({
             <ListBoxItem
               key={item.key}
               className={
-                "  p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300  rounded-md  cursor-pointer transition-colors duration-300"
+                defaultTropdownClassNames.listBoxItemClassName +
+                " " +
+                classNames?.listBoxItemClassName
               }
             >
               {({ isSelected }) => (
