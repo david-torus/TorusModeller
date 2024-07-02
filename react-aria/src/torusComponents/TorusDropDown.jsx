@@ -15,11 +15,12 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../ButtonComponent";
 export default function TorusDropDown({
-  buttonClassName = "p-2 torus-pressed:animate-torusButtonActive ",
+  title,
+  buttonClassName = "p-2 torus-pressed:animate-torusButtonActive bg-transparent ",
   buttonHeight = "15px",
   buttonWidth = "15px",
   setSelected,
-  seleected,
+  selected,
   endContent,
   renderEmptyState,
   items = [
@@ -32,9 +33,7 @@ export default function TorusDropDown({
   return (
     <DialogTrigger>
       <ButtonComponent
-        Children={
-          (seleected && Array.from(seleected).join(", ")) || "Select item"
-        }
+        Children={title}
         buttonClassName={buttonClassName}
         height={buttonHeight}
         width={buttonWidth}
@@ -52,7 +51,7 @@ export default function TorusDropDown({
             setSelected(keys);
           }}
           renderEmptyState={() => renderEmptyState}
-          selectedKeys={seleected}
+          selectedKeys={selected}
           items={items}
         >
           {(item) => (

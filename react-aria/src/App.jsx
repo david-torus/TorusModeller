@@ -21,7 +21,8 @@ export default function App() {
     <div>
       {/* <Layout /> */}
       <TorusDropDown
-        seleected={selected}
+        title={(selected && Array.from(selected).join(", ")) || "Select item"}
+        selected={selected}
         setSelected={setSelected}
         items={data}
       />
