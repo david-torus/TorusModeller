@@ -18,7 +18,7 @@ const data = [
 export default function App() {
   const [selected, setSelected] = React.useState(new Set());
   return (
-    <div>
+    <div style={{ width: "100vw", height: "100vh" }}>
       <Layout />
       {/* <TorusDropDown
         classNames={{
