@@ -42,7 +42,7 @@ export default function Navbar({ setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
-  const [activeTab, setActiveTab] = useState(null);
+  const [activeTab, setActiveTab] = useState(1);
  
   return (
     <div
