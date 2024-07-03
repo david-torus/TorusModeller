@@ -28,8 +28,8 @@ export default function Layout() {
 
   return (
     <div
-      className="flex flex-col gap-3"
-      style={{ width: "100vw", height: "100vh" }}
+      className="flex flex-col gap-3 w-full h-full"
+
     >
       <div className="h-[5%] sticky top-0">
         <Navbar />
@@ -42,8 +42,8 @@ export default function Layout() {
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
         >
-          <Controls position="right-bottom" />
-          {/* <MiniMap /> */}
+          <Controls   position="right-bottom" />
+          {/* <MiniMap  /> */}
           <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
       </div>

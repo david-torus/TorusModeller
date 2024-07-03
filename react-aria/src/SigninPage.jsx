@@ -1,11 +1,14 @@
 import { Label } from "react-aria-components";
 import TorusCheckBox from "./torusComponents/TorusCheckBox";
 import TorusDateTimePickers from "./torusComponents/TorusDate&TimePickers";
-import TorusUnderLinedInput from "./torusComponents/TorusInput";
+import TorusUnderLinedInput, {
+  TorusFadedInput,
+} from "./torusComponents/TorusInput";
 import TorusModifiedInput from "./torusComponents/TorusInput";
 import { useState } from "react";
 import TorusRadio from "./torusComponents/TorusRadio";
 import TorusButton from "./torusComponents/TorusButton";
+import { TorusModifiedInput1 } from "./torusComponents/TorusInput2";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -20,15 +23,14 @@ export default function SignIn() {
     );
   };
 
-  const finalValues= {
+  const finalValues = {
     firstName,
     lastName,
-
-  }
+  };
 
   const outPutFn = () => {
     console.log(finalValues);
-  }
+  };
 
   return (
     <div className="w-full h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
@@ -44,7 +46,8 @@ export default function SignIn() {
             labelColor="text-teal-600"
             borderColor="torus-focus:border-b-teal-600/50"
             onChange={setFirstName}
-            
+            px="px-2"
+            py="py-4"
           />
 
           <TorusUnderLinedInput
@@ -55,6 +58,8 @@ export default function SignIn() {
             labelColor="text-teal-600"
             borderColor="torus-focus:border-b-teal-600/50"
             onChange={setLastName}
+            px="px-1"
+            py="py-3"
           />
 
           <TorusDateTimePickers
@@ -62,8 +67,6 @@ export default function SignIn() {
             openBtn={true}
             label="Date of Birth"
           />
-
-          
 
           <TorusCheckBox
             marginT="mt-6"
@@ -82,9 +85,48 @@ export default function SignIn() {
             marginT="mt-5"
             label="Select your profession"
           />
-          
 
-          <TorusButton gap={"p-3"} Children="Submit" marginT="mt-6" onPress={outPutFn} />
+          <TorusFadedInput
+            label="Last Name"
+            placeholder="enter your Last name"
+            value=""
+            marginT="mt-6"
+            labelColor="text-teal-600 font-bold"
+            borderColor="torus-focus:border-b-teal-600/50"
+            onChange={setLastName}
+            width="xl"
+            height="lg"
+            radius="lg"
+            bgColor="bg-orange-500"
+            hoverColor="torus-hover:bg-slate-500/50"
+            textColor="text-white"
+          />
+
+          <TorusModifiedInput1
+            className={{
+              textFieldClassName: "",
+              labelClassNames: "",
+              inputClassNames: "",
+            }}
+            variant="light"
+            label="testing"
+            placeholder=""
+            // value={}
+            isDisabled={false}
+            onChange={setLastName}
+            width="xl"
+            height="lg"
+            radius="lg"
+            textColor="text-black"
+            // handleChange={(e)=>handleinput(e.target.value)}
+          />
+
+          <TorusButton
+            gap={"p-3"}
+            Children="Submit"
+            marginT="mt-6"
+            onPress={outPutFn}
+          />
         </div>
       </div>
     </div>
