@@ -150,7 +150,7 @@ export default function Navbar() {
             </span>
           </Button>
           <Modal className="flex items-center justify-center mt-[70px]">
-            <Dialog className="bg-white shadow-xl shadow-slate-300/60 torus-focus:outline-none w-[600px] h-[400px]  ">
+            <Dialog className="bg-white outline-none rounded-md border-2 border-[#D8CFPF] shadow-xl shadow-slate-300/60 torus-focus:outline-none w-[600px] h-[400px]  ">
               hello
             </Dialog>
           </Modal>
