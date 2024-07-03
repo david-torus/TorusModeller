@@ -38,7 +38,7 @@ const colors = {
   4: { "dark": "#FFc723", "light": "#FFBE00" },
 };
 
-export default function Navbar() {
+export default function Navbar({ setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
@@ -53,7 +53,18 @@ export default function Navbar() {
     >
 
       <div className="w-[40%] ">
-        <Tabs orientation="vertical" className=" cursor-pointer ml-[10px]">
+        <Tabs
+          orientation="vertical"
+          className=" cursor-pointer ml-[10px]"
+          onSelectionChange={(key) =>
+            setSelectedTab((prev) => {
+              if (key == prev) {
+                return 0;
+              }
+              return key;
+            })
+          }
+        >
           <TabList aria-label="tabs" className="flex flex-row gap-2 ">
             <Tab
               id="1"
@@ -247,16 +258,21 @@ export default function Navbar() {
                 />
               </svg>
             </span>
-            <span 
-            style={{
-              color: darkMode ? colors[activeTab]?.dark : "black",
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontOpticalSizing: "auto",
+                fontWeight: 500,
+                fontStyle: "normal",
+                fontVariationSettings: "normal",
+                color: darkMode ? colors[activeTab]?.dark : "black",
               }}
+ 
               className={
-               " font-semibold text-xs"
-                 
+               " text-sm " 
               }
             >
-              Create a Artifacte
+              Create a Artifact
             </span>
           </Button>
           <Modal className="flex items-center justify-center mt-[70px]">

@@ -14,6 +14,7 @@ import {
 } from "react-aria-components";
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../torusComponents/TorusButton";
+import { merger } from "../utils/utils";
 const defaultTropdownClassNames = {
   buttonClassName: "p-2 torus-pressed:animate-torusButtonActive",
   popoverClassName:
@@ -47,40 +48,34 @@ export default function TorusDropDown({
     <DialogTrigger>
       <ButtonComponent
         Children={title}
-        buttonClassName={
-          defaultTropdownClassNames.buttonClassName +
-          " " +
-          classNames?.buttonClassName +
-          color
-        }
-        
+        buttonClassName={merger(
+          defaultTropdownClassNames.buttonClassName,
+          classNames?.buttonClassName
+        )}
         height={buttonHeight}
         width={buttonWidth}
       />
 
       <Popover
         placement="bottom"
-        className={
-          defaultTropdownClassNames.popoverClassName +
-          " " +
+        className={merger(
+          defaultTropdownClassNames.popoverClassName,
           classNames?.popoverClassName
-        }
+        )}
         {...popOverProps}
       >
         <Dialog
-          className={
-            defaultTropdownClassNames.dialogClassName +
-            " " +
+          className={merger(
+            defaultTropdownClassNames.dialogClassName,
             classNames?.dialogClassName
-          }
+          )}
         >
           {({ close }) => (
             <ListBox
-              className={
-                defaultTropdownClassNames.listBoxClassName +
-                " " +
+              className={merger(
+                defaultTropdownClassNames.listBoxClassName,
                 classNames?.listBoxClassName
-              }
+              )}
               selectionMode={selectionMode}
               onSelectionChange={(keys) => {
                 setSelected(keys);
@@ -96,11 +91,10 @@ export default function TorusDropDown({
               {(item) => (
                 <ListBoxItem
                   key={item.key}
-                  className={
-                    defaultTropdownClassNames.listBoxItemClassName +
-                    " " +
+                  className={merger(
+                    defaultTropdownClassNames.listBoxItemClassName,
                     classNames?.listBoxItemClassName
-                  }
+                  )}
                 >
                   {({ isSelected }) => (
                     <div className="w-full flex justify-between items-center">
