@@ -80,7 +80,7 @@ export default function Navbar({ setSelectedTab }) {
               {({ isSelected }) => (
                 <div onClick={() => setActiveTab(1)}>
                   <Data
-                    strokeColor={!isSelected && darkMode ? "white" : colors[activeTab]?.dark }
+                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark }
                   />
                 </div>
               )}
@@ -99,7 +99,7 @@ export default function Navbar({ setSelectedTab }) {
               {({ isSelected }) => (
                 <div onClick={() => setActiveTab(2)}>
                   <Wire
-                    strokeColor={!isSelected && darkMode ? "white" : colors[activeTab]?.dark}
+                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
                   />
                 </div>
               )}
@@ -118,12 +118,14 @@ export default function Navbar({ setSelectedTab }) {
               {({ isSelected }) => (
                 <div onClick={() => setActiveTab(3)}>
                   <Connect
-                    strokeColor={!isSelected && darkMode ? "white" : colors[activeTab]?.dark}
+                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
                   />
                 </div>
               )}
             </Tab>
+          
             <Tab
+            
               id="4"
               className={
                 `${
@@ -137,7 +139,7 @@ export default function Navbar({ setSelectedTab }) {
               {({ isSelected }) => (
                 <div onClick={() => setActiveTab(4)}>
                   <Sheild
-                    strokeColor={!isSelected && darkMode ? "white" : colors[activeTab]?.dark}
+                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
                   />
                 </div>
               )}
