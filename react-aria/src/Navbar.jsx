@@ -23,13 +23,24 @@ import {
   TextField,
 } from "react-aria-components";
 
-export default function Navbar() {
+export default function Navbar({ setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
     <div className=" flex bg-[#0736C4] w-full h-[45px]  justify-between">
       <div className="w-[40%] ">
-        <Tabs orientation="vertical" className=" cursor-pointer ml-[10px]">
+        <Tabs
+          orientation="vertical"
+          className=" cursor-pointer ml-[10px]"
+          onSelectionChange={(key) =>
+            setSelectedTab((prev) => {
+              if (key == prev) {
+                return 0;
+              }
+              return key;
+            })
+          }
+        >
           <TabList aria-label="tabs" className="flex flex-row gap-2 ">
             <Tab
               id="1"
