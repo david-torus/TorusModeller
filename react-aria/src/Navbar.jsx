@@ -116,7 +116,7 @@ export default function Navbar() {
         />
       </div>
       <div className="w-[40%]  flex items-center justify-end ">
-        <DialogTrigger>
+        {/* <DialogTrigger>
           <Button
             className={`bg-white font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
          torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center`}
@@ -154,7 +154,7 @@ export default function Navbar() {
               hello
             </Dialog>
           </Modal>
-        </DialogTrigger>
+        </DialogTrigger> */}
 
         <div className="flex items-center gap-2 ml-[15px]">
           <Reload />
