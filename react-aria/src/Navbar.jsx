@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Connect,
   Data,
@@ -22,12 +22,15 @@ import {
   Modal,
   TextField,
 } from "react-aria-components";
+import ButtonToggle from "./context/ButtonToggle";
+import { DarkModeContext } from "./context/darkmodeContext";
 
 export default function Navbar({ setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
+  const{darkMode} = useContext(DarkModeContext)
   return (
-    <div className=" flex bg-[#0736C4] w-full h-[45px]  justify-between">
+    <div className=" flex dark:bg-[#0736C4] w-full h-[45px]  justify-between">
       <div className="w-[40%] ">
         <Tabs
           orientation="vertical"
@@ -47,7 +50,7 @@ export default function Navbar({ setSelectedTab }) {
               className="w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none torus-selected:bg-white flex items-center justify-center"
             >
               {({ isSelected }) => (
-                <Data strokeColor={!isSelected ? "white" : "#0736C4"} />
+                <Data strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
               )}
             </Tab>
             <Tab
@@ -56,7 +59,7 @@ export default function Navbar({ setSelectedTab }) {
             >
               {({ isSelected }) => (
                 <>
-                  <Wire strokeColor={!isSelected ? "white" : "#0736C4"} />
+                  <Wire strokeColor={!isSelected  && darkMode ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
@@ -66,23 +69,25 @@ export default function Navbar({ setSelectedTab }) {
             >
               {({ isSelected }) => (
                 <>
-                  <Connect strokeColor={!isSelected ? "white" : "#0736C4"} />
+                  <Connect strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
             <Tab
               id="4"
-              className="w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none torus-selected:bg-white flex items-center justify-center"
+              className={`w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none torus-selected:bg-white flex items-center justify-center`}
             >
               {({ isSelected }) => (
                 <>
-                  <Sheild strokeColor={!isSelected ? "white" : "#0736C4"} />
+                  <Sheild strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
           </TabList>
         </Tabs>
       </div>
+
+      <ButtonToggle />
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span className="text-white text-sm font-semibold">DataFabric</span>
         <span className="text-white text-sm  ">/</span>

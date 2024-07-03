@@ -20,15 +20,7 @@ export default function App() {
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Layout />
-      {/* <TorusDropDown
-        classNames={{
-          butttonClassName: "w-full",
-        }}
-        title={(selected && Array.from(selected).join(", ")) || "Select item"}
-        selected={selected}
-        setSelected={setSelected}
-        items={data}
-      /> */}
+ 
     </div>
   );
 }
