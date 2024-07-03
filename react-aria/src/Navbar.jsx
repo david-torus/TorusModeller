@@ -28,9 +28,9 @@ import { DarkModeContext } from "./context/darkmodeContext";
 export default function Navbar({ setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
-  const{darkMode} = useContext(DarkModeContext)
+  const { darkMode } = useContext(DarkModeContext);
   return (
-    <div className=" flex dark:bg-[#0736C4] w-full h-[45px]  justify-between">
+    <div className=" flex bg-[#0736C4] w-full h-[45px]  justify-between">
       <div className="w-[40%] ">
         <Tabs
           orientation="vertical"
@@ -50,7 +50,7 @@ export default function Navbar({ setSelectedTab }) {
               className="w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none torus-selected:bg-white flex items-center justify-center"
             >
               {({ isSelected }) => (
-                <Data strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
+                <Data strokeColor={!isSelected ? "white" : "#0736C4"} />
               )}
             </Tab>
             <Tab
@@ -59,7 +59,7 @@ export default function Navbar({ setSelectedTab }) {
             >
               {({ isSelected }) => (
                 <>
-                  <Wire strokeColor={!isSelected  && darkMode ? "white" : "#0736C4"} />
+                  <Wire strokeColor={!isSelected ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
@@ -69,7 +69,7 @@ export default function Navbar({ setSelectedTab }) {
             >
               {({ isSelected }) => (
                 <>
-                  <Connect strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
+                  <Connect strokeColor={!isSelected ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
@@ -79,7 +79,7 @@ export default function Navbar({ setSelectedTab }) {
             >
               {({ isSelected }) => (
                 <>
-                  <Sheild strokeColor={!isSelected && darkMode ? "white" : "#0736C4"} />
+                  <Sheild strokeColor={!isSelected ? "white" : "#0736C4"} />
                 </>
               )}
             </Tab>
@@ -161,8 +161,17 @@ export default function Navbar({ setSelectedTab }) {
                 />
               </svg>
             </span>
-            <span className="text-black  font-semibold text-xs">
-              Create a Artifacte
+            <span
+              style={{
+                fontFamily: "Inter, sans-serif",
+                fontOpticalSizing: "auto",
+                fontWeight: 500,
+                fontStyle: "normal",
+                fontVariationSettings: "normal",
+              }}
+              className="text-black  text-sm "
+            >
+              Create a Artifact
             </span>
           </Button>
           <Modal className="flex items-center justify-center mt-[70px]">
