@@ -26,8 +26,8 @@ const defaultTropdownClassNames = {
 export default function TorusDropDown({
   title,
   classNames,
-  buttonHeight = "15px",
-  buttonWidth = "15px",
+  buttonHeight = "",
+  buttonWidth = "",
   setSelected,
   selected,
   endContent,
@@ -39,6 +39,7 @@ export default function TorusDropDown({
   ],
   popOverProps,
   listBoxProps,
+  color,
 
   selectionMode = "multiple",
 }) {
@@ -49,8 +50,10 @@ export default function TorusDropDown({
         buttonClassName={
           defaultTropdownClassNames.buttonClassName +
           " " +
-          classNames?.buttonClassName
+          classNames?.buttonClassName +
+          color
         }
+        
         height={buttonHeight}
         width={buttonWidth}
       />

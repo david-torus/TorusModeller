@@ -12,7 +12,8 @@ export default function TorusButton({
   pressedWidth,
   pressedHeight,
   buttonClassName,
-  marginT
+  marginT,
+  color
 }) {
   return (
     <Button
@@ -26,7 +27,10 @@ export default function TorusButton({
       autoFocus={autoFocus}
       onPress={onPress}
     >
+      <span style={{color: color}}>
+
       {Children}
+      </span>
     </Button>
   );
 }
