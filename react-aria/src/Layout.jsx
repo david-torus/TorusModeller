@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "./Navbar";
-import ReactFlow, { MiniMap, Controls, Background } from "reactflow";
+// import ReactFlow, { MiniMap, Controls, Background } from "reactflow";
 
 export default function Layout() {
   return (
