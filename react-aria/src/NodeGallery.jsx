@@ -26,8 +26,8 @@ export default function NodeGallery() {
   const loop = (ite) => {
     return ite.map((item, index) => {
       return (
-        <div key={index} className="flex items-center gap-1 ">
-          <div className="bg-[#d0d8f2] w-8 h-8 flex items-center justify-center rounded-lg">
+        <div key={index} className="flex items-center gap-1 dark:text-white ">
+          <div className="bg-[#d0d8f2] dark:bg-gray-400 dark:text-white w-8 h-8 flex items-center justify-center rounded-lg">
             {item.icon}
           </div>
           {item.label}
@@ -37,15 +37,15 @@ export default function NodeGallery() {
   };
   return (
     <div className="w-full h-full flex flex-col gap-3 ">
-      <div className="w-full h-[8%] font- font-medium border-b border-slate-300 flex justify-between p-4 items-center">
+      <div className="w-full h-[8%] dark:text-white font-medium border-b border-slate-300 dark:border-slate-600 flex justify-between p-4 items-center">
         <Header> Node Gallery</Header>
-        <Back />
+        <Back  />
       </div>
       <div className="flex flex-col items-start ml-4 w-full h-[67%] gap-5  ">
         {loop(data)}
       </div>
       <div className="w-full h-[8%]  flex items-center justify-center   ">
-        <div className="w-[95%]  bg-grey-300 p-3 rounded-lg  ">
+        <div className="w-[95%]  bg-grey-300 dark:bg-gray-700 p-3 rounded-lg dark:text-white  ">
           <Text className="font-bold text-sm">
             Upgrade to unlock more features
           </Text>

@@ -24,7 +24,7 @@ export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const { darkMode } = useContext(DarkModeContext);
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState("1");
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
@@ -33,11 +33,9 @@ export default function Layout() {
   return (
     <div className="flex flex-col gap-3 w-full h-full ">
       <div className="h-[5%] sticky top-0">
-        <Navbar setSelectedTab={setSelectedTab} />
+        <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       </div>
-      <div
-        className={`h-[95%] ${darkMode ? "bg-[#1E2428] " : "bg-[#F4F5FA]"}  `}
-      >
+      <div className={`h-[95%] dark:bg-[#1E2428]  bg-[#F4F5FA] `}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
