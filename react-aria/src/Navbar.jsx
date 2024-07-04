@@ -46,7 +46,7 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
 
   return (
     <div
-      className={`flex  w-full h-[45px]  justify-between`}
+      className={`flex max-w-full mx-auto max-h-11 justify-between`}
       style={{
         backgroundColor:
           colors && selectedTab && darkMode
