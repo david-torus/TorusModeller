@@ -14,13 +14,56 @@ export default function TorusButton({
   pressedHeight,
   buttonClassName,
   marginT,
-  color
+  color,
+  bgColor,
+  outlineColor,
+  radius,
 }) {
+  const outlineFn = () => {
+    if (outlineColor) {
+      return ` torus-hover:ring-2 torus-hover:ring-offset-4  ${outlineColor}`;
+    }
+    return "outline-none";
+  };
+
+  const hoverOutline = outlineFn();
   return (
     <Button
       className={merger(
-        `bg-purple-300 font-lg w-[${width}] h-[${height}]  ${marginT}   rounded-lg ${gap}
-        torus-focus:outline-none transition-all ease-in-out duration-300`,
+        `${bgColor} font-lg w-[${width}] h-[${height}]  ${marginT} border-none  outline-none ${gap}
+         torus-pressed:animate-torusButtonActive 
+                    torus-hover:outline-none
+                    torus-hover:scale-95
+                    transition-scale ease-in-out duration-300
+                    torus-hover:border-2 
+                    ${hoverOutline}
+
+                    
+                    
+          ${
+            radius === "sm"
+              ? "rounded-sm"
+              : radius === "md"
+              ? "rounded-md"
+              : radius === "lg"
+              ? "rounded-lg"
+              : "rounded-sm"
+          }
+          
+           ${
+             width === "sm"
+               ? "w-[30%]"
+               : width === "md"
+               ? "w-[45%]"
+               : width === "lg"
+               ? "w-[60%]"
+               : width === "xl"
+               ? "w-[75%]"
+               : width === "full"
+               ? "w-[100%]"
+               : "w-[80%]"
+           } 
+          `,
         buttonClassName
       )}
       value={value}
@@ -28,10 +71,7 @@ export default function TorusButton({
       autoFocus={autoFocus}
       onPress={onPress}
     >
-      <span style={{color: color}}>
-
-      {Children}
-      </span>
+      <span style={{ color: color }}>{Children}</span>
     </Button>
   );
 }

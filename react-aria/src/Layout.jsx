@@ -24,7 +24,7 @@ export default function Layout() {
   const [selectedTab, setSelectedTab] = useState("DF");
 
   return (
-    <div className="flex flex-col gap-3 w-full h-full ">
+    <div className="max-w-full mx-auto max-h-full ">
       <div className="h-[5%] sticky top-0">
         <Navbar
           selectedTab={selectedTab}
