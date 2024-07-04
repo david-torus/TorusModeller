@@ -6,21 +6,21 @@ export default function SelectedTabPanel({ selectedTab }) {
     console.log(typeof tab);
 
     switch (selectedTab) {
-      case "1":
+      case "DF":
         return <NodeGallery />;
-      case "2":
-        return "Working on it";
-      case "3":
-        return "Working on it";
-      case "4":
-        return "working on it";
+      case "UF":
+        return <NodeGallery />;
+      case "PF":
+        return <NodeGallery />;
+      case "SF":
+        return <NodeGallery />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="w-full h-full shadow-xl bg-white border border-slate-300 dark:bg-black rounded-lg ">
+    <div className="w-full h-full shadow-xl bg-white border border-slate-300 dark:border-slate-600 dark:bg-black rounded-lg ">
       {renderContent(selectedTab)}
     </div>
   );

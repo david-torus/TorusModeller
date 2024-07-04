@@ -8,7 +8,9 @@ import TorusModifiedInput from "./torusComponents/TorusInput";
 import { useState } from "react";
 import TorusRadio from "./torusComponents/TorusRadio";
 import TorusButton from "./torusComponents/TorusButton";
-import { TorusModifiedInput1 } from "./torusComponents/TorusInput2";
+import TorusModifiedInput1 from "./torusComponents/TorusInput";
+import TorusInput from "./torusComponents/TorusInput";
+import TorusDropDown from "./torusComponents/TorusDropDown";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -38,28 +40,48 @@ export default function SignIn() {
         <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
 
         <div className="w-[80%]  flex flex-col justify-center items">
-          <TorusUnderLinedInput
-            label="First Name"
-            placeholder="enter your First name"
-            value=""
-            marginT="mt-8"
-            labelColor="text-teal-600"
-            borderColor="torus-focus:border-b-teal-600/50"
-            onChange={setFirstName}
-            px="px-2"
-            py="py-4"
+          <TorusInput
+            variant="bordered"
+            label="testing"
+            labelColor="text-fuchsia-600"
+            borderColor="fuchsia-500/100"
+            outlineColor="torus-focus:ring-fuchsia-500/50"
+            placeholder=""
+            isDisabled={false}
+            onChange={setLastName}
+            radius="lg"
+            width="xl"
+            height="xl"
+            textColor="text-black"
+            bgColor="bg-fuchsia-500/50"
           />
 
-          <TorusUnderLinedInput
-            label="Last Name"
-            placeholder="enter your Last name"
-            value=""
-            marginT="mt-6"
-            labelColor="text-teal-600"
-            borderColor="torus-focus:border-b-teal-600/50"
+          <TorusInput
+            variant="fade"
+            label="testing"
+            placeholder=""
+            isDisabled={false}
             onChange={setLastName}
-            px="px-1"
-            py="py-3"
+            width="full"
+            height="xl"
+            radius="lg"
+            textColor="text-white"
+            bgColor="bg-fuchsia-500/100"
+            hoverColor="torus-hover:bg-fuchsia-500/50"
+          />
+
+          <TorusInput
+            variant="underline"
+            label="testing"
+            labelColor="text-fuchsia-600"
+            placeholder=""
+            isDisabled={false}
+            onChange={setLastName}
+            width="full"
+            height="xl"
+            textColor="text-black"
+            borderColor="torus-focus:border-b-fuchsia-600/50"
+            marginT="mt-7"
           />
 
           <TorusDateTimePickers
@@ -86,47 +108,19 @@ export default function SignIn() {
             label="Select your profession"
           />
 
-          <TorusFadedInput
-            label="Last Name"
-            placeholder="enter your Last name"
-            value=""
-            marginT="mt-6"
-            labelColor="text-teal-600 font-bold"
-            borderColor="torus-focus:border-b-teal-600/50"
-            onChange={setLastName}
-            width="xl"
-            height="lg"
-            radius="lg"
-            bgColor="bg-orange-500"
-            hoverColor="torus-hover:bg-slate-500/50"
-            textColor="text-white"
-          />
+          <TorusDropDown title="Select your country" />
 
-          <TorusModifiedInput1
-            className={{
-              textFieldClassName: "",
-              labelClassNames: "",
-              inputClassNames: "",
-            }}
-            variant="light"
-            label="testing"
-            placeholder=""
-            // value={}
-            isDisabled={false}
-            onChange={setLastName}
-            width="xl"
-            height="lg"
-            radius="lg"
-            textColor="text-black"
-            // handleChange={(e)=>handleinput(e.target.value)}
-          />
-
-          <TorusButton
-            gap={"p-3"}
-            Children="Submit"
-            marginT="mt-6"
-            onPress={outPutFn}
-          />
+          <div className="w-[100%] flex justify-center items-center h-14 ">
+            <TorusButton
+              gap={"p-3"}
+              Children="Submit"
+              onPress={outPutFn}
+              width={"full"}
+              bgColor={"bg-fuchsia-500"}
+              outlineColor="torus-hover:ring-fuchsia-500/50"
+              radius="lg"
+            />
+          </div>
         </div>
       </div>
     </div>

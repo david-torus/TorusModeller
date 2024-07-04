@@ -1,44 +1,29 @@
-import { useEffect, useState } from "react";
-import { Input, Label } from "react-aria-components";
+import React, { useState, useEffect } from "react";
+import { Input, Label, TextField } from "react-aria-components";
 
-export default function TorusUnderLinedInput(props) {
+export default function TorusInput(props) {
   const [clicked, setClicked] = useState(false);
   const [value, setValue] = useState(props.value || "");
 
   useEffect(() => {
+    console.log(value.length, "length-1");
+
     toggleClicked();
-    colorsBorderFn();
-    colorsLabelFn();
-  }, [props.value, props.labelColor, props.borderColor]);
+  }, [props.value]);
 
-  const colorsLabelFn = () => {
-    if (props.labelColor) {
-      return props.labelColor;
-    }
-    return "";
-  };
-
-  const colorsBorderFn = () => {
-    if (props.borderColor) {
-      return props.borderColor;
-    }
-    return "";
-  };
-
-  console.log(
-    colorsBorderFn(),
-    "colorsBorderFn()",
-    colorsLabelFn(),
-    "colorsLabelFn()"
-  );
   const toggleClicked = () => {
+    console.log(value.length, "length-2");
+
     if (value.length > 0) {
+      setClicked(true);
+    } else if (value.length <= 0) {
       setClicked(false);
-    } else setClicked(true);
+    }
   };
 
   const handleInputChange = (e) => {
     setValue(e.target.value);
+    console.log(e.target.value.length, "length-3");
     if (e.target.value.length === 0) {
       setClicked(true);
     } else {
@@ -46,79 +31,6 @@ export default function TorusUnderLinedInput(props) {
       props.onChange(e.target.value);
     }
   };
-
-  const topValueFn = () => {
-    if (props.py) {
-      let value = props.py;
-      const [prefix, number] = value.split("-");
-
-      if (number) {
-        const newValue = parseInt(number, 10) + 6;
-        return `${newValue}px`;
-      }
-    }
-    return "";
-  };
-
-  const topNValueFn = () => {
-    if (props.py) {
-      let value = props.py;
-      const [prefix, number] = value.split("-");
-      if (number) {
-        return `${number * 5}px`;
-      }
-    }
-    return "";
-  };
-
-  const topValue = topValueFn();
-  const topNValue = topNValueFn();
-  const colorsLabel = colorsLabelFn();
-
-  return (
-    <div
-      className={`w-[100%] flex justify-between relative ${
-        props.marginT ? `${props.marginT}` : ""
-      }`}
-    >
-      <Label
-        onClick={toggleClicked}
-        style={{
-          left: clicked ? "1rem" : "0",
-          top: clicked ? topValue : `-${topNValue}`,
-          transition: "all ease-in-out 0.15s",
-        }}
-        className={`cursor-pointer absolute font-semibold ${
-          clicked ? "" : `${colorsLabel}`
-        }  font-small`}
-      >
-        {props.label}
-      </Label>
-      <Input
-        {...props}
-        placeholder={clicked ? "" : props.placeholder}
-        onClick={toggleClicked}
-        onChange={handleInputChange}
-        value={value}
-        className={`w-[100%] bg-transparent  outline-none border-2 border-b-slate-500/30 
-              border-t-transparent border-l-transparent border-r-transparent
-              ${colorsBorderFn()} transition-all ease-linear duration-75 ${
-          clicked ? "border-transparent" : ""
-        } ${props.px ? `${props.px}` : ""} ${props.py ? `${props.py}` : ""}  `}
-      />
-    </div>
-  );
-}
-
-export function TorusFadedInput(props) {
-  const [clicked, setClicked] = useState(false);
-  const [value, setValue] = useState(props.value || "");
-
-  useEffect(() => {
-    toggleClicked();
-    colorsBgFn();
-    colorsLabelFn();
-  }, [props.value, props.labelColor, props.borderColor]);
 
   const colorsLabelFn = () => {
     if (props.labelColor) {
@@ -131,65 +43,171 @@ export function TorusFadedInput(props) {
     if (props.bgColor) {
       return `${props.bgColor}`;
     }
+    return "";
   };
 
   const colorsHoverFn = () => {
     if (props.hoverColor) {
       return `${props.hoverColor}`;
     }
+    return "";
   };
 
-  const toggleClicked = () => {
-    if (value.length > 0) {
-      setClicked(false);
-    } else setClicked(true);
+  const defaultClassNames = {
+    bordered: {
+      textFieldClassName:
+        "relative  pb-2.5 pt-4  text-sm text-gray-200 bg-transparent rounded-lg",
+      labelClassNames: `absolute top-0 left-0 p-4 dark:text-gray-400 transition-all duration-300 outline-none `,
+      inputClassNames:
+        "w-full px-2 py-3 pb-0 mt-1 border border-gray-300 rounded-md outline-none ",
+    },
+    fade: {
+      textFieldClassName: "w-[100%]",
+      labelClassNames:
+        "w-[100%] cursor-pointer flex justify-start items-center  ",
+      inputClassNames: ` outline-none  border-t-transparent border-l-transparent border-r-transparent border-b-transparent torus-focus:border-b-purple-500 transition-all ease-linear duration-75 px-3 py-1`,
+    },
+    underline: {
+      textFieldClassName: "w-[100%] relative",
+      labelClassNames:
+        "w-[10%] cursor-pointer flex justify-start items-center absolute transition-all ease-in-out duration-150",
+      inputClassNames: `px-2 outline-none border-2 border-b-slate-500/30 
+      border-t-transparent border-l-transparent border-r-transparent bg-transparent`,
+    },
   };
 
-  const handleInputChange = (e) => {
-    setValue(e.target.value);
-    if (e.target.value.length === 0) {
-      setClicked(true);
-    } else {
-      setClicked(false);
-      props.onChange(e.target.value);
+  const { variant } = props;
+  const classNames = defaultClassNames[variant];
+
+  const topValueFn = () => {
+    const getting = () => {
+      return props.height === "sm"
+        ? "6"
+        : props.height === "md"
+        ? "8"
+        : props.height === "lg"
+        ? "10"
+        : props.height === "xl"
+        ? "12"
+        : "10";
+    };
+
+    const value = getting();
+    const number = parseInt(value, 10);
+
+    if (number) {
+      const newValue = number + 2;
+      return `${newValue}px`;
     }
+
+    return "";
   };
 
+  const topNValueFn = () => {
+    const getting = () => {
+      return props.height === "sm"
+        ? "6"
+        : props.height === "md"
+        ? "8"
+        : props.height === "lg"
+        ? "10"
+        : props.height === "xl"
+        ? "12"
+        : "10";
+    };
+
+    const value = getting();
+    const number = parseInt(value, 10);
+
+    if (number) {
+      return `${number * 2}px`;
+    }
+
+    return "";
+  };
+
+  const outlineFn = () => {
+    if (props.outlineColor) {
+      return ` torus-focus:ring-1 torus-focus:ring-blue-500 ${props.outlineColor}`;
+    }
+    return "outline-none";
+  };
+
+  const topValue = topValueFn();
+  const topNValue = topNValueFn();
+  const outline = outlineFn();
   const colorsLabel = colorsLabelFn();
   const colorsBg = colorsBgFn();
   const colorsHover = colorsHoverFn();
 
   return (
-    <div
-      className={`w-[100%] flex flex-col justify-between items-center relative ${
-        props.marginT ? `${props.marginT}` : ""
-      } `}
+    <TextField
+      className={`${classNames.textFieldClassName} ${
+        props.isDisabled ? "pointer-events-none opacity-50" : ""
+      } ${props.marginT ? props.marginT : "mt-1"}`}
+      isDisabled={props.isDisabled ? props.isDisabled : false}
     >
-      <Label className={` flex w-full justify-start ${colorsLabel}`}>
+      <Label
+        className={`${classNames.labelClassNames} ${
+          props.variant === "underline"
+            ? `${
+                !clicked
+                  ? `font-semibold ${colorsLabel}`
+                  : "torus-text-gray-400"
+              }`
+            : `${colorsLabel}`
+        } `}
+        style={{
+          left: `${
+            props.variant === "underline" ? (clicked ? "1rem" : "0") : "0"
+          }`,
+          top: `${
+            props.variant === "underline"
+              ? clicked
+                ? `${topValue}`
+                : `-${topNValue}`
+              : "0"
+          }`,
+          transition: "all ease-in-out 0.15s",
+        }}
+      >
         {props.label}
       </Label>
       <Input
         {...props}
         placeholder={clicked ? "" : props.placeholder}
-        onClick={toggleClicked}
+        onFocus={() => setClicked(true)}
         onChange={handleInputChange}
         value={value}
-        className={`w-[100%] outline-none text-md  px-2 border-b-transparent
-              border-t-transparent border-l-transparent border-r-transparent
-              ${colorsBg} ${colorsHover}  transition-all ease-linear duration-75 
-              ${clicked ? "border-transparent" : ""} 
-        
+        className={`${classNames.inputClassNames} ${
+          clicked ? "border-transparent" : ""
+        } ${colorsBg} ${colorsHover} 
+
+
         ${
-          props.radius === "sm"
-            ? "rounded-sm"
-            : props.radius === "md"
-            ? "rounded-md"
-            : props.radius === "lg"
-            ? "rounded-lg"
-            : props.radius === "full"
-            ? "rounded-full"
-            : "rounded-none"
-        }  
+          props.variant === "bordered"
+            ? `torus-focus:ring-1 torus-focus:outline-none ${
+                props.outlineColor
+                  ? `${outline}`
+                  : "torus-focus:outline-none torus-focus:ring-1 torus-focus:ring-blue-500"
+              }`
+            : ""
+        }
+
+        ${
+          props.variant === "fade"
+            ? `${props.hoverColor ? `${colorsHover}` : "bg-slate-500/70"} `
+            : ""
+        }
+        ${
+          props.variant === "fade"
+            ? `${
+                props.bgColor ? `${colorsBg}` : "torus-hover:bg-slate-500/40"
+              } `
+            : ""
+        }
+        
+        ${props.variant === "fade" ? `${props.textColor}` : " text-black"}
         
         ${props.textColor ? `${props.textColor}` : "text-black"} 
         
@@ -203,7 +221,9 @@ export function TorusFadedInput(props) {
             : props.height === "xl"
             ? "h-12"
             : "h-10"
-        }
+        } 
+
+        ${props.variant === "underline" ? `${props.borderColor}` : ""}
 
         ${
           props.width === "sm"
@@ -214,11 +234,22 @@ export function TorusFadedInput(props) {
             ? "w-[60%]"
             : props.width === "xl"
             ? "w-[75%]"
-            : "w-[50%]"
-        }
-
-        `}
+            : props.width === "full"
+            ? "w-[100%]"
+            : "w-[80%]"
+        } 
+          ${
+            props.radius === "sm"
+              ? "rounded-sm"
+              : props.radius === "md"
+              ? "rounded-md"
+              : props.radius === "lg"
+              ? "rounded-lg"
+              : props.radius === "full"
+              ? "rounded-full"
+              : "rounded-none"
+          }`}
       />
-    </div>
+    </TextField>
   );
 }
