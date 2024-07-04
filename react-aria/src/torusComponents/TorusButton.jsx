@@ -18,6 +18,7 @@ export default function TorusButton({
   bgColor,
   outlineColor,
   radius,
+  fontStyle
 }) {
   const outlineFn = () => {
     if (outlineColor) {
@@ -30,15 +31,13 @@ export default function TorusButton({
   return (
     <Button
       className={merger(
-        `${bgColor} font-lg w-[${width}] h-[${height}]  ${marginT} border-none  outline-none ${gap}
+        `${bgColor} font-lg    ${marginT} border-none  outline-none ${gap}
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
                     torus-hover:scale-95
                     transition-scale ease-in-out duration-300
                     torus-hover:border-2 
                     ${hoverOutline}
-
-                    
                     
           ${
             radius === "sm"
@@ -47,7 +46,11 @@ export default function TorusButton({
               ? "rounded-md"
               : radius === "lg"
               ? "rounded-lg"
-              : "rounded-sm"
+              : radius === "xl"
+              ? "rounded-xl"
+              : radius === "full"
+              ? "rounded-full"
+              : "rounded-lg"
           }
           
            ${
@@ -63,15 +66,29 @@ export default function TorusButton({
                ? "w-[100%]"
                : "w-[80%]"
            } 
+
+           ${
+            height === "sm"
+              ? "h-6"
+              : height === "md"
+              ? "h-10"
+              : height === "lg"
+              ? "h-20"
+              : height === "xl"
+              ? "h-25"
+              : height === "full"
+              ? "h-28"
+              : "h-5"
+          } 
           `,
         buttonClassName
       )}
       value={value}
-      isDisabled={isDisabled}
+      isDisabled={isDisabled} 
       autoFocus={autoFocus}
       onPress={onPress}
     >
-      <span style={{ color: color }}>{Children}</span>
+      <div style={{ color: color }} className={`${fontStyle}`}>{Children}</div>
     </Button>
   );
 }

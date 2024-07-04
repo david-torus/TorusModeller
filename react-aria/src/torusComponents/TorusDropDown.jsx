@@ -45,7 +45,7 @@ export default function TorusDropDown({
   popOverProps,
   listBoxProps,
   color,
-
+  btWidth,
   selectionMode = "multiple",
 }) {
   return (
@@ -57,7 +57,7 @@ export default function TorusDropDown({
           classNames?.buttonClassName
         )}
         height={buttonHeight}
-        width={"full"}
+        width={btWidth}
         bgColor={"bg-fuchsia-500"}
       />
 
