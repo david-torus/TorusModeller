@@ -26,16 +26,17 @@ export default function NodeGallery() {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
-  const [searchText, setSearchText] = useState("");
+
   const loop = (ite) => {
     return ite.map((item, index) => {
       return (
-        <div key={index} className="flex items-center gap-1 dark:text-white ">
-          <div
-            draggable
-            onDragStart={(event) => onDragStart(event, "default")}
-            className="bg-[#d0d8f2] dark:bg-gray-400 dark:text-white w-8 h-8 flex items-center justify-center rounded-lg"
-          >
+        <div
+          key={index}
+          className="flex items-center gap-1 dark:text-white "
+          draggable
+          onDragStart={(event) => onDragStart(event, "default")}
+        >
+          <div className="bg-[#d0d8f2] dark:bg-gray-400 dark:text-white w-8 h-8 flex items-center justify-center rounded-lg">
             {item.icon}
           </div>
           {item.label}
