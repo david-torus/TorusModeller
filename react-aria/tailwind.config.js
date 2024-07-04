@@ -4,6 +4,12 @@ module.exports = {
   darkMode: "class",
   theme: {
     extend: {
+      animation: {
+        torusPopOverOpen: "torusPopOverOpen 150ms ease-in",
+        torusPopOverClose: "torusPopOverClose 150ms ease-in",
+        torusButtonActive: "torusButtonActive 0.5s",
+        buttonHoverAnimation: "buttonHoverAnimation 1s ease-in-out ",
+      },
       keyframes: {
         torusPopOverOpen: {
           "0%": {
@@ -45,16 +51,19 @@ module.exports = {
           "50%": { transform: "scale(1.1, 0.9)" },
           "75%": { transform: "scale(0.95, 1.05)" },
         },
-
-      },
-      animation: {
-        torusPopOverOpen: "torusPopOverOpen 150ms ease-in ",
-        torusPopOverClose: "torusPopOverClose 150ms ease-in",
-        torusButtonActive: "torusButtonActive 0.5s",
+        buttonHoverAnimation: {
+          "0%, 10%, 20%, 30%, 40%, 60%, 70%, 80%, 90%, 100%": {
+            transform: "scale(1)",
+          },
+          "50%": { transform: "scaleY(0)" },
+        },
       },
     },
   },
-  plugins: [
-    require('tailwindcss-react-aria-components')({prefix: 'torus'}),
-  ],
+  variants: {
+    extend: {
+      animation: ["hover", "pressed","active"],
+    },
+  },
+  plugins: [require("tailwindcss-react-aria-components")({ prefix: "torus" })],
 };
