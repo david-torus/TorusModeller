@@ -15,15 +15,15 @@ import { DarkModeContext } from "./context/darkmodeContext";
 import SelectedTabPanel from "./SelectedTabPanel";
 
 const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
+  { id: "1", position: { x: 600, y: 200 }, data: { label: "1" } },
+  { id: "2", position: { x: 600, y: 300 }, data: { label: "2" } },
 ];
 const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const{darkMode} = useContext(DarkModeContext)
+  const { darkMode } = useContext(DarkModeContext);
   const [selectedTab, setSelectedTab] = useState(0);
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -35,7 +35,9 @@ export default function Layout() {
       <div className="h-[5%] sticky top-0">
         <Navbar setSelectedTab={setSelectedTab} />
       </div>
-      <div className={`h-[95%] ${darkMode?"bg-[#1E2428] ": "bg-[#F4F5FA]"}  `}>
+      <div
+        className={`h-[95%] ${darkMode ? "bg-[#1E2428] " : "bg-[#F4F5FA]"}  `}
+      >
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -54,7 +56,7 @@ export default function Layout() {
 
           <Controls position="right-bottom" />
           {/* <MiniMap  /> */}
-          <Background   variant="dots" gap={12} size={1} />
+          <Background variant="dots" gap={12} size={1} />
         </ReactFlow>
       </div>
     </div>
