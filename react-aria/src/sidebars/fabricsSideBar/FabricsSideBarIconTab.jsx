@@ -1,35 +1,51 @@
 import React from "react";
 import { BiAccessibility } from "react-icons/bi";
+import {
+  Pencil,
+  Flip,
+  Medicine,
+  Scan,
+  Add,
+  Calendar,
+} from "../../SVG_Application";
 const tabIcons = [
   {
     name: "DF",
-    icon: <BiAccessibility />,
+    icon: <Pencil />,
   },
   {
     name: "UF",
-    icon: <BiAccessibility />,
+    icon: <Flip />,
   },
   {
     name: "UF",
-    icon: <BiAccessibility />,
+    icon: <Medicine />,
   },
   {
     name: "UF",
-    icon: <BiAccessibility />,
+    icon: <Scan />,
   },
   {
     name: "UF",
-    icon: <BiAccessibility />,
+    icon: <Add />,
   },
   {
     name: "UF",
-    icon: <BiAccessibility />,
+    icon: <Flip />,
+  },
+  {
+    name: "UF",
+    icon: <Medicine />,
+  },
+  {
+    name: "UF",
+    icon: <Scan />,
   },
 ];
 
 export default function FabricsSideBarIconTab() {
   return (
-    <div className="w-full h-full flex flex-col gap-5 pt-8 ">
+    <div className="w-full h-full flex flex-col gap-3 pt-6 ">
       {tabIcons.map((icon) => {
         return <RenderIcon name={icon.name} icon={icon.icon} />;
       })}
