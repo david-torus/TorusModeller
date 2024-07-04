@@ -7,49 +7,69 @@ export default function FabricsSelector({
   edges,
   setEdges,
   setNodes,
+  onDrop,
+  onDragOver,
   onNodesChange,
   onEdgesChange,
+  onConnect,
   children,
+  NODE_TYPES,
 }) {
   const cycleFabric = (fabric) => {
     switch (fabric) {
       case "DF":
         return (
           <ReactFlow
+            nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             children={children}
           />
         );
       case "UF":
         return (
           <ReactFlow
+            nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             children={children}
           />
         );
       case "PF":
         return (
           <ReactFlow
+            nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             children={children}
           />
         );
       case "SF":
         return (
           <ReactFlow
+            nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
             children={children}
           />
         );
