@@ -15,6 +15,8 @@ import Navbar from "./Navbar";
 import { DarkModeContext } from "./context/darkmodeContext";
 import SelectedTabPanel from "./SelectedTabPanel";
 import FabricsSelector from "./FabricsSelector";
+import FabricsSideBar from "./sidebars/fabricsSideBar/FabricsSideBar";
+
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -24,8 +26,8 @@ export default function Layout() {
   const [selectedTab, setSelectedTab] = useState("DF");
 
   return (
-    <div className="max-w-full mx-auto max-h-full ">
-      <div className="h-[5%] sticky top-0">
+    <div className="h-full w-full flex flex-col  ">
+      <div className="h-[7%] ">
         <Navbar
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -33,31 +35,36 @@ export default function Layout() {
           setSelectedFabric={setSelectedFabric}
         />
       </div>
-      <div className={`h-[95%] dark:bg-[#1E2428]  bg-[#F4F5FA] `}>
-        <ReactFlowProvider>
-          <FabricsSelector
-            fabric={selectedFabric}
-            nodes={nodes}
-            edges={edges}
-            setEdges={setEdges}
-            setNodes={setNodes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-          >
-            <Panel
-              position="top-left"
-              className={`w-2/12 h-[95%] ${
-                selectedTab.startsWith("hidden") ? "hidden" : "block"
-              }  `}
+      <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
+        <div className="h-full w-[78%]">
+          <ReactFlowProvider>
+            <FabricsSelector
+              fabric={selectedFabric}
+              nodes={nodes}
+              edges={edges}
+              setEdges={setEdges}
+              setNodes={setNodes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
             >
-              <SelectedTabPanel selectedTab={selectedTab} />
-            </Panel>
+              <Panel
+                position="top-left"
+                className={`w-[25%] h-[95%] ${
+                  selectedTab.startsWith("hidden") ? "hidden" : "block"
+                }  `}
+              >
+                <SelectedTabPanel selectedTab={selectedTab} />
+              </Panel>
 
-            <Controls position="right-bottom" />
+              <Controls position="right-bottom" />
 
-            <Background variant="dots" gap={12} size={1} />
-          </FabricsSelector>
-        </ReactFlowProvider>
+              <Background variant="dots" gap={12} size={1} />
+            </FabricsSelector>
+          </ReactFlowProvider>
+        </div>
+        <div className="h-full w-[22%] ">
+          <FabricsSideBar />
+        </div>
       </div>
     </div>
   );

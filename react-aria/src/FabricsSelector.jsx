@@ -11,6 +11,7 @@ export default function FabricsSelector({
   onEdgesChange,
   children,
 }) {
+    console.log(fabric);
   const cycleFabric = (fabric) => {
     switch (fabric) {
       case "DF":
