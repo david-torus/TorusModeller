@@ -144,7 +144,7 @@ export default function Navbar({
         </Tabs>
       </div>
 
-      <ButtonToggle />
+      {/* <ButtonToggle /> */}
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
