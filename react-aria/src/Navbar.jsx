@@ -25,23 +25,29 @@ import {
 import ButtonToggle from "./context/ButtonToggle";
 import { DarkModeContext } from "./context/darkmodeContext";
 const colors = {
-  0: { dark: "#008080", light: "#008080" },
-  1: {
+  hidden: { dark: "#008080", light: "#008080" },
+  DF: {
     dark: "#0736C4",
     light: "#244DCB",
   },
-  2: {
+  UF: {
     dark: "#33CCFF",
     light: "#00BFFF",
   },
-  3: { dark: "#2AE38F", light: "#13CC78" },
+  PF: { dark: "#2AE38F", light: "#13CC78" },
 
-  4: { dark: "#FFc723", light: "#FFBE00" },
+  SF: { dark: "#FFc723", light: "#FFBE00" },
 };
 
-export default function Navbar({ selectedTab, setSelectedTab }) {
+export default function Navbar({
+  selectedTab,
+  setSelectedTab,
+  setSelectedFabric,
+  selectedFabric,
+}) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
+
   const { darkMode } = useContext(DarkModeContext);
 
   return (
@@ -58,18 +64,19 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
         <Tabs
           orientation="vertical"
           className=" cursor-pointer ml-[10px]"
-          onSelectionChange={(key) =>
+          onSelectionChange={(key) => {
             setSelectedTab((prev) => {
               if (key == prev) {
-                return 0;
+                return "hidden";
               }
               return key;
-            })
-          }
+            });
+            setSelectedFabric(key);
+          }}
         >
           <TabList aria-label="tabs" className="flex flex-row gap-2 ">
             <Tab
-              id="1"
+              id="DF"
               className={
                 "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
@@ -85,7 +92,7 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
               )}
             </Tab>
             <Tab
-              id="2"
+              id="UF"
               className={
                 "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
@@ -101,7 +108,7 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
               )}
             </Tab>
             <Tab
-              id="3"
+              id="PF"
               className={
                 "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
@@ -118,7 +125,7 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
             </Tab>
 
             <Tab
-              id="4"
+              id="SF"
               className={
                 "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
@@ -144,7 +151,14 @@ export default function Navbar({ selectedTab, setSelectedTab }) {
             "text-white  text-sm  font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
-          DataFabric
+          {selectedFabric &&
+            (selectedFabric == "DF"
+              ? "DataFabric"
+              : selectedFabric == "UF"
+              ? "UserFabric"
+              : selectedFabric == "PF"
+              ? "ProcessFabric"
+              : "SecurityFabric")}
         </span>
         <span
           className={

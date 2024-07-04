@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import ReactFlow, {
+  ReactFlowProvider,
   MiniMap,
   Controls,
   Background,
@@ -13,49 +14,50 @@ import "reactflow/dist/style.css";
 import Navbar from "./Navbar";
 import { DarkModeContext } from "./context/darkmodeContext";
 import SelectedTabPanel from "./SelectedTabPanel";
-
-const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
-];
-const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+import FabricsSelector from "./FabricsSelector";
 
 export default function Layout() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { darkMode } = useContext(DarkModeContext);
-  const [selectedTab, setSelectedTab] = useState("1");
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
-  );
+  const [selectedFabric, setSelectedFabric] = useState("DF");
+  const [selectedTab, setSelectedTab] = useState("DF");
 
   return (
     <div className="flex flex-col gap-3 w-full h-full ">
       <div className="h-[5%] sticky top-0">
-        <Navbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+        <Navbar
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          selectedFabric={selectedFabric}
+          setSelectedFabric={setSelectedFabric}
+        />
       </div>
       <div className={`h-[95%] dark:bg-[#1E2428]  bg-[#F4F5FA] `}>
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-        >
-          <Panel
-            position="top-left"
-            className={`w-2/12 h-[95%] ${
-              selectedTab == 0 ? "hidden" : "block"
-            }  `}
+        <ReactFlowProvider>
+          <FabricsSelector
+            fabric={selectedFabric}
+            nodes={nodes}
+            edges={edges}
+            setEdges={setEdges}
+            setNodes={setNodes}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
           >
-            <SelectedTabPanel selectedTab={selectedTab} />
-          </Panel>
+            <Panel
+              position="top-left"
+              className={`w-2/12 h-[95%] ${
+                selectedTab.startsWith("hidden") ? "hidden" : "block"
+              }  `}
+            >
+              <SelectedTabPanel selectedTab={selectedTab} />
+            </Panel>
 
-          <Controls position="right-bottom" />
-          {/* <MiniMap  /> */}
-          <Background variant="dots" gap={12} size={1} />
-        </ReactFlow>
+            <Controls position="right-bottom" />
+
+            <Background variant="dots" gap={12} size={1} />
+          </FabricsSelector>
+        </ReactFlowProvider>
       </div>
     </div>
   );

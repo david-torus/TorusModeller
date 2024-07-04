@@ -6,14 +6,14 @@ export default function SelectedTabPanel({ selectedTab }) {
     console.log(typeof tab);
 
     switch (selectedTab) {
-      case "1":
+      case "DF":
         return <NodeGallery />;
-      case "2":
-        return "Working on it";
-      case "3":
-        return "Working on it";
-      case "4":
-        return "working on it";
+      case "UF":
+        return <NodeGallery />;
+      case "PF":
+        return <NodeGallery />;
+      case "SF":
+        return <NodeGallery />;
       default:
         return null;
     }
