@@ -26,7 +26,7 @@ import ButtonToggle from "./context/ButtonToggle";
 import { DarkModeContext } from "./context/darkmodeContext";
 const colors = {
   1: {
-    "dark": "#0736C4",
+    "dark": "#2257f7",
     "light": "#244DCB",
   },
   2: {
@@ -246,14 +246,14 @@ export default function Navbar({ setSelectedTab }) {
               >
                 <path
                   d="M8.5 3.83325V13.1666"
-                  stroke={darkMode ? colors[activeTab]?.dark :  "black"}
+                  stroke={darkMode ?  colors[activeTab]?.dark :  "black"}
                   stroke-width="1.55555"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <path
                   d="M3.83301 8.5H13.1663"
-                  stroke={darkMode ? colors[activeTab]?.dark :  "black"}
+                  stroke={darkMode ?  colors[activeTab]?.dark :  "black"}
                   stroke-width="1.33333"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -267,7 +267,7 @@ export default function Navbar({ setSelectedTab }) {
                 fontWeight: 500,
                 fontStyle: "normal",
                 fontVariationSettings: "normal",
-                color: darkMode ? colors[activeTab]?.dark : "black",
+                color: darkMode ?  colors[activeTab]?.dark : "black",
               }}
  
               className={
