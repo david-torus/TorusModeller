@@ -52,7 +52,7 @@ export default function Navbar({
 
   return (
     <div
-      className={`flex max-w-full mx-auto max-h-11 justify-between`}
+      className={`flex max-w-full mx-auto   xl:max-3xl:pr-3  justify-between`}
       style={{
         backgroundColor:
           colors && selectedTab && darkMode
@@ -63,7 +63,7 @@ export default function Navbar({
       <div className="w-[40%] ">
         <Tabs
           orientation="vertical"
-          className=" cursor-pointer ml-[10px]"
+          className=" cursor-pointer ml-[10px] lg:max-3xl:mt[2%]"
           onSelectionChange={(key) => {
             setSelectedTab((prev) => {
               if (key == prev) {
@@ -78,7 +78,7 @@ export default function Navbar({
             <Tab
               id="DF"
               className={
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
+                "w-[40px] h-[40px] md:max-xl:mt-[1%]  md:max-lg:mt-[1.5%] lg:max-3xl:mt-[2%] 3xl:max-4xl:mt-[1.8%] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
@@ -94,7 +94,7 @@ export default function Navbar({
             <Tab
               id="UF"
               className={
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
+                "w-[40px] h-[40px] md:max-xl:mt-[1%] lg:max-3xl:mt-[1.8%] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
@@ -110,7 +110,7 @@ export default function Navbar({
             <Tab
               id="PF"
               className={
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
+                "w-[40px] h-[40px] md:max-xl:mt-[1%] lg:max-3xl:mt-[1.8%] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
@@ -127,7 +127,7 @@ export default function Navbar({
             <Tab
               id="SF"
               className={
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
+                "w-[40px] h-[40px] md:max-xl:mt-[1%] lg:max-3xl:mt-[1.8%] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (

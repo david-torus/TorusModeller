@@ -24,8 +24,13 @@ export default function Layout() {
   const [selectedTab, setSelectedTab] = useState("DF");
 
   return (
-    <div className="max-w-full mx-auto max-h-full ">
-      <div className="h-[5%] sticky top-0">
+    <div
+      className={`w-full   h-full  
+        max-h-min mx-auto  
+        flex flex-col   xl:max-3xl:bg-gray-600  lg:max-xl:gap-0 xl:max-3xl:gap-0
+        max-md:gap-3 `}
+    >
+      <div className="sticky top-0">
         <Navbar
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -46,7 +51,7 @@ export default function Layout() {
           >
             <Panel
               position="top-left"
-              className={`w-2/12 h-[95%] ${
+              className={`w-2/12 h-[95%]  xl:max-3xl:pt-2 ${
                 selectedTab.startsWith("hidden") ? "hidden" : "block"
               }  `}
             >
