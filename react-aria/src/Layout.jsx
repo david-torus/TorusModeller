@@ -23,9 +23,7 @@ import FabricsSelector from "./FabricsSelector";
 import { v4 as uuidv4 } from "uuid";
 import UserNode from "./DynamicNode";
 
-const getId = () => uuidv4();
 import FabricsSideBar from "./sidebars/fabricsSideBar/FabricsSideBar";
-
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -69,7 +67,7 @@ export default function Layout() {
         y: event.clientY,
       });
       const newNode = {
-        id: getId(),
+        id: uuidv4(),
         type,
         position,
         data: { label: `${type} node` },
@@ -90,34 +88,35 @@ export default function Layout() {
           setSelectedFabric={handleFabrciselector}
         />
       </div>
-      <div className={`h-[95%] dark:bg-[#1E2428]  bg-[#F4F5FA] `}>
-        <FabricsSelector
-          nodeTypes={NODE_TYPES}
-          fabric={selectedFabric}
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          onInit={setreactflowinstance}
-        >
-          <Panel
-            position="top-left"
-            className={`w-2/12 h-[95%] ${
-              selectedTab.startsWith("hidden") ? "hidden" : "block"
-            }  `}
+      <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
+        <div className="h-full w-[78%]">
+          <FabricsSelector
+            nodeTypes={NODE_TYPES}
+            fabric={selectedFabric}
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onInit={setreactflowinstance}
           >
-            <SelectedTabPanel selectedTab={selectedTab} />
-          </Panel>
+            <Panel
+              position="top-left"
+              className={`w-2/12 h-[95%] ${
+                selectedTab.startsWith("hidden") ? "hidden" : "block"
+              }  `}
+            >
+              <SelectedTabPanel selectedTab={selectedTab} />
+            </Panel>
 
-          <Controls position="right-bottom" />
-          {/* <MiniMap /> */}
+            <Controls position="right-bottom" />
+            {/* <MiniMap /> */}
 
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
-          </div>
+        </div>
         <div className="h-full w-[22%] ">
           <FabricsSideBar />
         </div>
