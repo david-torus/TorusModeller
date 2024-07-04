@@ -20,7 +20,7 @@ export default function SelectedTabPanel({ selectedTab }) {
   };
 
   return (
-    <div className="w-full h-full shadow-xl bg-white border border-slate-300 dark:bg-black rounded-lg ">
+    <div className="w-full h-full shadow-xl bg-white border border-slate-300 dark:border-slate-600 dark:bg-black rounded-lg ">
       {renderContent(selectedTab)}
     </div>
   );

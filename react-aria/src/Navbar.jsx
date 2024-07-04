@@ -25,33 +25,35 @@ import {
 import ButtonToggle from "./context/ButtonToggle";
 import { DarkModeContext } from "./context/darkmodeContext";
 const colors = {
+  0: { dark: "#008080", light: "#008080" },
   1: {
-    "dark": "#0736C4",
-    "light": "#244DCB",
+    dark: "#0736C4",
+    light: "#244DCB",
   },
   2: {
-    "dark": "#33CCFF",
-    "light": "#00BFFF",
+    dark: "#33CCFF",
+    light: "#00BFFF",
   },
-  3: { "dark": "#2AE38F", "light": "#13CC78" },
+  3: { dark: "#2AE38F", light: "#13CC78" },
 
-  4: { "dark": "#FFc723", "light": "#FFBE00" },
+  4: { dark: "#FFc723", light: "#FFBE00" },
 };
 
-export default function Navbar({ setSelectedTab }) {
+export default function Navbar({ selectedTab, setSelectedTab }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
-  const [activeTab, setActiveTab] = useState(1);
- 
+
   return (
     <div
       className={`flex  w-full h-[45px]  justify-between`}
       style={{
-        backgroundColor: colors &&  activeTab && darkMode ? colors[activeTab]?.dark : colors[activeTab]?.light
+        backgroundColor:
+          colors && selectedTab && darkMode
+            ? colors[selectedTab]?.dark
+            : colors[selectedTab]?.light,
       }}
     >
-
       <div className="w-[40%] ">
         <Tabs
           orientation="vertical"
@@ -69,18 +71,15 @@ export default function Navbar({ setSelectedTab }) {
             <Tab
               id="1"
               className={
-                `${
-                  darkMode
-                    ? ` torus-selected:bg-[#1E2428] `
-                    : ` torus-selected:bg-[#F4F5FA] `
-                }` +
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center"
+                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
-                <div onClick={() => setActiveTab(1)}>
+                <div>
                   <Data
-                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark }
+                    strokeColor={
+                      !isSelected ? "white" : colors[selectedTab]?.dark
+                    }
                   />
                 </div>
               )}
@@ -88,18 +87,15 @@ export default function Navbar({ setSelectedTab }) {
             <Tab
               id="2"
               className={
-                `${
-                  darkMode
-                    ? ` torus-selected:bg-[#1E2428] `
-                    : ` torus-selected:bg-[#F4F5FA] `
-                }` +
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center"
+                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
-                <div onClick={() => setActiveTab(2)}>
+                <div>
                   <Wire
-                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
+                    strokeColor={
+                      !isSelected ? "white" : colors[selectedTab]?.dark
+                    }
                   />
                 </div>
               )}
@@ -107,39 +103,32 @@ export default function Navbar({ setSelectedTab }) {
             <Tab
               id="3"
               className={
-                `${
-                  darkMode
-                    ? ` torus-selected:bg-[#1E2428] `
-                    : ` torus-selected:bg-[#F4F5FA] `
-                }` +
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center"
+                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
-                <div onClick={() => setActiveTab(3)}>
+                <div>
                   <Connect
-                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
+                    strokeColor={
+                      !isSelected ? "white" : colors[selectedTab]?.dark
+                    }
                   />
                 </div>
               )}
             </Tab>
-          
+
             <Tab
-            
               id="4"
               className={
-                `${
-                  darkMode
-                    ? ` torus-selected:bg-[#1E2428] `
-                    : ` torus-selected:bg-[#F4F5FA] `
-                }` +
-                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center"
+                "w-[40px] h-[40px] mt-[5px] rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]"
               }
             >
               {({ isSelected }) => (
-                <div onClick={() => setActiveTab(4)}>
+                <div>
                   <Sheild
-                    strokeColor={!isSelected  ? "white" : colors[activeTab]?.dark}
+                    strokeColor={
+                      !isSelected ? "white" : colors[selectedTab]?.dark
+                    }
                   />
                 </div>
               )}
@@ -151,20 +140,16 @@ export default function Navbar({ setSelectedTab }) {
       <ButtonToggle />
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
-          className={`${
-            darkMode
-              ? "text-[#090b0e] text-sm  font-bold"
-              : "text-white  text-sm  font-semibold"
-          } `}
+          className={
+            "text-white  text-sm  font-semibold dark:text-[#090b0e] dark:font-bold"
+          }
         >
           DataFabric
         </span>
         <span
-          className={`${
-            darkMode
-              ? "text-[#090b0e] text-sm  font-bold"
-              : "text-white  text-sm  font-semibold"
-          } `}
+          className={
+            "text-white  text-sm  font-semibold dark:text-[#090b0e] dark:font-bold"
+          }
         >
           /
         </span>
@@ -173,11 +158,9 @@ export default function Navbar({ setSelectedTab }) {
             <div className="flex flex-row items-center gap-2">
               <div>
                 <span
-                  className={`${
-                    darkMode
-                      ? "text-[#151a22] text-sm  font-bold"
-                      : "text-white  text-sm  font-semibold"
-                  } `}
+                  className={
+                    "text-white  text-sm  font-semibold dark:text-[#151a22] dark:font-bold"
+                  }
                 >
                   {(selectededArtifacts &&
                     Array.from(selectededArtifacts)[0]) ||
@@ -201,22 +184,21 @@ export default function Navbar({ setSelectedTab }) {
         />
         <TorusDropDown
           title={
-           
-              <span className="w-[2px]" style={{
-              color: darkMode ? colors[activeTab]?.dark : "black",
-              }}>
-             { ( selectedVersion && Array.from(selectedVersion)[0]) || "*"}
-              </span>
-           
+            <span
+              className="w-[2px]"
+              style={{
+                color: darkMode ? colors[selectedTab]?.dark : "black",
+              }}
+            >
+              {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+            </span>
           }
           classNames={{
-            buttonClassName: darkMode
-              ? " bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive "
-              : "bg-white flex items-center justify-center  rounded-md font-semibold w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
+            buttonClassName:
+              " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
+
             listBoxClassName: "bg-white text-black ",
           }}
-         
-          
           popOverProps={{ offset: 15 }}
           selected={selectedVersion}
           setSelected={setSelectedVersion}
@@ -230,11 +212,8 @@ export default function Navbar({ setSelectedTab }) {
       <div className="w-[40%]  flex items-center justify-end ">
         <DialogTrigger>
           <Button
-            className={
-              `${darkMode ? `bg-[#262626] ` : `bg-white `}` +
-              `font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
-       torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center `
-            }
+            className={`bg-white dark:bg-[#262626] font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
+       torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center `}
           >
             <span className="mt-[2px]">
               <svg
@@ -246,14 +225,14 @@ export default function Navbar({ setSelectedTab }) {
               >
                 <path
                   d="M8.5 3.83325V13.1666"
-                  stroke={darkMode ? colors[activeTab]?.dark :  "black"}
+                  stroke={darkMode ? colors[selectedTab]?.dark : "black"}
                   stroke-width="1.55555"
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 />
                 <path
                   d="M3.83301 8.5H13.1663"
-                  stroke={darkMode ? colors[activeTab]?.dark :  "black"}
+                  stroke={darkMode ? colors[selectedTab]?.dark : "black"}
                   stroke-width="1.33333"
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -267,12 +246,9 @@ export default function Navbar({ setSelectedTab }) {
                 fontWeight: 500,
                 fontStyle: "normal",
                 fontVariationSettings: "normal",
-                color: darkMode ? colors[activeTab]?.dark : "black",
+                color: darkMode ? colors[selectedTab]?.dark : "black",
               }}
- 
-              className={
-               " text-sm " 
-              }
+              className={" text-sm "}
             >
               Create a Artifact
             </span>
