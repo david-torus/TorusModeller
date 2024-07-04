@@ -1,5 +1,6 @@
 import React from "react";
 import { BiAccessibility } from "react-icons/bi";
+import TorusToolTip from "../../torusComponents/TorusToolTip";
 const tabIcons = [
   {
     name: "DF",
@@ -39,8 +40,8 @@ export default function FabricsSideBarIconTab() {
 
 const RenderIcon = ({ name, icon }) => {
   return (
-    <div title={name} className="w-full p-2 flex items-center justify-center ">
-      {icon}
+    <div  className="w-full p-2 flex items-center justify-center ">
+      <TorusToolTip tooltipContent={name} hoverContent={icon} />
     </div>
   );
 };
