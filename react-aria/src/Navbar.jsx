@@ -27,7 +27,7 @@ import { DarkModeContext } from "./context/darkmodeContext";
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
   DF: {
-    dark: "#0736C4",
+    dark: "#2257f7",
     light: "#244DCB",
   },
   UF: {
