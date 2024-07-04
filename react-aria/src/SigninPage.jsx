@@ -108,17 +108,19 @@ export default function SignIn() {
             label="Select your profession"
           />
 
-          <TorusDropDown
-          title="Select your country"
-          />
+          <TorusDropDown title="Select your country" />
 
-          <TorusButton
-            gap={"p-3"}
-            Children="Submit"
-            marginT="mt-6"
-            onPress={outPutFn}
-            width={"full"}
-          />
+          <div className="w-[100%] flex justify-center items-center h-14 ">
+            <TorusButton
+              gap={"p-3"}
+              Children="Submit"
+              onPress={outPutFn}
+              width={"full"}
+              bgColor={"bg-fuchsia-500"}
+              outlineColor="torus-hover:ring-fuchsia-500/50"
+              radius="lg"
+            />
+          </div>
         </div>
       </div>
     </div>

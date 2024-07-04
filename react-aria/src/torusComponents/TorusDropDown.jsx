@@ -16,8 +16,8 @@ import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../torusComponents/TorusButton";
 import { merger } from "../utils/utils";
 const defaultTropdownClassNames = {
-  buttonClassName:
-    "p-2 torus-pressed:animate-torusButtonActive ",
+  buttonClassName: `p-2 torus-pressed:animate-torusButtonActive 
+  `,
   popoverClassName:
     "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
   dialogClassName: "outline-none w-full",
@@ -57,6 +57,10 @@ export default function TorusDropDown({
         )}
         height={buttonHeight}
         width={"full"}
+        gap={"p-2"}
+        marginT={"mt-2"}
+        bgColor={"bg-fuchsia-500"}
+        outlineColor="torus-hover:ring-fuchsia-500/50"
       />
 
       <Popover

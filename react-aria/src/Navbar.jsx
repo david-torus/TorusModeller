@@ -27,7 +27,7 @@ import { DarkModeContext } from "./context/darkmodeContext";
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
   DF: {
-    dark: "#0736C4",
+    dark: "#2257f7",
     light: "#244DCB",
   },
   UF: {
@@ -52,7 +52,7 @@ export default function Navbar({
 
   return (
     <div
-      className={`flex  w-full h-[45px]  justify-between`}
+      className={`flex max-w-full mx-auto max-h-11 justify-between`}
       style={{
         backgroundColor:
           colors && selectedTab && darkMode
@@ -144,7 +144,7 @@ export default function Navbar({
         </Tabs>
       </div>
 
-      <ButtonToggle />
+      {/* <ButtonToggle /> */}
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
