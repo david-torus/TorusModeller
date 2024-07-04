@@ -8,6 +8,7 @@ import {
   Add,
   Calendar,
 } from "../../SVG_Application";
+import TorusToolTip from "../../torusComponents/TorusToolTip";
 const tabIcons = [
   {
     name: "DF",
