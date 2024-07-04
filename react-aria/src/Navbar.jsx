@@ -224,62 +224,55 @@ export default function Navbar({
         />
       </div>
       <div className="w-[40%]  flex items-center justify-end ">
-        <DialogTrigger>
-          <Button
-            className={`bg-white dark:bg-[#262626] font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
+        <Button
+          className={`bg-white dark:bg-[#262626] font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
        torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center `}
-          >
-            <span className="mt-[2px]">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 17 17"
-                fill=""
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8.5 3.83325V13.1666"
-                  stroke={darkMode ? colors[selectedTab]?.dark : "black"}
-                  stroke-width="1.55555"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3.83301 8.5H13.1663"
-                  stroke={darkMode ? colors[selectedTab]?.dark : "black"}
-                  stroke-width="1.33333"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-            <span
-              style={{
-                fontFamily: "Inter, sans-serif",
-                fontOpticalSizing: "auto",
-                fontWeight: 500,
-                fontStyle: "normal",
-                fontVariationSettings: "normal",
-                color: darkMode ? colors[selectedTab]?.dark : "black",
-              }}
-              className={" text-sm "}
+        >
+          <span className="mt-[2px]">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 17 17"
+              fill=""
+              xmlns="http://www.w3.org/2000/svg"
             >
-              Create a Artifact
-            </span>
-          </Button>
-          <Modal className="flex items-center justify-center mt-[70px]">
-            <Dialog className="bg-white outline-none rounded-md border-2 border-[#D8CFPF] shadow-xl shadow-slate-300/60 torus-focus:outline-none w-[600px] h-[400px]  ">
-              hello
-            </Dialog>
-          </Modal>
-        </DialogTrigger>
+              <path
+                d="M8.5 3.83325V13.1666"
+                stroke={darkMode ? colors[selectedTab]?.dark : "black"}
+                stroke-width="1.55555"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M3.83301 8.5H13.1663"
+                stroke={darkMode ? colors[selectedTab]?.dark : "black"}
+                stroke-width="1.33333"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontOpticalSizing: "auto",
+              fontWeight: 500,
+              fontStyle: "normal",
+              fontVariationSettings: "normal",
+              color: darkMode ? colors[selectedTab]?.dark : "black",
+            }}
+            className={" text-sm "}
+          >
+            Create a Artifact
+          </span>
+        </Button>
 
         <div className="flex items-center gap-2 ml-[15px]">
           <Reload fill={darkMode ? "black" : "white"} />
           <Eye fill={darkMode ? "black" : "white"} />
           <Play fill={darkMode ? "black" : "white"} />
           <div className=" flex items-center ml-[3px]">
-            <div className="w-[40px] h-[40px] rounded-full bg-[#3961da] border-2 flex items-center justify-center border-[#052997]">
+            <div className="w-[40px] h-[40px] rounded-full bg-transparent border-2 flex items-center justify-center border-[#F4F5FA]">
               <FaRegUser color="white" />
             </div>
           </div>
