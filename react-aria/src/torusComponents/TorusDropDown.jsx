@@ -15,14 +15,17 @@ import {
 import { IoIosCheckmark } from "react-icons/io";
 import ButtonComponent from "../torusComponents/TorusButton";
 const defaultTropdownClassNames = {
-  buttonClassName: "p-2 torus-pressed:animate-torusButtonActive",
+  buttonClassName:
+    "p-2 torus-pressed:animate-torusButtonActive ",
   popoverClassName:
     "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
-  dialogClassName: " outline-none w-full",
-  listBoxClassName: `w-full bg-slate-200 border-2 border-gray-300 transition-all p-1  rounded-md gap-1  flex flex-col items-center `,
+  dialogClassName: "outline-none w-full",
+  listBoxClassName:
+    "w-full bg-slate-200 border-2 border-gray-300 transition-all p-1 rounded-md gap-1 flex flex-col items-center",
   listBoxItemClassName:
-    " p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300  rounded-md  cursor-pointer transition-colors duration-300",
+    "p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300 rounded-md cursor-pointer transition-colors duration-300",
 };
+
 export default function TorusDropDown({
   title,
   classNames,
@@ -52,7 +55,7 @@ export default function TorusDropDown({
           classNames?.buttonClassName
         }
         height={buttonHeight}
-        width={buttonWidth}
+        width={"full"}
       />
 
       <Popover

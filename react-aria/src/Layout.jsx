@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -20,6 +20,7 @@ const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [SelectedTab,setSelectedTab] = useState("")
 
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -32,7 +33,7 @@ export default function Layout() {
 
     >
       <div className="h-[5%] sticky top-0">
-        <Navbar />
+        <Navbar  setSelectedTab={setSelectedTab} />
       </div>
       <div className="h-[95%] ">
         <ReactFlow
