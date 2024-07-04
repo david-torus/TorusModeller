@@ -112,7 +112,10 @@ export default function Layout() {
             </Panel>
 
             <Controls position="right-bottom" />
+           
+
             {/* <MiniMap /> */}
+            
 
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
