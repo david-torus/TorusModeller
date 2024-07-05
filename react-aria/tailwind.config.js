@@ -61,9 +61,22 @@ module.exports = {
           "0%,50%": { transform: "scale(1)", border: "none" },
           "100%": {
             transform: "scale(0.98)",
-            transition :"transform 0.5s ease-in-out"
+            transition: "transform 0.5s ease-in-out",
           },
         },
+      },
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+        "3xl": "1920px",
+        "4xl": "2560px",
+      },
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        plexsans: ["IBM Plex Sans", "sans-serif"],
       },
     },
   },

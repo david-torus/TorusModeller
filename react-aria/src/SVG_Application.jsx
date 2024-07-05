@@ -1,6 +1,6 @@
 import React from "react";
 
-const Data = ({ strokeColor }) => {
+const Data = ({ strokeColor ,width,height}) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -42,7 +42,7 @@ const Data = ({ strokeColor }) => {
   );
 };
 
-const Wire = ({ strokeColor }) => {
+const Wire = ({ strokeColor ,width,height}) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -81,7 +81,7 @@ const Wire = ({ strokeColor }) => {
   );
 };
 
-const Connect = ({ strokeColor }) => {
+const Connect = ({ strokeColor ,width,height}) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -118,7 +118,7 @@ const Connect = ({ strokeColor }) => {
   );
 };
 
-const Sheild = ({ strokeColor }) => {
+const Sheild = ({ strokeColor ,width,height}) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -237,11 +237,11 @@ const Back = () => {
     </svg>
   );
 };
-const User = ({ color, selectedTab }) => {
+const User = ({ color, selectedTab ,size}) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width={size}
+      height={size}
       viewBox="0 0 12 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
