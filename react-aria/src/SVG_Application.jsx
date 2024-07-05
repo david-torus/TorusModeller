@@ -237,7 +237,7 @@ const Back = () => {
     </svg>
   );
 };
-const User = ({size}) => {
+const User = ({ color, selectedTab ,size}) => {
   return (
     <svg
       width={size}
@@ -248,11 +248,11 @@ const User = ({size}) => {
     >
       <path
         d="M6 5C7.10457 5 8 4.10457 8 3C8 1.89543 7.10457 1 6 1C4.89543 1 4 1.89543 4 3C4 4.10457 4.89543 5 6 5Z"
-        stroke="#0736C4"
+        stroke={selectedTab == "SF" ? "#ffc61a" : color}
       />
       <path
         d="M10 8.75C10 9.99265 10 11 6 11C2 11 2 9.99265 2 8.75C2 7.50735 3.79086 6.5 6 6.5C8.20915 6.5 10 7.50735 10 8.75Z"
-        stroke="#0736C4"
+        stroke={selectedTab == "SF" ? "#ffc61a" : color}
       />
     </svg>
   );

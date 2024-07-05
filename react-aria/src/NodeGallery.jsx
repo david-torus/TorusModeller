@@ -3,25 +3,26 @@ import { Header, Section, Text } from "react-aria-components";
 import TorusSearchFeild from "./torusComponents/TorusSearchFeild";
 import { Back, User } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
-const data = [
-  {
-    label: "User",
-    icon: <User size={10} />,
-  },
-  {
-    label: "User",
-    icon: <User size={10} />,
-  },
-  {
-    label: "User",
-    icon: <User size={10} />,
-  },
-  {
-    label: "User",
-    icon: <User size={10} />,
-  },
-];
-export default function NodeGallery() {
+
+export default function NodeGallery({color , selectedTab}) {
+  const data = [
+    {
+      label: "User",
+      icon: <User color ={color} selectedTab={selectedTab}  size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User  color ={color}  selectedTab={selectedTab}size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color ={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User  color ={color} selectedTab={selectedTab} size={10} />,
+    },
+  ];
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -37,8 +38,11 @@ export default function NodeGallery() {
           onDragStart={(event) => onDragStart(event, "default")}
         >
           <div
+          
+        
+         
             className={`
-            bg-[#d0d8f2] 
+             bg-[#cac4d149] 
             dark:bg-gray-400 
             dark:text-white 
             xl:w-5 xl:h-5 
@@ -110,6 +114,7 @@ export default function NodeGallery() {
             color={"white"}
             height={"sm"}
             marginT={"mt-2"}
+            btncolor={color}
             fontStyle={
               "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
             }

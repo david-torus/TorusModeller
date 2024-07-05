@@ -18,6 +18,7 @@ export default function TorusButton({
   bgColor,
   outlineColor,
   radius,
+  btncolor,
   fontStyle,
   
 }) {
@@ -31,8 +32,12 @@ export default function TorusButton({
   const hoverOutline = outlineFn();
   return (
     <Button
+      style={{
+        backgroundColor: btncolor,
+       
+      }}
       className={merger(
-        `${bgColor} font-lg    ${marginT} border-none  outline-none ${gap}
+        ` font-lg    ${marginT} border-none  outline-none ${gap}
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
                     torus-hover:scale-95
