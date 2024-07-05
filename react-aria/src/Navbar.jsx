@@ -10,7 +10,7 @@ import {
 } from "./SVG_Application";
 import { Tabs, TabList, Tab } from "react-aria-components";
 import { Button } from "react-aria-components";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser, FaSyncAlt } from "react-icons/fa";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { IoIosArrowDown } from "react-icons/io";
 import {
@@ -24,6 +24,10 @@ import {
 } from "react-aria-components";
 import ButtonToggle from "./context/ButtonToggle";
 import { DarkModeContext } from "./context/darkmodeContext";
+import TorusButton from "./torusComponents/TorusButton";
+import { merger } from "./utils/utils";
+import { BiPlus } from "react-icons/bi";
+import TorusAvatar from "./torusComponents/TorusAvatar";
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
   DF: {
@@ -170,7 +174,7 @@ export default function Navbar({
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
-            "text-white  text-sm  font-plexsans font-bold dark:text-[#090b0e] dark:font-bold"
+            "text-white   xl:text-sm  3xl:text-sm font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           {selectedFabric &&
@@ -184,73 +188,81 @@ export default function Navbar({
         </span>
         <span
           className={
-            "text-white  text-sm  font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white xl:text-sm  3xl:text-sm font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           /
         </span>
 
-        <diV className="flex items-center gap-2 ">
-          <TorusDropDown
-            title={
-              <div className="flex flex-row items-center gap-2">
-                <div>
-                  <span
+        <diV className="flex items-center justify-center gap-2 w-[100%] ">
+          <div className="flex items-center xl:justify-start 3xl:justify-start gap-2 w-[50%]">
+            <TorusDropDown
+              title={
+                <div className="flex flex-row items-center gap-2 w-[100%]">
+                  <div
                     className={
-                      "text-white  text-sm  font-semibold dark:text-[#151a22] dark:font-bold"
+                      "w-[80%] text-white font-plexsans 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
                     }
                   >
                     {(selectededArtifacts &&
                       Array.from(selectededArtifacts)[0]) ||
-                      "*"}
-                  </span>
+                      "Select Artifacts"}
+                  </div>
+                  <div className="w-[20%]">
+                    <IoIosArrowDown color={darkMode ? "#090b0e" : "white"} />
+                  </div>
                 </div>
-                <IoIosArrowDown color={darkMode ? "#090b0e" : "white"} />
-              </div>
-            }
-            classNames={{
-              buttonClassName: `bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
-              listBoxClassName: "bg-white text-black ",
-            }}
-            selected={selectededArtifacts}
-            setSelected={setSelectedArtifacts}
-            selectionMode="single"
-            items={[
-              { key: "BankMaster", label: "BankMaster" },
-              { key: "Bank", label: "Bank" },
-            ]}
-            btWidth={"md"}
-          />
-          <TorusDropDown
-            title={
-              <span
-                className="w-[2px]"
-                style={{
-                  color: darkMode ? colors[selectedTab]?.dark : "black",
-                }}
-              >
-                {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
-              </span>
-            }
-            classNames={{
-              buttonClassName:
-                " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
+              }
+              fontStyle={
+                "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+              }
+              classNames={{
+                buttonClassName: `bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
+                listBoxClassName: "bg-white text-black ",
+              }}
+              selected={selectededArtifacts}
+              setSelected={setSelectedArtifacts}
+              selectionMode="single"
+              items={[
+                { key: "BankMaster", label: "BankMaster" },
+                { key: "Bank", label: "Bank" },
+              ]}
+              btWidth={"md"}
+            />
+          </div>
 
-              listBoxClassName: "bg-white text-black ",
-            }}
-            popOverProps={{ offset: 15 }}
-            selected={selectedVersion}
-            setSelected={setSelectedVersion}
-            selectionMode="single"
-            items={[
-              { key: "v1", label: "v1" },
-              { key: "v2", label: "v2" },
-            ]}
-          />
+          <div className="flex items-center 3xl:justify-start  xl:justify-end  gap-2 w-[50%]">
+            <TorusDropDown
+              title={
+                <span
+                  className="font-plexsans 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
+                  style={{
+                    color: darkMode ? colors[selectedTab]?.dark : "black",
+                  }}
+                >
+                  {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+                </span>
+              }
+              classNames={{
+                buttonClassName:
+                  " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
+
+                listBoxClassName: "bg-white text-black ",
+              }}
+              popOverProps={{ offset: 15 }}
+              selected={selectedVersion}
+              setSelected={setSelectedVersion}
+              selectionMode="single"
+              items={[
+                { key: "v1", label: "v1" },
+                { key: "v2", label: "v2" },
+              ]}
+            />
+          </div>
         </diV>
       </div>
       <div className="w-[40%]  flex items-center justify-end ">
-        <Button
+        {/* <Button
           className={`bg-white dark:bg-[#262626] font-lg w-[160px] h-[30px]  torus-pressed:w-[155px] torus-pressed:h-[30px]   rounded-md
        torus-focus:outline-none transition-all ease-in-out duration-300 flex  gap-3 flex-row items-center justify-center `}
         >
@@ -291,17 +303,33 @@ export default function Navbar({
           >
             Create a Artifact
           </span>
-        </Button>
+        </Button> */}
+
+        <TorusButton
+          Children="Create a Artifact"
+          width={"sm"}
+          bgColor={"bg-[#0736C4]"}
+          radius="lg"
+          startContent={<BiPlus size={18} color={"black"} />}
+          color={"black"}
+          gap={"px-[15px]"}
+          height={"md"}
+          btncolor={"white"}
+          fontStyle={
+            "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-medium tracking-tighter"
+          }
+        />
 
         <div className="flex items-center gap-2 ml-[15px]">
           <Reload fill={darkMode ? "black" : "white"} />
           <Eye fill={darkMode ? "black" : "white"} />
           <Play fill={darkMode ? "black" : "white"} />
-          <div className=" flex items-center ml-[3px]">
-            <div className="w-[40px] h-[40px] rounded-full bg-transparent border-2 flex items-center justify-center border-[#F4F5FA]">
-              <FaRegUser color="white" />
-            </div>
-          </div>
+          <TorusAvatar
+            color={"white"}
+            borderColor={"border-white"}
+            radius={"full"}
+            size={"full"}
+          />
         </div>
       </div>
     </div>

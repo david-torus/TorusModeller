@@ -17,7 +17,7 @@ import ButtonComponent from "../torusComponents/TorusButton";
 import { merger } from "../utils/utils";
 import TorusButton from "../torusComponents/TorusButton";
 const defaultTropdownClassNames = {
-  buttonClassName: `p-2 torus-pressed:animate-torusButtonActive 
+  buttonClassName: `torus-pressed:animate-torusButtonActive 
   `,
   popoverClassName:
     "torus-entering:animate-torusPopOverOpen torus-exiting:animate-torusPopOverClose w-40",
@@ -47,6 +47,7 @@ export default function TorusDropDown({
   color,
   btWidth,
   selectionMode = "multiple",
+  fonstyle,
 }) {
   return (
     <DialogTrigger>
@@ -59,6 +60,7 @@ export default function TorusDropDown({
         height={buttonHeight}
         width={btWidth}
         bgColor={"bg-fuchsia-500"}
+        fontStyle={fonstyle}
       />
 
       <Popover
@@ -103,7 +105,9 @@ export default function TorusDropDown({
                 >
                   {({ isSelected }) => (
                     <div className="w-full flex justify-between items-center">
-                      <Heading>{item.label}</Heading>
+                      <Heading className="  3xl:text-xs xl:text-sm font-normal font-plexsans tracking-tighter">
+                        {item.label}
+                      </Heading>
 
                       <div className="flex items-center justify-center  ">
                         <span

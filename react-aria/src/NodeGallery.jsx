@@ -143,6 +143,7 @@ export default function NodeGallery({ color, selectedTab }) {
                 height={"sm"}
                 marginT={"mt-2"}
                 btncolor={color}
+                
                 fontStyle={
                   "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }
@@ -150,7 +151,6 @@ export default function NodeGallery({ color, selectedTab }) {
             </div>
           </div>
         </div>
-        
       </div>
     </div>
   );
