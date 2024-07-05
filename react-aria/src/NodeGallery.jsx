@@ -3,24 +3,57 @@ import { Header, Section, Text } from "react-aria-components";
 import TorusSearchFeild from "./torusComponents/TorusSearchFeild";
 import { Back, User } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
+import "./index.css";
 
-export default function NodeGallery({color , selectedTab}) {
+export default function NodeGallery({ color, selectedTab }) {
   const data = [
     {
       label: "User",
-      icon: <User color ={color} selectedTab={selectedTab}  size={10} />,
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
     },
     {
       label: "User",
-      icon: <User  color ={color}  selectedTab={selectedTab}size={10} />,
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
     },
     {
       label: "User",
-      icon: <User color ={color} selectedTab={selectedTab} size={10} />,
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
     },
     {
       label: "User",
-      icon: <User  color ={color} selectedTab={selectedTab} size={10} />,
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
+    },
+    {
+      label: "User",
+      icon: <User color={color} selectedTab={selectedTab} size={10} />,
     },
   ];
   const onDragStart = (event, nodeType) => {
@@ -38,9 +71,6 @@ export default function NodeGallery({color , selectedTab}) {
           onDragStart={(event) => onDragStart(event, "default")}
         >
           <div
-          
-        
-         
             className={`
              bg-[#cac4d149] 
             dark:bg-gray-400 
@@ -60,12 +90,7 @@ export default function NodeGallery({color , selectedTab}) {
     });
   };
   return (
-    <div
-      className="w-full h-full flex flex-col gap-3 "
-      style={{
-        fontFamily: "IBMPlexSans-Medium",
-      }}
-    >
+    <div className="w-full h-full flex flex-col gap-3 ">
       <div
         className={`w-full 
           xl:h-[9%]
@@ -86,40 +111,46 @@ export default function NodeGallery({color , selectedTab}) {
         </Header>
         <Back />
       </div>
-      <div className="flex flex-col items-start ml-4 w-full h-[67%] 3xl:gap-2  xl:gap-[1.08rem] ">
-        {loop(data)}
-      </div>
-
-      <div className="w-[95%]  bg-[#F4F5FA] dark:bg-gray-700 p-3 rounded-lg dark:text-white   ">
-        <Text className="3xl:font-bold 3xl:text-sm xl:font-semibold xl:text-base font-plexsans tracking-tighter">
-          Upgrade to unlock more features
-        </Text>
-
-        <br />
-        <p
-          slot="description"
-          className=" 3xl:text-xs xl:text-sm xl:leading-[1.0rem] font-normal font-plexsans tracking-[0.01rem] leading-[0.9rem] word-spacing-[0.03rem] "
-        >
-          Enjoy unlimited space for fabrics, applets, extra security features &
-          <br /> more.
-        </p>
-
-        <div className="w-[100%] flex justify-start items-center ">
-          <TorusButton
-            Children="update"
-            width={"md"}
-            bgColor={"bg-[#0736C4]"}
-            outlineColor="torus-hover:ring-[#0736C4]"
-            radius="full"
-            color={"white"}
-            height={"sm"}
-            marginT={"mt-2"}
-            btncolor={color}
-            fontStyle={
-              "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
-            }
-          />
+      <div className="w-[100%] h-[100%] pb-2 flex flex-col gap-3 justify-between">
+        <div className="flex flex-col items-start 3xl:pl-4 xl:pl-5 w-full xl:h-[47vh] justify-between  scrollbar-hide overflow-y-scroll 3xl:gap-1 xl:gap-[1.05rem] ">
+          {loop(data)}
         </div>
+
+        <div className="w-[100%] flex justify-center items-center ">
+          <div className="w-[95%]  bg-[#F4F5FA] dark:bg-gray-700 p-3 rounded-lg dark:text-white   ">
+            <Text className="3xl:font-bold 3xl:text-sm xl:font-semibold xl:text-base font-plexsans tracking-tighter">
+              Upgrade to unlock more features
+            </Text>
+
+            <br />
+            <p
+              slot="description"
+              className=" 3xl:text-xs xl:text-sm xl:leading-[1.0rem] font-normal font-plexsans tracking-[0.01rem] leading-[0.9rem] word-spacing-[0.03rem] "
+            >
+              Enjoy unlimited space for fabrics, applets, extra security
+              features &
+              <br /> more.
+            </p>
+
+            <div className="w-[100%] flex justify-start items-center ">
+              <TorusButton
+                Children="update"
+                width={"md"}
+                bgColor={"bg-[#0736C4]"}
+                // outlineColor="torus-hover:ring-[#0736C4]"
+                radius="full"
+                color={"white"}
+                height={"sm"}
+                marginT={"mt-2"}
+                btncolor={color}
+                fontStyle={
+                  "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                }
+              />
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   );
