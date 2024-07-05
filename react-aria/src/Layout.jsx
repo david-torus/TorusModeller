@@ -34,7 +34,8 @@ export default function Layout() {
   const { screenToFlowPosition } = useReactFlow();
   const [reactFlowInstance, setreactflowinstance] = useState(null);
   const [menu, setMenu] = useState(null);
-  const ref = useRef(null);  const colors = {
+  const ref = useRef(null);
+  const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
       dark: "#2257f7",
@@ -45,7 +46,7 @@ export default function Layout() {
       light: "#00BFFF",
     },
     PF: { dark: "#2AE38F", light: "#13CC78" },
-  
+
     SF: { dark: "#FFc723", light: "#FFBE00" },
   };
 
@@ -163,18 +164,27 @@ export default function Layout() {
                   selectedTab.startsWith("hidden") ? "hidden" : "block"
                 }  `}
             >
-              <SelectedTabPanel  color = {colors[selectedTab]?.dark} selectedTab={selectedTab} />
+              <SelectedTabPanel
+                color={colors[selectedTab]?.dark}
+                selectedTab={selectedTab}
+              />
             </Panel>
 
             <Controls position="right-bottom" />
 
             {/* <MiniMap /> */}
-            {menu && <ContextMenuSelector fabric={selectedFabric} onClick={onPaneClick} {...menu} />}
+            {menu && (
+              <ContextMenuSelector
+                fabric={selectedFabric}
+                onClick={onPaneClick}
+                {...menu}
+              />
+            )}
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
         </div>
         <div className="h-full w-[22%] ">
-          <FabricsSideBar  color = {colors[selectedTab]?.dark}/>
+          <FabricsSideBar color={colors[selectedTab]?.dark} />
         </div>
       </div>
     </div>

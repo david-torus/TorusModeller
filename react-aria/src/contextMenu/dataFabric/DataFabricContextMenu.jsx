@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { useReactFlow } from "reactflow";
 import TorusButton from "../../torusComponents/TorusButton";
 import { Text } from "react-aria-components";
+import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 
 export default function DataFabricContextMenu({
   id,
@@ -35,33 +36,92 @@ export default function DataFabricContextMenu({
   }, [id, setNodes, setEdges]);
 
   return (
-    <div
-      style={{ top, left, right, bottom }}
-      className="absolute z-50 bg-white shadow-md rounded-md cursor-default w-52 flex flex-col gap-4 p-1 "
-    >
-      <Text className="text-xl">{node.data.label}</Text>
-      <div>
-        <TorusButton
-          buttonClassName={
-            "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-400/60"
-          }
-          Children={<span className=" w-full h-full">Edit Node</span>}
-        />
-      </div>
-      <div>
-        <span>cut</span>
-      </div>
-      <div>
-        <span>copy</span>
-      </div>
-      <div>
-        <span>paste</span>
-      </div>
-      <div>
-        <span>delete</span>
-      </div>
-      <button onClick={duplicateNode}>duplicate</button>
-      <button onClick={deleteNode}>delete</button>
-    </div>
+    <>
+      {node && (
+        <div
+          style={{ top, left, right, bottom }}
+          className="absolute z-50 bg-white shadow-md rounded-md cursor-default w-44 flex flex-col gap-3 p-1 "
+          {...props}
+        >
+          <Text className="text-xl">{node?.data?.label}</Text>
+          <div className="flex flex-col gap-1">
+            <TorusButton
+              key={"df_edit"}
+              buttonClassName={
+                "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
+              }
+              Children={
+                <div>
+                  <div className=" w-full h-full flex justify-center gap-2 items-center">
+                    <EditNode />
+                    Edit Node
+                  </div>
+                </div>
+              }
+            />
+            <TorusButton
+              key={"df_cut"}
+              buttonClassName={
+                "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
+              }
+              Children={
+                <div>
+                  <div className=" w-full h-full flex justify-center gap-2 items-center">
+                    <Cut />
+                    Cut
+                  </div>
+                </div>
+              }
+            />
+            <TorusButton
+              key={"df_copy"}
+              buttonClassName={
+                "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
+              }
+              Children={
+                <div>
+                  <div className=" w-full h-full flex justify-center gap-2 items-center">
+                    <Copy />
+                    Copy
+                  </div>
+                </div>
+              }
+            />
+            <TorusButton
+              key={"df_paste"}
+              buttonClassName={
+                "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
+              }
+              Children={
+                <div>
+                  <div className=" w-full h-full flex justify-center gap-2 items-center">
+                    <Paste />
+                    Paste
+                  </div>
+                </div>
+              }
+            />
+            <TorusButton
+              key={"df_delete"}
+              buttonClassName={
+                "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-red-200/60"
+              }
+              onPress={() => {
+                deleteNode();
+                props.onClick();
+              }}
+              Children={
+                <div>
+                  <div className=" w-full h-full flex justify-center gap-2 text-red-400 items-center">
+                    <Delete />
+                    Delete
+                  </div>
+                </div>
+              }
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
