@@ -1,6 +1,6 @@
 import React from "react";
 
-const Data = ({ strokeColor ,width,height}) => {
+const Data = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -42,7 +42,7 @@ const Data = ({ strokeColor ,width,height}) => {
   );
 };
 
-const Wire = ({ strokeColor ,width,height}) => {
+const Wire = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -81,7 +81,7 @@ const Wire = ({ strokeColor ,width,height}) => {
   );
 };
 
-const Connect = ({ strokeColor ,width,height}) => {
+const Connect = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -118,7 +118,7 @@ const Connect = ({ strokeColor ,width,height}) => {
   );
 };
 
-const Sheild = ({ strokeColor ,width,height}) => {
+const Sheild = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
@@ -237,7 +237,7 @@ const Back = () => {
     </svg>
   );
 };
-const User = ({size}) => {
+const User = ({ color, selectedTab, size }) => {
   return (
     <svg
       width={size}
@@ -248,11 +248,11 @@ const User = ({size}) => {
     >
       <path
         d="M6 5C7.10457 5 8 4.10457 8 3C8 1.89543 7.10457 1 6 1C4.89543 1 4 1.89543 4 3C4 4.10457 4.89543 5 6 5Z"
-        stroke="#0736C4"
+        stroke={selectedTab == "SF" ? "#ffc61a" : color}
       />
       <path
         d="M10 8.75C10 9.99265 10 11 6 11C2 11 2 9.99265 2 8.75C2 7.50735 3.79086 6.5 6 6.5C8.20915 6.5 10 7.50735 10 8.75Z"
-        stroke="#0736C4"
+        stroke={selectedTab == "SF" ? "#ffc61a" : color}
       />
     </svg>
   );
@@ -506,6 +506,155 @@ const Calendar = () => {
   );
 };
 
+const EditNode = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_167_1289)">
+        <path
+          d="M10.1909 2.10111L9.57307 2.71903L3.89222 8.39985C3.50745 8.78465 3.31506 8.97699 3.14961 9.18912C2.95443 9.43939 2.7871 9.71012 2.65057 9.99659C2.53483 10.2395 2.44879 10.4976 2.27671 11.0138L1.54755 13.2013L1.36931 13.7361C1.28463 13.9901 1.35074 14.2701 1.54009 14.4595C1.72945 14.6489 2.00953 14.715 2.26357 14.6303L2.79829 14.4521L4.98579 13.7229C5.50202 13.5508 5.76014 13.4648 6.00299 13.3491C6.28947 13.2125 6.56022 13.0452 6.81047 12.85C7.02261 12.6845 7.21494 12.4921 7.59974 12.1074L13.2805 6.42654L13.8985 5.80863C14.9223 4.78482 14.9223 3.12491 13.8985 2.10111C12.8747 1.0773 11.2147 1.0773 10.1909 2.10111Z"
+          stroke="black"
+        />
+        <path
+          opacity="0.5"
+          d="M9.57333 2.71875C9.57333 2.71875 9.6506 4.03183 10.8092 5.19043C11.9678 6.34903 13.2809 6.42627 13.2809 6.42627M2.79859 14.4518L1.54785 13.201"
+          stroke="black"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_167_1289">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
+const Cut = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_167_1295)">
+        <path
+          opacity="0.5"
+          d="M5.0658 13.6666L12 1.33325M1.33333 12.6666C1.33333 13.7712 2.22873 14.6666 3.33333 14.6666C4.43793 14.6666 5.33333 13.7712 5.33333 12.6666C5.33333 11.562 4.43793 10.6666 3.33333 10.6666C2.22873 10.6666 1.33333 11.562 1.33333 12.6666Z"
+          stroke="black"
+          stroke-linecap="round"
+        />
+        <path
+          d="M10.9346 13.6666L4.00033 1.33325M14.667 12.6666C14.667 13.7712 13.7716 14.6666 12.667 14.6666C11.5624 14.6666 10.667 13.7712 10.667 12.6666C10.667 11.562 11.5624 10.6666 12.667 10.6666C13.7716 10.6666 14.667 11.562 14.667 12.6666Z"
+          stroke="black"
+          stroke-linecap="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_167_1295">
+          <rect
+            width="16"
+            height="16"
+            fill="white"
+            transform="matrix(-1 0 0 1 16 0)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
+const Copy = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M4 7.33325C4 5.44763 4 4.50483 4.58579 3.91904C5.17157 3.33325 6.11438 3.33325 8 3.33325H10C11.8856 3.33325 12.8284 3.33325 13.4142 3.91904C14 4.50483 14 5.44763 14 7.33325V10.6666C14 12.5522 14 13.495 13.4142 14.0808C12.8284 14.6666 11.8856 14.6666 10 14.6666H8C6.11438 14.6666 5.17157 14.6666 4.58579 14.0808C4 13.495 4 12.5522 4 10.6666V7.33325Z"
+        stroke="black"
+      />
+      <path
+        opacity="0.5"
+        d="M4 12.6666C2.89543 12.6666 2 11.7712 2 10.6666V6.66658C2 4.15243 2 2.89535 2.78105 2.1143C3.5621 1.33325 4.81917 1.33325 7.33333 1.33325H10C11.1046 1.33325 12 2.22869 12 3.33325"
+        stroke="black"
+      />
+    </svg>
+  );
+};
+
+const Paste = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        opacity="0.5"
+        d="M10.6667 2.66797C12.1167 2.67604 12.9019 2.74034 13.4142 3.2526C14 3.83838 14 4.7812 14 6.6668V10.6668C14 12.5524 14 13.4953 13.4142 14.081C12.8284 14.6668 11.8856 14.6668 10 14.6668H6C4.11438 14.6668 3.17157 14.6668 2.58579 14.081C2 13.4953 2 12.5524 2 10.6668V6.6668C2 4.7812 2 3.83838 2.58579 3.2526C3.09804 2.74034 3.88331 2.67604 5.33333 2.66797"
+        stroke="black"
+      />
+      <path
+        d="M4.66602 9.66675H9.99935"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <path
+        opacity="0.5"
+        d="M4.66602 12H8.33268"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <path
+        d="M5.33398 2.33325C5.33398 1.78097 5.7817 1.33325 6.33398 1.33325H9.66732C10.2196 1.33325 10.6673 1.78097 10.6673 2.33325V2.99992C10.6673 3.55221 10.2196 3.99992 9.66732 3.99992H6.33398C5.7817 3.99992 5.33398 3.55221 5.33398 2.99992V2.33325Z"
+        stroke="black"
+      />
+    </svg>
+  );
+};
+
+const Delete = () => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M2.02211 5.92661C1.70175 3.79089 1.54157 2.72303 2.14 2.02814C2.73843 1.33325 3.81824 1.33325 5.97786 1.33325H10.0217C12.1813 1.33325 13.2611 1.33325 13.8596 2.02814C14.458 2.72303 14.2978 3.79089 13.9774 5.92661L13.1774 11.2599C12.9337 12.885 12.8118 13.6975 12.2492 14.1821C11.6866 14.6666 10.8649 14.6666 9.2217 14.6666H6.77784C5.13461 14.6666 4.31298 14.6666 3.75037 14.1821C3.18775 13.6975 3.06587 12.885 2.82211 11.2599L2.02211 5.92661Z"
+        stroke="#F44336"
+      />
+      <path d="M14 4H2" stroke="#F44336" stroke-linecap="round" />
+      <path
+        opacity="0.5"
+        d="M5.33301 4L2.33301 7.33333L7.33301 12.6667M9.33301 4L2.66634 10.6667M13.333 4L4.66634 12.6667M8.66634 12.6667L13.6663 7.33333L10.6663 4M6.66634 4L13.333 10.6667M2.66634 4L11.333 12.6667"
+        stroke="#F44336"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12.6663 12.6667H3.33301"
+        stroke="#F44336"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -522,4 +671,9 @@ export {
   Scan,
   Add,
   Calendar,
+  EditNode,
+  Cut,
+  Copy,
+  Paste,
+  Delete,
 };
