@@ -18,7 +18,8 @@ export default function TorusButton({
   bgColor,
   outlineColor,
   radius,
-  fontStyle
+  fontStyle,
+  
 }) {
   const outlineFn = () => {
     if (outlineColor) {
