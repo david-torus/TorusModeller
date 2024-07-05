@@ -3,25 +3,26 @@ import { Header, Section, Text } from "react-aria-components";
 import TorusSearchFeild from "./torusComponents/TorusSearchFeild";
 import { Back, User } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
-const data = [
-  {
-    label: "User",
-    icon: <User />,
-  },
-  {
-    label: "User",
-    icon: <User />,
-  },
-  {
-    label: "User",
-    icon: <User />,
-  },
-  {
-    label: "User",
-    icon: <User />,
-  },
-];
-export default function NodeGallery() {
+
+export default function NodeGallery({color , selectedTab}) {
+  const data = [
+    {
+      label: "User",
+      icon: <User color ={color} selectedTab={selectedTab}  />,
+    },
+    {
+      label: "User",
+      icon: <User  color ={color}  selectedTab={selectedTab}/>,
+    },
+    {
+      label: "User",
+      icon: <User color ={color} selectedTab={selectedTab} />,
+    },
+    {
+      label: "User",
+      icon: <User  color ={color} selectedTab={selectedTab} />,
+    },
+  ];
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -36,7 +37,10 @@ export default function NodeGallery() {
           draggable
           onDragStart={(event) => onDragStart(event, "default")}
         >
-          <div className="bg-[#d0d8f2] dark:bg-gray-400 dark:text-white w-8 h-8 flex items-center justify-center rounded-lg">
+          <div
+          
+        
+          className=" bg-[#cac4d149] dark:bg-gray-400 dark:text-white w-8 h-8 flex items-center justify-center rounded-lg">
             {item.icon}
           </div>
           {item.label}
@@ -70,7 +74,8 @@ export default function NodeGallery() {
           </Text>
           <br />
           <TorusButton
-            buttonClassName="text-sm px-5 py-1 bg-[#0736C4] text-white rounded-2xl"
+            btncolor={color}
+            buttonClassName="text-sm px-5 py-1 text-white rounded-2xl"
             Children={"Upgrade"}
           />
         </div>

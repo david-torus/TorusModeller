@@ -18,6 +18,7 @@ export default function TorusButton({
   bgColor,
   outlineColor,
   radius,
+  btncolor,
 }) {
   const outlineFn = () => {
     if (outlineColor) {
@@ -29,8 +30,12 @@ export default function TorusButton({
   const hoverOutline = outlineFn();
   return (
     <Button
+      style={{
+        backgroundColor: btncolor,
+       
+      }}
       className={merger(
-        `${bgColor} font-lg w-[${width}] h-[${height}]  ${marginT} border-none  outline-none ${gap}
+        ` font-lg w-[${width}] h-[${height}]  ${marginT} border-none  outline-none ${gap}
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
                     torus-hover:scale-95
@@ -71,7 +76,7 @@ export default function TorusButton({
       autoFocus={autoFocus}
       onPress={onPress}
     >
-      <span style={{ color: color }}>{Children}</span>
+      <span className=" text-white font-bold">{Children}</span>
     </Button>
   );
 }
