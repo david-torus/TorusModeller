@@ -311,12 +311,12 @@ export default function Navbar({
           bgColor={"bg-[#0736C4]"}
           radius="lg"
           startContent={<BiPlus size={18} color={"black"} />}
-          color={"black"}
+          color={"text-teal-600"}
           gap={"px-[15px]"}
           height={"md"}
           btncolor={"white"}
           fontStyle={
-            "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-medium tracking-tighter"
+            "font-sfpromedium  3xl:text-xs  3xl:font-medium xl:text-sm xl:font-[400] tracking-tighter"
           }
         />
 

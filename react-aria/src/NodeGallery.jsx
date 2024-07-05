@@ -82,7 +82,7 @@ export default function NodeGallery({ color, selectedTab }) {
           >
             {item.icon}
           </div>
-          <span className="3xl:text-xs xl:text-sm font-normal font-plexsans tracking-tighter">
+          <span className="3xl:text-xs xl:text-sm font-normal font-sfpro tracking-tighter">
             {item.label}
           </span>
         </div>
@@ -105,7 +105,7 @@ export default function NodeGallery({ color, selectedTab }) {
              xl:py-1 xl:px-2
              3xl:p-2 items-center`}
       >
-        <Header className="font-plexsans tracking-tighter 3xl:text-sm xl:text-base font-medium">
+        <Header className="font-sfpromedium tracking-tighter 3xl:text-sm xl:text-base font-thin">
           {" "}
           Node Gallery
         </Header>
@@ -118,23 +118,22 @@ export default function NodeGallery({ color, selectedTab }) {
 
         <div className="w-[100%] flex justify-center items-center ">
           <div className="w-[95%]  bg-[#F4F5FA] dark:bg-gray-700 p-3 rounded-lg dark:text-white   ">
-            <Text className="3xl:font-bold 3xl:text-sm xl:font-semibold xl:text-base font-plexsans tracking-tighter">
+            <Text className="3xl:font-bold 3xl:text-sm xl:font-semibold xl:text-base font-sfpro tracking-tighter">
               Upgrade to unlock more features
             </Text>
 
             <br />
             <p
               slot="description"
-              className=" 3xl:text-xs xl:text-sm xl:leading-[1.0rem] font-normal font-plexsans tracking-[0.01rem] leading-[0.9rem] word-spacing-[0.03rem] "
+              className=" 3xl:text-xs 3xl:pr-[20px]  xl:text-sm xl:leading-[1.0rem] font-normal font-sfpro tracking-[0.01rem] leading-[0.9rem] word-spacing-[0.03rem] "
             >
               Enjoy unlimited space for fabrics, applets, extra security
-              features &
-              <br /> more.
+              features & more.
             </p>
 
             <div className="w-[100%] flex justify-start items-center ">
               <TorusButton
-                Children="update"
+                Children="Ugrade"
                 width={"md"}
                 bgColor={"bg-[#0736C4]"}
                 // outlineColor="torus-hover:ring-[#0736C4]"
@@ -145,7 +144,7 @@ export default function NodeGallery({ color, selectedTab }) {
                 btncolor={color}
                 
                 fontStyle={
-                  "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                  "font-sfpros 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }
               />
             </div>

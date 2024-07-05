@@ -4,47 +4,135 @@
 @tailwind utilities;
 
 @layer utilities {
-
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 12px;
-    }
-  
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-  
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: #888;
-      border-radius: 10px;
-      border: 3px solid transparent;
-      background-clip: content-box;
-    }
-  
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-  
-
-    .custom-scrollbar {
-      scrollbar-width: thin;
-      scrollbar-color: #888 #f1f1f1;
-    }
-  
-  
-    .custom-scrollbar {
-      scroll-behavior: smooth;
-      scrollbar-gutter: stable;
-    }
-  
- 
-    .custom-scrollbar {
-      -ms-overflow-style: -ms-autohiding-scrollbar;
-    }
-  
-
-    .scrollbar-hide {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
-    }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
   }
-  
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+
+  .custom-scrollbar {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
+@font-face {
+  font-family: "SF-Pro-Display";
+  font-style: normal;
+  src: local("SF-Pro-Display"),
+    url("./assets/fonts/SFPRODISPLAYREGULAR.OTF") format("opentype");
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-bold";
+  font-style: normal;
+  src: local("SF-Pro-Display"),
+    url("./assets/fonts/SFPRODISPLAYBOLD.OTF") format("opentype");
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-medium";
+  src: local("SF-Pro-Display"),
+    url("./assets/fonts/SFPRODISPLAYMEDIUM.OTF") format("opentype");
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-Black-italic";
+  src: local("SF-Pro-Display"),
+    url("./assets/fonts/SFPRODISPLAYBLACKITALIC.OTF") format("opentype");
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-semibold-italic";
+  src: local("SF-Pro-Display"),
+    url("./assets/fonts/SFPRODISPLAYSEMIBOLDITALIC.OTF") format("opentype");
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-heavy-italic";
+  src:local("SF-Pro-Display"),
+   url('./assets/fonts/SFPRODISPLAYHEAVYITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-light-italic";
+  src:local('SF-Pro-Display'),
+   url('./assets/fonts/SFPRODISPLAYLIGHTITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-thin-italic";
+  src: url('./assets/fonts/SFPRODISPLAYTHINITALIC.OTF') format('opentype');
+}
+
+@font-face {
+  font-family: "SF-Pro-Display-ultrathin-italic";
+  src:local()
+   url('./assets/fonts/SFPRODISPLAYULTRALIGHTITALIC.OTF') format('opentype');
+}
+
+
+.SF-Pro-Display {
+  font-family: "SF-Pro-Display";
+}
+
+.SF-Pro-Display-bold {
+  font-family: "SF-Pro-Display-bold";
+}
+
+.SF-Pro-Display-medium {
+  font-family: "SF-Pro-Display-medium";
+}
+
+.SF-Pro-Display-Black-italic {
+  font-family: "SF-Pro-Display-Black-italic";
+}
+
+
+.SF-Pro-Display-semibold-italic {
+  font-family: "SF-Pro-Display-semibold-italic";
+}
+
+.SF-prop-Display-heavy-italic {
+  font-family: "SF-Pro-Display-heavy-italic";
+}
+
+.SF-Pro-Display-light-italic{
+  font-family: "SF-Pro-Display-light-italic";
+}
+
+.SF-Pro-Display-thin-italic{
+  font-family: "SF-Pro-Display-thin-italic";
+}
+
+.SF-Pro-Display-ultrathin-italic{
+  font-family: "SF-Pro-Display-ultrathin-italic";
+}
+

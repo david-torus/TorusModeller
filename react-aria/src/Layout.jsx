@@ -157,7 +157,7 @@ export default function Layout() {
               className={` 
                 md:w-4/12 
                 lg:w-2/12 
-                xl:w-[18.5%] 
+                xl:w-[17.0%] 
                 2xl:w-3/12 
                 3xl:w-[12%] 
                 4xl:w-4/12  h-[95%] ${
