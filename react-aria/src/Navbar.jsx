@@ -170,7 +170,7 @@ export default function Navbar({
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
-            "text-white  text-sm  font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white  text-sm  font-plexsans font-bold dark:text-[#090b0e] dark:font-bold"
           }
         >
           {selectedFabric &&
@@ -184,67 +184,70 @@ export default function Navbar({
         </span>
         <span
           className={
-            "text-white  text-sm  font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white  text-sm  font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           /
         </span>
-        <TorusDropDown
-          title={
-            <div className="flex flex-row items-center gap-2">
-              <div>
-                <span
-                  className={
-                    "text-white  text-sm  font-semibold dark:text-[#151a22] dark:font-bold"
-                  }
-                >
-                  {(selectededArtifacts &&
-                    Array.from(selectededArtifacts)[0]) ||
-                    "*"}
-                </span>
-              </div>
-              <IoIosArrowDown color={darkMode ? "#090b0e" : "white"} />
-            </div>
-          }
-          classNames={{
-            buttonClassName: `bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
-            listBoxClassName: "bg-white text-black ",
-          }}
-          selected={selectededArtifacts}
-          setSelected={setSelectedArtifacts}
-          selectionMode="single"
-          items={[
-            { key: "BankMaster", label: "BankMaster" },
-            { key: "Bank", label: "Bank" },
-          ]}
-          btWidth={"md"}
-        />
-        <TorusDropDown
-          title={
-            <span
-              className="w-[2px]"
-              style={{
-                color: darkMode ? colors[selectedTab]?.dark : "black",
-              }}
-            >
-              {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
-            </span>
-          }
-          classNames={{
-            buttonClassName:
-              " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
 
-            listBoxClassName: "bg-white text-black ",
-          }}
-          popOverProps={{ offset: 15 }}
-          selected={selectedVersion}
-          setSelected={setSelectedVersion}
-          selectionMode="single"
-          items={[
-            { key: "v1", label: "v1" },
-            { key: "v2", label: "v2" },
-          ]}
-        />
+        <diV className="flex items-center gap-2 ">
+          <TorusDropDown
+            title={
+              <div className="flex flex-row items-center gap-2">
+                <div>
+                  <span
+                    className={
+                      "text-white  text-sm  font-semibold dark:text-[#151a22] dark:font-bold"
+                    }
+                  >
+                    {(selectededArtifacts &&
+                      Array.from(selectededArtifacts)[0]) ||
+                      "*"}
+                  </span>
+                </div>
+                <IoIosArrowDown color={darkMode ? "#090b0e" : "white"} />
+              </div>
+            }
+            classNames={{
+              buttonClassName: `bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
+              listBoxClassName: "bg-white text-black ",
+            }}
+            selected={selectededArtifacts}
+            setSelected={setSelectedArtifacts}
+            selectionMode="single"
+            items={[
+              { key: "BankMaster", label: "BankMaster" },
+              { key: "Bank", label: "Bank" },
+            ]}
+            btWidth={"md"}
+          />
+          <TorusDropDown
+            title={
+              <span
+                className="w-[2px]"
+                style={{
+                  color: darkMode ? colors[selectedTab]?.dark : "black",
+                }}
+              >
+                {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+              </span>
+            }
+            classNames={{
+              buttonClassName:
+                " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
+
+              listBoxClassName: "bg-white text-black ",
+            }}
+            popOverProps={{ offset: 15 }}
+            selected={selectedVersion}
+            setSelected={setSelectedVersion}
+            selectionMode="single"
+            items={[
+              { key: "v1", label: "v1" },
+              { key: "v2", label: "v2" },
+            ]}
+          />
+        </diV>
       </div>
       <div className="w-[40%]  flex items-center justify-end ">
         <Button

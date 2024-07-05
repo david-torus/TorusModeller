@@ -32,6 +32,20 @@ export default function Layout() {
   const [selectedTab, setSelectedTab] = useState("DF");
   const { screenToFlowPosition } = useReactFlow();
   const [reactFlowInstance, setreactflowinstance] = useState(null);
+  const colors = {
+    hidden: { dark: "#008080", light: "#008080" },
+    DF: {
+      dark: "#2257f7",
+      light: "#244DCB",
+    },
+    UF: {
+      dark: "#33CCFF",
+      light: "#00BFFF",
+    },
+    PF: { dark: "#2AE38F", light: "#13CC78" },
+  
+    SF: { dark: "#FFc723", light: "#FFBE00" },
+  };
 
   const NODE_TYPES = useMemo(
     () => ({
@@ -112,14 +126,14 @@ export default function Layout() {
               className={` 
                 md:w-4/12 
                 lg:w-2/12 
-                xl:w-2/12 
+                xl:w-[18.5%] 
                 2xl:w-3/12 
                 3xl:w-[12%] 
                 4xl:w-4/12  h-[95%] ${
                 selectedTab.startsWith("hidden") ? "hidden" : "block"
               }  `}
             >
-              <SelectedTabPanel selectedTab={selectedTab} />
+              <SelectedTabPanel  color = {colors[selectedTab]?.dark} selectedTab={selectedTab} />
             </Panel>
 
             <Controls position="right-bottom" />
@@ -132,7 +146,7 @@ export default function Layout() {
           </FabricsSelector>
         </div>
         <div className="h-full w-[22%] ">
-          <FabricsSideBar />
+          <FabricsSideBar  color = {colors[selectedTab]?.dark}/>
         </div>
       </div>
     </div>
