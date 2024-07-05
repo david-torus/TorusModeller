@@ -20,7 +20,9 @@ export default function TorusButton({
   radius,
   btncolor,
   fontStyle,
-  
+  btnTxtSize,
+  endContent,
+  startContent,
 }) {
   const outlineFn = () => {
     if (outlineColor) {
@@ -34,10 +36,9 @@ export default function TorusButton({
     <Button
       style={{
         backgroundColor: btncolor,
-       
       }}
       className={merger(
-        ` font-lg    ${marginT} border-none  outline-none ${gap}
+        ` font-lg    ${marginT} border-none  outline-none
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
                     torus-hover:scale-95
@@ -74,27 +75,55 @@ export default function TorusButton({
            } 
 
            ${
-            height === "sm"
-              ? "h-6"
-              : height === "md"
-              ? "h-10"
-              : height === "lg"
-              ? "h-20"
-              : height === "xl"
-              ? "h-25"
-              : height === "full"
-              ? "h-28"
-              : "h-5"
-          } 
+             height === "sm"
+               ? "h-6"
+               : height === "md"
+               ? "h-10"
+               : height === "lg"
+               ? "h-20"
+               : height === "xl"
+               ? "h-25"
+               : height === "full"
+               ? "h-28"
+               : "h-5"
+           } 
+
+
+        
           `,
         buttonClassName
       )}
       value={value}
-      isDisabled={isDisabled} 
+      isDisabled={isDisabled}
       autoFocus={autoFocus}
       onPress={onPress}
     >
-      <div style={{ color: color }} className={`${fontStyle}`}>{Children}</div>
+      {startContent ? (
+        <div className={`flex justify-evenly gap-1 ${gap}`}>
+          <div className="w-[20%] flex justify-center items-center">
+            {startContent}
+          </div>
+          <div className={`${fontStyle} w-[80%]`}>{Children}</div>
+        </div>
+      ) : (
+        endContent && (
+          <div className={`flex justify-evenly gap-1 ${gap}`}>
+            <div className={`${fontStyle} w-[80%]`}>{Children}</div>
+            <div className="w-[20%] flex justify-center items-center">
+              {endContent}
+            </div>
+          </div>
+        )
+      )}
+
+      {!startContent && !endContent && (
+        <div
+          style={{ color: color }}
+          className={`${fontStyle} flex justify-center gap-1 ${gap}`}
+        >
+          {Children}
+        </div>
+      )}
     </Button>
   );
 }
