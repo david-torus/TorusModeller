@@ -1,13 +1,12 @@
-import { Switch } from "react-aria-components";
 import React from "react";
+import { Switch } from "react-aria-components";
+import "./switch.css";
 
-export default function TorusSwitch() {
+export default function TorusSwitch({ Children }) {
   return (
-    <div>
-      <Switch>
-        <div className="indicator" />
-        Low power mode
-      </Switch>
-    </div>
+    <Switch>
+      <div className="indicator" />
+      {Children}
+    </Switch>
   );
 }
