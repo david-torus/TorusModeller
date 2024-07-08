@@ -9,33 +9,45 @@ const RenderJsonArraySidebarIcon = ({
   activeTab,
   setActiveTab,
   json,
+
 }) => {
   return (
     <>
-      {obj &&
+      {/* {obj &&
         obj.map((ele, index) => {
+          {console.log(obj, fg ,"obj09")}
           if (typeof ele !== "string")
             return (
               <div className=" flex flex-col" key={index}>
             
                 <span
-                  style={{ color: activeTab == ele ? "blue" : "black" }}
+                  style={{ color: activeTab == ele ? "red" : "black" }}
                   onClick={() => {
                     setShowObj(ele);
                     setActiveTab(ele);
                     setPath(fg + "[" + index + "]");
                   }}
                 >
-                  {ele.label}[]
+              
                 </span>
               </div>
             );
-        })}
+        })} */}
+      <span  
+       style={{ color: activeTab == fg ? "red" : "black" }}
+       onClick={() => {
+         setShowObj(fg);
+         setActiveTab(fg);
+         setPath(fg );
+
+       }}
+      
+      >{fg}[]</span>
     </>
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
@@ -54,7 +66,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                       setActiveTab(ele);
                     }}
                   >
-                    {obj[ele].label}
+                    {obj[ele].label ? obj[ele].label : ele}
                   </span>
                 </div>
               );
@@ -71,6 +83,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                 fg={ele}
                 setShowObj={setShowObj}
                 setPath={setPath}
+            
               />
             );
           }

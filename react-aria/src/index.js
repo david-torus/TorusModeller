@@ -11,13 +11,14 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <DarkmodeProvider>
-     <Router>
+      <Router>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/json" element={     <RenderJson /> } />
         <Route path="/login" element={<SignIn />} />
       </Routes>
-    </Router> 
-    {/* <RenderJson /> */}
+    </Router>  
+
     </DarkmodeProvider>
   </React.StrictMode>
 );

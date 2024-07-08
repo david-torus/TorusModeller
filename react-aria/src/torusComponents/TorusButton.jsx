@@ -38,8 +38,6 @@ export default function TorusButton({
         ` font-lg    ${marginT} border-none  outline-none
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
-                    torus-hover:scale-95
-                    transition-scale ease-in-out duration-300
                     torus-hover:border-2 
                     ${hoverOutline}
                     
@@ -58,7 +56,9 @@ export default function TorusButton({
           }
           
            ${
-             width === "sm"
+             width === "xs"
+               ? "w-[20%]"
+               : width === "sm"
                ? "w-[30%]"
                : width === "md"
                ? "w-[45%]"
@@ -72,8 +72,10 @@ export default function TorusButton({
            } 
 
            ${
-             height === "sm"
+             height === "xs"
                ? "h-6"
+               : height === "sm"
+               ? "h-8"
                : height === "md"
                ? "h-10"
                : height === "lg"
