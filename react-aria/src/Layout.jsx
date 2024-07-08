@@ -18,13 +18,16 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import Navbar from "./Navbar";
-import SelectedTabPanel from "./SelectedTabPanel";
+
 import { FabricsSelector } from "./FabricsSelector";
 import { v4 as uuidv4 } from "uuid";
 import UserNode from "./DynamicNode";
 
 import FabricsSideBar from "./sidebars/fabricsSideBar/FabricsSideBar";
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
+import NodeGallery from "./NodeGallery";
+import TorusButton from "./torusComponents/TorusButton";
+import { Back } from "./SVG_Application";
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -32,6 +35,7 @@ export default function Layout() {
   const [selectedFabric, setSelectedFabric] = useState("DF");
   const [selectedTab, setSelectedTab] = useState("DF");
   const { screenToFlowPosition } = useReactFlow();
+  const [showFabricSideBar, setShowFabricSideBar] = useState(true);
   const [reactFlowInstance, setreactflowinstance] = useState(null);
   const [menu, setMenu] = useState(null);
   const ref = useRef(null);
@@ -57,10 +61,16 @@ export default function Layout() {
     []
   );
 
-  const handleFabrciselector = (fabric) => {
+  const handleTabChange = (fabric) => {
+    if (fabric === selectedFabric) return;
     setSelectedFabric(fabric);
+    setShowFabricSideBar(true);
     setNodes([]);
     setEdges([]);
+    setMenu(null);
+  };
+  const handleSidebarToggle = () => {
+    setShowFabricSideBar(!showFabricSideBar);
   };
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
@@ -127,10 +137,8 @@ export default function Layout() {
     >
       <div className="sticky top-0 ">
         <Navbar
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
           selectedFabric={selectedFabric}
-          setSelectedFabric={handleFabrciselector}
+          handleTabChange={handleTabChange}
         />
       </div>
       <div className={`h-[95%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
@@ -152,23 +160,12 @@ export default function Layout() {
             onInit={setreactflowinstance}
             ref={ref}
           >
-            <Panel
-              position="top-left"
-              className={` 
-                md:w-4/12 
-                lg:w-2/12 
-                xl:w-[18.5%] 
-                2xl:w-3/12 
-                3xl:w-[12%] 
-                4xl:w-4/12  h-[95%] ${
-                  selectedTab.startsWith("hidden") ? "hidden" : "block"
-                }  `}
-            >
-              <SelectedTabPanel
-                color={colors[selectedTab]?.dark}
-                selectedTab={selectedTab}
-              />
-            </Panel>
+            <NodeGallery
+              selectedFabric={selectedFabric}
+              color={colors[selectedFabric]?.dark}
+              showFabricSideBar={showFabricSideBar}
+              handleSidebarToggle={handleSidebarToggle}
+            />
 
             <Controls position="right-bottom" />
 

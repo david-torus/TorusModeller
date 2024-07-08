@@ -19,6 +19,7 @@ import TorusButton from "./torusComponents/TorusButton";
 import { merger } from "./utils/utils";
 import { BiPlus } from "react-icons/bi";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import TorusTab from "./torusComponents/TorusTab";
 import TorusPopOver from "./torusComponents/TorusPopOver";
 import TorusInput from "./torusComponents/TorusInput";
 const colors = {
@@ -36,12 +37,7 @@ const colors = {
   SF: { dark: "#FFc723", light: "#FFBE00" },
 };
 
-export default function Navbar({
-  selectedTab,
-  setSelectedTab,
-  setSelectedFabric,
-  selectedFabric,
-}) {
+export default function Navbar({ handleTabChange, selectedFabric }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const [selectedVersion, setSelectedVersion] = useState(new Set());
 
@@ -52,30 +48,17 @@ export default function Navbar({
       className={`flex max-w-full mx-auto   xl:max-3xl:pr-3  justify-between`}
       style={{
         backgroundColor:
-          colors && selectedTab && darkMode
-            ? colors[selectedTab]?.dark
-            : colors[selectedTab]?.light,
+          colors && selectedFabric && darkMode
+            ? colors[selectedFabric]?.dark
+            : colors[selectedFabric]?.light,
       }}
     >
       <div className="w-[40%] ">
-        <Tabs
-          orientation="vertical"
-          className=" cursor-pointer ml-[10px] lg:max-3xl:mt[2%]"
-          onSelectionChange={(key) => {
-            setSelectedTab((prev) => {
-              if (key == prev) {
-                return "hidden";
-              }
-              return key;
-            });
-            setSelectedFabric(key);
-          }}
-        >
-          <TabList aria-label="tabs" className="flex flex-row gap-2 ">
-            <Tab
-              id="DF"
-              className={` 
-                  xl:w-[6.5%] xl:h-[2.48rem]
+        <TorusTab
+          classNames={{
+            tabs: "cursor-pointer ml-[10px] lg:max-3xl:mt[2%]",
+            tabList: "flex flex-row gap-2 ",
+            tab: `xl:w-[6.5%] xl:h-[2.48rem]
                   lg:w-[6.5%] lg:h-[2.3rem]
                   md:w-[10%] md:h-[2.5rem]
                   3xl:w-[6.5%] 3xl:h-[2.3rem]
@@ -83,84 +66,60 @@ export default function Navbar({
                   lg:mt-[1.6%] 
                   xl:mt-[1.7%] 
                   3xl:mt-[1.8%] 
-                rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`}
-            >
-              {({ isSelected }) => (
+                rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`,
+          }}
+          tabs={[
+            {
+              id: "DF",
+              content: ({ isSelected }) => (
                 <div>
                   <Data
                     strokeColor={
-                      !isSelected ? "white" : colors[selectedTab]?.dark
+                      !isSelected ? "white" : colors[selectedFabric]?.dark
                     }
                   />
                 </div>
-              )}
-            </Tab>
-            <Tab
-              id="UF"
-              className={` xl:w-[6.5%] xl:h-[2.48rem]
-                  lg:w-[6.5%] lg:h-[2.3rem]
-                  md:w-[10%] md:h-[2.5rem]
-                  3xl:w-[6.5%] 3xl:h-[2.3rem]
-                  md:mt-[1%] 
-                  lg:mt-[1.6%] 
-                  xl:mt-[1.7%] 
-                  3xl:mt-[1.8%]   rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`}
-            >
-              {({ isSelected }) => (
+              ),
+            },
+            {
+              id: "UF",
+              content: ({ isSelected }) => (
                 <div>
                   <Wire
                     strokeColor={
-                      !isSelected ? "white" : colors[selectedTab]?.dark
+                      !isSelected ? "white" : colors[selectedFabric]?.dark
                     }
                   />
                 </div>
-              )}
-            </Tab>
-            <Tab
-              id="PF"
-              className={` xl:w-[6.5%] xl:h-[2.48rem]
-                  lg:w-[6.5%] lg:h-[2.3rem]
-                  md:w-[10%] md:h-[2.5rem]
-                  3xl:w-[6.5%] 3xl:h-[2.3rem]
-                  md:mt-[1%] 
-                  lg:mt-[1.6%] 
-                  xl:mt-[1.7%] 
-                  3xl:mt-[1.8%]   rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`}
-            >
-              {({ isSelected }) => (
+              ),
+            },
+            {
+              id: "PF",
+              content: ({ isSelected }) => (
                 <div>
                   <Connect
                     strokeColor={
-                      !isSelected ? "white" : colors[selectedTab]?.dark
+                      !isSelected ? "white" : colors[selectedFabric]?.dark
                     }
                   />
                 </div>
-              )}
-            </Tab>
-
-            <Tab
-              id="SF"
-              className={` xl:w-[6.5%] xl:h-[2.48rem]
-                  lg:w-[6.5%] lg:h-[2.3rem]
-                  md:w-[10%] md:h-[2.5rem]
-                  3xl:w-[6.5%] 3xl:h-[2.3rem]
-                  md:mt-[1%] 
-                  lg:mt-[1.6%] 
-                  xl:mt-[1.7%] 
-                  3xl:mt-[1.8%]   rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`}
-            >
-              {({ isSelected }) => (
+              ),
+            },
+            {
+              id: "SF",
+              content: ({ isSelected }) => (
                 <div>
                   <Sheild
                     strokeColor={
-                      !isSelected ? "white" : colors[selectedTab]?.dark
+                      !isSelected ? "white" : colors[selectedFabric]?.dark
                     }
                   />
                 </div>
-              )}
-            </Tab>
-          </TabList>
-        </Tabs>
+              ),
+            },
+          ]}
+          onSelectionChange={handleTabChange}
+        />
       </div>
 
       {/* <ButtonToggle /> */}
@@ -230,7 +189,7 @@ export default function Navbar({
                 <span
                   className="font-plexsans 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
                   style={{
-                    color: darkMode ? colors[selectedTab]?.dark : "black",
+                    color: darkMode ? colors[selectedFabric]?.dark : "black",
                   }}
                 >
                   {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
