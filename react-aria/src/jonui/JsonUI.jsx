@@ -47,6 +47,10 @@ const js = {
       label: "contacts-arrobj",
       key: "value",
     },
+    {
+      label: "contacts(2)-arrobj",
+      key: "value",
+    },
   ],
   "contacts/1/arrobj/0/nestedObj": {
     label: "contacts nestedObj",
