@@ -13,7 +13,7 @@ export default function JsonSidebar({ obj , handlejs }) {
         <JsonSidebarIcon  showObj = {showObj} setShowObj = {setShowObj} obj={obj} setPath = {setPath} />
         </div>
         <div className="w-[76%] h-full">
-            <JsonSidebarDetail showObj = {showObj} obj={obj} handlejs = {handlejs} path={path}  />
+        <JsonSidebarDetail showObj = {showObj} obj={obj} handlejs = {handlejs} path={path}  />
        
         </div>
       </div>
