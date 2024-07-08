@@ -5,10 +5,12 @@ import {
   Tooltip,
   TooltipTrigger,
 } from "react-aria-components";
-export default function TorusToolTip({ hoverContent, tooltipContent , color }) {
+export default function TorusToolTip({ hoverContent, tooltipContent , color ,setShowObj }) {
   return (
     <TooltipTrigger className="">
-      <Button>{hoverContent}</Button>
+      <Button onPress={() => {
+        setShowObj(hoverContent)
+      }}>{hoverContent}</Button>
       <Tooltip
       style={{ backgroundColor: color }}
         className={
