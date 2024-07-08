@@ -1,26 +1,34 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import ReactFlow from "reactflow";
 
-export default function FabricsSelector({
-  fabric,
-  nodes,
-  edges,
-  setEdges,
-  setNodes,
-  onDrop,
-  onDragOver,
-  onNodesChange,
-  onEdgesChange,
-  onConnect,
-  children,
-  NODE_TYPES,
-}) {
-    console.log(fabric);
+export const FabricsSelector = forwardRef(function FabricsSelector(
+  {
+    fabric,
+    nodes,
+    edges,
+    setEdges,
+    setNodes,
+    onNodeContextMenu,
+    onPaneClick,
+    onDrop,
+    onDragOver,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    children,
+    NODE_TYPES,
+  },
+  ref
+) {
+  console.log(fabric);
   const cycleFabric = (fabric) => {
     switch (fabric) {
       case "DF":
         return (
           <ReactFlow
+            ref={ref}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
             nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
@@ -35,6 +43,9 @@ export default function FabricsSelector({
       case "UF":
         return (
           <ReactFlow
+            ref={ref}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
             nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
@@ -49,6 +60,9 @@ export default function FabricsSelector({
       case "PF":
         return (
           <ReactFlow
+            ref={ref}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
             nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
@@ -63,6 +77,9 @@ export default function FabricsSelector({
       case "SF":
         return (
           <ReactFlow
+            ref={ref}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
             nodeTypes={NODE_TYPES}
             nodes={nodes}
             edges={edges}
@@ -80,4 +97,4 @@ export default function FabricsSelector({
   };
 
   return cycleFabric(fabric);
-}
+});

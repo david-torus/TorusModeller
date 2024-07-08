@@ -13,7 +13,7 @@ export default function TorusTab({
 }) {
   return (
     <Tabs
-      orientation="vertical"
+      orientation="horizontal"
       keyboardActivation="automatic"
       defaultSelectedKey={defaultSelectedKey}
     >
