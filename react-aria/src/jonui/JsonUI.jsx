@@ -64,55 +64,48 @@ const js = {
   },
 };
 
-const RenderObject = ({ obj,handlejs  }) => {
-
-
-  return (
-    <>
-      {obj && <JsonSidebar obj={obj} handlejs={handlejs}  />}
-    </>
-  );
+const RenderObject = ({ obj, handlejs }) => {
+  return <>{obj && <JsonSidebar obj={obj} handlejs={handlejs} />}</>;
 };
 
 export const RenderJson = () => {
   const [dupJson, setDupJson] = useState(structuredClone(js));
 
-  const handlejs = (e, i,key , type) => {
-    console.log(e, i,key, type,"rendertype");
+  
 
-    if(type=="obj"){
+  const handlejs = (e, i, key, type) => {
+    console.log(e, i, key, type, "rendertype");
 
-        setDupJson((prev) => {
-          return {
-            ...prev,
-           [i]:{
+    if (type == "obj") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [i]: {
             ...prev[i],
-            [key]:e
-           }
-          };
-        });
+            [key]: e,
+          },
+        };
+      });
+    } else {
+      if (i) {
+        const js = structuredClone(dupJson);
+        _.set(js, i, e);
+        setDupJson(js);
+        console.log(js, "arrjs");
+      }
     }
-    else{
-        if (i) {
-            const js = structuredClone(dupJson);
-            _.set(js, i, e);
-            setDupJson(js);
-            console.log(js, "arrjs");
-          }
+  };
 
-    }
-   
-};
-console.log(dupJson, "renderjs");
-
- 
+  console.log(dupJson, "renderjs");
 
   return (
     <>
       {dupJson && Object.keys(dupJson).length > 0 && (
         <>
           <div className="main">
-            {Object.keys(dupJson).length > 0 && <RenderObject obj={dupJson}   handlejs={handlejs} />}
+            {Object.keys(dupJson).length > 0 && (
+              <RenderObject obj={dupJson} handlejs={handlejs} />
+            )}
           </div>
         </>
       )}

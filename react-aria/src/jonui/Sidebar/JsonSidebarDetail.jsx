@@ -21,12 +21,12 @@ const RenderDropdown = ({ obj }) => {
 
 const RenderJsonArraySidebarDetail = ({
   obj,
-  showAccordianItem,
-  setShowAccordianItem,
+
   path,
   handlejs
 }) => {
   const [expandedItem, setExpandedItem] = useState(null);
+  const [showAccordianItem, setShowAccordianItem] = useState(null);
   const[value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
 
@@ -42,12 +42,14 @@ const RenderJsonArraySidebarDetail = ({
     <div>
       {obj &&
         obj.map((ele, index) => {
-          // const isItemExpanded = expandedItem === ele;
+          const isItemExpanded = expandedItem === ele;
           return (
             <div
               key={index}
-              onClick={() => {
+              onClick={(e) => {
                 setShowAccordianItem(ele);
+                e.stopPropagation(); 
+                setExpandedItem(isItemExpanded ? null : ele)
 
               }}
               style={{}}
@@ -55,22 +57,22 @@ const RenderJsonArraySidebarDetail = ({
               <p className="cursor-pointer flex items-center gap-2">
                 {ele.label}
                 <span
-                  onClick={() => setExpandedItem(!expandedItem)}
+                
                 >
-                  {expandedItem ? (
+                   {isItemExpanded ? (
                     <MdExpandLess color="gray" />
                   ) : (
                     <MdExpandMore color="gray" />
                   )}
                 </span>
               </p>
-              {expandedItem && showAccordianItem == ele && (
+              {showAccordianItem == ele && (
                 <div>
                   {showAccordianItem &&
                     Object.keys(showAccordianItem).map((item, inds) => {
                       if (!Array.isArray(showAccordianItem[item])) {
                         return (
-                          <p>
+                          <p >
                             {item} :
                             <input
                               className="border text-blue-500 "
@@ -157,7 +159,7 @@ const RenderJsonArraySidebarDetail = ({
           ))}
       </select> */}
 
-
+      
     </div>
   );
 };
@@ -167,10 +169,9 @@ export default function JsonSidebarDetail({
   obj,
   handlejs,
   path,
-  showAccordianItem,
-  setShowAccordianItem,
 }) {
   const [value, setValue] = useState(null);
+
   const handleInput = (e, i, key, type) => {
     setValue(e);
     if (value) {
@@ -211,8 +212,7 @@ export default function JsonSidebarDetail({
               ) : (
                 <RenderJsonArraySidebarDetail
                   obj={obj[showObj]}
-                  setShowAccordianItem={setShowAccordianItem}
-                  showAccordianItem={showAccordianItem}
+           
                   path={path}
                   handlejs={handlejs}
                 />

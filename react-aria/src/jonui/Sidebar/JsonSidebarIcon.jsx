@@ -9,7 +9,7 @@ const RenderJsonArraySidebarIcon = ({
   activeTab,
   setActiveTab,
   json,
-  setShowAccordianItem,
+
 }) => {
   return (
     <>
@@ -39,7 +39,7 @@ const RenderJsonArraySidebarIcon = ({
          setShowObj(fg);
          setActiveTab(fg);
          setPath(fg );
-        //  setShowAccordianItem({})
+
        }}
       
       >{fg}[]</span>
@@ -47,7 +47,7 @@ const RenderJsonArraySidebarIcon = ({
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setShowAccordianItem }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
@@ -83,7 +83,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setShowAccordianItem
                 fg={ele}
                 setShowObj={setShowObj}
                 setPath={setPath}
-                setShowAccordianItem={setShowAccordianItem}
+            
               />
             );
           }
