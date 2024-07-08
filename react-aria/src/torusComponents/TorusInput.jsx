@@ -57,9 +57,9 @@ export default function TorusInput(props) {
     bordered: {
       textFieldClassName:
         "relative  pb-2.5 pt-4  text-sm text-gray-200 bg-transparent rounded-lg",
-      labelClassNames: `absolute top-0 left-0 p-4 dark:text-gray-400 transition-all duration-300 outline-none `,
+      labelClassNames: `absolute top-0 left-0 p-4 dark:text-gray-400 text-xs transition-all duration-300 outline-none `,
       inputClassNames:
-        "w-full px-2 py-3 pb-0 mt-1 border border-gray-300 rounded-md outline-none ",
+        "w-full px-2 text-sm font-normal py-3 pb-0 mt-1 border border-gray-300 rounded-md outline-none ",
     },
     fade: {
       textFieldClassName: "w-[100%]",
@@ -148,7 +148,10 @@ export default function TorusInput(props) {
       isDisabled={props.isDisabled ? props.isDisabled : false}
     >
       <Label
-        className={`${classNames.labelClassNames} ${
+        className={`${classNames.labelClassNames} 
+        ${props.variant === "bordered" ? "pt-[1.50rem]" : ""}
+        
+        ${
           props.variant === "underline"
             ? `${
                 !clicked
@@ -184,6 +187,7 @@ export default function TorusInput(props) {
         } ${colorsBg} ${colorsHover} 
 
 
+      ${props.variant === "bordered" ? "pl-[1rem]" : ""}
         ${
           props.variant === "bordered"
             ? `torus-focus:ring-1 torus-focus:outline-none ${
@@ -209,7 +213,11 @@ export default function TorusInput(props) {
         
         ${props.variant === "fade" ? `${props.textColor}` : " text-black"}
         
-        ${props.textColor ? `${props.textColor}` : "text-black"} 
+        ${
+          props.textColor
+            ? `${props.textColor} font-base font-normal `
+            : "text-black font-base font-normal"
+        } 
         
         ${
           props.height === "sm"
@@ -222,8 +230,6 @@ export default function TorusInput(props) {
             ? "h-12"
             : "h-10"
         } 
-
-        ${props.variant === "underline" ? `${props.borderColor}` : ""}
 
         ${
           props.width === "sm"
