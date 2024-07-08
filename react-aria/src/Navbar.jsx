@@ -13,21 +13,14 @@ import { Button } from "react-aria-components";
 import { FaRegUser, FaSyncAlt } from "react-icons/fa";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { IoIosArrowDown } from "react-icons/io";
-import {
-  Dialog,
-  DialogTrigger,
-  Heading,
-  Input,
-  Label,
-  Modal,
-  TextField,
-} from "react-aria-components";
 import ButtonToggle from "./context/ButtonToggle";
 import { DarkModeContext } from "./context/darkmodeContext";
 import TorusButton from "./torusComponents/TorusButton";
 import { merger } from "./utils/utils";
 import { BiPlus } from "react-icons/bi";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import TorusPopOver from "./torusComponents/TorusPopOver";
+import TorusInput from "./torusComponents/TorusInput";
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
   DF: {
@@ -305,20 +298,29 @@ export default function Navbar({
           </span>
         </Button> */}
 
-        <TorusButton
-          Children="Create a Artifact"
-          width={"sm"}
-          bgColor={"bg-[#0736C4]"}
-          radius="lg"
-          startContent={<BiPlus size={18} color={"black"} />}
-          color={"black"}
-          gap={"px-[15px]"}
-          height={"md"}
-          btncolor={"white"}
-          fontStyle={
-            "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-medium tracking-tighter"
-          }
-        />
+        <TorusPopOver
+          popbuttonClassNames="bg-white  w-[30%] h-[65%] text-black text-sm "
+          parentHeading={"Create a Artifact"}
+          heading={"Giva a name to your Artifact"}
+          popOverContent={<BiPlus size={18} color={"black"} />}
+        >
+          <span className="text-sm">Give a name to your Artifact </span>
+          <TorusInput
+            variant="bordered"
+            label="Framerwork version"
+            labelColor="text-[#000000]/50"
+            borderColor="[#000000]/50"
+            outlineColor="torus-focus:ring-[#000000]/50"
+            placeholder=""
+            isDisabled={false}
+            radius="lg"
+            width="xl"
+            height="xl"
+            textColor="text-[#000000]"
+            bgColor="bg-[#FFFFFF]"
+            value={"1.0.0"}
+          />
+        </TorusPopOver>
 
         <div className="flex items-center gap-2 ml-[15px]">
           <Reload fill={darkMode ? "black" : "white"} />
