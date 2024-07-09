@@ -28,6 +28,7 @@ import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import NodeGallery from "./NodeGallery";
 import TorusButton from "./torusComponents/TorusButton";
 import { Back } from "./SVG_Application";
+import NewSidebar from "./NewSidebar";
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -160,6 +161,7 @@ export default function Layout() {
             onInit={setreactflowinstance}
             ref={ref}
           >
+            {/* <NewSidebar /> */}
             <NodeGallery
               selectedFabric={selectedFabric}
               color={colors[selectedFabric]?.dark}
