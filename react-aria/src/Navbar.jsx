@@ -126,7 +126,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
-            "text-white   xl:text-sm  3xl:text-sm font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white   xl:text-sm  3xl:text-sm font-sfpro font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           {selectedFabric &&
@@ -153,7 +153,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
                 <div className="flex flex-row items-center gap-2 w-[100%]">
                   <div
                     className={
-                      "w-[80%] text-white font-plexsans 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
+                      "w-[80%] text-white font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
                     }
                   >
                     {(selectededArtifacts &&
@@ -187,7 +187,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
             <TorusDropDown
               title={
                 <span
-                  className="font-plexsans 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
+                  className="font-sfpro 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
                   style={{
                     color: darkMode ? colors[selectedFabric]?.dark : "black",
                   }}
