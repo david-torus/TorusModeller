@@ -156,7 +156,10 @@ export function TorusDatePicker({ label, slot, openBtn }) {
   return (
     <DatePicker>
       <div className="flex justify-start w-[100%]">
-        <div className="w-full py-3 px-2 flex flex-col justify-between gap-0.5 items-center bg-white rounded-lg ">
+        <div
+          className="w-full py-3 px-2 pl-[1rem]
+ flex flex-col justify-between gap-0.5 items-center bg-white rounded-lg "
+        >
           <div className="w-full flex justify-start">
             <Label className="text-start text-xs text-[#000000]/50">
               {label}
@@ -276,7 +279,9 @@ const TorusTimeField = ({ slot, openBtn, label }) => {
   );
 };
 
-export default function TorusTimePicker({ label }) {
+
+
+const TorusTimePicker = ({ label }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState({
     hour: "06",
@@ -288,10 +293,6 @@ export default function TorusTimePicker({ label }) {
   const [visibleHours, setVisibleHours] = useState(3);
   const [visibleMinutes, setVisibleMinutes] = useState(3);
   const [visibleSeconds, setVisibleSeconds] = useState(3);
-
-  const hoursContainerRef = useRef(null);
-  const minutesContainerRef = useRef(null);
-  const secondsContainerRef = useRef(null);
 
   const togglePopover = () => {
     setIsPopoverOpen((prevIsPopoverOpen) => !prevIsPopoverOpen);
@@ -305,15 +306,8 @@ export default function TorusTimePicker({ label }) {
     setSelectedTime((prev) => ({ ...prev, [type]: value }));
   };
 
-  const handleScroll = (type) => {
-    const containerRef =
-      type === "hour"
-        ? hoursContainerRef.current
-        : type === "minute"
-        ? minutesContainerRef.current
-        : secondsContainerRef.current;
-
-    const { scrollTop, scrollHeight, clientHeight } = containerRef;
+  const handleScroll = (e, type) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.target;
     if (scrollTop + clientHeight >= scrollHeight) {
       if (type === "hour") setVisibleHours((prev) => Math.min(prev + 3, 12));
       else if (type === "minute")
@@ -335,63 +329,34 @@ export default function TorusTimePicker({ label }) {
   const meridiem = ["AM", "PM"];
 
   useEffect(() => {
-    if (hoursContainerRef.current) {
-      hoursContainerRef.current.addEventListener("scroll", () =>
-        handleScroll("hour")
-      );
-    }
-    if (minutesContainerRef.current) {
-      minutesContainerRef.current.addEventListener("scroll", () =>
-        handleScroll("minute")
-      );
-    }
-    if (secondsContainerRef.current) {
-      secondsContainerRef.current.addEventListener("scroll", () =>
-        handleScroll("second")
-      );
-    }
-    return () => {
-      if (hoursContainerRef.current) {
-        hoursContainerRef.current.removeEventListener("scroll", () =>
-          handleScroll("hour")
-        );
-      }
-      if (minutesContainerRef.current) {
-        minutesContainerRef.current.removeEventListener("scroll", () =>
-          handleScroll("minute")
-        );
-      }
-      if (secondsContainerRef.current) {
-        secondsContainerRef.current.removeEventListener("scroll", () =>
-          handleScroll("second")
-        );
-      }
-    };
-  }, []);
+    if (isPopoverOpen) {
+      const hoursContainer = document.getElementById("hoursContainer");
+      const minutesContainer = document.getElementById("minutesContainer");
+      const secondsContainer = document.getElementById("secondsContainer");
 
-  useEffect(() => {
-    if (hoursContainerRef.current) {
-      const selectedIndex = hours.indexOf(selectedTime.hour);
-      const centerPosition = selectedIndex * 36;
-      hoursContainerRef.current.scrollTop =
-        centerPosition - hoursContainerRef.current.clientHeight / 2 + 18;
+      if (hoursContainer) {
+        const selectedIndex = hours.indexOf(selectedTime.hour);
+        const centerPosition = selectedIndex * 36;
+        hoursContainer.scrollTop =
+          centerPosition - hoursContainer.clientHeight / 2 + 18;
+      }
+      if (minutesContainer) {
+        const selectedIndex = minutes.indexOf(selectedTime.minute);
+        const centerPosition = selectedIndex * 36;
+        minutesContainer.scrollTop =
+          centerPosition - minutesContainer.clientHeight / 2 + 18;
+      }
+      if (secondsContainer) {
+        const selectedIndex = seconds.indexOf(selectedTime.second);
+        const centerPosition = selectedIndex * 36;
+        secondsContainer.scrollTop =
+          centerPosition - secondsContainer.clientHeight / 2 + 18;
+      }
     }
-    if (minutesContainerRef.current) {
-      const selectedIndex = minutes.indexOf(selectedTime.minute);
-      const centerPosition = selectedIndex * 36;
-      minutesContainerRef.current.scrollTop =
-        centerPosition - minutesContainerRef.current.clientHeight / 2 + 18;
-    }
-    if (secondsContainerRef.current) {
-      const selectedIndex = seconds.indexOf(selectedTime.second);
-      const centerPosition = selectedIndex * 36;
-      secondsContainerRef.current.scrollTop =
-        centerPosition - secondsContainerRef.current.clientHeight / 2 + 18;
-    }
-  }, [isPopoverOpen]);
+  }, [isPopoverOpen, selectedTime]);
 
   return (
-    <div className="flex flex- items-start">
+    <div className="flex flex-col items-start">
       <label className="mb-2">{label}</label>
       <div className="relative">
         <button
@@ -406,9 +371,9 @@ export default function TorusTimePicker({ label }) {
               <p className="text-center font-semibold mb-4">Select Time</p>
               <div className="grid grid-cols-4 gap-2">
                 <div
-                  className="min-h-40 overflow-y-scroll scrollbar-hide relative"
-                  ref={hoursContainerRef}
-                  onScroll={() => handleScroll("hour")}
+                  className="min-h-40 overflow-y-scroll scrollbar-hide"
+                  id="hoursContainer"
+                  onScroll={(e) => handleScroll(e, "hour")}
                 >
                   {hours.slice(0, visibleHours).map((hr) => (
                     <div
@@ -421,11 +386,11 @@ export default function TorusTimePicker({ label }) {
                       {hr}
                     </div>
                   ))}
-                  <div className="absolute top-1/2 left-0 right-0 transform -translate-y-1/2 pointer-events-none border border-blue-600"></div>
                 </div>
                 <div
                   className="h-40 overflow-y-scroll scrollbar-hide relative"
-                  ref={minutesContainerRef}
+                  id="minutesContainer"
+                  onScroll={(e) => handleScroll(e, "minute")}
                 >
                   {minutes.slice(0, visibleMinutes).map((min) => (
                     <div
@@ -442,7 +407,8 @@ export default function TorusTimePicker({ label }) {
                 </div>
                 <div
                   className="h-40 overflow-y-scroll scrollbar-hide relative"
-                  ref={secondsContainerRef}
+                  id="secondsContainer"
+                  onScroll={(e) => handleScroll(e, "second")}
                 >
                   {seconds.slice(0, visibleSeconds).map((sec) => (
                     <div
@@ -485,4 +451,6 @@ export default function TorusTimePicker({ label }) {
       </div>
     </div>
   );
-}
+};
+
+export default TorusTimePicker;

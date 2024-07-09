@@ -1,60 +1,44 @@
-.react-aria-Switch {
-  display: flex;
-  align-items: center;
-  gap: 0.571rem;
-  font-size: 1.143rem;
-  color: var(--text-color);
-  forced-color-adjust: none;
+.switch {
+  display: inline-block;
+}
 
-  .indicator {
-    width: 2rem;
-    height: 1.143rem;
-    border: 2px solid var(--border-color);
-    background: var(--background-color);
-    border-radius: 1.143rem;
-    transition: all 200ms;
+.switch input {
+  display: none;
+}
 
-    &:before {
-      content: "";
-      display: block;
-      margin: 0.143rem;
-      width: 0.857rem;
-      height: 0.857rem;
-      background: var(--highlight-background);
-      border-radius: 16px;
-      transition: all 200ms;
-    }
-  }
+.switch label {
+  display: block;
+  width: 40px;
+  height: 24px;
+  padding: 3px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #b3b3b3;
+}
 
-  &[data-pressed] .indicator {
-    border-color: var(--border-color-pressed);
+.switch label::after {
+  content: "";
+  display: inherit;
+  width: 18px;
+  height: 18px;
+  border-radius: 12px;
+  background: #ffffff;
+  transition: 0.3s;
+}
 
-    &:before {
-      background: var(--highlight-background-pressed);
-    }
-  }
 
-  &[data-selected] {
-    .indicator {
-      border-color: var(--highlight-background);
-      background: var(--highlight-background);
 
-      &:before {
-        background: var(--field-background);
-        transform: translateX(100%);
-      }
-    }
+.switch input:checked ~ label {
+  background: #006FEE;
+}
 
-    &[data-pressed] {
-      .indicator {
-        border-color: var(--highlight-background-pressed);
-        background: var(--highlight-background-pressed);
-      }
-    }
-  }
+.switch input:checked ~ label::after {
+  translate: 16px 0;
+  background: #ffffff;    
+}
 
-  &[data-focus-visible] .indicator {
-    outline: 2px solid var(--focus-ring-color);
-    outline-offset: 2px;
-  }
+.switch input:disabled ~ label {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
