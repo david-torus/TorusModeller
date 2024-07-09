@@ -171,8 +171,8 @@ export default function Layout() {
             />
             <MiniMap
               position="bottom-right"
-              style={{ bottom: "4rem" }}
-              className="border-4"
+              style={{ bottom: "3rem" }}
+              className="border border-slate-300 rounded-lg"
             />
             <CanvasPanel />
 

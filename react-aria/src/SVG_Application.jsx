@@ -731,8 +731,8 @@ const PropertyPencilGray = () => {
 const ZoomIn = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -755,8 +755,8 @@ const ZoomIn = () => {
 const ZoomOut = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -779,14 +779,14 @@ const ZoomOut = () => {
 const Help = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        opacity="0.5"
+        opacity="1"
         d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
         stroke="black"
         stroke-width="1.5"
@@ -808,8 +808,8 @@ const Help = () => {
 const Fitview = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -833,8 +833,8 @@ const Fitview = () => {
 const FullScreen = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -858,53 +858,55 @@ const FullScreen = () => {
 };
 
 const Undo = () => {
-  return;
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M17 4L20 7L17 10"
-      stroke="#1C274C"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M20 7H9C6.2386 7 4 9.23857 4 12C4 14.7614 6.2386 17 9 17H16"
-      stroke="#1C274C"
-      stroke-width="1.5"
-      stroke-linecap="round"
-    />
-  </svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M7 4L4 7L7 10"
+        stroke="#1C274C"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M4 7H15C17.7614 7 20 9.23857 20 12C20 14.7614 17.7614 17 15 17H8"
+        stroke="#1C274C"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
 };
 
 const Redo = () => {
-  return;
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M7 4L4 7L7 10"
-      stroke="#1C274C"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M4 7H15C17.7614 7 20 9.23857 20 12C20 14.7614 17.7614 17 15 17H8"
-      stroke="#1C274C"
-      stroke-width="1.5"
-      stroke-linecap="round"
-    />
-  </svg>;
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17 4L20 7L17 10"
+        stroke="#1C274C"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M20 7H9C6.2386 7 4 9.23857 4 12C4 14.7614 6.2386 17 9 17H16"
+        stroke="#1C274C"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
 };
 
 export {
