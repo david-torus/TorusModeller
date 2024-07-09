@@ -126,7 +126,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
       <div className="w-[20%] flex items-center justify-center gap-2 ">
         <span
           className={
-            "text-white   xl:text-sm  3xl:text-sm font-sfpro font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white   xl:text-sm tracking-wide 3xl:text-sm font-inter font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           {selectedFabric &&
@@ -140,7 +140,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
         </span>
         <span
           className={
-            "text-white xl:text-sm  3xl:text-sm font-plexsans font-semibold dark:text-[#090b0e] dark:font-bold"
+            "text-white xl:text-sm  3xl:text-sm font-inter font-semibold dark:text-[#090b0e] dark:font-bold"
           }
         >
           /
@@ -153,7 +153,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
                 <div className="flex flex-row items-center gap-2 w-[100%]">
                   <div
                     className={
-                      "w-[80%] text-white font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
+                      "w-[80%] text-white font-inter 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
                     }
                   >
                     {(selectededArtifacts &&
@@ -166,7 +166,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
                 </div>
               }
               fontStyle={
-                "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                "font-inter 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
               }
               classNames={{
                 buttonClassName: `bg-transparent flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
@@ -187,7 +187,7 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
             <TorusDropDown
               title={
                 <span
-                  className="font-sfpro 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
+                  className="font-inter 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
                   style={{
                     color: darkMode ? colors[selectedFabric]?.dark : "black",
                   }}
@@ -263,7 +263,9 @@ export default function Navbar({ handleTabChange, selectedFabric }) {
           heading={"Giva a name to your Artifact"}
           popOverContent={<BiPlus size={18} color={"black"} />}
         >
-          <span className="text-sm">Give a name to your Artifact </span>
+          <span className="text-sm mt-[20px] text-red-500">
+            Give a name to your Artifact
+          </span>
           <TorusInput
             variant="bordered"
             label="Framerwork version"

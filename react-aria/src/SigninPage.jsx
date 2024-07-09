@@ -15,11 +15,13 @@ import TorusInput from "./torusComponents/TorusInput";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { BsClockHistory } from "react-icons/bs";
 import TorusSelector from "./torusComponents/TorusSelector";
+import TorusSwitch from "./torusComponents/TorusSwitch";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [checked, setChecked] = useState(false);
 
   const handleChange = (value) => {
     setSelectedValues((prev) =>
@@ -39,10 +41,9 @@ export default function SignIn() {
   };
 
   return (
-    <div className="w-full h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
-      <div className="w-[30%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3">
-        <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
-
+    <div className="w-full  flex-col h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
+      <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
+      <div className="w-[30%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3 overflow-y-scroll scrollbar-hide">
         <div className="w-[80%]  flex flex-col justify-center items">
           <TorusInput
             variant="bordered"
@@ -117,28 +118,58 @@ export default function SignIn() {
           /> */}
 
           <TorusSelector
-          label="Type"
+            items={[
+              { key: " String", label: " String" },
+              { key: " Boolean", label: " Boolean" },
+              { key: " Number", label: " Number" },
+              { key: " Array", label: " Array" },
+              { key: " Object", label: " Object" },
+            ]}
+            label="Type"
+            marginT="mt-5"
           />
 
           <TorusCheckBox
             marginT="mt-6"
-            content={["Male", "Female", "Others"]}
+            content={[
+              "Frontend developer",
+              "Backend developer",
+              "UI/UX designer",
+              "Bussiness analyst",
+              "Data analyst",
+              "Data scienntist",
+              "Others",
+            ]}
             orientation="horizontal"
             label="Gender"
           />
 
           <TorusRadio
-            content={[
-              "Frontend developer",
-              "Backend developer",
-              "UI/UX designer",
-              "Others",
-            ]}
+            content={["True", "False", "Null"]}
             marginT="mt-5"
-            label="Select your profession"
+            label="Defaults"
           />
 
-          <TorusDropDown title="Select your country" />
+          <div className="w-[100%] flex flex-col justify-center items-center mt-5  gap-0.5 bg-white rounded-md px-2 py-3">
+            <h2 className="w-[100%] text-xs text-[#000000]/50">Defaults</h2>
+
+            <div className="w-[100%] flex items-center ">
+              <div className="w-[80%] flex justify-start">
+                {!checked ? (
+                  <p className="text-sm text-[#000000]">Unchecked</p>
+                ) : (
+                  <p className="text-sm text-[#000000]">Checked</p>
+                )}
+              </div>
+              <div className="w-[20%] flex justify-end">
+                <TorusSwitch
+                  label={"Remember me"}
+                  isChecked={checked}
+                  setIsChecked={setChecked}
+                />
+              </div>
+            </div>
+          </div>
 
           <div className="w-[100%] flex justify-center items-center h-14 ">
             <TorusButton

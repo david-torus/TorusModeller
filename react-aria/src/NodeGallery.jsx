@@ -85,11 +85,11 @@ export default function NodeGallery({
             xl:w-5 xl:h-5 
             
             
-            flex items-center justify-center rounded-lg`}
+            flex items-center justify-center rounded-lg cursor-grab`}
           >
             {item.icon}
           </div>
-          <span className="3xl:text-xs xl:text-sm font-normal font-sfpro tracking-tighter">
+          <span className="3xl:text-xs xl:text-sm font-normal tracking-normal font-inter cursor-grab">
             {item.label}
           </span>
         </div>
@@ -115,7 +115,7 @@ export default function NodeGallery({
         <Header
           className={`${
             showFabricSideBar ? "opacity-100" : "hidden  opacity-0"
-          } font-sfpromedium tracking-tighter 3xl:text-sm xl:text-base font-thin transition-opacity duration-1000 ease-in-out `}
+          } font-inter font-semibold  tracking-normal 3xl:text-sm xl:text-base  transition-opacity duration-1000 ease-in-out `}
         >
           Node Gallery
         </Header>
@@ -142,14 +142,14 @@ export default function NodeGallery({
 
         <div className="w-[100%] flex justify-center items-center ">
           <div className="w-[95%]  bg-[#F4F5FA] dark:bg-gray-700 p-3 rounded-lg dark:text-white   ">
-            <Text className="3xl:font-bold 3xl:text-sm xl:font-semibold xl:text-base font-sfpro tracking-tighter">
+            <Text className="3xl:font-semibold 3xl:text-sm xl:font-semibold xl:text-sm font-inter tracking-normal">
               Upgrade to unlock more features
             </Text>
 
             <br />
             <p
               slot="description"
-              className=" 3xl:text-xs 3xl:pr-[20px]  xl:text-sm xl:leading-[1.0rem] font-normal font-sfpro tracking-[0.01rem] leading-[0.9rem] word-spacing-[0.03rem] "
+              className=" 3xl:text-xs 3xl:pr-[20px]  xl:text-xs xl:leading-[1.0rem] font-thin font-inter tracking-normal  "
             >
               Enjoy unlimited space for fabrics, applets, extra security
               features & more.
