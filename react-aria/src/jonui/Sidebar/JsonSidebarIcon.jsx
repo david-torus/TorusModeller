@@ -1,15 +1,12 @@
 import { useState } from "react";
 
 const RenderJsonArraySidebarIcon = ({
-  obj,
+obj,
   setShowObj,
   setPath,
   fg,
-  key,
   activeTab,
   setActiveTab,
-  json,
-
 }) => {
   return (
     <>
@@ -42,7 +39,10 @@ const RenderJsonArraySidebarIcon = ({
 
        }}
       
-      >{fg}[]</span>
+      >{obj[0].grouplabel}[]</span>
+      <span>
+
+      </span>
     </>
   );
 };
@@ -51,7 +51,9 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
-    <div className="w-full h-full flex flex-col p-2">
+    <>
+    
+    <div className="w-full  flex flex-col p-2 gap-3">
       {obj &&
         Object.keys(obj).map((ele) => {
           if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
@@ -77,9 +79,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
               <RenderJsonArraySidebarIcon
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
-                json={obj}
                 obj={obj[ele]}
-                key={ele}
                 fg={ele}
                 setShowObj={setShowObj}
                 setPath={setPath}
@@ -89,5 +89,6 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
           }
         })}
     </div>
+    </>
   );
 };
