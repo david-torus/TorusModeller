@@ -31,7 +31,7 @@ const RenderDropdown = ({ obj , path ,item , handlejs , showObj }) => {
     }
   };
 
-  console.log(value,  path+"."+item, showObj, "handleDropdownChange");
+  console.log(obj , item , value,  path+"."+item, showObj, "handleDropdownChange");
   return (
     <div className="flex gap-2 items-center">
       {item}:
@@ -47,24 +47,17 @@ const RenderDropdown = ({ obj , path ,item , handlejs , showObj }) => {
   );
 };
 
+
 const RenderJsonArraySidebarDetail = ({
   obj,
   showObj,
   path,
-  handlejs
+  handlejs,
+  objs
 }) => {
-  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const[value, setValue] = useState(null);
-
-  const toggleKey = (key) => {
-    if (expandedKeys.includes(key)) {
-      setExpandedKeys(expandedKeys.filter((k) => k !== key));
-    } else {
-      setExpandedKeys([...expandedKeys, key]);
-    }
-  };
-
   const handleInput = (e, i, key, type) => {
     console.log(e.target.value, i, key, type, "renderinput");
     setValue(e.target.value);
@@ -73,26 +66,36 @@ const RenderJsonArraySidebarDetail = ({
     }
   };
 
+  const toggleKey = (key) => {
+    if (expandedItem.includes(key)) {
+      setExpandedItem(expandedItem.filter((k) => k !== key));
+    } else {
+      setExpandedItem([...expandedItem, key]);
+    }
+  };
+
   return (
     <div>
       {obj &&
         obj.map((ele, index) => {
-          const isExpanded = expandedKeys.includes(index);
+          const isExpanded = expandedItem.includes(ele.label);
           return (
             <div
               key={index}
-              onClick={()=>{}}
-        
             >
-              <p className="cursor-pointer flex items-center gap-2">
+              <p className="cursor-pointer flex items-center gap-2"   onClick={(e) => {
+                setShowAccordianItem(ele);
+                e.stopPropagation(); 
+                toggleKey(ele.label);
+                // if (expandedItem === ele.label) {
+                //   setExpandedItem(null); 
+                // } else {
+                //   setExpandedItem(ele.label); 
+                // }
+
+              }}>
                 {ele.label}
                 <span
-                onClick={(e) => {
-                  setShowAccordianItem(ele);
-                  e.stopPropagation(); 
-                  // setExpandedItem(ele.label)
-                  toggleKey(index);
-                }}
                 
                 >
                    {isExpanded ? (
@@ -104,16 +107,16 @@ const RenderJsonArraySidebarDetail = ({
               </p>
               { isExpanded && (
                 <div>
-                  {showAccordianItem &&
-                    Object.keys(showAccordianItem).filter((item)=>item!=="label").map((item, inds) => {
-                      if (!Array.isArray(showAccordianItem[item])) {
+                  {objs &&
+                    Object.keys(objs[showObj][index]).filter((item)=>item!=="label").map((item, inds) => {
+                      if (!Array.isArray(objs[showObj][index][item])) {
                         return (
                           <p className="flex gap-2 mb-2 items-center" >
                             {item} :
                             <input
                               className="border text-blue-500 "
                               type="text"
-                              Value={showAccordianItem[item]}
+                              Value={objs[showObj][index][item]}
                               onChange={(e) =>
                               {
                                 handleInput(
@@ -129,15 +132,18 @@ const RenderJsonArraySidebarDetail = ({
                           </p>
                         );
                       }
-                      if (Array.isArray(showAccordianItem[item])) {
+
+                     
+                      if (Array.isArray(objs[showObj][index][item])) {
                         return (
                           <>
-                            <RenderDropdown obj={showAccordianItem[item]} item={item} path ={path + "." + index } handlejs={handlejs} showObj={showObj} />
+                           
+                            <RenderDropdown obj={objs[showObj][index][item]} item={item} path ={path + "." + index } handlejs={handlejs} showObj={showObj} />
                           </>
                         );
                       }
-                      if(typeof showAccordianItem[item] === "boolean" ){
-                        <RenderSwitch obj={showAccordianItem[item]} />
+                      if(typeof objs[showObj][index][item] === "boolean" ){
+                        <RenderSwitch obj={objs[showObj][index][item]} />
                       }
                     })}
                 </div>
@@ -245,7 +251,7 @@ export default function JsonSidebarDetail({
                     );
                   }
                   if (Array.isArray(obj[showObj][ele])) {
-                    return <RenderDropdown obj={obj[showObj][ele]} />;
+                    return <RenderDropdown obj={obj[showObj][ele]}  item={ele} path ={path} handlejs={handlejs} showObj={showObj} />;
                   }
                 })
               ) : (
@@ -254,6 +260,7 @@ export default function JsonSidebarDetail({
                   showObj={showObj}
                   path={path}
                   handlejs={handlejs}
+                  objs={obj}
                 />
               )
               // showObj &&

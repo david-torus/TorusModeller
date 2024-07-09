@@ -23,9 +23,16 @@ const js = {
       value: "123-456-7890",
       arr: ["a", "b"],
       arrs: ["dd", "sdf"],
+    
     },
   ],
 
+  "contacts/1/dropdown": {
+    label: "root",
+    selectionValues:["a", "b","c","d"],
+    selectedValue:""
+  },
+  
   "contacts/0/obj": {
     label: "contact obj",
     key: "value",
