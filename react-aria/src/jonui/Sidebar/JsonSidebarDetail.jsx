@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
-const RenderDropdown = ({ obj }) => {
+
+const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
     event.stopPropagation(); 
   };
@@ -10,7 +11,34 @@ const RenderDropdown = ({ obj }) => {
       <select onClick={handleDropdownClick}>
         {obj &&
           obj.map((ele) => (
-            <option key={ele} value={ele}>
+           {ele}
+          ))}
+      </select>
+    </div>
+  );
+};
+
+const RenderDropdown = ({ obj , path ,item , handlejs , showObj }) => {
+  const[value, setValue] = useState(null);
+  const handleDropdownClick = (event) => {
+    event.stopPropagation(); 
+  };
+
+  const handleDropdownChange = (event) => {
+    setValue(event.target.value);
+    if(value){
+      handlejs(event.target.value, path+"."+item , item, "dropdown" , showObj);
+    }
+  };
+
+  console.log(obj , item , value,  path+"."+item, showObj, "handleDropdownChange");
+  return (
+    <div className="flex gap-2 items-center">
+      {item}:
+      <select onClick={handleDropdownClick} onChange={handleDropdownChange} className="border">
+        {obj &&
+          obj.map((ele) => (
+            <option key={ele} value={ele} >
               {ele}
             </option>
           ))}
@@ -19,22 +47,30 @@ const RenderDropdown = ({ obj }) => {
   );
 };
 
+
 const RenderJsonArraySidebarDetail = ({
   obj,
-
+  showObj,
   path,
-  handlejs
+  handlejs,
+  objs
 }) => {
-  const [expandedItem, setExpandedItem] = useState(null);
+  const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const[value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
-
-  
     console.log(e.target.value, i, key, type, "renderinput");
     setValue(e.target.value);
     if (value) {
-      handlejs(e.target.value, i, key, type);
+      handlejs(e.target.value, i, key, type ,showObj);
+    }
+  };
+
+  const toggleKey = (key) => {
+    if (expandedItem.includes(key)) {
+      setExpandedItem(expandedItem.filter((k) => k !== key));
+    } else {
+      setExpandedItem([...expandedItem, key]);
     }
   };
 
@@ -42,42 +78,45 @@ const RenderJsonArraySidebarDetail = ({
     <div>
       {obj &&
         obj.map((ele, index) => {
-          const isItemExpanded = expandedItem === ele;
+          const isExpanded = expandedItem.includes(ele.label);
           return (
             <div
               key={index}
-              onClick={(e) => {
+            >
+              <p className="cursor-pointer flex items-center gap-2"   onClick={(e) => {
                 setShowAccordianItem(ele);
                 e.stopPropagation(); 
-                setExpandedItem(isItemExpanded ? null : ele)
+                toggleKey(ele.label);
+                // if (expandedItem === ele.label) {
+                //   setExpandedItem(null); 
+                // } else {
+                //   setExpandedItem(ele.label); 
+                // }
 
-              }}
-              style={{}}
-            >
-              <p className="cursor-pointer flex items-center gap-2">
+              }}>
                 {ele.label}
                 <span
                 
                 >
-                   {isItemExpanded ? (
+                   {isExpanded ? (
                     <MdExpandLess color="gray" />
                   ) : (
                     <MdExpandMore color="gray" />
                   )}
                 </span>
               </p>
-              {showAccordianItem == ele && (
+              { isExpanded && (
                 <div>
-                  {showAccordianItem &&
-                    Object.keys(showAccordianItem).map((item, inds) => {
-                      if (!Array.isArray(showAccordianItem[item])) {
+                  {objs &&
+                    Object.keys(objs[showObj][index]).filter((item)=>item!=="label").map((item, inds) => {
+                      if (!Array.isArray(objs[showObj][index][item])) {
                         return (
-                          <p >
+                          <p className="flex gap-2 mb-2 items-center" >
                             {item} :
                             <input
                               className="border text-blue-500 "
                               type="text"
-                              Value={showAccordianItem[item]}
+                              Value={objs[showObj][index][item]}
                               onChange={(e) =>
                               {
                                 handleInput(
@@ -93,12 +132,18 @@ const RenderJsonArraySidebarDetail = ({
                           </p>
                         );
                       }
-                      if (Array.isArray(showAccordianItem[item])) {
+
+                     
+                      if (Array.isArray(objs[showObj][index][item])) {
                         return (
                           <>
-                            <RenderDropdown obj={showAccordianItem[item]} />
+                           
+                            <RenderDropdown obj={objs[showObj][index][item]} item={item} path ={path + "." + index } handlejs={handlejs} showObj={showObj} />
                           </>
                         );
+                      }
+                      if(typeof objs[showObj][index][item] === "boolean" ){
+                        <RenderSwitch obj={objs[showObj][index][item]} />
                       }
                     })}
                 </div>
@@ -175,7 +220,7 @@ export default function JsonSidebarDetail({
   const handleInput = (e, i, key, type) => {
     setValue(e);
     if (value) {
-      handlejs(e, i, key, type);
+      handlejs(e, i, key, type , showObj);
     }
   };
 
@@ -206,15 +251,16 @@ export default function JsonSidebarDetail({
                     );
                   }
                   if (Array.isArray(obj[showObj][ele])) {
-                    return <RenderDropdown obj={obj[showObj][ele]} />;
+                    return <RenderDropdown obj={obj[showObj][ele]}  item={ele} path ={path} handlejs={handlejs} showObj={showObj} />;
                   }
                 })
               ) : (
                 <RenderJsonArraySidebarDetail
                   obj={obj[showObj]}
-           
+                  showObj={showObj}
                   path={path}
                   handlejs={handlejs}
+                  objs={obj}
                 />
               )
               // showObj &&

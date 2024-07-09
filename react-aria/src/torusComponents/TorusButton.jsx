@@ -10,12 +10,9 @@ export default function TorusButton({
   onPress,
   width,
   height,
-  pressedWidth,
-  pressedHeight,
   buttonClassName,
   marginT,
   color,
-  bgColor,
   outlineColor,
   radius,
   btncolor,
@@ -89,8 +86,6 @@ export default function TorusButton({
                ? "h-28"
                : "h-5"
            } 
-
-
         
           `,
         buttonClassName

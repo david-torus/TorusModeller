@@ -66,7 +66,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
                       setActiveTab(ele);
                     }}
                   >
-                    {obj[ele].label}
+                    {obj[ele].label ? obj[ele].label : ele}
                   </span>
                 </div>
               );
