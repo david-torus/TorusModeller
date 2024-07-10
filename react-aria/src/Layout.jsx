@@ -28,6 +28,7 @@ import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import NodeGallery from "./NodeGallery";
 import TorusButton from "./torusComponents/TorusButton";
 import { Back } from "./SVG_Application";
+import CanvasPanel from "./CanvasPanel";
 import NewSidebar from "./NewSidebar";
 import NewNavbar from "./NewNavbar";
 
@@ -178,8 +179,12 @@ export default function Layout() {
               showFabricSideBar={showFabricSideBar}
               handleSidebarToggle={handleSidebarToggle}
             />
-
-            <Controls position="right-bottom" />
+            <MiniMap
+              position="bottom-right"
+              style={{ bottom: "3rem" }}
+              className="border border-slate-300 rounded-lg"
+            />
+            <CanvasPanel />
 
             {/* <MiniMap /> */}
             {menu && (

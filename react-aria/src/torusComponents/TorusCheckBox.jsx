@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Label } from "react-aria-components";
 
 export default function TorusCheckBox(props) {
   console.log(props.content, "Contents");
+
+  const handleOnChange = (e) => {
+    const value = e.target.value;
+    props.onChange((prevSelectedValues) => {
+      if (prevSelectedValues.includes(value)) {
+        return prevSelectedValues.filter((item) => item !== value);
+      } else {
+        return [...prevSelectedValues, value];
+      }
+    });
+  };
+
   return (
     <div className=" w-[100%] pt-2">
       <div
@@ -27,8 +39,10 @@ export default function TorusCheckBox(props) {
                   <div className="w-[10%] flex justify-start items-center">
                     <Input
                       type="checkbox"
-                      value=""
+                      key={index}
+                      value={`${value}`}
                       name="default-radio"
+                      onChange={handleOnChange}
                       className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 torus-focus-within:ring-pink-500 torus-focus:ring-transparent dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                   </div>

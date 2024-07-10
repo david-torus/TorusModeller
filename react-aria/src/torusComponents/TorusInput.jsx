@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input, Label, TextField } from "react-aria-components";
+import { BsGraphDown } from "react-icons/bs";
 
 export default function TorusInput(props) {
   const [clicked, setClicked] = useState(false);
@@ -22,7 +23,9 @@ export default function TorusInput(props) {
   };
 
   const handleInputChange = (e) => {
-    setValue(e.target.value);
+    props.type == "number"
+      ? setValue(e.target.value.replace(/[a-zA-Z]+/g, ""))
+      : setValue(e.target.value);
     console.log(e.target.value.length, "length-3");
     if (e.target.value.length === 0) {
       setClicked(true);
@@ -147,9 +150,17 @@ export default function TorusInput(props) {
       } ${props.marginT ? props.marginT : "mt-1"}`}
       isDisabled={props.isDisabled ? props.isDisabled : false}
     >
+      {props.startContent && (
+        <div className="absolute top-[2.5rem] left-4 text-gray-400 text-sm">
+          <div>{props.startContent}</div>
+        </div>
+      )}
+
       <Label
         className={`${classNames.labelClassNames} 
         ${props.variant === "bordered" ? "pt-[1.50rem]" : ""}
+
+       
         
         ${
           props.variant === "underline"
@@ -182,11 +193,13 @@ export default function TorusInput(props) {
         onFocus={() => setClicked(true)}
         onChange={handleInputChange}
         value={value}
+        type={props.type === "number" ? "text" : `${props.type}`}
         className={`${classNames.inputClassNames} ${
           clicked ? "border-transparent" : ""
         } ${colorsBg} ${colorsHover} 
 
-
+  
+ ${props.startContent ? "pl-[2.2rem]" : "pl-[1rem]"}
       ${props.variant === "bordered" ? "pl-[1rem]" : ""}
         ${
           props.variant === "bordered"
@@ -256,6 +269,12 @@ export default function TorusInput(props) {
               : "rounded-none"
           }`}
       />
+      {props.endContent && (
+        <div className="absolute  top-[2.5rem]  right-4 text-gray-400 text-sm">
+          {" "}
+          <span> {props.endContent}</span>
+        </div>
+      )}
     </TextField>
   );
 }
