@@ -175,48 +175,7 @@ export default function NewSidebar({
 
         <hr className="w-[1px] h-[100%] bg-slate-300" />
 
-        {/* <TorusTab
-          orientation="vertical"
-          classNames={{
-            tabs: "cursor-pointer",
-            tabList: "w-full h-[100%] flex justify-center items-center",
-            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none ${borderLeft}`,
-          }}
-          tabs={[
-            
-            {
-              id: "FabricsBar",
-              content: ({ isSelected }) => (
-                <FabricBar
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-            {
-              id: "FAQ",
-              content: ({ isSelected }) => (
-                <Faq
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-            {
-              id: "Support",
-              content: ({ isSelected }) => (
-                <Support
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-          ]}
-          onSelectionChange={handleTabChange}
-        /> */}
+        
       </div>
 
       <div className="flex flex-col justify-center items-center gap-2">
