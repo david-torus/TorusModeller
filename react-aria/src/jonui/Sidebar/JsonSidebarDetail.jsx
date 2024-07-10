@@ -1,68 +1,153 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
-
+import { FaExchangeAlt } from "react-icons/fa";
+import TorusDropDown from "../../torusComponents/TorusDropDown";
+import { IoIosArrowDown } from "react-icons/io";
 
 const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
   };
   return (
     <div>
       <select onClick={handleDropdownClick}>
-        {obj &&
-          obj.map((ele) => (
-           {ele}
-          ))}
+        {obj && obj.map((ele) => ({ ele }))}
       </select>
     </div>
   );
 };
 
-const RenderDropdown = ({ obj , path ,item , handlejs , showObj }) => {
-  const[value, setValue] = useState(null);
+const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
+  const [value, setValue] = useState(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [data, setData] = useState(null);
   const handleDropdownClick = (event) => {
-    event.stopPropagation(); 
+    event.stopPropagation();
   };
 
-  const handleDropdownChange = (event) => {
-    setValue(event.target.value);
-    if(value){
-      handlejs(event.target.value, path+"."+item , item, "dropdown" , showObj);
+  //   {
+  //     "type": "dropdown",
+  //     "label": "tags",
+  //     "value": [
+  //         "user",
+  //         "premium"
+  //     ],
+  //     "selectedValue": ""
+  // }
+
+  useEffect(() => {
+    {
+      obj &&
+        setData(Object.keys(obj).filter((item) => item == "selectedValue"));
     }
+  }, []);
+
+  useEffect(() => {
+    if (value) {
+      handlejs(
+        Array.from(value)[0],
+        path + "." + item + "." + data,
+        data,
+        "dropdown",
+        showObj
+      );
+    }
+  }, [value]);
+
+  const handleDropdownChange = (e) => {
+    setValue(e.target.value);
+
+    handlejs(
+      e.target.value,
+      path + "." + item + "." + data,
+      data,
+      "dropdown",
+      showObj
+    );
   };
 
-  console.log(obj , item , value,  path+"."+item, showObj, "handleDropdownChange");
+
+  // console.log(
+  //   obj,
+  //   item,
+  //   value,
+  //   path + "." + item,
+  //   showObj,
+  //   "handleDropdownChange"
+  // );
+
   return (
-    <div className="flex gap-2 items-center">
-      {item}:
-      <select onClick={handleDropdownClick} onChange={handleDropdownChange} className="border">
-        {obj &&
-          obj.map((ele) => (
-            <option key={ele} value={ele} >
-              {ele}
-            </option>
-          ))}
-      </select>
-    </div>
+    <>
+      {obj && obj.type == "dropdown" && (
+        <>
+          { (
+            <div className="flex w-[100%] flex-col gap-2">
+
+            <div div className="flex items-center gap-3 w-[20%] ">
+              <p>{obj.label}</p>
+              <TorusDropDown
+             
+
+                title={
+                  <div className="flex flex-row items-center gap-2   w-[100%]">
+                    <div
+                      className={
+                        "w-[80%] text-black font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
+                      }
+                    >
+                      {(value && Array.from(value)[0]) || "*"}
+                    </div>
+                    <div className="w-[10%]">
+                      <IoIosArrowDown color={"#090b0e"} />
+                    </div>
+                  </div>
+                }
+                fontStyle={
+                  "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                }
+                classNames={{
+                  buttonClassName: `bg-[#93C5FD] opacity-90 flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
+                  listBoxClassName: "bg-white text-black ",
+                }}
+                selected={value}
+                setSelected={setValue}
+                selectionMode="single"
+                items={obj.selectionList.map((ele) => ({
+                  key: ele,
+                  label: ele,
+                }))}
+                btWidth={"md"}
+              />
+            </div>
+
+                <p> selectedValue :{obj?.selectedValue}</p>
+
+            </div>
+
+
+          )}
+       
+        </>
+      )}
+    </>
   );
 };
-
 
 const RenderJsonArraySidebarDetail = ({
   obj,
   showObj,
   path,
   handlejs,
-  objs
+  objs,
 }) => {
   const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
-  const[value, setValue] = useState(null);
+  const [value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
     console.log(e.target.value, i, key, type, "renderinput");
     setValue(e.target.value);
     if (value) {
-      handlejs(e.target.value, i, key, type ,showObj);
+      handlejs(e.target.value, i, key, type, showObj);
     }
   };
 
@@ -74,85 +159,88 @@ const RenderJsonArraySidebarDetail = ({
     }
   };
 
+  console.log(obj, "jk")
+
   return (
     <div>
       {obj &&
         obj.map((ele, index) => {
           const isExpanded = expandedItem.includes(ele.label);
           return (
-            <div
-              key={index}
-            >
-              <p className="cursor-pointer flex items-center gap-2"   onClick={(e) => {
-                setShowAccordianItem(ele);
-                e.stopPropagation(); 
-                toggleKey(ele.label);
-                // if (expandedItem === ele.label) {
-                //   setExpandedItem(null); 
-                // } else {
-                //   setExpandedItem(ele.label); 
-                // }
-
-              }}>
+            <div key={index}>
+              <p
+                className="cursor-pointer flex items-center gap-2"
+                onClick={(e) => {
+                  setShowAccordianItem(ele);
+                  e.stopPropagation();
+                  toggleKey(ele.label);
+                 
+                }}
+              >
                 {ele.label}
-                <span
-                
-                >
-                   {isExpanded ? (
+                <span>
+                  {isExpanded ? (
                     <MdExpandLess color="gray" />
                   ) : (
                     <MdExpandMore color="gray" />
                   )}
                 </span>
               </p>
-              { isExpanded && (
+              {isExpanded && (
                 <div>
                   {objs &&
-                    Object.keys(objs[showObj][index]).filter((item)=>item!=="label").map((item, inds) => {
-                      if (!Array.isArray(objs[showObj][index][item])) {
-                        return (
-                          <p className="flex gap-2 mb-2 items-center" >
-                            {item} :
-                            <input
-                              className="border text-blue-500 "
-                              type="text"
-                              Value={objs[showObj][index][item]}
-                              onChange={(e) =>
-                              {
-                                handleInput(
-                                  e,
-                                  path + "." + index + "." + item,
-                                  item,
-                                  "arr"
-                                
-                                )
-                              }
-                              }
-                            />
-                          </p>
-                        );
-                      }
+                    Object.keys(objs[showObj][index])
+                      .filter((item) => item !== "grouplabel" && item !== "label")
+                      .map((item, inds) => {
+                        if (
+                          !Array.isArray(objs[showObj][index][item]) &&
+                          typeof objs[showObj][index][item] !== "object"
+                        ) {
+                          return (
+                            <p className="flex gap-2 mb-2 items-center">
+                              {item} :
+                              <input
+                                className="border text-blue-500 "
+                                type="text"
+                                Value={objs[showObj][index][item]}
+                                onChange={(e) => {
+                                  handleInput(
+                                    e,
+                                    path + "." + index + "." + item,
+                                    item,
+                                    "arr"
+                                  );
+                                }}
+                              />
+                            </p>
+                          );
+                        }
 
-                     
-                      if (Array.isArray(objs[showObj][index][item])) {
-                        return (
-                          <>
-                           
-                            <RenderDropdown obj={objs[showObj][index][item]} item={item} path ={path + "." + index } handlejs={handlejs} showObj={showObj} />
-                          </>
-                        );
-                      }
-                      if(typeof objs[showObj][index][item] === "boolean" ){
-                        <RenderSwitch obj={objs[showObj][index][item]} />
-                      }
-                    })}
+                        if (
+                          Array.isArray(objs[showObj][index][item]) ||
+                          typeof objs[showObj][index][item] === "object"
+                        ) {
+                          return (
+                            <>
+                              <RenderDropdown
+                                obj={objs[showObj][index][item]}
+                                item={item}
+                                path={path + "." + index}
+                                handlejs={handlejs}
+                                showObj={showObj}
+                              />
+                            </>
+                          );
+                        }
+                        if (typeof objs[showObj][index][item] === "boolean") {
+                          <RenderSwitch obj={objs[showObj][index][item]} />;
+                        }
+                      })}
                 </div>
               )}
             </div>
           );
         })}
-
-
 
       {/* 
       {obj && (
@@ -194,7 +282,6 @@ const RenderJsonArraySidebarDetail = ({
         </>
       )} */}
 
-
       {/* <select>
         {obj &&
           obj.map((ele) => (
@@ -203,24 +290,17 @@ const RenderJsonArraySidebarDetail = ({
             </option>
           ))}
       </select> */}
-
-      
     </div>
   );
 };
 
-export default function JsonSidebarDetail({
-  showObj,
-  obj,
-  handlejs,
-  path,
-}) {
+export default function JsonSidebarDetail({ showObj, obj, handlejs, path }) {
   const [value, setValue] = useState(null);
 
   const handleInput = (e, i, key, type) => {
     setValue(e);
     if (value) {
-      handlejs(e, i, key, type , showObj);
+      handlejs(e, i, key, type, showObj);
     }
   };
 
@@ -235,7 +315,10 @@ export default function JsonSidebarDetail({
                 obj &&
                 showObj &&
                 Object.keys(obj[showObj]).map((ele) => {
-                  if (!Array.isArray(obj[showObj][ele])) {
+                  if (
+                    !Array.isArray(obj[showObj][ele]) &&
+                    typeof obj[showObj][ele] !== "object"
+                  ) {
                     return (
                       <p style={{ display: ele === "label" ? "none" : "" }}>
                         {ele} :
@@ -250,8 +333,19 @@ export default function JsonSidebarDetail({
                       </p>
                     );
                   }
-                  if (Array.isArray(obj[showObj][ele])) {
-                    return <RenderDropdown obj={obj[showObj][ele]}  item={ele} path ={path} handlejs={handlejs} showObj={showObj} />;
+                  if (
+                    Array.isArray(obj[showObj][ele]) ||
+                    typeof obj[showObj][ele] === "object"
+                  ) {
+                    return (
+                      <RenderDropdown
+                        obj={obj[showObj][ele]}
+                        item={ele}
+                        path={path}
+                        handlejs={handlejs}
+                        showObj={showObj}
+                      />
+                    );
                   }
                 })
               ) : (

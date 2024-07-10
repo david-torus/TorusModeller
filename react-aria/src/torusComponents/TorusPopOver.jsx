@@ -4,7 +4,6 @@ import TorusButton from "./TorusButton";
 
 export default function TorusPopOver({
   children,
-  heading,
   parentHeading,
   popOverContent,
   popBgColor,
