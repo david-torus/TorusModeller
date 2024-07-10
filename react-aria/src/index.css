@@ -136,3 +136,14 @@
   font-family: "SF-Pro-Display-ultrathin-italic";
 }
 
+
+
+.scrollbar-none::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

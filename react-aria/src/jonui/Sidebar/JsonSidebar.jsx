@@ -8,11 +8,11 @@ export default function JsonSidebar({ obj , handlejs }) {
 
     const[path , setPath] = useState(null);
     return (
-      <div className="w-full h-full flex flex-row">
-        <div className="w-[24%] h-full m-10 border-x border-slate-900">
+      <div className="w-full h-screen flex flex-row">
+        <div className="w-[24%]  bg-white shadow-md rounded-lg p-6  m-10 border border-slate-900 scrollbar-none">
         <JsonSidebarIcon  showObj = {showObj} setShowObj = {setShowObj} obj={obj} setPath = {setPath} />
         </div>
-        <div className="w-[76%] h-full">
+        <div className="w-screen">
         <JsonSidebarDetail showObj = {showObj} obj={obj} handlejs = {handlejs} path={path}  />
        
         </div>

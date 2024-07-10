@@ -4,7 +4,7 @@ import JsonSidebar from "./Sidebar/JsonSidebar";
 import _, { set } from "lodash";
 
 const js ={
-  'Organization Group List': { label: 'Organization Group List' },
+  'Organization Group List': { label: 'Organization Group List' , value: 'orgGrp' },
   orgGrp: [
     {
       grouplabel:"Organization Group1",
@@ -138,6 +138,19 @@ const js ={
     {
       grouplabel:"Node Details1",
       label: 'Node Details',
+      id: '3e43a200-c58d-461e-8e7f-13365ded730d',
+      resourceType: 'ProcessFlow',
+      resource: 'ManualInput',
+      SIFlag: {
+        label: 'SI Flag',
+        type: 'dropdown',
+        selectedValue: 'A',
+        selectionList: [ 'A', 'E' ]
+      }
+    },
+    {
+      grouplabel:"Node Details2",
+      label: 'Node Detailsdsff',
       id: '3e43a200-c58d-461e-8e7f-13365ded730d',
       resourceType: 'ProcessFlow',
       resource: 'ManualInput',
@@ -506,7 +519,7 @@ const js ={
  
 
 const RenderObject = ({ obj, handlejs }) => {
-  return <>{obj && <JsonSidebar obj={obj} handlejs={handlejs} />}</>;
+  return <>{obj &&  <FabricsSideBar obj={obj} handlejs={handlejs} />}</>;
 };
 
 export const RenderJson = () => {
@@ -551,7 +564,7 @@ export const RenderJson = () => {
     <>
       {dupJson && Object.keys(dupJson).length > 0 && (
         <>
-          <div className="w-full h-full">
+          <div className=" w-full h-full  ">
             {Object.keys(dupJson).length > 0 && (
               <RenderObject obj={dupJson} handlejs={handlejs} />
             )}
