@@ -17,11 +17,8 @@ export default function NewNavbar() {
           <span className=" font-semibold font-Neue Montreal text-black text-lg ">
             TORUS
           </span>
-          <span className="ml-4">
-            <Line />
-          </span>
         </div>
-        <div className="flex gap-2 w-[20%]">
+        <div className="flex items-center justify-center gap-2 w-[80%]">
           <span className="ml-4">
             <ZoomIn />
           </span>
@@ -61,10 +58,7 @@ export default function NewNavbar() {
             />
             <p className="text-xs text-black/35">Edited 10 mins ago</p>
           </div>
-        </div>
-        <div className="ml-[-7%]">
           <TorusDropDown
-            s
             title={
               <span className="font-inter 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter">
                 {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
@@ -86,6 +80,7 @@ export default function NewNavbar() {
             ]}
           />
         </div>
+        <div className=""></div>
       </div>
     </div>
   );
