@@ -36,7 +36,7 @@ import NewNavbar from "./NewNavbar";
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const [selectedFabric, setSelectedFabric] = useState("DF");
+  const [selectedFabric, setSelectedFabric] = useState("Home");
   const [selectedTab, setSelectedTab] = useState("DF");
   const { screenToFlowPosition } = useReactFlow();
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);

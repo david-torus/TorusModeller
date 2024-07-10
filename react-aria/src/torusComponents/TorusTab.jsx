@@ -27,7 +27,14 @@ export default function TorusTab({
     >
       <TabList
         aria-label={ariaLabel}
-        className={merger(defaultTabsClassNames.tablist, classNames?.tablist)}
+        // className={merger(defaultTabsClassNames.tablist, classNames?.tablist)}
+        style={{
+          display: "flex",
+          flexDirection: orientation === "vertical" ? "column" : "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          gap: "0.5rem",
+        }}
       >
         {tabs.map((tab, index) => (
           <Tab

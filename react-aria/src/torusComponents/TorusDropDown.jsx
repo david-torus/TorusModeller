@@ -48,7 +48,11 @@ export default function TorusDropDown({
   btWidth,
   selectionMode = "multiple",
   fonstyle,
+  btncolor,
+  radius,
 }) {
+
+  console.log(radius,"radiusDrop")
   return (
     <DialogTrigger>
       <TorusButton
@@ -59,8 +63,9 @@ export default function TorusDropDown({
         )}
         height={buttonHeight}
         width={btWidth}
-        bgColor={"bg-fuchsia-500"}
         fontStyle={fonstyle}
+        btncolor={btncolor}
+        radius={radius}
       />
 
       <Popover

@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import ReactFlow from "reactflow";
+import HomeScreen from "./HomeScreen";
 
 export const FabricsSelector = forwardRef(function FabricsSelector(
   {
@@ -23,6 +24,24 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
   console.log(fabric);
   const cycleFabric = (fabric) => {
     switch (fabric) {
+      case "Home":
+        return (
+          <ReactFlow
+            ref={ref}
+            onNodeContextMenu={onNodeContextMenu}
+            onPaneClick={onPaneClick}
+            nodeTypes={NODE_TYPES}
+            nodes={nodes}
+            edges={edges}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            children={children}
+          />
+        );
+
       case "DF":
         return (
           <ReactFlow

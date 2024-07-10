@@ -21,6 +21,8 @@ export default function TorusButton({
   endContent,
   startContent,
 }) {
+
+  console.log(radius, "radius");
   const outlineFn = () => {
     if (outlineColor) {
       return ` torus-hover:ring-2 torus-hover:ring-offset-4  ${outlineColor}`;
@@ -32,14 +34,14 @@ export default function TorusButton({
   return (
     <Button
       style={{
-        backgroundColor: btncolor,
+        background: btncolor,
       }}
       className={merger(
         ` font-lg    ${marginT} border-none  outline-none
          torus-pressed:animate-torusButtonActive 
                     torus-hover:outline-none
                     torus-hover:border-2 
-                    ${hoverOutline}
+                    ${hoverOutline} ${gap}
                     
           ${
             radius === "sm"
@@ -84,7 +86,7 @@ export default function TorusButton({
                ? "h-25"
                : height === "full"
                ? "h-28"
-               : "h-5"
+               : ""
            } 
         
           `,
@@ -113,14 +115,7 @@ export default function TorusButton({
         )
       )}
 
-      {!startContent && !endContent && (
-        <div
-          style={{ color: color }}
-          className={`${fontStyle} flex justify-center gap-1 ${gap}`}
-        >
-          {Children}
-        </div>
-      )}
+      {!startContent && !endContent && <p className={`${fontStyle}`}> {Children} </p>}
     </Button>
   );
 }

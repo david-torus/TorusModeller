@@ -1,10 +1,19 @@
 import React from "react";
 import { Panel } from "reactflow";
-import { Connect, Data, Home, Sheild, Wire } from "./SVG_Application";
+import {
+  Connect,
+  Data,
+  FabricBar,
+  Faq,
+  Home,
+  Sheild,
+  Support,
+  Wire,
+} from "./SVG_Application";
 import TorusTab from "./torusComponents/TorusTab";
 
 const colors = {
-  hidden: { dark: "#008080", light: "#008080" },
+  home: { dark: "#008080", light: "#008080" },
   DF: {
     dark: "#2257f7",
     light: "#244DCB",
@@ -18,6 +27,28 @@ const colors = {
   SF: { dark: "#FFc723", light: "#FFBE00" },
 };
 
+const transparent =
+  "torus-selected:border-r-transparent torus-selected:border-t-transparent torus-selected:border-b-transparent";
+const focusBLcolor = {
+  DF: {
+    dark: `torus-selected:border-2 torus-selected:border-l-[#2257f7] ${transparent}`,
+    light: `torus-selected:border-2 torus-selected:border-l-[#244DCB] ${transparent}`,
+  },
+  UF: {
+    dark: `torus-selected:border-2 torus-selected:border-l-[#33CCFF] ${transparent}`,
+    light: `torus-selected:border-2 torus-selected:border-l-[#00BFFF] ${transparent}`,
+  },
+  PF: {
+    dark: `torus-selected:border-2 torus-selected:border-l-[#2AE38F] ${transparent}`,
+    light: `torus-selected:border-2 torus-selected:border-l-[#13CC78] ${transparent}`,
+  },
+
+  SF: {
+    dark: `torus-selected:border-2 torus-selected:border-l-[#FFc723] ${transparent}`,
+    light: `torus-selected:border-2 torus-selected:border-l-[#FFBE00] ${transparent}`,
+  },
+};
+
 export default function NewSidebar({
   color,
   selectedFabric,
@@ -25,86 +56,165 @@ export default function NewSidebar({
   handleSidebarToggle,
   handleTabChange,
 }) {
+  const borderFn = () => {
+    if (selectedFabric === "home") {
+      return focusBLcolor.home;
+    } else if (selectedFabric === "DF") {
+      return focusBLcolor.DF.dark;
+    } else if (selectedFabric === "UF") {
+      return focusBLcolor.UF.dark;
+    } else if (selectedFabric === "PF") {
+      return focusBLcolor.PF.dark;
+    } else if (selectedFabric === "SF") {
+      return focusBLcolor.SF.dark;
+    }
+  };
+
+  const borderLeft = borderFn();
+  console.log(borderLeft, "leftBorder");
+
   return (
     <Panel
       position="top-left"
-      className="h-[95%] w-[6%] bg-white border border-slate-300 rounded-lg"
+      className="h-[95%] w-[5%] flex justify-center items-center  bg-white border  border-slate-300 rounded-lg  "
     >
-      <div className="flex justify-center items-center  gap-3">
-        <div className="w-[75%] h-[90%] ">
-          <div className="">
-            <Home />
-          </div>
-          <div className="mt-10 w-full flex items-center justify-center ">
-            <TorusTab
-              orientation="vertical"
-              classNames={{
-                tabs: "cursor-pointer ml-[10px] lg:max-3xl:mt[2%]",
-                tabList: "block  ",
-                tab: `xl:w-[6.5%] xl:h-[2.48rem]
-                  lg:w-[6.5%] lg:h-[2.3rem]
-                  md:w-[10%] md:h-[2.5rem]
-                  3xl:w-[6.5%] 3xl:h-[2.3rem]
-                  md:mt-[1%] 
-                  lg:mt-[1.6%] 
-                  xl:mt-[1.7%] 
-                  3xl:mt-[1.8%] 
-                rounded-t-lg torus-focus:outline-none flex items-center justify-center torus-selected:bg-[#F4F5FA] dark:torus-selected:bg-[#1E2428]]`,
-              }}
-              tabs={[
-                {
-                  id: "DF",
-                  content: ({ isSelected }) => (
-                    <div>
-                      <Data
-                        strokeColor={
-                          !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                        }
-                      />
-                    </div>
-                  ),
-                },
-                {
-                  id: "UF",
-                  content: ({ isSelected }) => (
-                    <div>
-                      <Wire
-                        strokeColor={
-                          !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                        }
-                      />
-                    </div>
-                  ),
-                },
-                {
-                  id: "PF",
-                  content: ({ isSelected }) => (
-                    <div>
-                      <Connect
-                        strokeColor={
-                          !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                        }
-                      />
-                    </div>
-                  ),
-                },
-                {
-                  id: "SF",
-                  content: ({ isSelected }) => (
-                    <div>
-                      <Sheild
-                        strokeColor={
-                          !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                        }
-                      />
-                    </div>
-                  ),
-                },
-              ]}
-              onSelectionChange={handleTabChange}
-            />
-          </div>
-        </div>
+      <div className="h-[90%] w-[100%] flex justify-center flex-col ">
+        <TorusTab
+          orientation="vertical"
+          classNames={{
+            tabs: "cursor-pointer",
+            tabList: "w-full h-[100%] flex justify-center items-center",
+            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none ${borderLeft}`,
+          }}
+          tabs={[
+            {
+              id: "Home",
+              content: ({ isSelected }) => (
+                <Home
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "DF",
+              content: ({ isSelected }) => (
+                <Data
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "UF",
+              content: ({ isSelected }) => (
+                <Wire
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "PF",
+              content: ({ isSelected }) => (
+                <Connect
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "SF",
+              content: ({ isSelected }) => (
+                <Sheild
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "FabricsBar",
+              content: ({ isSelected }) => (
+                <FabricBar
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "FAQ",
+              content: ({ isSelected }) => (
+                <Faq
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "Support",
+              content: ({ isSelected }) => (
+                <Support
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+          ]}
+          onSelectionChange={handleTabChange}
+        />
+
+        <hr className="w-[1px] h-[100%] bg-slate-300" />
+
+        {/* <TorusTab
+          orientation="vertical"
+          classNames={{
+            tabs: "cursor-pointer",
+            tabList: "w-full h-[100%] flex justify-center items-center",
+            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none ${borderLeft}`,
+          }}
+          tabs={[
+            
+            {
+              id: "FabricsBar",
+              content: ({ isSelected }) => (
+                <FabricBar
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "FAQ",
+              content: ({ isSelected }) => (
+                <Faq
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+            {
+              id: "Support",
+              content: ({ isSelected }) => (
+                <Support
+                  strokeColor={
+                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                  }
+                />
+              ),
+            },
+          ]}
+          onSelectionChange={handleTabChange}
+        /> */}
       </div>
     </Panel>
   );

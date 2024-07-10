@@ -203,15 +203,19 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="w-[100%] flex justify-center items-center h-14 ">
+          <div className="w-[100%] flex justify-center items-center">
             <TorusButton
               Children="Submit"
               onPress={outPutFn}
               width={"full"}
-              btncolor={"bg-fuchsia-500"}
+              btncolor={"#D54CEE"}
               outlineColor="torus-hover:ring-fuchsia-500/50"
               radius={"lg"}
               pressFunc={outPutFn}
+              color={"#000000"}
+              gap={"py-4"}
+              marginT="mt-3"
+              // height={"md"}
             />
           </div>
         </div>
