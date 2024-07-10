@@ -1080,6 +1080,146 @@ const Line = () => {
   );
 };
 
+const VerticalLine = () => {
+  return (
+    <svg
+      width="1"
+      height="30"
+      viewBox="0 0 1 41"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line x1="0.5" x2="0.5" y2="41" stroke="black" stroke-opacity="0.35" />
+    </svg>
+  );
+};
+
+const Debugger = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 15V11.9375C19 9.7629 17.2371 8.00002 15.0625 8.00002H8.9375C6.76288 8.00002 5 9.7629 5 11.9375V15C5 18.866 8.13401 22 12 22C15.866 22 19 18.866 19 15Z"
+        stroke="black"
+        stroke-width="1.5"
+      />
+      <path
+        d="M16.5 8.5V7.5C16.5 5.01472 14.4853 3 12 3C9.51472 3 7.5 5.01472 7.5 7.5V8.5"
+        stroke="black"
+        stroke-width="1.5"
+      />
+      <path
+        d="M19 14H22"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M5 14H2"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M14.5 3.50002L17 2.00002"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M9.5 3.50002L7 2.00002"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M20.5 20.0002L18.5 19.2002"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M20.5 7.9998L18.5 8.7998"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M3.5 20.0002L5.5 19.2002"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M3.5 7.9998L5.5 8.7998"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M12 21.5V15"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};
+
+const Preview = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80855 3.27489 8.70435C4.97196 6.49958 7.81811 4.00002 12 4.00002C16.1819 4.00002 19.028 6.49958 20.7251 8.70435C21.575 9.80855 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z"
+        stroke="black"
+        stroke-width="1.5"
+      />
+      <path
+        d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
+        stroke="black"
+        stroke-width="1.5"
+      />
+    </svg>
+  );
+};
+
+const Shared = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M22 13.9979C21.9711 17.4119 21.7815 19.294 20.5404 20.5352C19.0755 22 16.7179 22 12.0026 22C7.28733 22 4.9297 22 3.46485 20.5352C2 19.0703 2 16.7127 2 11.9974C2 7.28212 2 4.92448 3.46485 3.45963C4.70599 2.21848 6.58807 2.02895 10.0021 2"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+      <path
+        d="M22 7H14C12.1824 7 11.0867 7.89202 10.6804 8.30029C10.5546 8.42673 10.4917 8.48996 10.4908 8.49082C10.49 8.49168 10.4267 8.55459 10.3003 8.68042C9.89202 9.08671 9 10.1824 9 12V15M22 7L17 2M22 7L17 12"
+        stroke="black"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
 const Saved = () => {
   return (
     <svg
@@ -1142,5 +1282,9 @@ export {
   Home,
   TorusLogo,
   Line,
-  Saved
+  Saved,
+  VerticalLine,
+  Debugger,
+  Preview,
+  Shared
 };
