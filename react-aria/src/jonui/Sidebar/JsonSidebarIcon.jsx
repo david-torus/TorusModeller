@@ -33,8 +33,12 @@ const RenderJsonArraySidebarIcon = ({
             );
         })} */}
       <span
-        className={"flex  items-center gap-2" + ( activeTab == fg ? " font-bold text-[#6600ff]" : "text-black")}
-
+        className={
+          "flex  items-center gap-2 text-xs cursor-pointer" +
+          (activeTab == fg
+            ? "text-xs  cursor-pointer text-[#6600ff]"
+            : "text-black cursor-pointer")
+        }
         onClick={() => {
           setShowObj(fg);
           setActiveTab(fg);
@@ -65,9 +69,14 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
             if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
               {
                 return (
-                  <div >
+                  <div>
                     <span
-                    className={" flex items-center  gap-4"+ (activeTab === ele ? " font-bold text-[#0073e6]" : "text-black")}
+                      className={
+                        " flex items-center text-xs cursor-pointer gap-4" +
+                        (activeTab === ele
+                          ? " cursor-pointer  text-xs text-[#0073e6]"
+                          : "text-black cursor-pointer")
+                      }
                       // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
                       onClick={() => {
                         setShowObj(ele);
@@ -75,17 +84,18 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                         setActiveTab(ele);
                       }}
                     >
-                      {obj[ele].label ? obj[ele].label +"{}" : ele +"{}"}
+                      {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"}
 
                       <span>
-          <TorusToolTip
-            hoverContent={<MdInfoOutline size={15} color="black" />}
-            tooltipContent={ele}
-            color={"black"}
-          />
-        </span>
+                        <TorusToolTip
+                          hoverContent={
+                            <MdInfoOutline size={15} color="black" />
+                          }
+                          tooltipContent={ele}
+                          color={"black"}
+                        />
+                      </span>
                     </span>
-                  
                   </div>
                 );
               }

@@ -3,6 +3,8 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { FaExchangeAlt } from "react-icons/fa";
 import TorusDropDown from "../../torusComponents/TorusDropDown";
 import { IoIosArrowDown } from "react-icons/io";
+import TorusInput from "../../torusComponents/TorusInput";
+import TorusSelector from "../../torusComponents/TorusSelector";
 
 const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
@@ -66,7 +68,6 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     );
   };
 
-
   // console.log(
   //   obj,
   //   item,
@@ -80,55 +81,58 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     <>
       {obj && obj.type == "dropdown" && (
         <>
-          { (
+          {
             <div className="flex w-[100%] flex-col gap-2">
-
-            <div div className="flex items-center gap-4  w-[50%] ">
-              <p>{obj.label}</p>
-              <TorusDropDown
-                title={
-                  <div className="flex flex-row items-center  w-[100%]">
-                    <div
-                      className={
-                        "w-[80%] text-black font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
-                      }
-                    >
-                      {(value && Array.from(value)[0]) || "*"}
+              <div div className="flex flex-col  gap-4  w-full ">
+                {/* <p>{obj.label}</p> */}
+                {/* <TorusDropDown
+                  classNames={{
+                    buttonClassName: `bg-white w-[100%] h-[40px] text-black `,
+                    listBoxClassName: "bg-white text-black ",
+                  }}
+                  title={
+                    <div className="flex flex-row items-center  w-[100%]">
+                      <div
+                        className={
+                          "w-[80%] text-black font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
+                        }
+                      >
+                        {(value && Array.from(value)[0]) || "*"}
+                      </div>
+                      <div className="w-[10%]">
+                        <IoIosArrowDown color={"#090b0e"} />
+                      </div>
                     </div>
-                    <div className="w-[10%]">
-                      <IoIosArrowDown color={"#090b0e"} />
-                    </div>
-                  </div>
-                }
-                fontStyle={
-                  "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
-                }
-                classNames={{
-                  buttonClassName: `bg-[#a3a3c2] opacity-90 flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
-                  listBoxClassName: "bg-white text-black ",
-                }}
-                selected={value}
-                setSelected={setValue}
-                selectionMode="single"
-                items={obj.selectionList.map((ele) => ({
-                  key: ele,
-                  label: ele,
-                }))}
-                btWidth={"md"}
-              />
+                  }
+                  fontStyle={
+                    "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                  }
+                  selected={value}
+                  setSelected={setValue}
+                  selectionMode="single"
+                  items={obj.selectionList.map((ele) => ({
+                    key: ele,
+                    label: ele,
+                  }))}
+                  btWidth={"md"}
+                /> */}
+                <TorusSelector
+                  label={obj.label}
+                  value={value}
+                  onChange={handleDropdownChange}
+                  items={obj.selectionList.map((ele) => ({
+                    key: ele,
+                    label: ele,
+                  }))}
+                />
+              </div>
+
+              {/* <p className="flex  gap-4 mb-3">
+                {" "}
+                selectedValue :<span>{obj?.selectedValue}</span>
+              </p> */}
             </div>
-
-                <p className="flex  gap-4 mb-3"> selectedValue : 
-                  <span> 
-                  {obj?.selectedValue}
-                  </span></p>
-                  
-
-            </div>
-
-
-          )}
-       
+          }
         </>
       )}
     </>
@@ -161,7 +165,7 @@ const RenderJsonArraySidebarDetail = ({
     }
   };
 
-  console.log(obj, "jk")
+  console.log(obj, "jk");
 
   return (
     <div>
@@ -169,41 +173,69 @@ const RenderJsonArraySidebarDetail = ({
         obj.map((ele, index) => {
           const isExpanded = expandedItem.includes(ele.label);
           return (
-            <div key={index} className={" bg-white shadow-md rounded-lg border border-gray-300 w-[60%] mb-4   " +(isExpanded ? "transition ease-in-out duration-300":"") }>
+            <div
+              key={index}
+              className={
+                " bg-[#F4F5FA]  rounded-lg  w-[100%]   mb-2" +
+                (isExpanded ? "transition ease-in-out duration-300" : "")
+              }
+            >
               <p
-                className="cursor-pointer  flex items-center gap-2 p-6  "
+                className="cursor-pointer  flex items-center gap-2 p-2 "
                 onClick={(e) => {
                   setShowAccordianItem(ele);
                   e.stopPropagation();
                   toggleKey(ele.label);
-                 
                 }}
               >
                 <p>{ele.label} </p>
-                <span className="ml-72" >
+                <span className="flex justify-end">
                   {isExpanded ? (
-                    <MdExpandLess color="gray" />
+                    <MdExpandLess color="gray" size={20} />
                   ) : (
-                    <MdExpandMore color="gray" />
+                    <MdExpandMore color="gray" size={20} />
                   )}
                 </span>
-      
               </p>
 
               {isExpanded && (
-                <div className=" p-4">
+                <div className="mb-2 p-2">
                   {objs &&
                     Object.keys(objs[showObj][index])
-                      .filter((item) => item !== "grouplabel" && item !== "label")
+                      .filter(
+                        (item) => item !== "grouplabel" && item !== "label"
+                      )
                       .map((item, inds) => {
                         if (
                           !Array.isArray(objs[showObj][index][item]) &&
                           typeof objs[showObj][index][item] !== "object"
                         ) {
                           return (
-                            <p className="flex gap-2 mb-3 items-center">
-                              {item} :
-                              <input
+                            <p className="flex flex-col  mt-[-25px] ">
+                              <TorusInput
+                                variant="bordered"
+                                label={item}
+                                labelColor="text-[#000000]/50"
+                                borderColor="[#000000]/50"
+                                outlineColor="torus-focus:ring-[#000000]/50"
+                                placeholder=""
+                                isDisabled={false}
+                                onChange={(e) => {
+                                  handleInput(
+                                    e,
+                                    path + "." + index + "." + item,
+                                    item,
+                                    "arr"
+                                  );
+                                }}
+                                radius="lg"
+                                width="xl"
+                                height="xl"
+                                textColor="text-[#000000]"
+                                bgColor="bg-[#FFFFFF]"
+                                value={objs[showObj][index][item]}
+                              />
+                              {/* <input
                                 className="border text-blue-500 "
                                 type="text"
                                 Value={objs[showObj][index][item]}
@@ -215,7 +247,7 @@ const RenderJsonArraySidebarDetail = ({
                                     "arr"
                                   );
                                 }}
-                              />
+                              /> */}
                             </p>
                           );
                         }
@@ -309,7 +341,7 @@ export default function JsonSidebarDetail({ showObj, obj, handlejs, path }) {
   };
 
   return (
-    <div className=" flex  flex-col gap-3 font-semibold p-2 mt-7  text-sm">
+    <div className=" flex  flex-col gap-3 font-semibold p-2  text-sm">
       Properties
       <div>
         {showObj && (
@@ -324,16 +356,37 @@ export default function JsonSidebarDetail({ showObj, obj, handlejs, path }) {
                     typeof obj[showObj][ele] !== "object"
                   ) {
                     return (
-                      <p style={{ display: ele === "label" ? "none" : "" }} className="">
-                        {ele} :
-                        <input
+                      <p
+                        style={{ display: ele === "label" ? "none" : "" }}
+                        className="bg-[#F4F5FA] rounded-lg p-2"
+                      >
+                        <div className="w-[100%]">
+                          <TorusInput
+                            variant="bordered"
+                            label={ele}
+                            labelColor="text-[#000000]/50"
+                            borderColor="[#000000]/50"
+                            outlineColor="torus-focus:ring-[#000000]/50"
+                            placeholder=""
+                            isDisabled={false}
+                            onChange={(e) => handleInput(e, path, ele, "obj")}
+                            radius="lg"
+                            width="xl"
+                            height="xl"
+                            textColor="text-[#000000]"
+                            bgColor="bg-[#FFFFFF]"
+                            value={obj[showObj][ele]}
+                          />
+                        </div>
+
+                        {/* <input
                           className="border text-orange-500 "
                           type="text"
                           value={obj[showObj][ele]}
                           onChange={(e) =>
                             handleInput(e.target.value, path, ele, "obj")
                           }
-                        />
+                        /> */}
                       </p>
                     );
                   }
