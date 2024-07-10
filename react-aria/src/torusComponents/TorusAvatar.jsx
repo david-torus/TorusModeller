@@ -32,9 +32,6 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
             }
             bg-transparent 
             border-2  ${borderColor}`}
-        style={{
-          backgroundImage: `url(${src})`,
-        }}
       >
         {!src && (
           <FaRegUser
@@ -50,6 +47,14 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
                 ? 15
                 : 10
             }
+          />
+        )}
+
+        {src && (
+          <img
+            src={src}
+            alt="avatar"
+            class="inline-block size-8 rounded-full ring-2 ring-white dark:ring-neutral-900"
           />
         )}
       </div>
