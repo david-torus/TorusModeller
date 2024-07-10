@@ -44,19 +44,19 @@ const tabIcons = [
   },
 ];
 
-export default function FabricsSideBarIconTab({color}) {
+export default function FabricsSideBarIconTab({ color }) {
   return (
-    <div className="w-full h-full flex flex-col gap-3 pt-6 ">
+    <div className="w-full h-full bg-white flex flex-col gap-3 pt-6 ">
       {tabIcons.map((icon) => {
-        return <RenderIcon name={icon.name} icon={icon.icon}  color={color}/>;
+        return <RenderIcon name={icon.name} icon={icon.icon} color={color} />;
       })}
     </div>
   );
 }
 
-const RenderIcon = ({ name, icon , color}) => {
+const RenderIcon = ({ name, icon, color }) => {
   return (
-    <div  className="w-full p-2 flex items-center justify-center ">
+    <div className="w-full p-2 flex items-center justify-center ">
       <TorusToolTip tooltipContent={name} hoverContent={icon} color={color} />
     </div>
   );
