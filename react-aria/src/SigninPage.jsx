@@ -7,7 +7,7 @@ import TorusUnderLinedInput, {
   TorusFadedInput,
 } from "./torusComponents/TorusInput";
 import TorusModifiedInput from "./torusComponents/TorusInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TorusRadio from "./torusComponents/TorusRadio";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusModifiedInput1 from "./torusComponents/TorusInput";
@@ -16,12 +16,18 @@ import TorusDropDown from "./torusComponents/TorusDropDown";
 import { BsClockHistory } from "react-icons/bs";
 import TorusSelector from "./torusComponents/TorusSelector";
 import TorusSwitch from "./torusComponents/TorusSwitch";
+import { FaTextHeight, FaWeight } from "react-icons/fa";
+import { FaHouseFloodWaterCircleArrowRight } from "react-icons/fa6";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [height, setHeight] = useState(0);
+  const [weight, setWeight] = useState(0);
   const [checked, setChecked] = useState(false);
+  const [selector, setSelector] = useState(new Set([]));
+  const [checkboxValues, setCheckboxValues] = useState("");
+  const [radioValues, setRadioValues] = useState("");
 
   const handleChange = (value) => {
     setSelectedValues((prev) =>
@@ -31,14 +37,22 @@ export default function SignIn() {
     );
   };
 
+ 
+
   const finalValues = {
-    firstName,
-    lastName,
+    fullName,
+    height,
+    weight,
+    selector,
+    checkboxValues,
+    checked,
+    radioValues
   };
 
   const outPutFn = () => {
     console.log(finalValues);
   };
+
 
   return (
     <div className="w-full  flex-col h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
@@ -47,61 +61,71 @@ export default function SignIn() {
         <div className="w-[80%]  flex flex-col justify-center items">
           <TorusInput
             variant="bordered"
-            label="Framerwork"
+            label="Full Name"
             labelColor="text-[#000000]/50"
             borderColor="[#000000]/50"
             outlineColor="torus-focus:ring-[#000000]/50"
             placeholder=""
             isDisabled={false}
-            onChange={setLastName}
+            onChange={setFullName}
             radius="lg"
             width="xl"
             height="xl"
             textColor="text-[#000000]"
             bgColor="bg-[#FFFFFF]"
-            value={"React-Aria"}
+            value={fullName}
+            type="text"
           />
 
           <div className="w-[100%] grid grid-cols-2 gap-2">
             <div className="grid grid-cols-1">
               <TorusInput
                 variant="bordered"
-                label="Framerwork version"
+                label="Height"
                 labelColor="text-[#000000]/50"
                 borderColor="[#000000]/50"
                 outlineColor="torus-focus:ring-[#000000]/50"
                 placeholder=""
                 isDisabled={false}
-                onChange={setLastName}
+                onChange={setHeight}
                 radius="lg"
                 width="xl"
                 height="xl"
                 textColor="text-[#000000]"
                 bgColor="bg-[#FFFFFF]"
-                value={"1.0.0"}
+                value={height}
+                type="number"
+                endContent={
+                  <FaHouseFloodWaterCircleArrowRight
+                    size={15}
+                    color="[#000000]"
+                  />
+                }
               />
             </div>
             <div className="grid grid-cols-1">
               <TorusInput
                 variant="bordered"
-                label="Component"
+                label="Weight"
                 labelColor="text-[#000000]/50"
                 borderColor="[#000000]/50"
                 outlineColor="torus-focus:ring-[#000000]/50"
                 placeholder=""
                 isDisabled={false}
-                onChange={setLastName}
+                onChange={setWeight}
                 radius="lg"
                 width="xl"
                 height="xl"
                 textColor="text-[#000000]"
                 bgColor="bg-[#FFFFFF]"
-                value={"Input"}
+                value={weight}
+                type="number"
+                startContent={<FaWeight size={15} color="[#000000]" />}
               />
             </div>
           </div>
 
-          <TorusDatePicker label="Date" slot="end" openBtn="true" />
+          <TorusDatePicker label="Date of Birth" slot="end" openBtn="true" />
 
           {/* <TorusTimePicker
             label="Time"
@@ -127,6 +151,9 @@ export default function SignIn() {
             ]}
             label="Type"
             marginT="mt-5"
+            selected={selector}
+            setSelected={setSelector}
+            key={selector}
           />
 
           <TorusCheckBox
@@ -141,13 +168,18 @@ export default function SignIn() {
               "Others",
             ]}
             orientation="horizontal"
-            label="Gender"
+            label="Professions"
+            value={checkboxValues}
+            onChange={setCheckboxValues}
           />
 
           <TorusRadio
             content={["True", "False", "Null"]}
             marginT="mt-5"
             label="Defaults"
+            value={radioValues}
+            onChange={setRadioValues}
+            key={radioValues}
           />
 
           <div className="w-[100%] flex flex-col justify-center items-center mt-5  gap-0.5 bg-white rounded-md px-2 py-3">
@@ -173,13 +205,13 @@ export default function SignIn() {
 
           <div className="w-[100%] flex justify-center items-center h-14 ">
             <TorusButton
-              gap={"p-3"}
               Children="Submit"
               onPress={outPutFn}
               width={"full"}
-              bgColor={"bg-fuchsia-500"}
+              btncolor={"bg-fuchsia-500"}
               outlineColor="torus-hover:ring-fuchsia-500/50"
-              radius="lg"
+              radius={"lg"}
+              pressFunc={outPutFn}
             />
           </div>
         </div>
