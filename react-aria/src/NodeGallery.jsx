@@ -73,7 +73,7 @@ export default function NodeGallery({
       return (
         <div
           key={index}
-          className="flex items-center gap-1 dark:text-white "
+          className="flex items-center gap-1 dark:text-white w-full"
           draggable
           onDragStart={(event) => onDragStart(event, "default")}
         >
@@ -85,7 +85,7 @@ export default function NodeGallery({
             xl:w-5 xl:h-5 
             
             
-            flex items-center justify-center rounded-lg cursor-grab`}
+            flex items-center justify-center rounded-lg cursor-grab `}
           >
             {item.icon}
           </div>
@@ -102,7 +102,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "md:w-4/12 lg:w-2/12  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%] shadow-xl bg-white border border-slate-300 dark:border-slate-600 dark:bg-black rounded-lg"
+        ? "md:w-4/12 lg:w-2/12 ml-[90px]  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%] shadow-xl bg-white border border-slate-300 dark:border-slate-600 dark:bg-black rounded-lg"
         : "h-[6%] w-[5%]"
     }  transition-all ease-in-out duration-300`}
     >

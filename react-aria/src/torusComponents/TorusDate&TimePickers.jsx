@@ -279,8 +279,6 @@ const TorusTimeField = ({ slot, openBtn, label }) => {
   );
 };
 
-
-
 const TorusTimePicker = ({ label }) => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedTime, setSelectedTime] = useState({
@@ -290,9 +288,9 @@ const TorusTimePicker = ({ label }) => {
     period: "PM",
   });
 
-  const [visibleHours, setVisibleHours] = useState(3);
-  const [visibleMinutes, setVisibleMinutes] = useState(3);
-  const [visibleSeconds, setVisibleSeconds] = useState(3);
+  const [visibleHours, setVisibleHours] = useState(8);
+  const [visibleMinutes, setVisibleMinutes] = useState(8);
+  const [visibleSeconds, setVisibleSeconds] = useState(8);
 
   const togglePopover = () => {
     setIsPopoverOpen((prevIsPopoverOpen) => !prevIsPopoverOpen);
@@ -353,7 +351,7 @@ const TorusTimePicker = ({ label }) => {
           centerPosition - secondsContainer.clientHeight / 2 + 18;
       }
     }
-  }, [isPopoverOpen, selectedTime]);
+  }, [isPopoverOpen, selectedTime, hours, minutes, seconds]);
 
   return (
     <div className="flex flex-col items-start">
@@ -371,7 +369,7 @@ const TorusTimePicker = ({ label }) => {
               <p className="text-center font-semibold mb-4">Select Time</p>
               <div className="grid grid-cols-4 gap-2">
                 <div
-                  className="min-h-40 overflow-y-scroll scrollbar-hide"
+                  className="h-40 overflow-y-scroll scrollbar-hide"
                   id="hoursContainer"
                   onScroll={(e) => handleScroll(e, "hour")}
                 >
@@ -387,6 +385,8 @@ const TorusTimePicker = ({ label }) => {
                     </div>
                   ))}
                 </div>
+                <div class="absolute top-1/2 left-0 right-0 transform -translate-y-1/2 pointer-events-none border border-blue-600"></div>
+                <div class="absolute top-1/3 left-0 right-0 transform -translate-y-1/2 pointer-events-none border border-blue-600"></div>
                 <div
                   className="h-40 overflow-y-scroll scrollbar-hide relative"
                   id="minutesContainer"
@@ -403,8 +403,8 @@ const TorusTimePicker = ({ label }) => {
                       {min}
                     </div>
                   ))}
-                  <div className="absolute top-1/3 left-0 right-0 transform -translate-y-1/2 pointer-events-none border border-blue-600"></div>
                 </div>
+
                 <div
                   className="h-40 overflow-y-scroll scrollbar-hide relative"
                   id="secondsContainer"
@@ -421,8 +421,8 @@ const TorusTimePicker = ({ label }) => {
                       {sec}
                     </div>
                   ))}
-                  <div className="absolute top-1/2 left-0 right-0 transform -translate-y-1/2 pointer-events-none border border-blue-600"></div>
                 </div>
+
                 <div className="h-40 overflow-y-scroll scrollbar-hide">
                   {meridiem.map((md) => (
                     <div

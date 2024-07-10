@@ -4,7 +4,7 @@ import { merger } from "../utils/utils";
 
 const defaultTabsClassNames = {
   tabs: "w-full",
-  tablist: "flex flex-row gap-2 ",
+  tablist: "",
   tab: "w-full",
 };
 

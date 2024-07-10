@@ -31,6 +31,7 @@ import { Back } from "./SVG_Application";
 import CanvasPanel from "./CanvasPanel";
 import NewSidebar from "./NewSidebar";
 import { RenderJson } from "./jonui/JsonUI";
+import NewNavbar from "./NewNavbar";
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -138,13 +139,16 @@ export default function Layout() {
         flex flex-col   xl:max-3xl:bg-gray-600  lg:max-xl:gap-0 xl:max-3xl:gap-0
         max-md:gap-3 `}
     >
-      <div className="sticky top-0 ">
+      <div className="w-full h-[8%]">
+        <NewNavbar />
+      </div>
+      {/* <div className="sticky top-0 ">
         <Navbar
           selectedFabric={selectedFabric}
           handleTabChange={handleTabChange}
         />
-      </div>
-      <div className={`h-[95%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
+      </div> */}
+      <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
         <div className="h-full w-[78%]">
           <FabricsSelector
             nodeTypes={NODE_TYPES}
@@ -163,7 +167,13 @@ export default function Layout() {
             onInit={setreactflowinstance}
             ref={ref}
           >
-            {/* <NewSidebar /> */}
+            <NewSidebar
+              selectedFabric={selectedFabric}
+              color={colors[selectedFabric]?.dark}
+              showFabricSideBar={showFabricSideBar}
+              handleSidebarToggle={handleSidebarToggle}
+              handleTabChange={handleTabChange}
+            />
             <NodeGallery
               selectedFabric={selectedFabric}
               color={colors[selectedFabric]?.dark}
