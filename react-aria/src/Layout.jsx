@@ -142,14 +142,14 @@ export default function Layout() {
       <div className="w-full h-[8%]">
         <NewNavbar />
       </div>
-      {/* <div className="sticky top-0 ">
+      {/* <div className="w-full h-[8%] ">
         <Navbar
           selectedFabric={selectedFabric}
           handleTabChange={handleTabChange}
         />
       </div> */}
       <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
-        <div className="h-full w-[78%]">
+        <div className="h-full w-[73%]">
           <FabricsSelector
             nodeTypes={NODE_TYPES}
             fabric={selectedFabric}
@@ -198,7 +198,7 @@ export default function Layout() {
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
         </div>
-        <div className="h-full w-[35%] ">
+        <div className="h-full w-[27%] ">
           <RenderJson />
           {/* <FabricsSideBar color={colors[selectedTab]?.dark} /> */}
         </div>

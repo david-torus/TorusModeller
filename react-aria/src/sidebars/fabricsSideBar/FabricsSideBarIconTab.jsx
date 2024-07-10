@@ -48,7 +48,8 @@ export default function FabricsSideBarIconTab({ color }) {
   return (
     <div className="w-full h-full bg-white flex flex-col gap-3 pt-6 ">
       {tabIcons.map((icon) => {
-        return <RenderIcon name={icon.name} icon={icon.icon} color={color} />;
+        return;
+        <RenderIcon name={icon.name} icon={icon.icon} color={color} />;
       })}
     </div>
   );

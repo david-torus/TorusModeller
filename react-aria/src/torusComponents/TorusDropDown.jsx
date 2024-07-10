@@ -109,7 +109,7 @@ export default function TorusDropDown({
                         {item.label}
                       </Heading>
 
-                      <div className="flex items-center justify-center  ">
+                      <div className="flex justify-end ">
                         <span
                           className={` transition-all duration-150  ${
                             isSelected ? "opacity-100" : "opacity-0"
