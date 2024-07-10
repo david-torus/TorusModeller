@@ -1,15 +1,22 @@
-import React from "react";
-import FabricsSideBarIconTab from "./FabricsSideBarIconTab";
-import FabricsSideBarDetails from "./FabricsSideBarDetails";
+import React, { useState } from "react";
 
-export default function FabricsSideBar({ color }) {
+import { JsonSidebarIcon } from "../../jonui/Sidebar/JsonSidebarIcon";
+import JsonSidebarDetail from "../../jonui/Sidebar/JsonSidebarDetail";
+
+export default function FabricsSideBar({obj, handlejs}) {
+  const[showObj , setShowObj] = useState(null);
+  
+  const[path , setPath] = useState(null);
   return (
     <div className="w-full h-full flex flex-row">
-      <div className="w-[20%] h-full border-x border-slate-300">
-        <FabricsSideBarIconTab color={color} />
+      <div className="w-[60%] h-screen border-x border-slate-300">
+      <JsonSidebarIcon  showObj = {showObj} setShowObj = {setShowObj} obj={obj} setPath = {setPath} />
+
+      {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
-      <div className="w-[80%] h-full bg-white">
-        <FabricsSideBarDetails />
+      <div className="w-[100%] h-screen">
+      <JsonSidebarDetail showObj = {showObj} obj={obj} handlejs = {handlejs} path={path}  />
+        {/* <FabricsSideBarDetails /> */}
       </div>
     </div>
   );

@@ -83,13 +83,11 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
           { (
             <div className="flex w-[100%] flex-col gap-2">
 
-            <div div className="flex items-center gap-3 w-[20%] ">
+            <div div className="flex items-center gap-4  w-[50%] ">
               <p>{obj.label}</p>
               <TorusDropDown
-             
-
                 title={
-                  <div className="flex flex-row items-center gap-2   w-[100%]">
+                  <div className="flex flex-row items-center  w-[100%]">
                     <div
                       className={
                         "w-[80%] text-black font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
@@ -106,7 +104,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                   "font-plexsans 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }
                 classNames={{
-                  buttonClassName: `bg-[#93C5FD] opacity-90 flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
+                  buttonClassName: `bg-[#a3a3c2] opacity-90 flex  text-white rounded-md font-semibold font-sm  torus-pressed:animate-torusButtonActive `,
                   listBoxClassName: "bg-white text-black ",
                 }}
                 selected={value}
@@ -120,7 +118,11 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
               />
             </div>
 
-                <p> selectedValue :{obj?.selectedValue}</p>
+                <p className="flex  gap-4 mb-3"> selectedValue : 
+                  <span> 
+                  {obj?.selectedValue}
+                  </span></p>
+                  
 
             </div>
 
@@ -167,9 +169,9 @@ const RenderJsonArraySidebarDetail = ({
         obj.map((ele, index) => {
           const isExpanded = expandedItem.includes(ele.label);
           return (
-            <div key={index}>
+            <div key={index} className={" bg-white shadow-md rounded-lg border border-gray-300 w-[60%] mb-4   " +(isExpanded ? "transition ease-in-out duration-300":"") }>
               <p
-                className="cursor-pointer flex items-center gap-2"
+                className="cursor-pointer  flex items-center gap-2 p-6  "
                 onClick={(e) => {
                   setShowAccordianItem(ele);
                   e.stopPropagation();
@@ -177,17 +179,19 @@ const RenderJsonArraySidebarDetail = ({
                  
                 }}
               >
-                {ele.label}
-                <span>
+                <p>{ele.label} </p>
+                <span className="ml-72" >
                   {isExpanded ? (
                     <MdExpandLess color="gray" />
                   ) : (
                     <MdExpandMore color="gray" />
                   )}
                 </span>
+      
               </p>
+
               {isExpanded && (
-                <div>
+                <div className=" p-4">
                   {objs &&
                     Object.keys(objs[showObj][index])
                       .filter((item) => item !== "grouplabel" && item !== "label")
@@ -197,7 +201,7 @@ const RenderJsonArraySidebarDetail = ({
                           typeof objs[showObj][index][item] !== "object"
                         ) {
                           return (
-                            <p className="flex gap-2 mb-2 items-center">
+                            <p className="flex gap-2 mb-3 items-center">
                               {item} :
                               <input
                                 className="border text-blue-500 "
@@ -305,7 +309,7 @@ export default function JsonSidebarDetail({ showObj, obj, handlejs, path }) {
   };
 
   return (
-    <div className="font-semibold p-2 text-sm">
+    <div className=" flex  flex-col gap-3 font-semibold p-2 mt-7  text-sm">
       Properties
       <div>
         {showObj && (
@@ -320,7 +324,7 @@ export default function JsonSidebarDetail({ showObj, obj, handlejs, path }) {
                     typeof obj[showObj][ele] !== "object"
                   ) {
                     return (
-                      <p style={{ display: ele === "label" ? "none" : "" }}>
+                      <p style={{ display: ele === "label" ? "none" : "" }} className="">
                         {ele} :
                         <input
                           className="border text-orange-500 "

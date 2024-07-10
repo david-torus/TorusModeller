@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { MdInfoOutline } from "react-icons/md";
+import TorusToolTip from "../../torusComponents/TorusToolTip";
 
 const RenderJsonArraySidebarIcon = ({
-obj,
+  obj,
   setShowObj,
   setPath,
   fg,
@@ -30,65 +32,78 @@ obj,
               </div>
             );
         })} */}
-      <span  
-       style={{ color: activeTab == fg ? "red" : "black" }}
-       onClick={() => {
-         setShowObj(fg);
-         setActiveTab(fg);
-         setPath(fg );
+      <span
+        className={"flex  items-center gap-2" + ( activeTab == fg ? " font-bold text-[#6600ff]" : "text-black")}
 
-       }}
-      
-      >{obj[0].grouplabel}[]</span>
-      <span>
-
+        onClick={() => {
+          setShowObj(fg);
+          setActiveTab(fg);
+          setPath(fg);
+        }}
+      >
+        {obj[0].grouplabel}[]
+        <span>
+          <TorusToolTip
+            hoverContent={<MdInfoOutline size={15} color="black" />}
+            tooltipContent={fg}
+            color={"black"}
+          />
+        </span>
       </span>
     </>
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath  }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
     <>
-    
-    <div className="w-full  flex flex-col p-2 gap-3">
-      {obj &&
-        Object.keys(obj).map((ele) => {
-          if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
-            {
+      <div className="w-full  h-full overflow-y-scroll scrollbar-none flex flex-col p-2 gap-3">
+        {obj &&
+          Object.keys(obj).map((ele) => {
+            if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
+              {
+                return (
+                  <div >
+                    <span
+                    className={" flex items-center  gap-4"+ (activeTab === ele ? " font-bold text-[#0073e6]" : "text-black")}
+                      // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
+                      onClick={() => {
+                        setShowObj(ele);
+                        setPath(ele);
+                        setActiveTab(ele);
+                      }}
+                    >
+                      {obj[ele].label ? obj[ele].label +"{}" : ele +"{}"}
+
+                      <span>
+          <TorusToolTip
+            hoverContent={<MdInfoOutline size={15} color="black" />}
+            tooltipContent={ele}
+            color={"black"}
+          />
+        </span>
+                    </span>
+                  
+                  </div>
+                );
+              }
+            }
+            if (Array.isArray(obj[ele])) {
               return (
-                <div className=" flex flex-col">
-                  <span
-                    style={{ color: activeTab === ele ? "blue" : "black" }}
-                    onClick={() => {
-                      setShowObj(ele);
-                      setPath(ele);
-                      setActiveTab(ele);
-                    }}
-                  >
-                    {obj[ele].label ? obj[ele].label : ele}
-                  </span>
-                </div>
+                <RenderJsonArraySidebarIcon
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  obj={obj[ele]}
+                  fg={ele}
+                  setShowObj={setShowObj}
+                  setPath={setPath}
+                />
               );
             }
-          }
-          if (Array.isArray(obj[ele])) {
-            return (
-              <RenderJsonArraySidebarIcon
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                obj={obj[ele]}
-                fg={ele}
-                setShowObj={setShowObj}
-                setPath={setPath}
-            
-              />
-            );
-          }
-        })}
-    </div>
+          })}
+      </div>
     </>
   );
 };

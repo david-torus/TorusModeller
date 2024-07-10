@@ -30,6 +30,7 @@ import TorusButton from "./torusComponents/TorusButton";
 import { Back } from "./SVG_Application";
 import CanvasPanel from "./CanvasPanel";
 import NewSidebar from "./NewSidebar";
+import { RenderJson } from "./jonui/JsonUI";
 import NewNavbar from "./NewNavbar";
 
 export default function Layout() {
@@ -197,8 +198,9 @@ export default function Layout() {
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
         </div>
-        <div className="h-full w-[22%] ">
-          <FabricsSideBar color={colors[selectedTab]?.dark} />
+        <div className="h-full w-[35%] ">
+          <RenderJson />
+          {/* <FabricsSideBar color={colors[selectedTab]?.dark} /> */}
         </div>
       </div>
     </div>

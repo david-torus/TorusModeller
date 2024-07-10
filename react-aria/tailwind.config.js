@@ -79,6 +79,9 @@ module.exports = {
         plexsans: ["IBM Plex Sans", "sans-serif"],
         inter: ["Inter", "sans-serif"],
       },
+      scrollbar: {
+        none: 'none',
+      },
     },
   },
   variants: {
