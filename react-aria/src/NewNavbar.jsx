@@ -85,7 +85,7 @@ export default function NewNavbar() {
                         }
                         classNames={{
                           buttonClassName:
-                            " bg-white dark:bg-[#262626] flex items-center justify-center font-semibold   w-[40px] h-[24px] torus-pressed:animate-torusButtonActive ",
+                            " bg-white dark:bg-[#262626] flex items-center justify-center font-semibold   w-[40px] h-[20px] torus-pressed:animate-torusButtonActive ",
 
                           listBoxClassName: "bg-white text-black ",
                         }}
@@ -111,7 +111,7 @@ export default function NewNavbar() {
                     </div>
                   </div>
                 </div>
-                <div className="w-[100%] flex ">
+                <div className="w-[100%] flex h-[50%] ">
                   <div className="w-[60%]">
                     <p className="text-xs text-black/35">Edited 10 mins ago</p>
                   </div>
