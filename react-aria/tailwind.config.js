@@ -80,7 +80,7 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
       },
       scrollbar: {
-        none: 'none',
+        none: "none",
       },
     },
   },

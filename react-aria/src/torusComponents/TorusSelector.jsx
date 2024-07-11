@@ -35,8 +35,7 @@ export default function TorusSelector({
           <ListBox
             items={items}
             className="w-[100%] bg-white transition-all p-1  gap-1 flex flex-col items-center torus-focus:outline-none"
-            selectionMode="single"
-            selectionBehavior="replace"
+            selectionMode="multiple"
           >
             {(item) => (
               <ListBoxItem

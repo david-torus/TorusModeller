@@ -27,38 +27,44 @@ export default function CanvasPanel() {
   return (
     <Panel
       position="bottom-right"
-      className="w-[30%] bg-transparent flex justify-between h-[6%] "
+      className="w-[30%] bg-transparent flex justify-end h-[6%] gap-[0.2rem] "
     >
-      <div className="w-[25%] ml-[25px]  h-full border border-slate-300 flex items-center rounded-lg bg-white">
-        <TorusButton key={"undo"} Children={<Undo />} onPress={zoomTo} />
+      <div className="w-[95%] gap-[0.2rem] h-full  flex justify-between items-center rounded-lg">
+        <div className="w-[25%] h-full border border-slate-300 flex items-center rounded-lg bg-white">
+          <TorusButton key={"undo"} Children={<Undo />} onPress={zoomTo} />
 
-        <TorusButton key={"redo"} Children={<Redo />} onPress={zoomTo} />
-      </div>
-      <div className="w-[65%] h-full border border-slate-300 flex items-center rounded-lg bg-white ">
-        <TorusButton
-          key={"FullScreen"}
-          Children={<FullScreen />}
-          onPress={fitView}
-        />
+          <TorusButton key={"redo"} Children={<Redo />} onPress={zoomTo} />
+        </div>
+        <div className="w-[65%] h-full border border-slate-300 flex items-center rounded-lg bg-white ">
+          <TorusButton
+            key={"FullScreen"}
+            Children={<FullScreen />}
+            onPress={fitView}
+          />
 
-        <TorusButton key={"fitView"} Children={<Fitview />} onPress={fitView} />
-        <TorusButton
-          key={"zoomOut"}
-          Children={<ZoomOut />}
-          onPress={() => handleZoom("Out")}
-        />
-        <span className="font-bold text-base font-inter">100%</span>
-        <TorusButton
-          key={"zoomIn"}
-          Children={<ZoomIn />}
-          onPress={() => handleZoom("In")}
-        />
+          <TorusButton
+            key={"fitView"}
+            Children={<Fitview />}
+            onPress={fitView}
+          />
+          <TorusButton
+            key={"zoomOut"}
+            Children={<ZoomOut />}
+            onPress={() => handleZoom("Out")}
+          />
+          <span className="font-bold text-base font-inter">100%</span>
+          <TorusButton
+            key={"zoomIn"}
+            Children={<ZoomIn />}
+            onPress={() => handleZoom("In")}
+          />
 
-        <TorusButton
-          key={"help"}
-          Children={<Help />}
-          onPress={() => handleZoom("Out")}
-        />
+          <TorusButton
+            key={"help"}
+            Children={<Help />}
+            onPress={() => handleZoom("Out")}
+          />
+        </div>
       </div>
     </Panel>
   );

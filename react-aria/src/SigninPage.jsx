@@ -18,6 +18,7 @@ import TorusSelector from "./torusComponents/TorusSelector";
 import TorusSwitch from "./torusComponents/TorusSwitch";
 import { FaTextHeight, FaWeight } from "react-icons/fa";
 import { FaHouseFloodWaterCircleArrowRight } from "react-icons/fa6";
+import TorusSearch from "./torusComponents/TorusSearch";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -28,6 +29,7 @@ export default function SignIn() {
   const [selector, setSelector] = useState(new Set([]));
   const [checkboxValues, setCheckboxValues] = useState("");
   const [radioValues, setRadioValues] = useState("");
+  const [search, setSearch] = useState("");
 
   const handleChange = (value) => {
     setSelectedValues((prev) =>
@@ -37,8 +39,6 @@ export default function SignIn() {
     );
   };
 
- 
-
   const finalValues = {
     fullName,
     height,
@@ -46,13 +46,12 @@ export default function SignIn() {
     selector,
     checkboxValues,
     checked,
-    radioValues
+    radioValues,
   };
 
   const outPutFn = () => {
     console.log(finalValues);
   };
-
 
   return (
     <div className="w-full  flex-col h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
@@ -127,19 +126,21 @@ export default function SignIn() {
 
           <TorusDatePicker label="Date of Birth" slot="end" openBtn="true" />
 
-          {/* <TorusTimePicker
-            label="Time"
-            slot="end"
-            openBtn="true"
-            classNames={{
-              buttonClassName:
-                " bg-white dark:bg-[#262626] flex items-center justify-center  rounded-md font-semibold   w-[30px] h-[24px] torus-pressed:animate-torusButtonActive ",
-            }}
-            fontStyle={
-              "font-sfpromedium  3xl:text-xs  3xl:font-medium xl:text-sm xl:font-[400] tracking-tighter"
-            }
-            gap={"px-[15px]"}
-          /> */}
+          <TorusSearch
+            variant="bordered"
+            labelColor="text-[#000000]/50"
+            borderColor="[#000000]/50"
+            outlineColor="torus-focus:ring-[#000000]/50"
+            placeholder="Search"
+            isDisabled={false}
+            onChange={setSearch}
+            radius="lg"
+            textColor="text-[#000000]"
+            bgColor="bg-[#FFFFFF]"
+            value={weight}
+            type="text"
+            startContent={<FaWeight size={15} color="[#000000]" />}
+          />
 
           <TorusSelector
             items={[
@@ -149,7 +150,7 @@ export default function SignIn() {
               { key: " Array", label: " Array" },
               { key: " Object", label: " Object" },
             ]}
-            label="Type"
+            // label="Type"
             marginT="mt-5"
             selected={selector}
             setSelected={setSelector}

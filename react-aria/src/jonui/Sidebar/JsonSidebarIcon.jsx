@@ -32,12 +32,12 @@ const RenderJsonArraySidebarIcon = ({
               </div>
             );
         })} */}
-      <span
+      <div
         className={
-          "flex  items-center gap-2 text-xs cursor-pointer" +
+          "w-[100%] flex  items-center gap-[0.2rem] cursor-pointer" +
           (activeTab == fg
             ? "text-xs  cursor-pointer text-[#6600ff]"
-            : "text-black cursor-pointer")
+            : " text-black cursor-pointer")
         }
         onClick={() => {
           setShowObj(fg);
@@ -45,15 +45,17 @@ const RenderJsonArraySidebarIcon = ({
           setPath(fg);
         }}
       >
-        {obj[0].grouplabel}[]
-        <span>
+        <div className="w-[80%] flex justify-start">
+          <span className="text-[0.55rem]">{obj[0].grouplabel}[]</span>
+        </div>
+        <div className="w-[20%] flex justify-end">
           <TorusToolTip
             hoverContent={<MdInfoOutline size={15} color="black" />}
             tooltipContent={fg}
             color={"black"}
           />
-        </span>
-      </span>
+        </div>
+      </div>
     </>
   );
 };
@@ -69,33 +71,33 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
             if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
               {
                 return (
-                  <div>
-                    <span
-                      className={
-                        " flex items-center text-xs cursor-pointer gap-4" +
-                        (activeTab === ele
-                          ? " cursor-pointer  text-xs text-[#0073e6]"
-                          : "text-black cursor-pointer")
-                      }
-                      // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
-                      onClick={() => {
-                        setShowObj(ele);
-                        setPath(ele);
-                        setActiveTab(ele);
-                      }}
-                    >
-                      {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"}
-
-                      <span>
-                        <TorusToolTip
-                          hoverContent={
-                            <MdInfoOutline size={15} color="black" />
-                          }
-                          tooltipContent={ele}
-                          color={"black"}
-                        />
+                  <div
+                    className={
+                      " flex items-center text-xs cursor-pointer gap-[0.2rem] w-[100%]" +
+                      (activeTab === ele
+                        ? " cursor-pointer  text-xs text-[#0073e6]"
+                        : " text-black cursor-pointer")
+                    }
+                    // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
+                    onClick={() => {
+                      setShowObj(ele);
+                      setPath(ele);
+                      setActiveTab(ele);
+                    }}
+                  >
+                    <div className="w-[80%] flex justify-start">
+                      <span className="text-[0.55rem]">
+                        {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"}
                       </span>
-                    </span>
+                    </div>
+
+                    <div className="cursor-pointer w-[20%] flex justify-end">
+                      <TorusToolTip
+                        hoverContent={<MdInfoOutline size={15} color="black" />}
+                        tooltipContent={ele}
+                        color={"black"}
+                      />
+                    </div>
                   </div>
                 );
               }
