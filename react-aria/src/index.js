@@ -16,8 +16,8 @@ root.render(
         <Routes>
           <Route path="/" element={<App />} />
           {/* <Route path="/json" element={<RenderJson />} />
-          <Route path="/table" element={<Sample />} />
-          <Route path="/login" element={<SignIn />} /> */}
+          <Route path="/table" element={<Sample />} /> */}
+          <Route path="/login" element={<SignIn />} />
         </Routes>
       </Router>
     </DarkmodeProvider>
