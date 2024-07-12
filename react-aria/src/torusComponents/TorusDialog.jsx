@@ -1,42 +1,31 @@
 import {
   Button,
   Dialog,
+  ModalOverlay,
   DialogTrigger,
   Heading,
   Modal,
 } from "react-aria-components";
+import { merger } from "../utils/utils";
 
-export default function TorusDialog({
-  title,
-  message,
-  triggerElement,
-  children,
-}) {
+export default function TorusDialog({ triggerElement, children, classNames }) {
   return (
     <DialogTrigger>
       {triggerElement}
-      <Modal>
-        <Dialog
-          role="alertdialog"
-          className="fixed inset-0 flex items-center justify-center z-50"
-        >
-          {({ close }) => (
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-              <Heading slot="title" className="text-lg font-bold mb-4">
-                {title}
-              </Heading>
-              <p className="mb-4">{message}</p>
-              <div className="flex gap-4">
-                {children}
-                <button
-                  onClick={close}
-                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md"
-                ></button>
-              </div>
-            </div>
-          )}
-        </Dialog>
-      </Modal>
+      <ModalOverlay
+        isDismissable
+
+        className={merger(
+          "fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center",
+          classNames?.modalClassName
+        )}
+      >
+        <Modal  isDismissable>
+          <Dialog className={merger("", classNames?.dialogClassName)}>
+            {children}
+          </Dialog>
+        </Modal>
+      </ModalOverlay>
     </DialogTrigger>
   );
 }

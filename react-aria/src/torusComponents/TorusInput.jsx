@@ -4,13 +4,13 @@ import { BsGraphDown } from "react-icons/bs";
 
 export default function TorusInput(props) {
   const [clicked, setClicked] = useState(false);
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState(props?.value || "");
 
   useEffect(() => {
     console.log(value.length, "length-1");
 
     toggleClicked();
-  }, [props.value]);
+  }, [props?.value]);
 
   const toggleClicked = () => {
     console.log(value.length, "length-2");
@@ -23,35 +23,36 @@ export default function TorusInput(props) {
   };
 
   const handleInputChange = (e) => {
-    props.type == "number"
+    props?.type == "number"
       ? setValue(e.target.value.replace(/[a-zA-Z]+/g, ""))
       : setValue(e.target.value);
     console.log(e.target.value.length, "length-3");
     if (e.target.value.length === 0) {
       setClicked(true);
+      props?.onChange(e.target.value);
     } else {
+      props?.onChange(e.target.value);
       setClicked(false);
-      props.onChange(e.target.value);
     }
   };
 
   const colorsLabelFn = () => {
-    if (props.labelColor) {
-      return props.labelColor;
+    if (props?.labelColor) {
+      return props?.labelColor;
     }
     return "";
   };
 
   const colorsBgFn = () => {
-    if (props.bgColor) {
-      return `${props.bgColor}`;
+    if (props?.bgColor) {
+      return `${props?.bgColor}`;
     }
     return "";
   };
 
   const colorsHoverFn = () => {
-    if (props.hoverColor) {
-      return `${props.hoverColor}`;
+    if (props?.hoverColor) {
+      return `${props?.hoverColor}`;
     }
     return "";
   };
@@ -84,13 +85,13 @@ export default function TorusInput(props) {
 
   const topValueFn = () => {
     const getting = () => {
-      return props.height === "sm"
+      return props?.height === "sm"
         ? "6"
-        : props.height === "md"
+        : props?.height === "md"
         ? "8"
-        : props.height === "lg"
+        : props?.height === "lg"
         ? "10"
-        : props.height === "xl"
+        : props?.height === "xl"
         ? "12"
         : "10";
     };
@@ -108,13 +109,13 @@ export default function TorusInput(props) {
 
   const topNValueFn = () => {
     const getting = () => {
-      return props.height === "sm"
+      return props?.height === "sm"
         ? "6"
-        : props.height === "md"
+        : props?.height === "md"
         ? "8"
-        : props.height === "lg"
+        : props?.height === "lg"
         ? "10"
-        : props.height === "xl"
+        : props?.height === "xl"
         ? "12"
         : "10";
     };
@@ -130,8 +131,8 @@ export default function TorusInput(props) {
   };
 
   const outlineFn = () => {
-    if (props.outlineColor) {
-      return ` torus-focus:ring-1 torus-focus:ring-blue-500 ${props.outlineColor}`;
+    if (props?.outlineColor) {
+      return ` torus-focus:ring-1 torus-focus:ring-blue-500 ${props?.outlineColor}`;
     }
     return "outline-none";
   };
@@ -145,25 +146,25 @@ export default function TorusInput(props) {
 
   return (
     <TextField
-      className={`${classNames.textFieldClassName} ${
-        props.isDisabled ? "pointer-events-none opacity-50" : ""
-      } ${props.marginT ? props.marginT : "mt-1"}`}
-      isDisabled={props.isDisabled ? props.isDisabled : false}
+      className={`${classNames?.textFieldClassName} ${
+        props?.isDisabled ? "pointer-events-none opacity-50" : ""
+      } ${props?.marginT ? props?.marginT : "mt-1"}`}
+      isDisabled={props?.isDisabled ? props?.isDisabled : false}
     >
-      {props.startContent && (
+      {props?.startContent && (
         <div className="absolute top-[2.5rem] left-4 text-gray-400 text-sm">
-          <div>{props.startContent}</div>
+          <div>{props?.startContent}</div>
         </div>
       )}
 
       <Label
-        className={`${classNames.labelClassNames} 
-        ${props.variant === "bordered" ? "pt-[1.50rem]" : ""}
+        className={`${classNames?.labelClassNames} 
+        ${props?.variant === "bordered" ? "pt-[1.50rem]" : ""}
 
        
         
         ${
-          props.variant === "underline"
+          props?.variant === "underline"
             ? `${
                 !clicked
                   ? `font-semibold ${colorsLabel}`
@@ -173,10 +174,10 @@ export default function TorusInput(props) {
         } `}
         style={{
           left: `${
-            props.variant === "underline" ? (clicked ? "1rem" : "0") : "0"
+            props?.variant === "underline" ? (clicked ? "1rem" : "0") : "0"
           }`,
           top: `${
-            props.variant === "underline"
+            props?.variant === "underline"
               ? clicked
                 ? `${topValue}`
                 : `-${topNValue}`
@@ -185,26 +186,26 @@ export default function TorusInput(props) {
           transition: "all ease-in-out 0.15s",
         }}
       >
-        {props.label}
+        {props?.label}
       </Label>
       <Input
         {...props}
-        placeholder={clicked ? "" : props.placeholder}
+        placeholder={clicked ? "" : props?.placeholder}
         onFocus={() => setClicked(true)}
         onChange={handleInputChange}
         value={value}
-        type={props.type === "number" ? "text" : `${props.type}`}
-        className={`${classNames.inputClassNames} ${
+        type={props?.type === "number" ? "text" : `${props?.type}`}
+        className={`${classNames?.inputClassNames} ${
           clicked ? "border-transparent" : ""
         } ${colorsBg} ${colorsHover} 
 
   
- ${props.startContent ? "pl-[2.2rem]" : "pl-[1rem]"}
-      ${props.variant === "bordered" ? "pl-[1rem]" : ""}
+ ${props?.startContent ? "pl-[2.2rem]" : "pl-[1rem]"}
+      ${props?.variant === "bordered" ? "pl-[1rem]" : ""}
         ${
-          props.variant === "bordered"
+          props?.variant === "bordered"
             ? `torus-focus:ring-1 torus-focus:outline-none ${
-                props.outlineColor
+                props?.outlineColor
                   ? `${outline}`
                   : "torus-focus:outline-none torus-focus:ring-1 torus-focus:ring-blue-500"
               }`
@@ -212,67 +213,67 @@ export default function TorusInput(props) {
         }
 
         ${
-          props.variant === "fade"
-            ? `${props.hoverColor ? `${colorsHover}` : "bg-slate-500/70"} `
+          props?.variant === "fade"
+            ? `${props?.hoverColor ? `${colorsHover}` : "bg-slate-500/70"} `
             : ""
         }
         ${
-          props.variant === "fade"
+          props?.variant === "fade"
             ? `${
-                props.bgColor ? `${colorsBg}` : "torus-hover:bg-slate-500/40"
+                props?.bgColor ? `${colorsBg}` : "torus-hover:bg-slate-500/40"
               } `
             : ""
         }
         
-        ${props.variant === "fade" ? `${props.textColor}` : " text-black"}
+        ${props?.variant === "fade" ? `${props?.textColor}` : " text-black"}
         
         ${
-          props.textColor
-            ? `${props.textColor} font-base font-normal `
+          props?.textColor
+            ? `${props?.textColor} font-base font-normal `
             : "text-black font-base font-normal"
         } 
         
         ${
-          props.height === "sm"
+          props?.height === "sm"
             ? "h-6"
-            : props.height === "md"
+            : props?.height === "md"
             ? "h-8"
-            : props.height === "lg"
+            : props?.height === "lg"
             ? "h-10"
-            : props.height === "xl"
+            : props?.height === "xl"
             ? "h-12"
             : "h-10"
         } 
 
         ${
-          props.width === "sm"
+          props?.width === "sm"
             ? "w-[30%]"
-            : props.width === "md"
+            : props?.width === "md"
             ? "w-[45%]"
-            : props.width === "lg"
+            : props?.width === "lg"
             ? "w-[60%]"
-            : props.width === "xl"
+            : props?.width === "xl"
             ? "w-[75%]"
-            : props.width === "full"
+            : props?.width === "full"
             ? "w-[100%]"
             : "w-[80%]"
         } 
           ${
-            props.radius === "sm"
+            props?.radius === "sm"
               ? "rounded-sm"
-              : props.radius === "md"
+              : props?.radius === "md"
               ? "rounded-md"
-              : props.radius === "lg"
+              : props?.radius === "lg"
               ? "rounded-lg"
-              : props.radius === "full"
+              : props?.radius === "full"
               ? "rounded-full"
               : "rounded-none"
           }`}
       />
-      {props.endContent && (
+      {props?.endContent && (
         <div className="absolute  top-[2.5rem]  right-4 text-gray-400 text-sm">
           {" "}
-          <span> {props.endContent}</span>
+          <span> {props?.endContent}</span>
         </div>
       )}
     </TextField>

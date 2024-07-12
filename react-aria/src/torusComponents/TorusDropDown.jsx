@@ -52,10 +52,6 @@ export default function TorusDropDown({
   btncolor,
   radius,
 }) {
-
-  console.log(radius,"radiusDrop")
-
- 
   return (
     <DialogTrigger>
       <label>{label}</label>
@@ -65,13 +61,12 @@ export default function TorusDropDown({
           defaultTropdownClassNames.buttonClassName,
           classNames?.buttonClassName
         )}
-        title={label}
+        // title={label}
         height={buttonHeight}
         width={btWidth}
         fontStyle={fonstyle}
         btncolor={btncolor}
         radius={radius}
-
       />
 
       <Popover
@@ -90,6 +85,7 @@ export default function TorusDropDown({
         >
           {({ close }) => (
             <ListBox
+              renderEmptyState={renderEmptyState}
               className={merger(
                 defaultTropdownClassNames.listBoxClassName,
                 classNames?.listBoxClassName
@@ -101,7 +97,6 @@ export default function TorusDropDown({
                   close();
                 }
               }}
-              renderEmptyState={() => renderEmptyState}
               selectedKeys={selected}
               items={items}
               {...listBoxProps}
@@ -116,7 +111,7 @@ export default function TorusDropDown({
                 >
                   {({ isSelected }) => (
                     <div className="w-full flex justify-between items-center">
-                      <Heading className="  3xl:text-xs xl:text-sm font-normal font-sfpro tracking-tighter">
+                      <Heading className="  xl:text-xs xl:text-sm font-normal font-sfpro tracking-tighter">
                         {item.label}
                       </Heading>
 
