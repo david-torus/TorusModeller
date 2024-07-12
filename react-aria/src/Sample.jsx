@@ -3,7 +3,11 @@ import { TorusTable } from "./torusComponents/TorusTable";
 const data = [
   {
     name: "Object 1",
-    value: 0,
+    value: {
+      role:"admin",
+      job:"ganesh",
+      array:["whatever","something"] 
+    },
   },
   {
     name: "Object 2",
@@ -83,5 +87,5 @@ const data = [
   },
 ];
 export default function Sample() {
-  return <TorusTable primaryColumn={"value"} tableData={data} onChange={""} />;
+  return <TorusTable primaryColumn={"name"} tableData={data} onChange={""} />;
 }

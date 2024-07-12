@@ -51,8 +51,6 @@ export default function TorusDropDown({
   btncolor,
   radius,
 }) {
-
-  console.log(radius,"radiusDrop")
   return (
     <DialogTrigger>
       <TorusButton
