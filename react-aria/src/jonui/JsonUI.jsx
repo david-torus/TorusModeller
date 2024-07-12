@@ -15,7 +15,7 @@ const js ={
         label: 'SI Flag',
         type: 'dropdown',
         selectedValue: [],
-        selectionList: [ 'A', 'E' ]
+        selectionList: []
       },
       actionAllowed: {
         label: 'Allowed Actions',

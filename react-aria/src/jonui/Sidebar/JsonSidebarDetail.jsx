@@ -72,15 +72,16 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
         <>
           {
             <div className="flex w-[100%] flex-col gap-2">
-              <div div className="flex flex-col  gap-4  w-full ">
+              <div div className="flex flex-col gap-1 w-full ">
                 {/* <p>{obj.label}</p> */}
                 {
                   <TorusDropDown
+                    renderEmptyState={() => 'No Items...'}
                     classNames={{
                       buttonClassName: `bg-white w-[100%] h-[40px] text-black  mb-2`,
                       listBoxClassName: "bg-white text-black ",
                     }}
-                    // label ={ obj.label}
+                    label ={obj?.selectedValue.length > 0 && obj.label}
                     title={
                       <div className="flex flex-row items-center  w-[100%]">
                         <div
@@ -347,7 +348,7 @@ export default function JsonSidebarDetail({
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <p className="text-center"> Properties</p>
- 
+
         <span className="mt-3 m-2 w-[100%]">
           label:
           <span className="text-[#6600ff] m-2 font-poppins ">{label}</span>
