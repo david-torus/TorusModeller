@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { MdInfoOutline } from "react-icons/md";
+import { MdDataArray, MdInfoOutline } from "react-icons/md";
 import TorusToolTip from "../../torusComponents/TorusToolTip";
+import { GiPipeOrgan, GiSamuraiHelmet } from "react-icons/gi";
+import { TbBrandAmongUs } from "react-icons/tb";
+import { FaPiedPiperAlt } from "react-icons/fa";
 
 const RenderJsonArraySidebarIcon = ({
   obj,
@@ -9,6 +12,7 @@ const RenderJsonArraySidebarIcon = ({
   fg,
   activeTab,
   setActiveTab,
+  setLabel,
 }) => {
   return (
     <>
@@ -39,65 +43,92 @@ const RenderJsonArraySidebarIcon = ({
             ? "text-xs  cursor-pointer text-[#6600ff]"
             : " text-black cursor-pointer")
         }
-        onClick={() => {
-          setShowObj(fg);
-          setActiveTab(fg);
-          setPath(fg);
-        }}
+        // onClick={() => {
+        //   setShowObj(fg);
+        //   setActiveTab(fg);
+        //   setPath(fg);
+        // }}
       >
-        <div className="w-[80%] flex justify-start">
-          <span className="text-[0.55rem]">{obj[0].grouplabel}[]</span>
-        </div>
-        <div className="w-[20%] flex justify-end">
-          <TorusToolTip
-            hoverContent={<MdInfoOutline size={15} color="black" />}
-            tooltipContent={fg}
-            color={"black"}
-          />
-        </div>
+        {/* fg */}
+
+        {/* {obj[0].grouplabel}[] */}
+
+        <TorusToolTip
+          hoverContent={
+            <FaPiedPiperAlt
+              size={25}
+              color={activeTab == fg ? "#6600ff" : "#09254D"}
+            />
+          }
+          tooltipFor="arr"
+          tooltipContent={obj[0].grouplabel}
+          color={activeTab == fg ? "#6600ff" : "#09254D"}
+          setShowObj={setShowObj}
+          setActiveTab={setActiveTab}
+          setPath={setPath}
+          fg={fg}
+          setLabel ={setLabel}
+        />
       </div>
     </>
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setLabel }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
     <>
-      <div className="w-full  h-full overflow-y-scroll scrollbar-none flex flex-col p-2 gap-3">
+      <div className="max-w-full  h-full overflow-y-scroll scrollbar-none flex flex-col p-4 gap-3">
         {obj &&
           Object.keys(obj).map((ele) => {
             if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
               {
                 return (
-                  <div
-                    className={
-                      " flex items-center text-xs cursor-pointer gap-[0.2rem] w-[100%]" +
-                      (activeTab === ele
-                        ? " cursor-pointer  text-xs text-[#0073e6]"
-                        : " text-black cursor-pointer")
-                    }
-                    // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
-                    onClick={() => {
-                      setShowObj(ele);
-                      setPath(ele);
-                      setActiveTab(ele);
-                    }}
-                  >
-                    <div className="w-[80%] flex justify-start">
-                      <span className="text-[0.55rem]">
-                        {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"}
-                      </span>
-                    </div>
-
-                    <div className="cursor-pointer w-[20%] flex justify-end">
+                  <div>
+                    <span
+                      className={
+                        " flex items-center text-xs cursor-pointer gap-4" +
+                        (activeTab === ele
+                          ? " cursor-pointer  text-xs text-[#0073e6]"
+                          : "text-black cursor-pointer")
+                      }
+                      // style={{ color: activeTab === ele ? "  #6600ff" : "black" }}
+                      onClick={() => {
+                        setShowObj(ele);
+                        setPath(ele);
+                        setActiveTab(ele);
+                      }}
+                    >
                       <TorusToolTip
-                        hoverContent={<MdInfoOutline size={15} color="black" />}
-                        tooltipContent={ele}
-                        color={"black"}
+                        hoverContent={
+                          <GiSamuraiHelmet
+                            size={25}
+                            color={activeTab == ele ? "#6600ff" : "#09254D"}
+                          />
+                        }
+                        tooltipFor="obj"
+                        tooltipContent={obj[ele].label ? obj[ele].label : ele}
+                        color={activeTab == ele ? "#6600ff" : "#09254D"}
+                        setShowObj={setShowObj}
+                        setActiveTab={setActiveTab}
+                        setPath={setPath}
+                        ele={ele}
+                        setLabel ={setLabel}
                       />
-                    </div>
+                      {/* <GiSamuraiHelmet size={25} color="#22012C" /> */}
+                      {/* {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"} */}
+
+                      {/* <span>
+                        <TorusToolTip
+                          hoverContent={
+                            <MdInfoOutline size={15} color="black" />
+                          }
+                          tooltipContent={ele}
+                          color={"black"}
+                        />
+                      </span> */}
+                    </span>
                   </div>
                 );
               }
@@ -111,6 +142,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                   fg={ele}
                   setShowObj={setShowObj}
                   setPath={setPath}
+                  setLabel={setLabel}
                 />
               );
             }

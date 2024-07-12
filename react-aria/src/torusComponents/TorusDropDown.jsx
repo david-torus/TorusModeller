@@ -29,6 +29,7 @@ const defaultTropdownClassNames = {
 };
 
 export default function TorusDropDown({
+  label,
   title,
   classNames,
   buttonHeight = "",
@@ -51,19 +52,24 @@ export default function TorusDropDown({
   btncolor,
   radius,
 }) {
+
+ 
   return (
     <DialogTrigger>
+      <label>{label}</label>
       <TorusButton
         Children={title}
         buttonClassName={merger(
           defaultTropdownClassNames.buttonClassName,
           classNames?.buttonClassName
         )}
+        title={label}
         height={buttonHeight}
         width={btWidth}
         fontStyle={fonstyle}
         btncolor={btncolor}
         radius={radius}
+
       />
 
       <Popover
