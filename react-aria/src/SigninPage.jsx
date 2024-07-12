@@ -19,6 +19,7 @@ import TorusSwitch from "./torusComponents/TorusSwitch";
 import { FaTextHeight, FaWeight } from "react-icons/fa";
 import { FaHouseFloodWaterCircleArrowRight } from "react-icons/fa6";
 import TorusSearch from "./torusComponents/TorusSearch";
+import TorusPhoneNumberInput from "./torusComponents/TorusPhoneNumberInput";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -129,7 +130,7 @@ export default function SignIn() {
           <TorusSearch
             variant="bordered"
             labelColor="text-[#000000]/50"
-            borderColor="[#000000]/50"
+            borderColor="border-[#000000]/20"
             outlineColor="torus-focus:ring-[#000000]/50"
             placeholder="Search"
             isDisabled={false}
@@ -137,12 +138,28 @@ export default function SignIn() {
             radius="lg"
             textColor="text-[#000000]"
             bgColor="bg-[#FFFFFF]"
-            value={weight}
+            value={search}
             type="text"
-            startContent={<FaWeight size={15} color="[#000000]" />}
+            marginT="mt-3"
           />
 
-          <TorusSelector
+          <TorusPhoneNumberInput
+            variant="bordered"
+            labelColor="text-[#000000]/50"
+            borderColor="border-[#000000]/20"
+            outlineColor="torus-focus:ring-[#000000]/50"
+            placeholder="Phone Number"
+            isDisabled={false}
+            onChange={setSearch}
+            radius="lg"
+            textColor="text-[#000000]"
+            bgColor="bg-[#FFFFFF]"
+            value={search}
+            type="text"
+            marginT="mt-3"
+          />
+
+          {/* <TorusSelector
             items={[
               { key: " String", label: " String" },
               { key: " Boolean", label: " Boolean" },
@@ -155,7 +172,8 @@ export default function SignIn() {
             selected={selector}
             setSelected={setSelector}
             key={selector}
-          />
+            placeholder={"Select"}
+          /> */}
 
           <TorusCheckBox
             marginT="mt-6"

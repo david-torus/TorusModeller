@@ -2,14 +2,49 @@ import React, { useState, useEffect } from "react";
 import { Input, Label, TextField } from "react-aria-components";
 import { BsGraphDown } from "react-icons/bs";
 import { SearchIcon } from "../SVG_Application";
+import countryCode from "./countryCode.json";
+import TorusSelector from "./TorusSelector";
 
-export default function TorusSearch(props) {
+export default function TorusPhoneNumberInput(props) {
+  const [countryCodeList, setCountryCodeList] = useState([]);
+  const [selectedCC, setSelectedCC] = useState(new Set(["IN"]));
   const [clicked, setClicked] = useState(false);
   const [value, setValue] = useState(props.value || "");
+  const [inutDefaultValue, setInutDefaultValue] = useState("");
 
-  useEffect(() => {
-    toggleClicked();
-  }, [props.value]);
+  console.log(selectedCC, "selectedCC");
+
+  const countrycodeSegregation = (value) => {
+    if (value) {
+      // Assuming value is an array of objects
+      value.forEach((item) => {
+        if (item) {
+          let { code, phone, phoneLength, label, specialKey } = item;
+
+          let newObje = {
+            label: phone,
+            key: code,
+            phone: ` ${label}  +${phone}`,
+            phoneLength: phoneLength,
+            specialKey: specialKey,
+          };
+
+          // Use a functional update to ensure immutability
+          setCountryCodeList((prevList) => [...prevList, newObje]);
+        }
+      });
+    }
+  };
+
+  const gettingCode = (value) => {
+    if (value) {
+      let code = countryCode.find((item) => item.code == value);
+      console.log(code, "code-1");
+      if (code) {
+        setInutDefaultValue(code);
+      }
+    }
+  };
 
   const toggleClicked = () => {
     console.log(value.length, "length-2");
@@ -17,6 +52,12 @@ export default function TorusSearch(props) {
     } else if (value.length <= 0) {
     }
   };
+
+  useEffect(() => {
+    toggleClicked();
+    countrycodeSegregation(countryCode);
+    gettingCode(selectedCC);
+  }, [props.value, countryCode, selectedCC]);
 
   const handleInputChange = (e) => {
     props.type == "number"
@@ -55,6 +96,7 @@ export default function TorusSearch(props) {
   const border = borderColor();
 
   console.log(clicked, border, "clicked");
+  console.log(countryCodeList, "countryCodeList");
 
   return (
     <TextField
@@ -76,16 +118,24 @@ export default function TorusSearch(props) {
   `}
       isDisabled={props.isDisabled ? props.isDisabled : false}
     >
-      <div className="w-[10%] flex justify-end items-center">
-        <SearchIcon />
+      <div className="w-[30%] flex justify-end items-center">
+        <TorusSelector
+          items={countryCodeList}
+          selected={selectedCC}
+          setSelected={setSelectedCC}
+          key={setSelectedCC}
+          placeholder="Code"
+          type="mobilenumber"
+        />
       </div>
-      <div className="w-[90%]">
+      <div className="w-[70%]">
         <Input
           {...props}
           placeholder={clicked ? "" : props.placeholder}
           onFocus={() => setClicked(true)}
           onBlur={() => setClicked(false)}
           onChange={handleInputChange}
+          defaultValue={inutDefaultValue ? inutDefaultValue?.phone : "Number"}
           value={value}
           type={props.type === "number" ? "text" : `${props.type}`}
           className={`w-[98%] bg-transparent 

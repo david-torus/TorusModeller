@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Header, Section, Text } from "react-aria-components";
-import TorusSearchFeild from "./torusComponents/TorusSearchFeild";
 import { Back, User } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
 import "./index.css";
