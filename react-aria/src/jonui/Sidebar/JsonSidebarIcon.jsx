@@ -36,12 +36,12 @@ const RenderJsonArraySidebarIcon = ({
               </div>
             );
         })} */}
-      <span
+      <div
         className={
-          "flex  items-center gap-2 text-xs cursor-pointer" +
+          "w-[100%] flex  items-center gap-[0.2rem] cursor-pointer" +
           (activeTab == fg
             ? "text-xs  cursor-pointer text-[#6600ff]"
-            : "text-black cursor-pointer")
+            : " text-black cursor-pointer")
         }
         // onClick={() => {
         //   setShowObj(fg);

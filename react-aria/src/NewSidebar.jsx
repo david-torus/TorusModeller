@@ -6,11 +6,13 @@ import {
   FabricBar,
   Faq,
   Home,
+  NodeGallerIcon,
   Sheild,
   Support,
   Wire,
 } from "./SVG_Application";
 import TorusTab from "./torusComponents/TorusTab";
+import TorusAvatar from "./torusComponents/TorusAvatar";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -76,9 +78,9 @@ export default function NewSidebar({
   return (
     <Panel
       position="top-left"
-      className="h-[95%] w-[5%] flex justify-center items-center  bg-white border  border-slate-300 rounded-lg  "
+      className="h-[95%] w-[5%] flex flex-col justify-center items-center  bg-white border  border-slate-300 rounded-lg  "
     >
-      <div className="h-[90%] w-[100%] flex justify-center flex-col ">
+      <div className="h-[85%] w-[100%] flex justify-center flex-col ">
         <TorusTab
           orientation="vertical"
           classNames={{
@@ -173,48 +175,24 @@ export default function NewSidebar({
 
         <hr className="w-[1px] h-[100%] bg-slate-300" />
 
-        {/* <TorusTab
-          orientation="vertical"
-          classNames={{
-            tabs: "cursor-pointer",
-            tabList: "w-full h-[100%] flex justify-center items-center",
-            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none ${borderLeft}`,
-          }}
-          tabs={[
-            
-            {
-              id: "FabricsBar",
-              content: ({ isSelected }) => (
-                <FabricBar
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-            {
-              id: "FAQ",
-              content: ({ isSelected }) => (
-                <Faq
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-            {
-              id: "Support",
-              content: ({ isSelected }) => (
-                <Support
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
-              ),
-            },
-          ]}
-          onSelectionChange={handleTabChange}
-        /> */}
+        
+      </div>
+
+      <div className="flex flex-col justify-center items-center gap-2">
+        <div>
+          <NodeGallerIcon />
+        </div>
+
+        <div>
+          <TorusAvatar
+            radius={"full"}
+            size={"lg"}
+            borderColor={"#A59E92"}
+            src={
+              "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+            }
+          />
+        </div>
       </div>
     </Panel>
   );
