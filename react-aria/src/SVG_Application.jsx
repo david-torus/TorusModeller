@@ -299,6 +299,7 @@ const Play = ({ fill }) => {
     </svg>
   );
 };
+
 const Back = () => {
   return (
     <svg
@@ -330,6 +331,7 @@ const Back = () => {
     </svg>
   );
 };
+
 const User = ({ color, selectedFabric, size }) => {
   return (
     <svg
@@ -354,8 +356,8 @@ const User = ({ color, selectedFabric, size }) => {
 const Pencil = ({ strokeColor }) => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -390,8 +392,8 @@ const Pencil = ({ strokeColor }) => {
 const Flip = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -475,8 +477,8 @@ const Medicine = () => {
 const Scan = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -570,8 +572,8 @@ const Add = () => {
 const Calendar = () => {
   return (
     <svg
-      width="24"
-      height="24"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

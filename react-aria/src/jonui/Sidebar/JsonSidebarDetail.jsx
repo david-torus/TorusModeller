@@ -5,6 +5,8 @@ import TorusDropDown from "../../torusComponents/TorusDropDown";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";
+import TorusTab from "../../torusComponents/TorusTab";
+import { Calendar, Flip, Pencil, Scan } from "../../SVG_Application";
 
 const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
@@ -335,6 +337,7 @@ export default function JsonSidebarDetail({
   label,
 }) {
   const [value, setValue] = useState(null);
+  const [selectedTab, setselectedTab] = useState("Tabs");
 
   const handleInput = (e, i, key, type) => {
     setValue(e);
@@ -346,8 +349,38 @@ export default function JsonSidebarDetail({
   return (
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
-        <p className="text-center"> Properties</p>
- 
+        <p className="px-2"> Properties</p>
+        <TorusTab
+          orientation="horizontal"
+          classNames={{
+            tabs: "cursor-pointer bg-[#F4F5FA]",
+            tabList: "w-full h-[100%] flex justify-center items-center",
+            tab: ` p-2 h-full  w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none `,
+          }}
+          tabs={[
+            {
+              id: "Tabs",
+              content: <Pencil strokeColor={"#1C274C"} />,
+            },
+            {
+              id: "Tabbs",
+              content: <Pencil strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbs",
+              content: <Flip strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbbs",
+              content: <Scan strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbbbs",
+              content: <Calendar strokeColor={"#B2BABB "} />,
+            },
+          ]}
+        />
+
         <span className="mt-3 m-2 w-[100%]">
           label:
           <span className="text-[#6600ff] m-2 font-poppins ">{label}</span>
