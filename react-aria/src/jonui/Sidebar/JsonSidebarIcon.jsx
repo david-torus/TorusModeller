@@ -69,7 +69,7 @@ const RenderJsonArraySidebarIcon = ({
           fg={fg}
           setLabel ={setLabel}
         />
-      </span>
+      </div>
     </>
   );
 };
