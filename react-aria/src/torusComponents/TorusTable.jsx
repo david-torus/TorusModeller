@@ -14,6 +14,7 @@ import {
   useTableOptions,
   useTable,
 } from "react-aria-components";
+import { v4 as uuidv4 } from "uuid";
 import TorusButton from "./TorusButton";
 import TorusDropDown from "./TorusDropDown";
 import TorusInput from "./TorusInput";
@@ -82,7 +83,7 @@ function TorusRow({ id, columns, children, ...otherProps }) {
   let { selectionBehavior, allowsDragging } = useTableOptions();
 
   return (
-    <Row id={id} {...otherProps}>
+    <Row {...otherProps}>
       {allowsDragging && (
         <Cell>
           <Button slot="drag">≡</Button>
@@ -94,14 +95,16 @@ function TorusRow({ id, columns, children, ...otherProps }) {
             selectedKeys={otherProps?.selectedKeys}
             slot="selection"
             className="cursor-pointer"
-            hs={id}
+            hs={otherProps?.index}
           />
         </Cell>
       )}
       {columns.map((column) => {
         console.log(column, "id");
         if (column?.id == "Actions") {
-          return <Cell children={<TableCellActions id={id} />} />;
+          return (
+            <Cell children={<TableCellActions id={otherProps?.index} />} />
+          );
         } else
           return (
             <Cell
@@ -174,7 +177,7 @@ export function TorusTable({
   allowsSorting = true,
   primaryColumn,
   tableData,
-  onChange,
+  onSave,
   rowsPerPage = 6,
   isEditable = true,
 }) {
@@ -185,9 +188,7 @@ export function TorusTable({
   const [totalPages, setTotalPages] = useState(null);
   const [TotalColumns, setTotalColumns] = useState([]);
   const [serchValue, setSerchValue] = useState("");
-  const [toggleDelete, setToggleDelete] = useState(false);
-  const [toggleEdit, setToggleEdit] = useState(false);
-  const [actionRow, setActionRow] = useState("");
+
   const serachedItems = React.useMemo(() => {
     try {
       if (!serchValue) return data;
@@ -265,7 +266,6 @@ export function TorusTable({
       getColumns(tableData);
       setData(tableData);
 
-      setTotalPages(Math.ceil(tableData.length / rowsPerPage));
       setSortDescriptor({
         column: primaryColumn,
         direction: "ascending",
@@ -273,13 +273,23 @@ export function TorusTable({
     } else {
       console.error("tableData is not an array");
     }
-  }, [tableData, primaryColumn, rowsPerPage]);
+  }, [tableData, primaryColumn]);
+
+  useEffect(() => {
+    setTotalPages(Math.ceil(data.length / rowsPerPage));
+  }, [data, rowsPerPage]);
 
   return (
     <TableDataContext.Provider value={{ data, setData }}>
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
         <div className="w-full h-full flex flex-col justify-center items-center">
           <TorusInput placeholder="search" onChange={setSerchValue} />
+          <TorusButton
+            onPress={() => {
+              onSave && onSave(data);
+            }}
+            Children={"save"}
+          />
           <TorusDropDown
             title={"filter"}
             selectionMode="multiple"
@@ -289,8 +299,6 @@ export function TorusTable({
           />
           <Table
             onRowAction={(event) => alert(event)}
-            selectionMode="multiple"
-            selectionBehavior="toggle"
             selectedKeys={selectedKeys}
             onSortChange={setSortDescriptor}
             sortDescriptor={sortDescriptor}
@@ -318,7 +326,8 @@ export function TorusTable({
                     (el) => el[primaryColumn] == item[primaryColumn]
                   )}
                   item={item}
-                  id={data.findIndex(
+                  id={index}
+                  index={data.findIndex(
                     (el) => el[primaryColumn] === item[primaryColumn]
                   )}
                   columns={[

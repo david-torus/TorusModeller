@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { TorusTable } from "./torusComponents/TorusTable";
 const data = [
   {
     name: "Object 1",
     value: {
-      role:"admin",
-      job:"ganesh",
-      array:["whatever","something"] 
+      role: "admin",
+      job: "ganesh",
+      array: ["whatever", "something"],
     },
   },
   {
@@ -87,5 +87,9 @@ const data = [
   },
 ];
 export default function Sample() {
-  return <TorusTable primaryColumn={"name"} tableData={data} onChange={""} />;
+  const [datas, setData] = useState([]);
+  console.log(datas);
+  return (
+    <TorusTable primaryColumn={"name"} tableData={data} onSave={setData} />
+  );
 }
