@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { TorusTable } from "./torusComponents/TorusTable";
+import countryCode from "../src/torusComponents/countryCode.json";
 const data = [
   {
     name: "Object 1",
@@ -90,6 +91,6 @@ export default function Sample() {
   const [datas, setData] = useState([]);
   console.log(datas);
   return (
-    <TorusTable primaryColumn={"name"} tableData={data} onSave={setData} />
+    <TorusTable primaryColumn={"specialKey"} tableData={countryCode} onSave={setData} />
   );
 }
