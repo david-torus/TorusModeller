@@ -134,22 +134,18 @@ export default function Layout() {
 
   return (
     <div
-      className={`w-full   h-full  
-        max-h-min mx-auto  
+      className={`  w-[100%]   h-[100vh] 
+         max-h-min mx-auto  
         flex flex-col   xl:max-3xl:bg-gray-600  lg:max-xl:gap-0 xl:max-3xl:gap-0
-        max-md:gap-3 `}
+        max-md:gap-3 
+         `}
     >
-      <div className="w-full h-[8%]">
+      <div className="w-full h-[8%] sticky top-0">
         <NewNavbar />
       </div>
-      {/* <div className="w-full h-[8%] ">
-        <Navbar
-          selectedFabric={selectedFabric}
-          handleTabChange={handleTabChange}
-        />
-      </div> */}
+
       <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
-        <div className="h-full w-[73%]">
+        <div className="h-full flex w-[100%]">
           <FabricsSelector
             nodeTypes={NODE_TYPES}
             fabric={selectedFabric}
@@ -197,12 +193,13 @@ export default function Layout() {
             )}
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
-        </div>
-        <div className="h-full w-[27%] ">
-          <RenderJson />
-          {/* <FabricsSideBar color={colors[selectedTab]?.dark} /> */}
+          
+        <RenderJson />
+
+          
         </div>
       </div>
+      
     </div>
   );
 }

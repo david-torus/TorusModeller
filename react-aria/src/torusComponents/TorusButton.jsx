@@ -20,6 +20,7 @@ export default function TorusButton({
   btnTxtSize,
   endContent,
   startContent,
+
 }) {
 
   console.log(radius, "radius");
@@ -96,6 +97,7 @@ export default function TorusButton({
       isDisabled={isDisabled}
       autoFocus={autoFocus}
       onPress={onPress}
+
     >
       {startContent ? (
         <div className={`flex justify-evenly gap-1 ${gap}`}>

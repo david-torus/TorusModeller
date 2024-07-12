@@ -14,20 +14,20 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       },
       actionAllowed: {
         label: 'Allowed Actions',
         type: 'dropdown',
-        selectedValue: [ 'O1' ],
+        selectedValue: [],
         selectionList: [ 'O1', 'O2' ]
       },
       actionDenied: {
         label: 'Denied Actions',
         type: 'dropdown',
         selectedValue: [],
-        selectionList: []
+        selectionList: [ 'O3', 'O4' ]
       }
     }
   ],
@@ -48,20 +48,20 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue:[],
         selectionList: [ 'A', 'E' ]
       },
       actionAllowed: {
         label: 'Allowed Actions',
         type: 'dropdown',
-        selectedValue: [ 'R1' ],
+        selectedValue: [  ],
         selectionList: [ 'R1', 'R2' ]
       },
       actionDenied: {
         label: 'Denied Actions',
         type: 'dropdown',
         selectedValue: [],
-        selectionList: []
+        selectionList: ['R3', 'R4']
       }
     }
   ],
@@ -83,20 +83,20 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       },
       actionAllowed: {
         label: 'Allowed Actions',
         type: 'dropdown',
-        selectedValue: [ 'ps1' ],
+        selectedValue: [  ],
         selectionList: [ 'ps1', 'ps2' ]
       },
       actionDenied: {
         label: 'Denied Actions',
         type: 'dropdown',
         selectedValue: [],
-        selectionList: []
+        selectionList: ['ps3', 'ps4']
       }
     }
   ],
@@ -117,19 +117,19 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       },
       actionAllowed: {
         label: 'Allowed Actions',
         type: 'dropdown',
-        selectedValue: [ '*' ],
+        selectedValue: [],
         selectionList: [ '*', 'ManualInput' ]
       },
       actionDenied: {
         label: 'Denied Actions',
         type: 'dropdown',
-        selectedValue: [ '*' ],
+        selectedValue: [  ],
         selectionList: [ '*', 'ManualInput' ]
       }
     }
@@ -144,7 +144,7 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       }
     },
@@ -157,7 +157,7 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       }
     }
@@ -165,13 +165,13 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/pf/0/nodeDetails/0/actionAllowed': {
     label: 'Allowed Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [  ],
     selectionList: [ '*', 'Read', 'Execute', 'Debug' ]
   },
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/pf/0/nodeDetails/0/actionDenied': {
     label: 'Denied Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [  ],
     selectionList: [ '*', 'Read', 'Execute', 'Debug' ]
   },
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df': [
@@ -192,7 +192,7 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       }
     },
@@ -204,7 +204,7 @@ const js ={
       SIFlag: {
         label: 'SI Flag',
         type: 'dropdown',
-        selectedValue: 'A',
+        selectedValue: [],
         selectionList: [ 'A', 'E' ]
       }
     }
@@ -212,7 +212,7 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df/0/tableDetails/0/actionAllowed': {
     label: 'Allowed Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [],
     selectionList: [
       '*',
       'GET',
@@ -225,7 +225,7 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df/0/tableDetails/0/actionDenied': {
     label: 'Denied Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [ ],
     selectionList: [
       '*',
       'GET',
@@ -238,7 +238,7 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df/0/tableDetails/1/actionAllowed': {
     label: 'Allowed Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [  ],
     selectionList: [
       '*',
       'GET',
@@ -251,7 +251,7 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df/0/tableDetails/1/actionDenied': {
     label: 'Denied Actions',
     type: 'multipleSelect',
-    selectedValue: [ 'POST' ],
+    selectedValue: [  ],
     selectionList: [
       '*',
       'GET',
@@ -291,7 +291,7 @@ const js ={
   'orgGrp/0/org/0/roleGrp/0/roles/0/psGrp/0/ps/0/df/0/apiDetails/0/actionAllowed': {
     label: 'Allowed Actions',
     type: 'multipleSelect',
-    selectedValue: [ '*' ],
+    selectedValue: [  ],
     selectionList: [
       '*',
       'GET',
@@ -443,7 +443,7 @@ const js ={
       }
     },
     {
-      label: 'Control Details',
+      label: 'Control Detailsadws',
       resourceType: 'controls',
       resource: 'save',
       SIFlag: {
@@ -466,7 +466,7 @@ const js ={
       }
     },
     {
-      label: 'Control Details',
+      label: 'Control Detailasd',
       resourceType: 'controls',
       resource: 'sub',
       SIFlag: {
@@ -564,7 +564,7 @@ export const RenderJson = () => {
     <>
       {dupJson && Object.keys(dupJson).length > 0 && (
         <>
-          <div className=" w-full h-full  ">
+          <div className="   ">
             {Object.keys(dupJson).length > 0 && (
               <RenderObject obj={dupJson} handlejs={handlejs} />
             )}

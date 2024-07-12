@@ -5,7 +5,7 @@ import "../src/App.css"
 
 export default function App() {
   return (
-    <div style={{ width: "100vw", height: "100vh", }}>
+    <div className=" max-h-[100vh]  max-w-[100vw]" >
       <ReactFlowProvider>
         <Layout />
       </ReactFlowProvider>

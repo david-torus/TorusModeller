@@ -10,14 +10,15 @@ import Sample from "./Sample";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <React.StrictMode 
+  >
     <DarkmodeProvider>
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
-          {/* <Route path="/json" element={<RenderJson />} />
-          <Route path="/table" element={<Sample />} />
-          <Route path="/login" element={<SignIn />} /> */}
+          {/* <Route path="/json" element={<RenderJson />} /> */}
+          {/* <Route path="/table" element={<Sample />} /> */}
+          {/* <Route path="/login" element={<SignIn />} />  */}
         </Routes>
       </Router>
     </DarkmodeProvider>

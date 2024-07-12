@@ -1,3 +1,5 @@
+
+ 
 import React from "react";
 import { useEffect, useState } from "react";
 import {
@@ -12,7 +14,6 @@ import {
 } from "react-aria-components";
 import { FaAngleDown } from "react-icons/fa6";
 import { IoIosCheckmark } from "react-icons/io";
-
 export default function TorusSelector({
   label,
   items,
@@ -29,6 +30,7 @@ export default function TorusSelector({
         }
         onSelectionChange={setSelected}
         selectedKey={selected}
+        
       >
         <Label className="text-xs text-[#000000]/50">{label}</Label>
         <Popover offset={15} placement="bottom" className="w-[17%]">
@@ -44,6 +46,7 @@ export default function TorusSelector({
                 value={item.key}
                 textValue={item.label}
                 key={item.key}
+                
               >
                 {({ isSelected }) => (
                   <div
@@ -54,7 +57,6 @@ export default function TorusSelector({
                     <Heading className="  3xl:text-xs xl:text-sm font-normal  tracking-tighter">
                       {item.label}
                     </Heading>
-
                     <div className="flex items-center justify-center  ">
                       <span
                         className={` transition-all duration-150  ${
@@ -88,3 +90,5 @@ export default function TorusSelector({
     </div>
   );
 }
+ 
+ 

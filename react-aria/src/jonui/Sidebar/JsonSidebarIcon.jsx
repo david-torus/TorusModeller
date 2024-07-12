@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { MdInfoOutline } from "react-icons/md";
+import { MdDataArray, MdInfoOutline } from "react-icons/md";
 import TorusToolTip from "../../torusComponents/TorusToolTip";
+import { GiPipeOrgan, GiSamuraiHelmet } from "react-icons/gi";
+import { TbBrandAmongUs } from "react-icons/tb";
+import { FaPiedPiperAlt } from "react-icons/fa";
 
 const RenderJsonArraySidebarIcon = ({
   obj,
@@ -9,6 +12,7 @@ const RenderJsonArraySidebarIcon = ({
   fg,
   activeTab,
   setActiveTab,
+  setLabel,
 }) => {
   return (
     <>
@@ -39,31 +43,43 @@ const RenderJsonArraySidebarIcon = ({
             ? "text-xs  cursor-pointer text-[#6600ff]"
             : "text-black cursor-pointer")
         }
-        onClick={() => {
-          setShowObj(fg);
-          setActiveTab(fg);
-          setPath(fg);
-        }}
+        // onClick={() => {
+        //   setShowObj(fg);
+        //   setActiveTab(fg);
+        //   setPath(fg);
+        // }}
       >
-        {obj[0].grouplabel}[]
-        <span>
-          <TorusToolTip
-            hoverContent={<MdInfoOutline size={15} color="black" />}
-            tooltipContent={fg}
-            color={"black"}
-          />
-        </span>
+        {/* fg */}
+
+        {/* {obj[0].grouplabel}[] */}
+
+        <TorusToolTip
+          hoverContent={
+            <FaPiedPiperAlt
+              size={25}
+              color={activeTab == fg ? "#6600ff" : "#09254D"}
+            />
+          }
+          tooltipFor="arr"
+          tooltipContent={obj[0].grouplabel}
+          color={activeTab == fg ? "#6600ff" : "#09254D"}
+          setShowObj={setShowObj}
+          setActiveTab={setActiveTab}
+          setPath={setPath}
+          fg={fg}
+          setLabel ={setLabel}
+        />
       </span>
     </>
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setLabel }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
     <>
-      <div className="w-full  h-full overflow-y-scroll scrollbar-none flex flex-col p-2 gap-3">
+      <div className="max-w-full  h-full overflow-y-scroll scrollbar-none flex flex-col p-4 gap-3">
         {obj &&
           Object.keys(obj).map((ele) => {
             if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
@@ -84,9 +100,26 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                         setActiveTab(ele);
                       }}
                     >
-                      {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"}
+                      <TorusToolTip
+                        hoverContent={
+                          <GiSamuraiHelmet
+                            size={25}
+                            color={activeTab == ele ? "#6600ff" : "#09254D"}
+                          />
+                        }
+                        tooltipFor="obj"
+                        tooltipContent={obj[ele].label ? obj[ele].label : ele}
+                        color={activeTab == ele ? "#6600ff" : "#09254D"}
+                        setShowObj={setShowObj}
+                        setActiveTab={setActiveTab}
+                        setPath={setPath}
+                        ele={ele}
+                        setLabel ={setLabel}
+                      />
+                      {/* <GiSamuraiHelmet size={25} color="#22012C" /> */}
+                      {/* {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"} */}
 
-                      <span>
+                      {/* <span>
                         <TorusToolTip
                           hoverContent={
                             <MdInfoOutline size={15} color="black" />
@@ -94,7 +127,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                           tooltipContent={ele}
                           color={"black"}
                         />
-                      </span>
+                      </span> */}
                     </span>
                   </div>
                 );
@@ -109,6 +142,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath }) => {
                   fg={ele}
                   setShowObj={setShowObj}
                   setPath={setPath}
+                  setLabel={setLabel}
                 />
               );
             }
