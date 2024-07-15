@@ -179,8 +179,7 @@ const RenderJsonArraySidebarDetail = ({
             <div
               key={index}
               className={
-                " bg-[#F4F5FA] text-black dark:text-white dark:bg-[#0F0F0F]  rounded-lg  w-[100%]   mb-2" +
-                (isExpanded ? "transition ease-in-out duration-300" : "")
+                " bg-[#F4F5FA] text-black dark:text-white dark:bg-[#0F0F0F]  rounded-lg  w-[100%]   mb-2"
               }
             >
               <p
