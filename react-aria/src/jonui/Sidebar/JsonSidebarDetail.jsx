@@ -5,6 +5,7 @@ import TorusDropDown from "../../torusComponents/TorusDropDown";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";
+import TorusSwitch from "../../torusComponents/TorusSwitch";
 
 const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
@@ -62,7 +63,8 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     console.log(e, "st");
     setValue(e);
 
-    handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
+  handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
+
     console.log(e, "kj");
   };
 
@@ -109,7 +111,8 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                     }))}
                     btWidth={"md"}
                   />
-                }
+                } 
+            
 
                 {/* {
                   <TorusSelector
@@ -347,7 +350,7 @@ export default function JsonSidebarDetail({
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <p className="text-center"> Properties</p>
- 
+
         <span className="mt-3 m-2 w-[100%]">
           label:
           <span className="text-[#6600ff] m-2 font-poppins ">{label}</span>
