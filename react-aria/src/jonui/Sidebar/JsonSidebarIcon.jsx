@@ -4,6 +4,9 @@ import TorusToolTip from "../../torusComponents/TorusToolTip";
 import { GiPipeOrgan, GiSamuraiHelmet } from "react-icons/gi";
 import { TbBrandAmongUs } from "react-icons/tb";
 import { FaPiedPiperAlt } from "react-icons/fa";
+import { Pencil, Scan } from "../../SVG_Application";
+import { MdDataObject } from "react-icons/md";
+import { MdOutlineDataArray } from "react-icons/md";
 
 const RenderJsonArraySidebarIcon = ({
   obj,
@@ -55,9 +58,9 @@ const RenderJsonArraySidebarIcon = ({
 
         <TorusToolTip
           hoverContent={
-            <FaPiedPiperAlt
-              size={25}
-              color={activeTab == fg ? "#6600ff" : "#09254D"}
+            <MdOutlineDataArray
+              size={20}
+              color={activeTab == fg ? "#6600ff" : "#B2BABB "}
             />
           }
           tooltipFor="arr"
@@ -67,14 +70,14 @@ const RenderJsonArraySidebarIcon = ({
           setActiveTab={setActiveTab}
           setPath={setPath}
           fg={fg}
-          setLabel ={setLabel}
+          setLabel={setLabel}
         />
       </div>
     </>
   );
 };
 
-export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setLabel }) => {
+export const JsonSidebarIcon = ({ obj, setShowObj, setPath, setLabel }) => {
   const [activeTab, setActiveTab] = useState(null);
 
   return (
@@ -102,9 +105,13 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setLabel }) => {
                     >
                       <TorusToolTip
                         hoverContent={
-                          <GiSamuraiHelmet
-                            size={25}
-                            color={activeTab == ele ? "#6600ff" : "#09254D"}
+                          // <GiSamuraiHelmet
+                          //   size={25}
+                          //   color={activeTab == ele ? "#6600ff" : "#09254D"}
+                          // />
+                          <MdDataObject
+                            size={20}
+                            color={activeTab == ele ? "#E74C3C" : "#B2BABB "}
                           />
                         }
                         tooltipFor="obj"
@@ -114,7 +121,7 @@ export const JsonSidebarIcon = ({ obj, setShowObj, setPath ,setLabel }) => {
                         setActiveTab={setActiveTab}
                         setPath={setPath}
                         ele={ele}
-                        setLabel ={setLabel}
+                        setLabel={setLabel}
                       />
                       {/* <GiSamuraiHelmet size={25} color="#22012C" /> */}
                       {/* {obj[ele].label ? obj[ele].label + "{}" : ele + "{}"} */}

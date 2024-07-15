@@ -111,7 +111,7 @@ export default function TorusDropDown({
                 >
                   {({ isSelected }) => (
                     <div className="w-full flex justify-between items-center">
-                      <Heading className="  xl:text-xs xl:text-sm font-normal font-sfpro tracking-tighter">
+                      <Heading className=" text-xs  font-normal tracking-normal">
                         {item.label}
                       </Heading>
 
