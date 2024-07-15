@@ -6,6 +6,7 @@ import {
   FabricBar,
   Faq,
   Home,
+  Line,
   NodeGallerIcon,
   Sheild,
   Support,
@@ -139,6 +140,7 @@ export default function NewSidebar({
                 />
               ),
             },
+
             {
               id: "FabricsBar",
               content: ({ isSelected }) => (
@@ -174,8 +176,6 @@ export default function NewSidebar({
         />
 
         <hr className="w-[1px] h-[100%] bg-slate-300" />
-
-        
       </div>
 
       <div className="flex flex-col justify-center items-center gap-2">

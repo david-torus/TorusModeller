@@ -37,13 +37,13 @@ export default function NewNavbar() {
             <div className="w-[100%] bg-transparent rounded-md h-full">
               <div className="w-[100%] h-[100%] flex flex-col">
                 <div className="w-[100%] flex flex-row justify-between items-center">
-                  <div className="w-[60%]">
+                  <div className="w-[70%]">
                     <TorusDropDown
                       title={
                         <div className="flex flex-row items-center gap-2 w-[100%]">
                           <div
                             className={
-                              "w-[80%] text-black font-inter 3xl:text-sm xl:text-sm xl:font-normal tracking-normal whitespace-nowrap"
+                              "w-[80%] text-black font-inter 3xl:text-sm xl:text-sm xl:font-sswmbold tracking-normal whitespace-nowrap"
                             }
                           >
                             {(selectededArtifacts &&
@@ -73,7 +73,7 @@ export default function NewNavbar() {
                     />
                   </div>
 
-                  <div className="w-[40%] flex justify-between items-center">
+                  <div className="w-[30%] flex justify-between items-center">
                     <div className="w-[60%] flex justify-center gap-1 rounded-md">
                       <TorusDropDown
                         title={
@@ -112,10 +112,10 @@ export default function NewNavbar() {
                   </div>
                 </div>
                 <div className="w-[100%] flex h-[50%] ">
-                  <div className="w-[60%]">
+                  <div className="w-[70%] ">
                     <p className="text-xs text-black/35">Edited 10 mins ago</p>
                   </div>
-                  <div className="w-[40%] flex justify-between gap-1 items-center">
+                  <div className="w-[30%] flex justify-between gap-1 items-center">
                     <div className="w-[30%] flex justify-center items-center">
                       <Saved />
                     </div>
@@ -204,8 +204,6 @@ export default function NewNavbar() {
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
     </div>

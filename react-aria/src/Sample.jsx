@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { TorusTable } from "./torusComponents/TorusTable";
+import countryCode from "../src/torusComponents/countryCode.json";
 const data = [
   {
     name: "Object 1",
-    value: 0,
+    value: {
+      role: "admin",
+      job: "ganesh",
+      array: ["whatever", "something"],
+    },
   },
   {
     name: "Object 2",
@@ -83,5 +88,9 @@ const data = [
   },
 ];
 export default function Sample() {
-  return <TorusTable primaryColumn={"value"} tableData={data} onChange={""} />;
+  const [datas, setData] = useState([]);
+  console.log(datas);
+  return (
+    <TorusTable primaryColumn={"specialKey"} tableData={countryCode} onSave={setData} />
+  );
 }

@@ -5,6 +5,8 @@ import TorusDropDown from "../../torusComponents/TorusDropDown";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";
+import TorusTab from "../../torusComponents/TorusTab";
+import { Calendar, Flip, Pencil, Scan } from "../../SVG_Application";
 import TorusSwitch from "../../torusComponents/TorusSwitch";
 
 const RenderSwitch = ({ obj }) => {
@@ -74,15 +76,16 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
         <>
           {
             <div className="flex w-[100%] flex-col gap-2">
-              <div div className="flex flex-col  gap-4  w-full ">
+              <div div className="flex flex-col gap-1 w-full ">
                 {/* <p>{obj.label}</p> */}
                 {
                   <TorusDropDown
+                    renderEmptyState={() => "No Items..."}
                     classNames={{
                       buttonClassName: `bg-white w-[100%] h-[40px] text-black  mb-2`,
                       listBoxClassName: "bg-white text-black ",
                     }}
-                    // label ={ obj.label}
+                    label={obj?.selectedValue.length > 0 && obj.label}
                     title={
                       <div className="flex flex-row items-center  w-[100%]">
                         <div
@@ -338,6 +341,7 @@ export default function JsonSidebarDetail({
   label,
 }) {
   const [value, setValue] = useState(null);
+  const [selectedTab, setselectedTab] = useState("Tabs");
 
   const handleInput = (e, i, key, type) => {
     setValue(e);
@@ -349,7 +353,37 @@ export default function JsonSidebarDetail({
   return (
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
-        <p className="text-center"> Properties</p>
+        <p className="px-2"> Properties</p>
+        <TorusTab
+          orientation="horizontal"
+          classNames={{
+            tabs: "cursor-pointer bg-[#F4F5FA]",
+            tabList: "w-full h-[100%] flex justify-center items-center",
+            tab: ` p-2 h-full  w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none `,
+          }}
+          tabs={[
+            {
+              id: "Tabs",
+              content: <Pencil strokeColor={"#1C274C"} />,
+            },
+            {
+              id: "Tabbs",
+              content: <Pencil strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbs",
+              content: <Flip strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbbs",
+              content: <Scan strokeColor={"#B2BABB "} />,
+            },
+            {
+              id: "Tabbbbbs",
+              content: <Calendar strokeColor={"#B2BABB "} />,
+            },
+          ]}
+        />
 
         <span className="mt-3 m-2 w-[100%]">
           label:

@@ -27,15 +27,14 @@ export default function CanvasPanel() {
   return (
     <Panel
       position="bottom-right"
-      className="w-[30%] bg-transparent flex justify-end h-[6%] gap-[0.2rem] "
+      className="w-[30%] bg-transparent flex justify-end h-[6%]  "
     >
-      <div className="w-[95%] gap-[0.2rem] h-full  flex justify-between items-center rounded-lg">
-        <div className="w-[25%] h-full border border-slate-300 flex items-center rounded-lg bg-white">
+      <div className="w-[95%]  h-full  flex justify-between items-center rounded-lg">
+        <div className="w-[25%] h-full border  border-slate-300 flex items-center justify-between rounded-lg bg-white">
           <TorusButton key={"undo"} Children={<Undo />} onPress={zoomTo} />
-
           <TorusButton key={"redo"} Children={<Redo />} onPress={zoomTo} />
         </div>
-        <div className="w-[65%] h-full border border-slate-300 flex items-center rounded-lg bg-white ">
+        <div className="w-[65%] p-2 gap-2 h-full border border-slate-300 flex items-center rounded-lg bg-white ">
           <TorusButton
             key={"FullScreen"}
             Children={<FullScreen />}
