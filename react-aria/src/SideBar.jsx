@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Panel } from "reactflow";
 import {
   Connect,
@@ -14,6 +14,8 @@ import {
 } from "./SVG_Application";
 import TorusTab from "./torusComponents/TorusTab";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import { DarkModeContext } from "./context/darkmodeContext";
+import { BiMoon, BiSun } from "react-icons/bi";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -59,6 +61,7 @@ export default function SideBar({
   handleSidebarToggle,
   handleTabChange,
 }) {
+  const { darkMode, toggleDarkMode } = useContext(DarkModeContext);
   const borderFn = () => {
     if (selectedFabric === "home") {
       return focusBLcolor.home;
@@ -179,6 +182,21 @@ export default function SideBar({
       </div>
 
       <div className="flex flex-col justify-center items-center gap-2">
+        <div className="pointer" onClick={() => toggleDarkMode(!darkMode)}>
+          {darkMode ? (
+            <BiSun
+              color={
+                !showFabricSideBar ? "#A59E92" : colors[selectedFabric]?.dark
+              }
+            />
+          ) : (
+            <BiMoon
+              color={
+                !showFabricSideBar ? "#A59E92" : colors[selectedFabric]?.dark
+              }
+            />
+          )}
+        </div>
         <div>
           <NodeGallerIcon />
         </div>
