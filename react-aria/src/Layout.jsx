@@ -28,7 +28,7 @@ import NodeGallery from "./NodeGallery";
 import CanvasPanel from "./CanvasPanel";
 import SideBar from "./SideBar";
 import { RenderJson } from "./jonui/JsonUI";
-import NavBar from "./NavBar";
+import Navbar from "./Navbar";
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -138,7 +138,7 @@ export default function Layout() {
          `}
     >
       <div className="w-full h-[8%] sticky top-0">
-        <NavBar />
+        <Navbar />
       </div>
 
       <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
