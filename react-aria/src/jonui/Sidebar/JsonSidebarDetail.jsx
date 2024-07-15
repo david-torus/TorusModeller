@@ -65,7 +65,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     console.log(e, "st");
     setValue(e);
 
-  handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
+    handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
 
     console.log(e, "kj");
   };
@@ -82,15 +82,16 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                   <TorusDropDown
                     renderEmptyState={() => "No Items..."}
                     classNames={{
-                      buttonClassName: `bg-white w-[100%] h-[40px] text-black  mb-2`,
-                      listBoxClassName: "bg-white text-black ",
+                      buttonClassName: `bg-white dark:bg-[#161616] w-[100%] h-[40px] text-black dark:text-white  mb-2`,
+                      listBoxClassName:
+                        "bg-white dark:bg-[#161616] text-black dark:text-white",
                     }}
                     label={obj?.selectedValue.length > 0 && obj.label}
                     title={
                       <div className="flex flex-row items-center  w-[100%]">
                         <div
                           className={
-                            "w-[80%] text-black font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
+                            "w-[80%] text-black dark:text-white font-sfpro 3xl:text-sm xl:text-sm xl:font-normal tracking-tighter whitespace-nowrap"
                           }
                         >
                           {obj?.selectedValue.length > 0
@@ -98,7 +99,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                             : obj.label}
                         </div>
                         <div className="w-[10%]">
-                          <IoIosArrowDown color={"#090b0e"} />
+                          <IoIosArrowDown className="dark:text-white text-black" />
                         </div>
                       </div>
                     }
@@ -114,8 +115,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                     }))}
                     btWidth={"md"}
                   />
-                } 
-            
+                }
 
                 {/* {
                   <TorusSelector
@@ -179,7 +179,7 @@ const RenderJsonArraySidebarDetail = ({
             <div
               key={index}
               className={
-                " bg-[#F4F5FA]  rounded-lg  w-[100%]   mb-2" +
+                " bg-[#F4F5FA] text-black dark:text-white dark:bg-[#0F0F0F]  rounded-lg  w-[100%]   mb-2" +
                 (isExpanded ? "transition ease-in-out duration-300" : "")
               }
             >
@@ -234,8 +234,8 @@ const RenderJsonArraySidebarDetail = ({
                                 radius="lg"
                                 width="xl"
                                 height="xl"
-                                textColor="text-[#000000]"
-                                bgColor="bg-[#FFFFFF]"
+                                textColor="text-[#000000] dark:text-[#FFFFFF]"
+                                bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
                                 value={objs[showObj][index][item]}
                               />
                               {/* <input
@@ -353,11 +353,11 @@ export default function JsonSidebarDetail({
   return (
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
-        <p className="px-2"> Properties</p>
+        <p className="p-2 text-black dark:text-white"> Properties</p>
         <TorusTab
           orientation="horizontal"
           classNames={{
-            tabs: "cursor-pointer bg-[#F4F5FA]",
+            tabs: "cursor-pointer rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] ",
             tabList: "w-full h-[100%] flex justify-center items-center",
             tab: ` p-2 h-full  w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none `,
           }}
@@ -385,9 +385,11 @@ export default function JsonSidebarDetail({
           ]}
         />
 
-        <span className="mt-3 m-2 w-[100%]">
-          label:
-          <span className="text-[#6600ff] m-2 font-poppins ">{label}</span>
+        <span className="mt-3 font-normal m-2 w-[100%] text-black dark:text-white">
+          Label :
+          <span className="text-[#6600ff] dark:text-[#c4b707] m-2 font-poppins  ">
+            {label}
+          </span>
         </span>
       </span>
       <div>
@@ -405,7 +407,7 @@ export default function JsonSidebarDetail({
                     return (
                       <p
                         style={{ display: ele === "label" ? "none" : "" }}
-                        className="bg-[#F4F5FA] rounded-lg p-2"
+                        className="bg-[#F4F5FA]  dark:bg-[#0F0F0F] rounded-lg p-2"
                       >
                         <div className="w-[100%]">
                           <TorusInput
@@ -420,8 +422,8 @@ export default function JsonSidebarDetail({
                             radius="lg"
                             width="xl"
                             height="xl"
-                            textColor="text-[#000000]"
-                            bgColor="bg-[#FFFFFF]"
+                            textColor="text-[#000000] dark:text-[#FFFFFF]"
+                            bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
                             value={obj[showObj][ele]}
                           />
                         </div>

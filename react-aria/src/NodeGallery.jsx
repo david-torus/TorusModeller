@@ -81,7 +81,7 @@ export default function NodeGallery({
       showFabricSideBar
         ? "md:w-4/12 lg:w-2/12 ml-[80px]  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
         : "h-[6%] w-[5%]"
-    }  transition-all ease-in-out duration-300`}
+    }  `}
     >
       <div
         className={`w-full h-full  ${
