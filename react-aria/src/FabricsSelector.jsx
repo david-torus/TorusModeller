@@ -1,7 +1,7 @@
 import React, { forwardRef } from "react";
 import ReactFlow from "reactflow";
 import HomeScreen from "./HomeScreen";
-
+const proOptions = { hideAttribution: true };
 export const FabricsSelector = forwardRef(function FabricsSelector(
   {
     fabric,
@@ -39,6 +39,7 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             children={children}
+            proOptions={proOptions}
           />
         );
 
@@ -57,6 +58,7 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             children={children}
+            proOptions={proOptions}
           />
         );
       case "UF":
@@ -74,6 +76,7 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             children={children}
+            proOptions={proOptions}
           />
         );
       case "PF":
@@ -91,6 +94,7 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             children={children}
+            proOptions={proOptions}
           />
         );
       case "SF":
@@ -108,6 +112,7 @@ export const FabricsSelector = forwardRef(function FabricsSelector(
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             children={children}
+            proOptions={proOptions}
           />
         );
       default:

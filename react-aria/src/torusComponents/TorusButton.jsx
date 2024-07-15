@@ -117,7 +117,7 @@ export default function TorusButton({
         )
       )}
 
-      {!startContent && !endContent && <p className={`${fontStyle}`}> {Children} </p>}
+      {!startContent && !endContent && <div className={`${fontStyle}`}> {Children} </div>}
     </Button>
   );
 }

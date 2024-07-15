@@ -20,7 +20,7 @@ export default function Navbar() {
   const { darkMode } = useContext(DarkModeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
-    <div className="w-full h-full bg-white dark:bg-[#161616] border-b border-slate-300 flex items-center justify-center">
+    <div className="w-full h-full bg-white dark:bg-[#161616] dark:border-none border-b border-slate-300 flex items-center justify-center">
       <div className="w-[100%] h-[90%] flex flex-col items-center justify-center">
         <div className="w-[99%] h-[80%]  flex flex-row items-center justify-between gap-[4%]">
           {/* TorusLogo */}
@@ -59,7 +59,7 @@ export default function Navbar() {
                         "font-inter 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                       }
                       classNames={{
-                        buttonClassName: `bg-transparent flex  text-black rounded-md font-semibold font-md  torus-pressed:animate-torusButtonActive `,
+                        buttonClassName: `bg-transparent flex w-full h-full  text-black rounded-md font-semibold font-md  torus-pressed:animate-torusButtonActive `,
                         listBoxClassName: "bg-white text-black ",
                       }}
                       selected={selectededArtifacts}
@@ -69,7 +69,6 @@ export default function Navbar() {
                         { key: "Bank Master", label: "Bank Master" },
                         { key: "Bank", label: "Bank" },
                       ]}
-                      btWidth={"md"}
                     />
                   </div>
 
@@ -83,7 +82,10 @@ export default function Navbar() {
                               "*"}
                           </span>
                           <span>
-                            <IoIosArrowDown size={15} className="text-black dark:text-white" />
+                            <IoIosArrowDown
+                              size={15}
+                              className="text-black dark:text-white"
+                            />
                           </span>
                         </div>
                       }
@@ -111,14 +113,18 @@ export default function Navbar() {
                 </div>
                 <div className="w-[100%] flex h-[50%] ">
                   <div className="w-[70%] ">
-                    <p className="text-xs text-black/35">Edited 10 mins ago</p>
+                    <p className="text-xs text-black/35 dark:text-white/35">
+                      Edited 10 mins ago
+                    </p>
                   </div>
                   <div className="w-[30%] flex justify-between gap-1 items-center">
                     <div className="w-[30%] flex justify-center items-center">
-                      <Saved />
+                      <Saved className={"stroke-[#0736C4] dark:stroke-white"} />
                     </div>
                     <div className="w-[70%]">
-                      <p className="text-xs text-[#0736C4]">Saved</p>
+                      <p className="text-xs text-[#0736C4] dark:text-white/35">
+                        Saved
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -166,24 +172,24 @@ export default function Navbar() {
                   </div>
                 </div>
                 <div className=" col-span-1 flex justify-center items-center">
-                  <VerticalLine />
+                  <VerticalLine className={"stroke-black dark:stroke-white"} />
                 </div>
 
                 <div className=" col-span-4 flex justify-center items-center">
                   <div className="flex justify-around gap-[0.8rem] items-center ">
                     <div className="w-[30%] flex justify-center items-center">
-                      <Debugger />
+                      <Debugger className={"stroke-black dark:stroke-white"} />
                     </div>
                     <div className="w-[30%] flex justify-center items-center">
-                      <Preview />
+                      <Preview className={"stroke-black dark:stroke-white"} />
                     </div>
                     <div className="w-[30%] flex justify-center items-center">
-                      <Shared />
+                      <Shared className={"stroke-black dark:stroke-white"} />
                     </div>
                   </div>
                 </div>
                 <div className=" col-span-1 flex justify-center items-center">
-                  <VerticalLine />
+                  <VerticalLine className={"stroke-black dark:stroke-white"} />
                 </div>
                 <div className=" col-span-3">
                   <TorusButton

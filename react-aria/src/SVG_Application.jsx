@@ -825,7 +825,7 @@ const PropertyPencilGray = () => {
   );
 };
 
-const ZoomIn = () => {
+const ZoomIn = ({ className }) => {
   return (
     <svg
       width="20"
@@ -836,12 +836,12 @@ const ZoomIn = () => {
     >
       <path
         d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M15 12H12M12 12H9M12 12V9M12 12V15"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -849,7 +849,7 @@ const ZoomIn = () => {
   );
 };
 
-const ZoomOut = () => {
+const ZoomOut = ({ className }) => {
   return (
     <svg
       width="20"
@@ -860,12 +860,12 @@ const ZoomOut = () => {
     >
       <path
         d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M15 12H9"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -873,7 +873,7 @@ const ZoomOut = () => {
   );
 };
 
-const Help = () => {
+const Help = ({ className }) => {
   return (
     <svg
       width="20"
@@ -885,24 +885,24 @@ const Help = () => {
       <path
         opacity="1"
         d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M10.125 8.875C10.125 7.83947 10.9645 7 12 7C13.0355 7 13.875 7.83947 13.875 8.875C13.875 9.56245 13.505 10.1635 12.9534 10.4899C12.478 10.7711 12 11.1977 12 11.75V13"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M12 17C12.5523 17 13 16.5523 13 16C13 15.4477 12.5523 15 12 15C11.4477 15 11 15.4477 11 16C11 16.5523 11.4477 17 12 17Z"
-        fill="black"
+        className={className}
       />
     </svg>
   );
 };
 
-const Fitview = () => {
+const Fitview = ({ className }) => {
   return (
     <svg
       width="20"
@@ -913,12 +913,12 @@ const Fitview = () => {
     >
       <path
         d="M2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M19.0711 11.9993L16.9497 9.87797M19.0711 11.9993L16.9497 14.1206M19.0711 11.9993H14.1213M4.92893 11.9993L7.05025 14.1206M4.92893 11.9993L7.05025 9.87797M4.92893 11.9993H9.87868"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -927,7 +927,7 @@ const Fitview = () => {
   );
 };
 
-const FullScreen = () => {
+const FullScreen = ({ className }) => {
   return (
     <svg
       width="20"
@@ -938,14 +938,14 @@ const FullScreen = () => {
     >
       <path
         d="M9 15L2 22M2 22H7.85714M2 22V16.1429"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M15 9L22 2M22 2H16.1429M22 2V7.85714"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -954,7 +954,7 @@ const FullScreen = () => {
   );
 };
 
-const Undo = () => {
+const Undo = ({ className }) => {
   return (
     <svg
       width="20"
@@ -965,14 +965,14 @@ const Undo = () => {
     >
       <path
         d="M7 4L4 7L7 10"
-        stroke="#1C274C"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M4 7H15C17.7614 7 20 9.23857 20 12C20 14.7614 17.7614 17 15 17H8"
-        stroke="#1C274C"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -980,7 +980,7 @@ const Undo = () => {
   );
 };
 
-const Redo = () => {
+const Redo = ({ className }) => {
   return (
     <svg
       width="20"
@@ -991,14 +991,14 @@ const Redo = () => {
     >
       <path
         d="M17 4L20 7L17 10"
-        stroke="#1C274C"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
       <path
         d="M20 7H9C6.2386 7 4 9.23857 4 12C4 14.7614 6.2386 17 9 17H16"
-        stroke="#1C274C"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -1082,7 +1082,7 @@ const Line = () => {
   );
 };
 
-const VerticalLine = () => {
+const VerticalLine = ({ className }) => {
   return (
     <svg
       width="1"
@@ -1091,12 +1091,18 @@ const VerticalLine = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line x1="0.5" x2="0.5" y2="41" stroke="black" stroke-opacity="0.35" />
+      <line
+        x1="0.5"
+        x2="0.5"
+        y2="41"
+        className={className}
+        stroke-opacity="0.35"
+      />
     </svg>
   );
 };
 
-const Debugger = () => {
+const Debugger = ({ className }) => {
   return (
     <svg
       width="20"
@@ -1107,65 +1113,65 @@ const Debugger = () => {
     >
       <path
         d="M19 15V11.9375C19 9.7629 17.2371 8.00002 15.0625 8.00002H8.9375C6.76288 8.00002 5 9.7629 5 11.9375V15C5 18.866 8.13401 22 12 22C15.866 22 19 18.866 19 15Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M16.5 8.5V7.5C16.5 5.01472 14.4853 3 12 3C9.51472 3 7.5 5.01472 7.5 7.5V8.5"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M19 14H22"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M5 14H2"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M14.5 3.50002L17 2.00002"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M9.5 3.50002L7 2.00002"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M20.5 20.0002L18.5 19.2002"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M20.5 7.9998L18.5 8.7998"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M3.5 20.0002L5.5 19.2002"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M3.5 7.9998L5.5 8.7998"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M12 21.5V15"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
@@ -1173,7 +1179,7 @@ const Debugger = () => {
   );
 };
 
-const Preview = () => {
+const Preview = ({ className }) => {
   return (
     <svg
       width="20"
@@ -1184,19 +1190,19 @@ const Preview = () => {
     >
       <path
         d="M3.27489 15.2957C2.42496 14.1915 2 13.6394 2 12C2 10.3606 2.42496 9.80855 3.27489 8.70435C4.97196 6.49958 7.81811 4.00002 12 4.00002C16.1819 4.00002 19.028 6.49958 20.7251 8.70435C21.575 9.80855 22 10.3606 22 12C22 13.6394 21.575 14.1915 20.7251 15.2957C19.028 17.5004 16.1819 20 12 20C7.81811 20 4.97196 17.5004 3.27489 15.2957Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
       <path
         d="M15 12C15 13.6569 13.6569 15 12 15C10.3431 15 9 13.6569 9 12C9 10.3431 10.3431 9 12 9C13.6569 9 15 10.3431 15 12Z"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
       />
     </svg>
   );
 };
 
-const Shared = () => {
+const Shared = ({ className }) => {
   return (
     <svg
       width="20"
@@ -1207,13 +1213,13 @@ const Shared = () => {
     >
       <path
         d="M22 13.9979C21.9711 17.4119 21.7815 19.294 20.5404 20.5352C19.0755 22 16.7179 22 12.0026 22C7.28733 22 4.9297 22 3.46485 20.5352C2 19.0703 2 16.7127 2 11.9974C2 7.28212 2 4.92448 3.46485 3.45963C4.70599 2.21848 6.58807 2.02895 10.0021 2"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
       />
       <path
         d="M22 7H14C12.1824 7 11.0867 7.89202 10.6804 8.30029C10.5546 8.42673 10.4917 8.48996 10.4908 8.49082C10.49 8.49168 10.4267 8.55459 10.3003 8.68042C9.89202 9.08671 9 10.1824 9 12V15M22 7L17 2M22 7L17 12"
-        stroke="black"
+        className={className}
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -1242,7 +1248,7 @@ const SearchIcon = () => {
   );
 };
 
-const Saved = () => {
+const Saved = ({ className }) => {
   return (
     <svg
       width="12"
@@ -1253,13 +1259,13 @@ const Saved = () => {
     >
       <path
         d="M3.14359 9.5C1.96012 9.5 1.00073 8.5519 1.00073 7.38235C1.00073 6.2128 1.96012 5.2647 3.14359 5.2647C3.28565 5.2647 3.42448 5.27835 3.55881 5.30445M3.55881 5.30445C3.44426 4.9989 3.38168 4.66843 3.38168 4.32353C3.38168 2.76414 4.66087 1.5 6.23883 1.5C7.70868 1.5 8.91928 2.59686 9.07828 4.00749M3.55881 5.30445C3.84103 5.3592 4.10337 5.4687 4.33407 5.6213M7.19123 4.0136C7.48908 3.90955 7.80963 3.85294 8.14358 3.85294C8.47093 3.85294 8.78538 3.90734 9.07828 4.00749M9.07828 4.00749C10.1972 4.39012 11.0007 5.44055 11.0007 6.67645C11.0007 8.02995 10.037 9.16105 8.75073 9.4361"
-        stroke="#0736C4"
+        className={className}
         stroke-width="0.75"
         stroke-linecap="round"
       />
       <path
         d="M5.99927 8.00009V11.0001M5.99927 8.00009L6.99927 9.00009M5.99927 8.00009L4.99927 9.00009"
-        stroke="#0736C4"
+        className={className}
         stroke-width="0.75"
         stroke-linecap="round"
         stroke-linejoin="round"
