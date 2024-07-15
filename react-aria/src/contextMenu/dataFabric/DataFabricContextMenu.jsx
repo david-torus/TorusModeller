@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { useReactFlow } from "reactflow";
 import TorusButton from "../../torusComponents/TorusButton";
 import { Text } from "react-aria-components";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
+import { DarkModeContext } from "../../context/darkmodeContext";
 
 export default function DataFabricContextMenu({
   id,
@@ -15,6 +16,7 @@ export default function DataFabricContextMenu({
   console.log(top, left, right, bottom);
   const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
   const node = getNode(id);
+  const { darkMode } = useContext(DarkModeContext);
   const duplicateNode = useCallback(() => {
     const position = {
       x: node.position.x + 50,
@@ -40,10 +42,12 @@ export default function DataFabricContextMenu({
       {node && (
         <div
           style={{ top, left, right, bottom }}
-          className="absolute z-50 bg-white shadow-md rounded-md cursor-default w-44 flex flex-col gap-3 p-1 "
+          className="absolute z-50 bg-white dark:bg-[#161616]  dark:border-[#212121] dark:border  shadow-md rounded-md cursor-default w-52 flex flex-col px-3 py-2  "
           {...props}
         >
-          <Text className="text-xl">{node?.data?.label}</Text>
+          <Text className="text-xl capitalize py-1 text-black dark:text-white w-full  border-b dark:border-[#212121] ">
+            {node?.data?.label}
+          </Text>
           <div className="flex flex-col gap-1">
             <TorusButton
               key={"df_edit"}
@@ -52,8 +56,8 @@ export default function DataFabricContextMenu({
               }
               Children={
                 <div>
-                  <div className=" w-full h-full flex justify-center gap-2 items-center">
-                    <EditNode />
+                  <div className=" w-full  text-black dark:text-white h-full flex justify-center gap-2 items-center">
+                    <EditNode className={"stroke-black dark:stroke-white "} />
                     Edit Node
                   </div>
                 </div>
@@ -66,8 +70,8 @@ export default function DataFabricContextMenu({
               }
               Children={
                 <div>
-                  <div className=" w-full h-full flex justify-center gap-2 items-center">
-                    <Cut />
+                  <div className=" w-full h-full text-black dark:text-white   flex justify-center gap-2 items-center">
+                    <Cut className={"stroke-black dark:stroke-white "} />
                     Cut
                   </div>
                 </div>
@@ -80,8 +84,8 @@ export default function DataFabricContextMenu({
               }
               Children={
                 <div>
-                  <div className=" w-full h-full flex justify-center gap-2 items-center">
-                    <Copy />
+                  <div className=" w-full h-full text-black dark:text-white  flex justify-center gap-2 items-center">
+                    <Copy className={"stroke-black dark:stroke-white "} />
                     Copy
                   </div>
                 </div>
@@ -94,8 +98,8 @@ export default function DataFabricContextMenu({
               }
               Children={
                 <div>
-                  <div className=" w-full h-full flex justify-center gap-2 items-center">
-                    <Paste />
+                  <div className=" w-full h-full text-black dark:text-white  flex justify-center gap-2 items-center">
+                    <Paste className={"stroke-black dark:stroke-white "} />
                     Paste
                   </div>
                 </div>
