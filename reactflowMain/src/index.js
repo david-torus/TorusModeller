@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState,useCallback } from "react";
 import ReactDOM from "react-dom/client";
 
 import "primereact/resources/primereact.min.css";
@@ -19,9 +19,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Render from "./commonComponents/App&FabricSelection/Fabrics";
 import { getClientDetails } from "./commonComponents/api/clientDetailsApi";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import Mock from "./React-aria/App";
 /**
  * Renders the main application component.
  *
@@ -46,27 +43,24 @@ function App() {
     // }
   }, []);
 
-  const handleToken = useCallback(
-    async (tok) => {
-      try {
-        let tk =
-          tok ||
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbklkIjoidGVzdCIsImZpcnN0TmFtZSI6InRlc3QiLCJsYXN0TmFtZSI6InRlc3QiLCJlbWFpbCI6IiIsIm1vYmlsZSI6IiIsIjJGQUZsYWciOiJZIiwicm9sZSI6InNlbmlvcmRldiIsImNsaWVudCI6IkFCQyIsImlhdCI6MTcxOTU1NDIyOX0.1Gk5Lpf14W9twZEYxov1pik1vYunYP5CwKEoG2YEKG4";
-        const res = await getClientDetails(tk);
-        if (
-          res &&
-          res?.hasOwnProperty("client") &&
-          res?.client &&
-          JSON.stringify(res) !== JSON.stringify(clientDetails)
-        ) {
-          setClientDetails(res);
-        }
-      } catch (error) {
-        console.log(error);
+  const handleToken = useCallback(async (tok) => {
+    try {
+      let tk =
+        tok ||
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb2dpbklkIjoidGVzdCIsImZpcnN0TmFtZSI6InRlc3QiLCJsYXN0TmFtZSI6InRlc3QiLCJlbWFpbCI6IiIsIm1vYmlsZSI6IiIsIjJGQUZsYWciOiJZIiwicm9sZSI6InNlbmlvcmRldiIsImNsaWVudCI6IkFCQyIsImlhdCI6MTcxOTU1NDIyOX0.1Gk5Lpf14W9twZEYxov1pik1vYunYP5CwKEoG2YEKG4";
+      const res = await getClientDetails(tk);
+      if (
+        res &&
+        res?.hasOwnProperty("client") &&
+        res?.client &&
+        JSON.stringify(res) !== JSON.stringify(clientDetails)
+      ) {
+        setClientDetails(res);
       }
-    },
-    [clientDetails]
-  );
+    } catch (error) {
+      console.log(error);
+    }
+  }, [clientDetails]);
 
   useEffect(() => {
     let params = new URL(document.location).searchParams;
@@ -79,32 +73,33 @@ function App() {
   };
 
   return (
-    <DarkmodeProvider getContext={getContext}>
-      {fallBack ? (
-        <MainpageLoader />
-      ) : (
-        <>
-          {clientDetails &&
-          clientDetails?.hasOwnProperty("client") &&
-          clientDetails?.client ? (
-            <>
+    <React.StrictMode>
+      <DarkmodeProvider getContext={getContext}>
+        {fallBack ? (
+          <MainpageLoader />
+        ) : (
+          <>
+            {clientDetails &&
+            clientDetails?.hasOwnProperty("client") &&
+            clientDetails?.client ? (
+              <>
+                <ReactFlowProvider>
+                  <div className=" w-full relative h-full bg-[#1d1d1d] ">
+                    <Render
+                      tenant={clientDetails?.client || "noClient"}
+                      application={""}
+                      appGroup={"CG"}
+                    />
+                    <ToastContainer
+                      theme={darkmode ? "light" : "dark"}
+                      position="bottom-right"
+                      autoClose={1000}
+                    />
+                  </div>
+                </ReactFlowProvider>
+              </>
+            ) : (
               <ReactFlowProvider>
-                <div className=" w-full relative h-full bg-[#1d1d1d] ">
-                  <Render
-                    tenant={clientDetails?.client || "noClient"}
-                    application={""}
-                    appGroup={"CG"}
-                  />
-                  <ToastContainer
-                    theme={darkmode ? "light" : "dark"}
-                    position="bottom-right"
-                    autoClose={1000}
-                  />
-                </div>
-              </ReactFlowProvider>
-            </>
-          ) : (
-            <ReactFlowProvider>
               <div className=" w-full relative h-full bg-[#1d1d1d] ">
                 <Render
                   tenant={clientDetails?.client || "ABC"}
@@ -118,34 +113,14 @@ function App() {
                 />
               </div>
             </ReactFlowProvider>
-          )}
-        </>
-      )}
-    </DarkmodeProvider>
+            )}
+          </>
+        )}
+      </DarkmodeProvider>
+    </React.StrictMode>
   );
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-  <React.StrictMode>
-    <Router>
-      <Routes>
-        <Route
-          lazy={true}
-          loader={<MainpageLoader />}
-          path="/"
-          element={<App />}
-        />
-        <Route
-          lazy={true}
-          loader={<MainpageLoader />}
-          path="/mock"
-          element={<Mock />}
-        />
-        {/* <Route path="/table" element={<Sample />} />
-    <Route path="/login" element={<SignIn />} /> */}
-      </Routes>
-    </Router>
-  </React.StrictMode>
-);
+root.render(<App />);
