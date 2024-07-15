@@ -52,7 +52,7 @@ const focusBLcolor = {
   },
 };
 
-export default function NewSidebar({
+export default function SideBar({
   color,
   selectedFabric,
   showFabricSideBar,

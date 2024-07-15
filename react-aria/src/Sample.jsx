@@ -91,6 +91,10 @@ export default function Sample() {
   const [datas, setData] = useState([]);
   console.log(datas);
   return (
-    <TorusTable primaryColumn={"specialKey"} tableData={countryCode} onSave={setData} />
+    <TorusTable
+      primaryColumn={"specialKey"}
+      tableData={countryCode}
+      onSave={setData}
+    />
   );
 }
