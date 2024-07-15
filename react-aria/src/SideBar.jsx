@@ -91,7 +91,7 @@ export default function SideBar({
           classNames={{
             tabs: "cursor-pointer",
             tabList: "w-full h-[100%] flex justify-center items-center",
-            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none ${borderLeft}`,
+            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
           }}
           tabs={[
             {
@@ -164,7 +164,10 @@ export default function SideBar({
       </div>
 
       <div className="flex flex-col justify-end  items-center gap-2">
-        <div className="pointer" onClick={() => toggleDarkMode(!darkMode)}>
+        <div
+          className="cursor-pointer"
+          onClick={() => toggleDarkMode(!darkMode)}
+        >
           {darkMode ? (
             <BiSun color={"#A59E92"} />
           ) : (
