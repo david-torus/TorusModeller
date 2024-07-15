@@ -669,12 +669,7 @@ export default function App({
             setPropertywindow={setPropertywindow}
           />
 
-          <Background
-            variant="dots"
-            gap={25}
-            size={1}
-            color={darkmode ? "#ccc" : "black"}
-          />
+          <Background variant="dots" gap={12} size={1} />
 
           {menu && (
             <ContextMenu

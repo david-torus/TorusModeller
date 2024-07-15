@@ -40,7 +40,6 @@ export default function CanvasPanel() {
             Children={<FullScreen />}
             onPress={fitView}
           />
-
           <TorusButton
             key={"fitView"}
             Children={<Fitview />}
