@@ -12,6 +12,7 @@ export default function FabricsSideBar({ obj, handlejs }) {
     <div className="w-full h-[100%] max-h-full  max-w-full overflow-hidden flex flex-row ">
       <div className="max-w-[40%]   border-x border-slate-300 dark:border-[#212121]  bg-white">
         <JsonSidebarIcon
+          key={"iconBar"}
           showObj={showObj}
           setShowObj={setShowObj}
           obj={obj}

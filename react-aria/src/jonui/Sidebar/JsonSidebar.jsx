@@ -9,12 +9,12 @@ export default function JsonSidebar({ obj, handlejs }) {
   return (
     <div className="w-full h-screen flex flex-row">
       <div className="w-[24%]   shadow-md rounded-lg p-6  m-10 border border-slate-900 scrollbar-none">
-        <JsonSidebarIcon
+        {/* <JsonSidebarIcon
           showObj={showObj}
           setShowObj={setShowObj}
           obj={obj}
           setPath={setPath}
-        />
+        /> */}
       </div>
       <div className="w-screen">
         <JsonSidebarDetail
