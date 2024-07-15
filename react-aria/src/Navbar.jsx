@@ -20,13 +20,13 @@ export default function Navbar() {
   const { darkMode } = useContext(DarkModeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
-    <div className="w-full h-full bg-white border-b border-slate-300 flex items-center justify-center">
+    <div className="w-full h-full bg-white dark:bg-[#161616] border-b border-slate-300 flex items-center justify-center">
       <div className="w-[100%] h-[90%] flex flex-col items-center justify-center">
         <div className="w-[99%] h-[80%]  flex flex-row items-center justify-between gap-[4%]">
           {/* TorusLogo */}
           <div className="flex gap-2">
             <TorusLogo />
-            <span className=" font-semibold font-Neue Montreal text-black text-lg ">
+            <span className=" font-semibold font-Neue Montreal text-black text-lg dark:text-white ">
               TORUS
             </span>
           </div>
@@ -36,14 +36,14 @@ export default function Navbar() {
           <div className=" w-[15%] pl-[2.8rem] bg-transparent rounded-md h-full flex justify-end ">
             <div className="w-[100%] bg-transparent rounded-md h-full">
               <div className="w-[100%] h-[100%] flex flex-col">
-                <div className="w-[100%] flex flex-row justify-between items-center">
+                <div className="w-[100%] flex flex-row justify-between items-center gap-3">
                   <div className="w-[70%]">
                     <TorusDropDown
                       title={
                         <div className="flex flex-row items-center gap-2 w-[100%]">
                           <div
                             className={
-                              "w-[80%] text-black font-inter 3xl:text-sm xl:text-sm xl:font-sswmbold tracking-normal whitespace-nowrap"
+                              "w-[80%] text-black dark:text-white font-inter 3xl:text-sm xl:text-sm xl:font-sswmbold tracking-normal whitespace-nowrap"
                             }
                           >
                             {(selectededArtifacts &&
@@ -74,41 +74,39 @@ export default function Navbar() {
                   </div>
 
                   <div className="w-[30%] flex justify-between items-center">
-                    <div className="w-[60%] flex justify-center gap-1 rounded-md">
-                      <TorusDropDown
-                        title={
-                          <span className="font-inter text-white  3xl:text-xs xl:text-sm xl:font-normal tracking-tighter">
+                    <TorusDropDown
+                      title={
+                        <div className="bg-transparent w-full h-full flex items-center justify-center font-inter gap-2 3xl:text-sm xl:text-sm xl:font-semibold tracking-tighter">
+                          <span className="font-inter bg-[#0736C4] w-[80%] px-3  rounded-xl  text-white flex justify-between 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter">
                             {(selectedVersion &&
                               Array.from(selectedVersion)[0]) ||
                               "*"}
                           </span>
-                        }
-                        classNames={{
-                          buttonClassName:
-                            " bg-white dark:bg-[#262626] flex items-center justify-center font-semibold   w-[40px] h-[20px] torus-pressed:animate-torusButtonActive ",
+                          <span>
+                            <IoIosArrowDown size={15} className="text-black dark:text-white" />
+                          </span>
+                        </div>
+                      }
+                      classNames={{
+                        buttonClassName:
+                          " bg-transparent flex items-center justify-center font-semibold   w-[40px] h-[20px] torus-pressed:animate-torusButtonActive ",
 
-                          listBoxClassName: "bg-white text-black ",
-                        }}
-                        popOverProps={{ offset: 15 }}
-                        selected={selectedVersion}
-                        setSelected={setSelectedVersion}
-                        selectionMode="single"
-                        items={[
-                          { key: "v1", label: "v1" },
-                          { key: "v2", label: "v2" },
-                        ]}
-                        btncolor={"#0736C4"}
-                        fontStyle={
-                          "font-inter 3xl:text-xs text-white  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
-                        }
-                        radius={"xl"}
-                      />
-                    </div>
-                    <div className="w-[40%]">
-                      <span>
-                        <IoIosArrowDown size={15} color="black" />
-                      </span>
-                    </div>
+                        listBoxClassName: "bg-white text-black ",
+                      }}
+                      popOverProps={{ offset: 15 }}
+                      selected={selectedVersion}
+                      setSelected={setSelectedVersion}
+                      selectionMode="single"
+                      items={[
+                        { key: "v1", label: "v1" },
+                        { key: "v2", label: "v2" },
+                      ]}
+                      // btncolor={"#0736C4"}
+                      fontStyle={
+                        "font-inter 3xl:text-xs text-white  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                      }
+                      radius={"xl"}
+                    />
                   </div>
                 </div>
                 <div className="w-[100%] flex h-[50%] ">

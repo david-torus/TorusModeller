@@ -43,7 +43,7 @@ export default function Layout() {
   const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
-      dark: "#2257f7",
+      dark: "#0736C4",
       light: "#244DCB",
     },
     UF: {
@@ -141,7 +141,7 @@ export default function Layout() {
         <Navbar />
       </div>
 
-      <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
+      <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
         <div className="h-full flex w-[100%]">
           <FabricsSelector
             nodeTypes={NODE_TYPES}

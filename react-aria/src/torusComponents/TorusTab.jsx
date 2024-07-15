@@ -39,7 +39,7 @@ export default function TorusTab({
         {tabs.map((tab, index) => (
           <Tab
             className={merger(defaultTabsClassNames.tab, classNames?.tab)}
-            key={index}
+            key={ tab.id + index}
             id={tab.id}
           >
             {tab.content}
@@ -48,7 +48,7 @@ export default function TorusTab({
       </TabList>
       {panels &&
         panels.map((panel, index) => (
-          <TabPanel key={index} id={panel.id}>
+          <TabPanel key={panel.id + index} id={panel.id}>
             {panel.content}
           </TabPanel>
         ))}

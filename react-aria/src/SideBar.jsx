@@ -82,10 +82,11 @@ export default function SideBar({
   return (
     <Panel
       position="top-left"
-      className="h-[95%] w-[5%] flex flex-col justify-center items-center  bg-white border  border-slate-300 rounded-lg  "
+      className="h-[95%] w-[5%] flex flex-col justify-between items-center py-2   bg-white dark:bg-[#161616] border  border-slate-300 dark:border-[#212121] rounded-lg  "
     >
-      <div className="h-[85%] w-[100%] flex justify-center flex-col ">
+      <div className="h-[85%] w-[100%] flex flex-col justify-start items-center  ">
         <TorusTab
+          key="TorusTab"
           orientation="vertical"
           classNames={{
             tabs: "cursor-pointer",
@@ -96,11 +97,7 @@ export default function SideBar({
             {
               id: "Home",
               content: ({ isSelected }) => (
-                <Home
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
+                <Home strokeColor={!isSelected ? "#A59E92" : "teal"} />
               ),
             },
             {
@@ -143,62 +140,39 @@ export default function SideBar({
                 />
               ),
             },
-
             {
-              id: "FabricsBar",
+              id: "FabricsBars",
               content: ({ isSelected }) => (
-                <FabricBar
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
+                <FabricBar strokeColor={!isSelected ? "#A59E92" : "teal"} />
               ),
             },
             {
               id: "FAQ",
               content: ({ isSelected }) => (
-                <Faq
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
+                <Faq strokeColor={!isSelected ? "#A59E92" : "teal"} />
               ),
             },
             {
               id: "Support",
               content: ({ isSelected }) => (
-                <Support
-                  strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
-                  }
-                />
+                <Support strokeColor={!isSelected ? "#A59E92" : "teal"} />
               ),
             },
           ]}
           onSelectionChange={handleTabChange}
         />
-
-        <hr className="w-[1px] h-[100%] bg-slate-300" />
       </div>
 
-      <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col justify-end  items-center gap-2">
         <div className="pointer" onClick={() => toggleDarkMode(!darkMode)}>
           {darkMode ? (
-            <BiSun
-              color={
-                !showFabricSideBar ? "#A59E92" : colors[selectedFabric]?.dark
-              }
-            />
+            <BiSun color={"#A59E92"} />
           ) : (
-            <BiMoon
-              color={
-                !showFabricSideBar ? "#A59E92" : colors[selectedFabric]?.dark
-              }
-            />
+            <BiMoon color={"#A59E92"} />
           )}
         </div>
         <div>
-          <NodeGallerIcon />
+          <NodeGallerIcon color={"#A59E92"} />
         </div>
 
         <div>
