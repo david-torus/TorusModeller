@@ -175,10 +175,10 @@ export default function Layout() {
             />
             <MiniMap
               position="bottom-right"
-              style={{ bottom: "3rem" }}
+              style={{ bottom: "8%" }}
               maskColor="transparent"
               // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-              className="border border-slate-300 rounded-lg   dark:bg-[#161616] dark:border-[#21212126]/15"
+              className="border border-slate-300 rounded-lg w-[18.5%] h-[25%]  dark:bg-[#161616] dark:border-[#21212126]/15"
             />
             <CanvasPanel />
 
