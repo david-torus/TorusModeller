@@ -15,7 +15,7 @@ import { DarkModeContext } from "./context/darkmodeContext";
 import { IoIosArrowDown } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
 
-export default function NavBar() {
+export default function Navbar() {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
