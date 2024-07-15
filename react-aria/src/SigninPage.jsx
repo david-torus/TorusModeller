@@ -148,7 +148,6 @@ export default function SignIn() {
             labelColor="text-[#000000]/50"
             borderColor="border-[#000000]/20"
             outlineColor="torus-focus:ring-[#000000]/50"
-            placeholder="Phone Number"
             isDisabled={false}
             onChange={setSearch}
             radius="lg"

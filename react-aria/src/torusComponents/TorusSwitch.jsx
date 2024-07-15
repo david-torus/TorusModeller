@@ -23,7 +23,7 @@ export default function TorusSwitch({ label, isChecked, setIsChecked, marginT })
             checked={isChecked}
             onChange={handleToggle}
           />
-          <label htmlFor="switch-rounded"></label>
+          <label htmlFor="switch-rounded"> {label}</label>
         </span>
       </div>
     </div>

@@ -7,6 +7,7 @@ import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";
 import TorusTab from "../../torusComponents/TorusTab";
 import { Calendar, Flip, Pencil, Scan } from "../../SVG_Application";
+import TorusSwitch from "../../torusComponents/TorusSwitch";
 
 const RenderSwitch = ({ obj }) => {
   const handleDropdownClick = (event) => {
@@ -64,7 +65,8 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     console.log(e, "st");
     setValue(e);
 
-    handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
+  handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
+
     console.log(e, "kj");
   };
 
@@ -112,7 +114,8 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                     }))}
                     btWidth={"md"}
                   />
-                }
+                } 
+            
 
                 {/* {
                   <TorusSelector
