@@ -143,7 +143,7 @@ export default function NodeGallery({
                 color={"white"}
                 height={"sm"}
                 marginT={"mt-2"}
-                btncolor={"#0736C4"}
+                btncolor={color}
                 fontStyle={
                   "font-sfpros 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }
@@ -171,10 +171,10 @@ const Loop = ({ color, selectedFabric }) => {
           onDragStart={(event) => onDragStart(event, "default")}
         >
           <div
-            className={`bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
+            className={ ` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
           >
             {React.createElement(item.icon, {
-              color: "#0736C4",
+              color: color? color : "#0736C4",
               size: 18,
               selectedFabric: selectedFabric,
             })}

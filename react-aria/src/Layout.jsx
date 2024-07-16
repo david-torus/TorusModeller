@@ -138,7 +138,7 @@ export default function Layout() {
          `}
     >
       <div className="w-full h-[8%] sticky top-0">
-        <Navbar />
+        <Navbar    color={colors[selectedFabric]?.light} />
       </div>
 
       <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
@@ -169,7 +169,7 @@ export default function Layout() {
             />
             <NodeGallery
               selectedFabric={selectedFabric}
-              color={colors[selectedFabric]?.dark}
+              color={colors[selectedFabric]?.light}
               showFabricSideBar={showFabricSideBar}
               handleSidebarToggle={handleSidebarToggle}
             />

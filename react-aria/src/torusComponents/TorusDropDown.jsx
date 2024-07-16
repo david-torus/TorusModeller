@@ -47,10 +47,15 @@ export default function TorusDropDown({
   listBoxProps,
   color,
   btWidth,
+  btheight,
   selectionMode = "multiple",
-  fonstyle,
+  fontStyle,
   btncolor,
   radius,
+  outlineColor,
+  gap,
+  borderColor,
+  startContent,
 }) {
   return (
     <DialogTrigger>
@@ -62,11 +67,17 @@ export default function TorusDropDown({
           classNames?.buttonClassName
         )}
         // title={label}
-        height={buttonHeight}
+        height={btheight}
         width={btWidth}
-        fontStyle={fonstyle}
+        fontStyle={fontStyle}
         btncolor={btncolor}
         radius={radius}
+        outlineColor={outlineColor}
+        color={color}
+        gap={gap}
+        borderColor={borderColor}
+        startContent={startContent ? startContent : ""}
+        endContent={endContent ? endContent : ""}
       />
 
       <Popover
