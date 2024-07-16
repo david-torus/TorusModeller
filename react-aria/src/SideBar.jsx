@@ -89,8 +89,8 @@ export default function SideBar({
           key="TorusTab"
           orientation="vertical"
           classNames={{
-            tabs: "cursor-pointer",
-            tabList: "w-full h-[100%] flex justify-center items-center",
+            tabs: "cursor-pointer ",
+            tabList: "w-full h-[100%] flex justify-center  items-center ",
             tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
           }}
           tabs={[

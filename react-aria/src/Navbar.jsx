@@ -15,7 +15,7 @@ import { DarkModeContext } from "./context/darkmodeContext";
 import { IoIosArrowDown } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
 
-export default function Navbar() {
+export default function Navbar({ color }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
@@ -76,7 +76,12 @@ export default function Navbar() {
                     <TorusDropDown
                       title={
                         <div className="bg-transparent w-full h-full flex items-center justify-center font-inter gap-2 3xl:text-sm xl:text-sm xl:font-semibold tracking-tighter">
-                          <span className="font-inter bg-[#0736C4] w-[80%] px-3  rounded-xl  text-white flex justify-between 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter">
+                          <span
+                            style={{
+                              backgroundColor: color ? color : "#0736C4",
+                            }}
+                            className="font-inter w-[80%] px-3  rounded-xl  text-white flex justify-between 3xl:text-xs xl:text-sm xl:font-normal tracking-tighter"
+                          >
                             {(selectedVersion &&
                               Array.from(selectedVersion)[0]) ||
                               "*"}
@@ -164,7 +169,12 @@ export default function Navbar() {
                       src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
                       alt="Image Description"
                     />
-                    <div class="flex justify-center items-center size-6 rounded-full ring-2 bg-[#0736C4]  ring-white dark:ring-neutral-900">
+                    <div
+                      style={{
+                        backgroundColor: color ? color : "#0736C4",
+                      }}
+                      class="flex justify-center items-center size-6 rounded-full ring-2  ring-white dark:ring-neutral-900"
+                    >
                       <span className="text-white font-semibold text-xs">
                         +2
                       </span>
@@ -195,7 +205,7 @@ export default function Navbar() {
                   <TorusButton
                     Children="Publish"
                     width={"full"}
-                    btncolor={"#0736C4"}
+                    btncolor={color ? color : "#0736C4"}
                     outlineColor="torus-hover:ring-blue-500/50"
                     radius={"lg"}
                     fontStyle={
