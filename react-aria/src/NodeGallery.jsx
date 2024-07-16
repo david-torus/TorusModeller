@@ -86,7 +86,7 @@ export default function NodeGallery({
       <div
         className={`w-full h-full  ${
           showFabricSideBar &&
-          "xl:h-[9%] lg:h-[7%] 2xl:h-[7%] 3xl:h-[5%]   dark:text-white font-medium border-b border-slate-300  dark:border-[#212121] flex justify-between  xl:py-1 xl:px-2 3xl:p-2  items-center"
+          "xl:h-[9%] lg:h-[7%] 2xl:h-[7%] 3xl:h-[5%]   dark:text-white font-medium border-b border-slate-300  dark:border-[#212121] flex justify-between p-2   items-center"
         } `}
       >
         <Header
@@ -100,7 +100,7 @@ export default function NodeGallery({
         <TorusButton
           buttonClassName={`${
             !showFabricSideBar ? "rotate-180 " : "rotate-0"
-          } transition-transform ease-in-out duration-300 w-[12%]`}
+          } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white`}
           width={showFabricSideBar ? "sm" : "none"}
           onPress={handleSidebarToggle}
           Children={<Back />}
@@ -171,10 +171,10 @@ const Loop = ({ color, selectedFabric }) => {
           onDragStart={(event) => onDragStart(event, "default")}
         >
           <div
-            className={ ` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
+            className={` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
           >
             {React.createElement(item.icon, {
-              color: color? color : "#0736C4",
+              color: color ? color : "#0736C4",
               size: 18,
               selectedFabric: selectedFabric,
             })}
