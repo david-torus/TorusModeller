@@ -139,7 +139,13 @@ const TorusDateField = (props) => {
     </DateInput>
   );
 };
-export function TorusDatePicker({ label, slot, openBtn }) {
+export function TorusDatePicker({
+  label,
+  slot,
+  openBtn,
+  setValues,
+  defaultValue,
+}) {
   const [rotate, setRotate] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
@@ -154,7 +160,7 @@ export function TorusDatePicker({ label, slot, openBtn }) {
   };
 
   return (
-    <DatePicker>
+    <DatePicker onChange={setValues} defaultValue={defaultValue}>
       <div className="flex justify-start w-[100%]">
         <div
           className="w-full py-3 px-2 pl-[1rem]

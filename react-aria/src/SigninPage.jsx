@@ -3,6 +3,7 @@ import TorusCheckBox from "./torusComponents/TorusCheckBox";
 import TorusTimePicker, {
   TorusDatePicker,
 } from "./torusComponents/TorusDate&TimePickers";
+import { parseDate } from "@internationalized/date";
 import TorusUnderLinedInput, {
   TorusFadedInput,
 } from "./torusComponents/TorusInput";
@@ -26,6 +27,7 @@ export default function SignIn() {
   const [fullName, setFullName] = useState("");
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
+  const [date, setDate] = useState(parseDate("2022-01-01"));
   const [checked, setChecked] = useState(false);
   const [selector, setSelector] = useState(new Set([]));
   const [checkboxValues, setCheckboxValues] = useState("");
@@ -44,11 +46,14 @@ export default function SignIn() {
     fullName,
     height,
     weight,
+    date: { date: `${date.day}/${date.month}/${date.year}` },
     selector,
     checkboxValues,
     checked,
     radioValues,
   };
+
+  console.log(date, "date");
 
   const outPutFn = () => {
     console.log(finalValues);
@@ -125,7 +130,13 @@ export default function SignIn() {
             </div>
           </div>
 
-          <TorusDatePicker label="Date of Birth" slot="end" openBtn="true" />
+          <TorusDatePicker
+            label="Date of Birth"
+            slot="end"
+            openBtn="true"
+            setValues={setDate}
+            defaultValue={date}
+          />
 
           <TorusSearch
             variant="bordered"
@@ -152,9 +163,9 @@ export default function SignIn() {
             onChange={setSearch}
             radius="lg"
             textColor="text-[#000000]"
-            bgColor="bg-[#FFFFFF]"
+            bgColor="bg-[#F4F5FA]"
             value={search}
-            type="text"
+            type="number"
             marginT="mt-3"
           />
 
@@ -233,7 +244,7 @@ export default function SignIn() {
               color={"#000000"}
               gap={"py-4"}
               marginT="mt-3"
-              // height={"md"}
+              
             />
           </div>
         </div>

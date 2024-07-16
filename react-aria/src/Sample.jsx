@@ -87,14 +87,19 @@ const data = [
     value: 11,
   },
 ];
+
 export default function Sample() {
   const [datas, setData] = useState([]);
-  console.log(datas);
+  console.log(datas.length, "Lengths--->>>");
+  console.log(datas, "Lengths--->>>");
   return (
     <TorusTable
+      heading="Torus Table"
+      description="country code"
       primaryColumn={"specialKey"}
       tableData={countryCode}
       onSave={setData}
+      
     />
   );
 }

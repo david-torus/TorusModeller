@@ -60,8 +60,8 @@ export default function TorusSearch(props) {
     <TextField
       className={` 
     ${props.marginT ? props.marginT : "mt-1"} 
-    w-[100%] flex items-center  ${colorsBg} ${colorsHover} ${colorsBg}
-    ${clicked ? `${border}` : "torus-focus:border-[#D0D5DD]"} 
+    w-[100%] flex items-center border ${colorsBg} ${colorsHover} ${colorsBg}
+    ${clicked ? `${border}` :  " border-1-violet-900"} 
     ${
       props.radius === "sm"
         ? "rounded-sm"
