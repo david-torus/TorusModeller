@@ -22,7 +22,6 @@ export default function TorusButton({
   borderColor,
   isIconOnly,
 }) {
-  console.log(radius, "radius");
   const outlineFn = () => {
     if (outlineColor) {
       return ` torus-hover:ring-2 torus-hover:ring-offset-4  ${outlineColor}`;

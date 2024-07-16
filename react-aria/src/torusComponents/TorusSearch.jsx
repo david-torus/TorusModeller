@@ -12,7 +12,6 @@ export default function TorusSearch(props) {
   }, [props.value]);
 
   const toggleClicked = () => {
-    console.log(value.length, "length-2");
     if (value.length > 0) {
     } else if (value.length <= 0) {
     }
@@ -22,7 +21,7 @@ export default function TorusSearch(props) {
     props.type == "number"
       ? setValue(e.target.value.replace(/[a-zA-Z]+/g, ""))
       : setValue(e.target.value);
-    console.log(e.target.value.length, "length-3");
+
     if (e.target.value.length === 0) {
     } else {
       props.onChange(e.target.value);
@@ -54,14 +53,12 @@ export default function TorusSearch(props) {
   const colorsHover = colorsHoverFn();
   const border = borderColor();
 
-  console.log(clicked, border, "clicked");
-
   return (
     <TextField
       className={` 
     ${props.marginT ? props.marginT : "mt-1"} 
     w-[100%] flex items-center border ${colorsBg} ${colorsHover} ${colorsBg}
-    ${clicked ? `${border}` :  " border-1-violet-900"} 
+    ${clicked ? `${border}` : " border-1-violet-900"} 
     ${
       props.radius === "sm"
         ? "rounded-sm"
