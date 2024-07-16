@@ -11,10 +11,10 @@ export default function Sample() {
       heading="Torus Table"
       description="country code"
       primaryColumn={"specialKey"}
-      tableData={countryCode}
-      onSave={setData}
+      tableData={countryCode} //json data
+      onSave={setData} 
       selectionBehavior={"toggle"}
-      selectionMode={"multiple"}
+      selectionMode={"multiple"} 
     />
   );
 }

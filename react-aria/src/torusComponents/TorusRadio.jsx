@@ -9,7 +9,10 @@ export default function TorusRadio(props) {
   };
 
   return (
-    <div className=" w-[100%] pt-2" key={props.key}>
+    <div
+      className={` ${props.className}  w-[100%] pt-2`}
+      key={props.key}
+    >
       <div
         className={`${props.marginT} w-[100%] flex flex-col gap-0.5 bg-white rounded-md px-2 py-3`}
       >
@@ -23,15 +26,19 @@ export default function TorusRadio(props) {
                 ? "flex-col"
                 : "flex-row gap-[0.5rem]"
             } justify-start ${
-              props.content?.length > 3 ? "grid grid-cols-8" : ""
+              props.content?.length > 3
+                ? "grid grid-cols-12"
+                : "grid grid-cols-12"
             }`}
           >
             {props.content?.map((value, index) => {
               return (
                 <div
                   className={`${
-                    props.content?.length > 2 ? "col-span-4" : "w-[100%]"
-                  } flex items-center justify-between gap-0.5`}
+                    props.content?.length > 2
+                      ? "col-span-6 max-md:col-span-12 max-lg:col-span-12 max-xl:col-span-6"
+                      : " col-span-3"
+                  }  flex items-center justify-between gap-0.5`}
                 >
                   <div className="w-[20%] flex justify-start items-center">
                     <Input
@@ -40,11 +47,21 @@ export default function TorusRadio(props) {
                       value={value}
                       name="default-radio"
                       onChange={handleOnChange}
-                      className="w-4 h-4 cursor-pointer text-blue-600 bg-gray-100 border-gray-300 torus-focus-within:ring-pink-500 torus-focus:ring-transparent dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                      className={` ${
+                        props.size === "sm"
+                          ? "w-3 h-3"
+                          : props.size === "md"
+                          ? "w-4 h-4"
+                          : props.size === "lg"
+                          ? "w-5 h-5"
+                          : props.size === "xl"
+                          ? "w-6 h-6"
+                          : "w-4 h-4"
+                      } `}
                     />
                   </div>
-                  <div className="w-[80%] flex justify-end items-center">
-                    <Label className=" text-sm text-[#000000] whitespace-nowrap">
+                  <div className="w-[80%] flex justify-start items-center">
+                    <Label className=" text-xs text-[#000000] whitespace-nowrap">
                       {value}
                     </Label>
                   </div>

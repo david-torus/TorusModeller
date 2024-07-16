@@ -1480,9 +1480,9 @@ export {
   NodeGallerIcon,
   SearchIcon,
   Question,
+  DeleteIcon,
+  EditIcon,
   FilterIcon,
   PlusIcon,
   ImportIcon,
-  DeleteIcon,
-  EditIcon,
 };
