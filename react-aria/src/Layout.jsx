@@ -17,21 +17,18 @@ import ReactFlow, {
   useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import Navbar from "./Navbar";
 
 import { FabricsSelector } from "./FabricsSelector";
 import { v4 as uuidv4 } from "uuid";
 import UserNode from "./DynamicNode";
 
-import FabricsSideBar from "./sidebars/fabricsSideBar/FabricsSideBar";
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import NodeGallery from "./NodeGallery";
-import TorusButton from "./torusComponents/TorusButton";
-import { Back } from "./SVG_Application";
+
 import CanvasPanel from "./CanvasPanel";
-import NewSidebar from "./NewSidebar";
+import SideBar from "./SideBar";
 import { RenderJson } from "./jonui/JsonUI";
-import NewNavbar from "./NewNavbar";
+import Navbar from "./Navbar";
 
 export default function Layout() {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -46,7 +43,7 @@ export default function Layout() {
   const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
-      dark: "#2257f7",
+      dark: "#0736C4",
       light: "#244DCB",
     },
     UF: {
@@ -141,10 +138,10 @@ export default function Layout() {
          `}
     >
       <div className="w-full h-[8%] sticky top-0">
-        <NewNavbar />
+        <Navbar />
       </div>
 
-      <div className={`h-[92%] w-full flex dark:bg-[#1E2428]   bg-[#F4F5FA] `}>
+      <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
         <div className="h-full flex w-[100%]">
           <FabricsSelector
             nodeTypes={NODE_TYPES}
@@ -163,7 +160,7 @@ export default function Layout() {
             onInit={setreactflowinstance}
             ref={ref}
           >
-            <NewSidebar
+            <SideBar
               selectedFabric={selectedFabric}
               color={colors[selectedFabric]?.dark}
               showFabricSideBar={showFabricSideBar}
@@ -178,8 +175,10 @@ export default function Layout() {
             />
             <MiniMap
               position="bottom-right"
-              style={{ bottom: "3rem" }}
-              className="border border-slate-300 rounded-lg"
+              style={{ bottom: "8%" }}
+              maskColor="transparent"
+              // maskStrokeColor="rgba(22, 22, 22, 0.6)"
+              className="border border-slate-300 rounded-lg w-[20%] h-[25%]  dark:bg-[#161616] dark:border-[#21212126]/15"
             />
             <CanvasPanel />
 
@@ -193,13 +192,10 @@ export default function Layout() {
             )}
             <Background variant="dots" gap={12} size={1} />
           </FabricsSelector>
-          
-        <RenderJson />
 
-          
+          <RenderJson />
         </div>
       </div>
-      
     </div>
   );
 }
