@@ -79,7 +79,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "md:w-4/12 lg:w-2/12 ml-[80px]  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
+        ? "md:w-4/12 lg:w-2/12 ml-[80px]  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white  border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
         : "h-[6%] w-[5%]"
     }  `}
     >
@@ -100,7 +100,7 @@ export default function NodeGallery({
         <TorusButton
           buttonClassName={`${
             !showFabricSideBar ? "rotate-180 " : "rotate-0"
-          } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white`}
+          } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white dark:bg-[#161616] `}
           width={showFabricSideBar ? "sm" : "none"}
           onPress={handleSidebarToggle}
           Children={<Back />}
