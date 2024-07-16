@@ -46,7 +46,7 @@ export default function CanvasPanel() {
             onPress={zoomTo}
           />
         </div>
-        <div className="w-[70%] p-2 gap-2 h-full border border-slate-300 flex items-center rounded-lg  bg-white dark:bg-[#161616] dark:border-[#21212126]/15 ">
+        <div className="w-[70%]  grid grid-cols-6 h-full border border-slate-300  items-center rounded-lg  bg-white dark:bg-[#161616] dark:border-[#21212126]/15 ">
           <TorusButton
             key={"FullScreen"}
             Children={
