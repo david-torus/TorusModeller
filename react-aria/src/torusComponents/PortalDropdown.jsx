@@ -53,7 +53,7 @@ const PortalDropdown = ({
     <DialogTrigger>
       <Button
         className={twMerge(
-          `p-2 items-center flex justify-between rounded focus:outline-none w-full ${
+          `p-2 items-center bg-[#F4F5FA] flex justify-between rounded focus:outline-none w-full ${
             open ? "border-[#0736C4]" : ""
           }`,
           classNames?.triggerButton
@@ -69,7 +69,7 @@ const PortalDropdown = ({
         placement="bottom"
         className={twMerge("w-full", classNames?.popover)}
       >
-        <Dialog className="border bg-white focus:outline-none rounded-lg">
+        <Dialog className="border bg-[#F4F5FA] focus:outline-none rounded-lg">
           {({ close }) => (
             <ListBox
               aria-label="Custom dropdown"

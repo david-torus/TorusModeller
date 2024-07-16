@@ -8,8 +8,7 @@ export default function TorusButton({
   autoFocus,
   gap,
   onPress,
-  width,
-  height,
+  size,
   buttonClassName,
   marginT,
   color,
@@ -20,9 +19,9 @@ export default function TorusButton({
   btnTxtSize,
   endContent,
   startContent,
-
+  borderColor,
+  isIconOnly,
 }) {
-
   console.log(radius, "radius");
   const outlineFn = () => {
     if (outlineColor) {
@@ -36,6 +35,7 @@ export default function TorusButton({
     <Button
       style={{
         background: btncolor,
+        border: borderColor ? borderColor : "",
       }}
       className={merger(
         ` font-lg    ${marginT} border-none  outline-none
@@ -43,7 +43,11 @@ export default function TorusButton({
                     torus-hover:outline-none
                     torus-hover:border-2 
                     ${hoverOutline} ${gap}
-                    
+
+                    ${
+                      (startContent || endContent) &&
+                      "flex justify-center items-center"
+                    }
           ${
             radius === "sm"
               ? "rounded-sm"
@@ -58,37 +62,19 @@ export default function TorusButton({
               : "rounded-lg"
           }
           
-           ${
-             width === "xs"
-               ? "w-[20%]"
-               : width === "sm"
-               ? "w-[30%]"
-               : width === "md"
-               ? "w-[45%]"
-               : width === "lg"
-               ? "w-[60%]"
-               : width === "xl"
-               ? "w-[75%]"
-               : width === "full"
-               ? "w-[100%]"
-               : "w-[80%]"
-           } 
-
-           ${
-             height === "xs"
-               ? "h-6"
-               : height === "sm"
-               ? "h-8"
-               : height === "md"
-               ? "h-10"
-               : height === "lg"
-               ? "h-20"
-               : height === "xl"
-               ? "h-25"
-               : height === "full"
-               ? "h-28"
-               : ""
-           } 
+      ${
+        size === "sm"
+          ? "px-1.5 py-0.5"
+          : size === "md"
+          ? "px-2.5 py-1.5"
+          : size === "lg"
+          ? "p-3.5 py-2.5"
+          : size === "xl"
+          ? "px-4.5 py-3.5 "
+          : size === "full"
+          ? "p-5.5 py-4.5"
+          : "px-2.5 py-1.5"
+      }
         
           `,
         buttonClassName
@@ -97,27 +83,30 @@ export default function TorusButton({
       isDisabled={isDisabled}
       autoFocus={autoFocus}
       onPress={onPress}
-
     >
-      {startContent ? (
-        <div className={`flex justify-evenly gap-1 ${gap}`}>
+      {isIconOnly ? (
+        <div className="flex justify-center items-center">{Children}</div>
+      ) : startContent ? (
+        <div className="w-[100%] flex justify-evenly gap-1">
           <div className="w-[20%] flex justify-center items-center">
             {startContent}
           </div>
-          <div className={`${fontStyle} w-[80%]`}>{Children}</div>
+          <div className={`${fontStyle} w-[80%] flex justify-center pr-1`}>
+            {Children}
+          </div>
+        </div>
+      ) : endContent ? (
+        <div className="w-[100%] flex justify-evenly gap-1">
+          <div className={`${fontStyle} w-[80%] flex justify-start pr-1`}>
+            {Children}
+          </div>
+          <div className="w-[20%] flex justify-center items-center">
+            {endContent}
+          </div>
         </div>
       ) : (
-        endContent && (
-          <div className={`flex justify-evenly gap-1 ${gap}`}>
-            <div className={`${fontStyle} w-[80%]`}>{Children}</div>
-            <div className="w-[20%] flex justify-center items-center">
-              {endContent}
-            </div>
-          </div>
-        )
+        <p className={`${fontStyle}`}>{Children}</p>
       )}
-
-      {!startContent && !endContent && <p className={`${fontStyle}`}> {Children} </p>}
     </Button>
   );
 }
