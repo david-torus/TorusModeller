@@ -3,6 +3,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -179,7 +180,7 @@ function TorusRow({ id, columns, children, ...otherProps }) {
 }
 
 function TorusCheckbox({ children, index, ...props }) {
-  const { selectedRows, setSelectedRows, totalIndexes, selectionMode } =
+  const { selectedRows, setSelectedRows, tableIndex, selectionMode } =
     useContext(TableDataContext);
   return (
     <Checkbox
@@ -210,11 +211,11 @@ function TorusCheckbox({ children, index, ...props }) {
                 selectionMode === "multiple"
               ) {
                 setSelectedRows(
-                  new Set(totalIndexes.filter((item) => item !== index))
+                  new Set(tableIndex.filter((item) => item !== index))
                 );
               } else {
                 if (
-                  Array.from(selectedRows).length + 1 == totalIndexes.length &&
+                  Array.from(selectedRows).length + 1 == tableIndex.length &&
                   selectionMode === "multiple"
                 ) {
                   setSelectedRows(new Set(["all"]));
@@ -306,7 +307,6 @@ export function TorusTable({
   const [serchValue, setSerchValue] = useState("");
   const [selectedRows, setSelectedRows] = useState(new Set([""]));
   const [tableDataLength, setTableDataLength] = useState(0);
-  const [totalIndexes, setTotalIndexes] = useState([]);
 
   const descriptions = (description) => {
     if (description) {
@@ -383,7 +383,14 @@ export function TorusTable({
       console.error(e);
     }
   }, [sortDescriptor, items]);
-
+  const tableIndex = useMemo(() => {
+    try {
+      if (!tableData) return [];
+      return tableData.map((item, index) => index);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [tableData]);
   const getColumns = (tableData) => {
     try {
       let newColumns = new Set([]);
@@ -413,7 +420,7 @@ export function TorusTable({
       getColumns(tableData);
       setData(tableData);
       setTableDataLength(tableData.length);
-      setTotalIndexes([...tableData.map((item, index) => index)]);
+
       setSortDescriptor({
         column: primaryColumn,
         direction: "ascending",
@@ -457,7 +464,7 @@ export function TorusTable({
         setSelectedRows,
         selectionMode,
         selectionBehavior,
-        totalIndexes,
+        tableIndex,
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
