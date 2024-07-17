@@ -10,6 +10,7 @@ import {
   Button,
   Cell,
   Column,
+  Heading,
   Row,
   Table,
   TableBody,
@@ -230,12 +231,7 @@ function TorusCheckbox({ children, index, ...props }) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? (
-                  <TickSign />
-               
-              ) : (
-                <UnTickSign/>
-              )}
+              {isIndeterminate ? <TickSign /> : <UnTickSign />}
             </svg>
           </div>
           {children}
@@ -276,11 +272,7 @@ function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? (
-                <TickSign />
-              ) : (
-                <UnTickSign/>
-              )}
+              {isIndeterminate ? <TickSign /> : <UnTickSign />}
             </svg>
           </div>
           {children}
@@ -753,14 +745,27 @@ const TableCellActions = ({ id }) => {
       <div className="w-[100%] h-[50%] flex justify-center items-center ">
         <div className="w-[25%] h-[100%] flex justify-end items-center">
           <TorusDialog
+            Header="      Do you want to delete this item"
             key={"TableDelete"}
             triggerElement={<TorusButton Children={<DeleteIcon />} />}
             classNames={{
-              dialogClassName: " flex  border-2 flex-col bg-white",
+              dialogClassName:
+                " flex  border border-gray-300 rounded-lg flex-col bg-white",
             }}
-            title={"Delete"}
             message={"Edit"}
-            children={({ close }) => <DeleteAction id={id} close={close} />}
+            children={({ close }) => (
+              <>
+                <div className="p-4">
+                  <Heading className="font-medium text-black " slot="title">
+                    Delete Item
+                  </Heading>
+                  <p className="mt-2">
+                    This will permanently delete the selected item. Continue?
+                  </p>
+                  <DeleteAction id={id} close={close} />
+                </div>
+              </>
+            )}
           />
         </div>
 
@@ -828,9 +833,19 @@ const EditAction = ({ id, close }) => {
     close();
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      {obj && <Cycle obj={obj} setObj={setObj} />}
-      <TorusButton Children={"Save"} onPress={handleSave} />
+    <div className="w-[300px] bg-white h-[400px] rounded-lg  border-none flex flex-col gap-3 p-2 items-start justify-between">
+      <div className="w-full h-[350px] overflow-y-scroll scrollbar-hide p-2">
+        {obj && <Cycle obj={obj} setObj={setObj} />}
+      </div>
+      <div className="w-full flex justify-center">
+        <TorusButton
+          buttonClassName={
+            "bg-[#0736C4] w-[95%] h-[45px] border-none text-white"
+          }
+          Children={"Save"}
+          onPress={handleSave}
+        />
+      </div>
     </div>
   );
 };
@@ -845,9 +860,17 @@ const DeleteAction = ({ id, close }) => {
     close();
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <TorusButton Children={"Cancel"} onPress={close} />
-      <TorusButton Children={"Delete"} onPress={handleDelete} />
+    <div className="w-[400px] bg-white h-[100px] rounded-lg  border-none flex flex-row gap-3 items-center justify-end">
+      <TorusButton
+        buttonClassName={"bg-gray-200 w-[80px] h-[40px] text-black"}
+        Children={"Cancel"}
+        onPress={close}
+      />
+      <TorusButton
+        buttonClassName={"bg-red-500 w-[80px] h-[40px] text-white"}
+        Children={"Delete"}
+        onPress={handleDelete}
+      />
     </div>
   );
 };
