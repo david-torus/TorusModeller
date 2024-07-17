@@ -955,9 +955,19 @@ const AddAction = ({ close }) => {
     close();
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      {obj && <Cycle obj={obj} setObj={setObj} />}
-      <TorusButton Children={"Add"} onPress={handleSave} />
+    <div className="w-[300px] bg-white h-[400px] rounded-lg  border-none flex flex-col gap-3 p-2 items-start justify-between">
+      <div className="w-full h-[350px] overflow-y-scroll scrollbar-hide p-2">
+        {obj && <Cycle obj={obj} setObj={setObj} />}
+      </div>
+      <div className="w-full flex justify-center">
+        <TorusButton
+          buttonClassName={
+            "bg-[#0736C4] w-[95%] h-[45px] border-none text-white"
+          }
+          Children={"Add"}
+          onPress={handleSave}
+        />
+      </div>
     </div>
   );
 };
