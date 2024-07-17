@@ -7,14 +7,10 @@ export default function TorusInput(props) {
   const [value, setValue] = useState(props?.value || "");
 
   useEffect(() => {
-    console.log(value.length, "length-1");
-
     toggleClicked();
   }, [props?.value]);
 
   const toggleClicked = () => {
-    console.log(value.length, "length-2");
-
     if (value.length > 0) {
       setClicked(true);
     } else if (value.length <= 0) {
@@ -26,7 +22,7 @@ export default function TorusInput(props) {
     props?.type == "number"
       ? setValue(e.target.value.replace(/[a-zA-Z]+/g, ""))
       : setValue(e.target.value);
-    console.log(e.target.value.length, "length-3");
+
     if (e.target.value.length === 0) {
       setClicked(true);
       props?.onChange(e.target.value);

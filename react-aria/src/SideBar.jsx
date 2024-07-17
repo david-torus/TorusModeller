@@ -10,6 +10,7 @@ import {
   NodeGallerIcon,
   Sheild,
   Support,
+  VerticalLine,
   Wire,
 } from "./SVG_Application";
 import TorusTab from "./torusComponents/TorusTab";
@@ -84,14 +85,14 @@ export default function SideBar({
       position="top-left"
       className="h-[95%] w-[5%] flex flex-col justify-between items-center py-2   bg-white dark:bg-[#161616] border  border-slate-300 dark:border-[#212121] rounded-lg  "
     >
-      <div className="h-[85%] w-[100%] flex flex-col justify-start items-center  ">
+      <div className="h-[30%] w-[100%] flex flex-col  items-center   ">
         <TorusTab
           key="TorusTab"
           orientation="vertical"
           classNames={{
             tabs: "cursor-pointer ",
-            tabList: "w-full h-[100%] flex justify-center  items-center ",
-            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
+            tabList: "w-full h-[100%]  flex justify-center items-center",
+            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
           }}
           tabs={[
             {
@@ -140,30 +141,24 @@ export default function SideBar({
                 />
               ),
             },
-            {
-              id: "FabricsBars",
-              content: ({ isSelected }) => (
-                <FabricBar strokeColor={!isSelected ? "#A59E92" : "teal"} />
-              ),
-            },
-            {
-              id: "FAQ",
-              content: ({ isSelected }) => (
-                <Faq strokeColor={!isSelected ? "#A59E92" : "teal"} />
-              ),
-            },
-            {
-              id: "Support",
-              content: ({ isSelected }) => (
-                <Support strokeColor={!isSelected ? "#A59E92" : "teal"} />
-              ),
-            },
           ]}
           onSelectionChange={handleTabChange}
         />
       </div>
 
-      <div className="flex flex-col justify-end  items-center gap-2">
+      <div className="rotate-90 p-2 py-5 h-[5%] flex items-center mt-[20px]">
+        <VerticalLine className={"stroke-black dark:stroke-white"} />
+      </div>
+
+      <div className="  h-[30%] w-[100%] flex flex-col items-center gap-5 cursor-pointer">
+        <FabricBar className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+
+        <Faq className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+
+        <Support className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+      </div>
+
+      <div className="flex flex-col h-[40%] justify-end  items-center gap-2">
         <div
           className="cursor-pointer"
           onClick={() => toggleDarkMode(!darkMode)}

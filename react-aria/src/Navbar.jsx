@@ -14,6 +14,7 @@ import TorusDropDown from "./torusComponents/TorusDropDown";
 import { DarkModeContext } from "./context/darkmodeContext";
 import { IoIosArrowDown } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
+import TorusPopOver from "./torusComponents/TorusPopOver";
 
 export default function Navbar({ color }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
@@ -36,14 +37,14 @@ export default function Navbar({ color }) {
           <div className=" w-[15%] pl-[2.8rem] bg-transparent rounded-md h-full flex justify-end ">
             <div className="w-[100%] bg-transparent rounded-md h-full">
               <div className="w-[100%] h-[100%] flex flex-col">
-                <div className="w-[100%] flex flex-row justify-between items-center gap-3">
+                <div className="w-[100%]  h-[50%] flex flex-row justify-between items-center gap-2">
                   <div className="w-[70%]">
                     <TorusDropDown
                       title={
-                        <div className="flex flex-row items-center gap-2 w-[100%]">
+                        <div className="flex flex-row items-center  w-[100%]">
                           <div
                             className={
-                              "w-[80%] text-black dark:text-white font-inter 3xl:text-sm xl:text-sm xl:font-sswmbold tracking-normal whitespace-nowrap"
+                              "w-[80%] text-black dark:text-white font-inter 3xl:text-sm xl:text-sm xl:font-normal tracking-normal whitespace-nowrap"
                             }
                           >
                             {(selectededArtifacts &&
@@ -72,7 +73,7 @@ export default function Navbar({ color }) {
                     />
                   </div>
 
-                  <div className="w-[30%] flex justify-between items-center">
+                  <div className="w-[25%] flex justify-between items-center">
                     <TorusDropDown
                       title={
                         <div className="bg-transparent w-full h-full flex items-center justify-center font-inter gap-2 3xl:text-sm xl:text-sm xl:font-semibold tracking-tighter">
@@ -116,9 +117,9 @@ export default function Navbar({ color }) {
                     />
                   </div>
                 </div>
-                <div className="w-[100%] flex h-[50%] ">
+                <div className="w-[100%]  h-[50%] ml-[6%]  flex items-center justify-between  ">
                   <div className="w-[70%] ">
-                    <p className="text-xs text-black/35 dark:text-white/35">
+                    <p className="text-xs  text-black/35 dark:text-white/35">
                       Edited 10 mins ago
                     </p>
                   </div>
@@ -204,7 +205,7 @@ export default function Navbar({ color }) {
                 <div className=" col-span-3">
                   <TorusButton
                     Children="Publish"
-                    width={"full"}
+                    size={"md"}
                     btncolor={color ? color : "#0736C4"}
                     outlineColor="torus-hover:ring-blue-500/50"
                     radius={"lg"}
@@ -212,7 +213,7 @@ export default function Navbar({ color }) {
                       "text-white font-inter 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                     }
                     color={"white"}
-                    gap={"py-1.5"}
+                    
                   />
                 </div>
               </div>

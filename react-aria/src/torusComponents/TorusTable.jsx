@@ -1,4 +1,11 @@
-import React, { useEffect, useId, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react";
 import {
   Button,
   Cell,
@@ -29,6 +36,8 @@ import {
   FilterIcon,
   ImportIcon,
   PlusIcon,
+  TickSign,
+  UnTickSign,
 } from "../SVG_Application";
 import { GiPreviousButton } from "react-icons/gi";
 import TorusCheckBox from "./TorusCheckBox";
@@ -40,7 +49,7 @@ const defaultClassName = {
   tableRow: "",
   tableCell: "",
 };
-const TableDataContext = React.createContext();
+const TableDataContext = createContext();
 function TorusColumn(props) {
   return (
     <Column
@@ -76,22 +85,21 @@ function TorusColumn(props) {
 }
 
 function TorusTableHeader({ columns, children, selectedKeys }) {
-  let { selectionBehavior, selectionMode, allowsDragging } = useTableOptions();
-
+  const { selectionBehavior, selectionMode } = useContext(TableDataContext);
   return (
     <TableHeader>
       {/* Add extra columns for drag and drop and selection. */}
-      {allowsDragging && <Column />}
+      {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
-        <Column>
+        <Column className={"bg-[#EAECF0]"}>
           {selectionMode === "multiple" && (
-            // <TorusColumnCheckbox
-            //   slot="selection"
-            //   selectedKeys={selectedKeys}
-            //   className="cursor-pointer"
-            // />
+            <TorusColumnCheckbox
+              slot="selection"
+              selectedKeys={selectedKeys}
+              className="cursor-pointer"
+            />
 
-            <TorusCheckBox type="single" />
+            // <TorusCheckBox type="single" />
           )}
         </Column>
       )}
@@ -112,30 +120,29 @@ function TorusTableHeader({ columns, children, selectedKeys }) {
 }
 
 function TorusRow({ id, columns, children, ...otherProps }) {
-  let { selectionBehavior, allowsDragging } = useTableOptions();
+  let { selectionBehavior } = useContext(TableDataContext);
 
   return (
     <>
       <Row {...otherProps} key={id}>
-        {allowsDragging && (
+        {/* {allowsDragging && (
           <Cell className={"min-h-4"}>
             <Button slot="drag">≡</Button>
           </Cell>
-        )}
+        )} */}
         {selectionBehavior === "toggle" && (
           <Cell>
-            {/* <TorusCheckbox
-            selectedKeys={otherProps?.selectedKeys}
-            slot="selection"
-            className="cursor-pointer"
-            hs={otherProps?.index}
-          /> */}
+            <TorusCheckbox
+              selectedKeys={otherProps?.selectedKeys}
+              slot="selection"
+              className="cursor-pointer"
+              index={otherProps?.index}
+            />
 
-            <TorusCheckBox type="single" />
+            {/* <TorusCheckBox type="single" /> */}
           </Cell>
         )}
         {columns.map((column) => {
-          console.log(column, "id");
           if (column?.id == "Actions") {
             return (
               <Cell
@@ -174,22 +181,60 @@ function TorusRow({ id, columns, children, ...otherProps }) {
   );
 }
 
-function TorusCheckbox({ children, hs, selectedKeys, ...props }) {
+function TorusCheckbox({ children, index, ...props }) {
+  const { selectedRows, setSelectedRows, tableIndex, selectionMode } =
+    useContext(TableDataContext);
   return (
     <Checkbox
       {...props}
+      className={"w-full, h-full, flex items-center justify-center"}
       isIndeterminate={
-        selectedKeys && (selectedKeys == "all" || selectedKeys.has(hs))
+        selectedRows &&
+        Array.from(selectedRows).length > 0 &&
+        (selectedRows.has(index) || selectedRows.has("all"))
+          ? true
+          : false
       }
     >
       {({ isIndeterminate }) => (
         <>
-          <div className="checkbox">
-            <svg viewBox="0 0 18 18" aria-hidden="true">
+          <div
+            className="checkbox"
+            onClick={() => {
+              if (selectedRows.has(index)) {
+                if (selectionMode === "multiple")
+                  setSelectedRows(
+                    (prev) =>
+                      new Set(Array.from(prev).filter((item) => item !== index))
+                  );
+                else setSelectedRows(new Set([]));
+              } else if (
+                selectedRows.has("all") &&
+                selectionMode === "multiple"
+              ) {
+                setSelectedRows(
+                  new Set(tableIndex.filter((item) => item !== index))
+                );
+              } else {
+                if (
+                  Array.from(selectedRows).length + 1 == tableIndex.length &&
+                  selectionMode === "multiple"
+                ) {
+                  setSelectedRows(new Set(["all"]));
+                } else if (selectionMode === "multiple")
+                  setSelectedRows(
+                    (prev) => new Set([...Array.from(prev), index])
+                  );
+                else setSelectedRows(new Set([index]));
+              }
+            }}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
               {isIndeterminate ? (
-                <polyline points="1 9 7 14 15 4" />
+                  <TickSign />
+               
               ) : (
-                <rect x={1} y={7.5} width={15} height={3} />
+                <UnTickSign/>
               )}
             </svg>
           </div>
@@ -200,19 +245,41 @@ function TorusCheckbox({ children, hs, selectedKeys, ...props }) {
   );
 }
 function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
+  const { selectedRows, setSelectedRows } = useContext(TableDataContext);
+
   return (
     <Checkbox
-      {...props}
-      isIndeterminate={selectedKeys && selectedKeys == "all" ? true : false}
+      // {...props}
+      slot={"selection"}
+      className={
+        "w-full, h-full, flex items-center justify-center cursor-pointer"
+      }
+      id="all"
+      isIndeterminate={
+        selectedRows &&
+        Array.from(selectedRows).length > 0 &&
+        selectedRows.has("all")
+          ? true
+          : false
+      }
     >
       {({ isIndeterminate }) => (
         <>
-          <div className="checkbox">
-            <svg viewBox="0 0 18 18" aria-hidden="true">
+          <div
+            className="checkbox"
+            onClick={() => {
+              if (selectedRows.has("all")) {
+                setSelectedRows(new Set([""]));
+              } else {
+                setSelectedRows(new Set(["all"]));
+              }
+            }}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
               {isIndeterminate ? (
-                <polyline points="1 9 7 14 15 4" />
+                <TickSign />
               ) : (
-                <rect x={1} y={7.5} width={15} height={3} />
+                <UnTickSign/>
               )}
             </svg>
           </div>
@@ -231,6 +298,8 @@ export function TorusTable({
   isEditable = true,
   heading,
   description,
+  selectionMode,
+  selectionBehavior,
 }) {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState(new Set([]));
@@ -239,10 +308,8 @@ export function TorusTable({
   const [totalPages, setTotalPages] = useState(null);
   const [TotalColumns, setTotalColumns] = useState([]);
   const [serchValue, setSerchValue] = useState("");
-
+  const [selectedRows, setSelectedRows] = useState(new Set([""]));
   const [tableDataLength, setTableDataLength] = useState(0);
-
-  console.log(tableDataLength, "tableData Length --- >>>");
 
   const descriptions = (description) => {
     if (description) {
@@ -319,25 +386,36 @@ export function TorusTable({
       console.error(e);
     }
   }, [sortDescriptor, items]);
-
+  const tableIndex = useMemo(() => {
+    try {
+      if (!tableData) return [];
+      return tableData.map((item, index) => index);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [tableData]);
   const getColumns = (tableData) => {
-    let newColumns = new Set([]);
-    tableData.forEach((item) => {
-      if (typeof item == "object")
-        Object.keys(item).forEach((key) => newColumns.add(key));
-    });
+    try {
+      let newColumns = new Set([]);
+      tableData.forEach((item) => {
+        if (typeof item == "object")
+          Object.keys(item).forEach((key) => newColumns.add(key));
+      });
 
-    let cc = Array.from(newColumns).map((key) => ({
-      id: key,
-      name: key,
-      key: key,
-      label: key,
-      isRowHeader: key == primaryColumn ? true : false,
-      allowsSorting: allowsSorting,
-    }));
-    setTotalColumns(cc);
+      let cc = Array.from(newColumns).map((key) => ({
+        id: key,
+        name: key,
+        key: key,
+        label: key,
+        isRowHeader: key == primaryColumn ? true : false,
+        allowsSorting: allowsSorting,
+      }));
+      setTotalColumns(cc);
 
-    setColumns(newColumns);
+      setColumns(newColumns);
+    } catch (error) {
+      console.error(error);
+    }
   };
   let [selectedKeys, setSelectedKeys] = React.useState(null);
   useEffect(() => {
@@ -358,9 +436,40 @@ export function TorusTable({
   useEffect(() => {
     setTotalPages(Math.ceil(data.length / rowsPerPage));
   }, [data, rowsPerPage]);
+  const handleSave = React.useCallback(() => {
+    try {
+      if (onSave) {
+        let returnValue = [];
+        if (
+          (selectionMode == "multiple" || selectionMode == "single") &&
+          selectedRows.size > 0
+        ) {
+          Array.from(selectedRows).forEach((item) => {
+            if (item && item !== "all") returnValue.push(data[item]);
+            else if (item && item === "all") returnValue = data;
+          });
+        } else {
+          returnValue = data;
+        }
 
+        onSave(returnValue);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [data, onSave, selectedRows, selectionMode]);
   return (
-    <TableDataContext.Provider value={{ data, setData }}>
+    <TableDataContext.Provider
+      value={{
+        data,
+        setData,
+        selectedRows,
+        setSelectedRows,
+        selectionMode,
+        selectionBehavior,
+        tableIndex,
+      }}
+    >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
         <>
           <div className="w-full h-full flex justify-center items-center">
@@ -388,7 +497,7 @@ export function TorusTable({
                   </div>
                 </div>
               </div>
-              <div className="w-[40%] h-full flex flex-row justify-end gap-2 items-center">
+              <div className="w-[40%] h-full flex flex-row justify-end gap-[0.2rem] items-center">
                 <div className="w-[20%] flex justify-end items-center py-2">
                   <TorusButton
                     Children="Save"
@@ -402,9 +511,7 @@ export function TorusTable({
                     height={"md"}
                     fontStyle={"text-sm font-medium text-[#344054]"}
                     startContent={<CiSaveUp1 size={22} color="#344054" />}
-                    onPress={() => {
-                      onSave && onSave(data);
-                    }}
+                    onPress={handleSave}
                   />
                 </div>
                 <div className="w-[20%] flex justify-end items-center py-2">
@@ -422,15 +529,15 @@ export function TorusTable({
                     startContent={<ImportIcon />}
                   />
                 </div>
-                <div className="w-[25%] h-[100%] flex bg-transparent rounded-md justify-start items-center">
+                <div className="w-[25%] h-[100%] flex bg-transparent rounded-md  items-center">
                   <TorusButton
-                    Children="Add vendor"
-                    width={"full"}
+                    Children={`Add`}
+                    size={"full"}
                     btncolor={"#0736C4"}
                     outlineColor="torus-hover:ring-[#0736C4]/50"
                     radius={"lg"}
                     color={"#ffffff"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
+                    gap={"py-[0.2rem] px-[0.2rem]"}
                     height={"md"}
                     borderColor={"3px solid #0736C4"}
                     startContent={<PlusIcon />}
@@ -456,7 +563,6 @@ export function TorusTable({
                           }
                           id="FoR"
                         >
-                          {" "}
                           <span className="text-black font-normal text-xs whitespace-nowrap">
                             view all
                           </span>
@@ -482,11 +588,6 @@ export function TorusTable({
                           </span>
                         </Tab>
                       </TabList>
-                      {/* <TabPanel id="FoR">
-                      Arma virumque cano, Troiae qui primus ab oris.
-                    </TabPanel>
-                    <TabPanel id="MaR">Senatus Populusque Romanus.</TabPanel>
-                    <TabPanel id="Emp">Alea jacta est.</TabPanel> */}
                     </Tabs>
                   </div>
                 </div>
@@ -533,8 +634,6 @@ export function TorusTable({
             </div>
 
             <Table
-              selectionBehavior="toggle"
-              selectionMode="multiple"
               selectedKeys={selectedKeys}
               onSortChange={setSortDescriptor}
               sortDescriptor={sortDescriptor}
@@ -555,7 +654,11 @@ export function TorusTable({
                 ]}
               />
 
-              <TableBody renderEmptyState={() => <div> noData </div>}>
+              <TableBody
+                renderEmptyState={() => (
+                  <div className="text-center"> No Data </div>
+                )}
+              >
                 {sortedItems.map((item, index) => (
                   <>
                     <TorusRow
@@ -690,12 +793,9 @@ const RenderTableChildren = ({ children }) => (
             ))}
           </div>
         ) : (
-          <div className=" flex flex-col gap-1">
+          <div className=" flex flex-col gap-1 ">
             {Object.keys(children).map((key) => (
-              <div
-                key={key}
-                className=" flex gap-2 items-center justify-center"
-              >
+              <div key={key} className=" flex gap-2 items-center justify-start">
                 <h1>{key}:</h1>
                 <RenderTableChildren key={key} children={children[key]} />
               </div>
@@ -740,10 +840,6 @@ const DeleteAction = ({ id, close }) => {
 
   const handleDelete = () => {
     setData((prev) => {
-      console.log(
-        prev.filter((item, index) => index !== id),
-        "deletedData"
-      );
       return prev.filter((item, index) => index !== id);
     });
     close();

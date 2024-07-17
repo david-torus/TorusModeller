@@ -190,7 +190,7 @@ export default function NavBar() {
                 <div className=" col-span-3">
                   <TorusButton
                     Children="Publish"
-                    width={"full"}
+                    size={"md"}
                     btncolor={"#0736C4"}
                     outlineColor="torus-hover:ring-blue-500/50"
                     radius={"lg"}
@@ -198,7 +198,7 @@ export default function NavBar() {
                       "text-white font-inter 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                     }
                     color={"white"}
-                    gap={"py-1.5"}
+                    gap={"py-0.5"}
                   />
                 </div>
               </div>
