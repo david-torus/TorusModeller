@@ -36,6 +36,8 @@ import {
   FilterIcon,
   ImportIcon,
   PlusIcon,
+  TickSign,
+  UnTickSign,
 } from "../SVG_Application";
 import { GiPreviousButton } from "react-icons/gi";
 import TorusCheckBox from "./TorusCheckBox";
@@ -89,7 +91,7 @@ function TorusTableHeader({ columns, children, selectedKeys }) {
       {/* Add extra columns for drag and drop and selection. */}
       {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
-        <Column>
+        <Column className={"bg-[#EAECF0]"}>
           {selectionMode === "multiple" && (
             <TorusColumnCheckbox
               slot="selection"
@@ -229,9 +231,10 @@ function TorusCheckbox({ children, index, ...props }) {
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
               {isIndeterminate ? (
-                <polyline points="1 9 7 14 15 4" />
+                  <TickSign />
+               
               ) : (
-                <rect x={1} y={7.5} width={15} height={3} />
+                <UnTickSign/>
               )}
             </svg>
           </div>
@@ -274,9 +277,9 @@ function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
               {isIndeterminate ? (
-                <polyline points="1 9 7 14 15 4" />
+                <TickSign />
               ) : (
-                <rect x={1} y={7.5} width={15} height={3} />
+                <UnTickSign/>
               )}
             </svg>
           </div>
@@ -494,7 +497,7 @@ export function TorusTable({
                   </div>
                 </div>
               </div>
-              <div className="w-[40%] h-full flex flex-row justify-end gap-2 items-center">
+              <div className="w-[40%] h-full flex flex-row justify-end gap-[0.2rem] items-center">
                 <div className="w-[20%] flex justify-end items-center py-2">
                   <TorusButton
                     Children="Save"
@@ -526,15 +529,15 @@ export function TorusTable({
                     startContent={<ImportIcon />}
                   />
                 </div>
-                <div className="w-[25%] h-[100%] flex bg-transparent rounded-md justify-start items-center">
+                <div className="w-[25%] h-[100%] flex bg-transparent rounded-md  items-center">
                   <TorusButton
-                    Children="Add vendor"
-                    width={"full"}
+                    Children={`Add`}
+                    size={"full"}
                     btncolor={"#0736C4"}
                     outlineColor="torus-hover:ring-[#0736C4]/50"
                     radius={"lg"}
                     color={"#ffffff"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
+                    gap={"py-[0.2rem] px-[0.2rem]"}
                     height={"md"}
                     borderColor={"3px solid #0736C4"}
                     startContent={<PlusIcon />}

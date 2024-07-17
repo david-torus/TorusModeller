@@ -1436,6 +1436,50 @@ const EditIcon = () => {
   );
 };
 
+const TickSign = () => {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" fill="#F9F5FF" />
+      <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" stroke="#0736C4" />
+      <path
+        d="M14.6673 6.5L8.25065 12.9167L5.33398 10"
+        stroke="#0736C4"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
+const UnTickSign = () => {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" fill="#F9F5FF" />
+      <rect x="0.5" y="0.5" width="19" height="19" rx="5.5" stroke="#0736C4" />
+      <path
+        d="M5.91602 10H14.0827"
+        stroke="#0736C4"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -1485,4 +1529,6 @@ export {
   FilterIcon,
   PlusIcon,
   ImportIcon,
+  TickSign,
+  UnTickSign,
 };

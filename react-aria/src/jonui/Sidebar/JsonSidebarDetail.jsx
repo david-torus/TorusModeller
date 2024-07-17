@@ -338,6 +338,7 @@ export default function JsonSidebarDetail({
   handlejs,
   path,
   label,
+  OgJson,
 }) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -353,6 +354,10 @@ export default function JsonSidebarDetail({
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <p className="p-2 text-black dark:text-white"> Properties</p>
+
+        <span onClick ={()=>OgJson()}>
+          save
+        </span>
         <TorusTab
           orientation="horizontal"
           classNames={{

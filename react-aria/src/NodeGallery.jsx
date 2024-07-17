@@ -132,20 +132,20 @@ export default function NodeGallery({
               features & more.
             </p>
 
-            <div className="w-[100%] flex justify-start items-center ">
+            <div className="w-[50%] flex justify-start items-center ">
               <TorusButton
                 buttonClassName={"text-white"}
-                Children="Ugrade"
+                Children="Upgrade"
                 width={"md"}
                 bgColor={"bg-[#0736C4]"}
-                // outlineColor="torus-hover:ring-[#0736C4]"
+                outlineColor="torus-hover:ring-[#0736C4]"
                 radius="full"
                 color={"white"}
-                height={"sm"}
+                size={"sm"}
                 marginT={"mt-2"}
                 btncolor={color}
                 fontStyle={
-                  "font-sfpros 3xl:text-xs  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                  "font-sfpros 3xl:text-xs 3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }
               />
             </div>
