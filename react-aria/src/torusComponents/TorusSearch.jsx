@@ -23,6 +23,7 @@ export default function TorusSearch(props) {
       : setValue(e.target.value);
 
     if (e.target.value.length === 0) {
+      props.onChange(e.target.value);
     } else {
       props.onChange(e.target.value);
     }
