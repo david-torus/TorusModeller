@@ -1480,6 +1480,53 @@ const UnTickSign = () => {
   );
 };
 
+const Search = ({ className }) => {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_1095_2209)">
+        <rect x="-12" y="-12" width="40" height="40" fill="white" />
+        <path
+          d="M7.66634 14C11.1641 14 13.9997 11.1644 13.9997 7.66665C13.9997 4.16884 11.1641 1.33331 7.66634 1.33331C4.16854 1.33331 1.33301 4.16884 1.33301 7.66665C1.33301 11.1644 4.16854 14 7.66634 14Z"
+          className={className}
+        />
+        <path
+          d="M12.333 12.3333L14.6663 14.6666"
+          className={className}
+          stroke-linecap="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_1095_2209">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
+const Close = ({ className }) => {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M13.8301 13.781C13.5698 14.0413 13.1477 14.0413 12.8873 13.781L8.02441 8.91804L3.16151 13.781C2.90116 14.0413 2.47905 14.0413 2.2187 13.781C1.95835 13.5206 1.95835 13.0985 2.2187 12.8382L7.08161 7.97524L2.21872 3.11238C1.95836 2.85198 1.95836 2.42991 2.21872 2.16951C2.47906 1.90918 2.90118 1.90918 3.16152 2.16951L8.02441 7.03244L12.8873 2.16951C13.1477 1.90918 13.5698 1.90918 13.8301 2.16951C14.0905 2.42991 14.0905 2.85198 13.8301 3.11231L8.96721 7.97524L13.8301 12.8382C14.0905 13.0985 14.0905 13.5206 13.8301 13.781Z"
+        className={className}
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -1531,4 +1578,6 @@ export {
   ImportIcon,
   TickSign,
   UnTickSign,
+  Search,
+  Close,
 };
