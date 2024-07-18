@@ -173,21 +173,21 @@ export function TorusDatePicker({
           </div>
 
           <Group className="flex justify-around gap-2 w-full">
-            <div className="w-[50%]">
+            <div className="w-[50%] border">
               <TorusDateField slot={slot} />
             </div>
             <div className="w-[50%] flex justify-end">
               {openBtn && (
                 <Button
-                  className="w-6 h-6 bg-transparent p-[3px] rounded-md flex justify-center items-center torus-focus:outline-none"
+                  className="w-6 h-6 bg-transparent text-black p-[3px] rounded-md flex justify-center items-center torus-focus:outline-none"
                   onClick={togglePopover}
                 >
                   <SlCalender
                     size={15}
-                    color="#1C274C"
+                    color="black"
                     className={`transition-all ease-in-out duration-150 
                     torus-pressed:border-transparent torus-focus:border-transparent
-                    torus-focus:bg-blue-700 torus-focus:text-white
+                    torus-focus:bg-blue-700 torus-focus:text-white bg-gray-500
                  `}
                   />
                 </Button>

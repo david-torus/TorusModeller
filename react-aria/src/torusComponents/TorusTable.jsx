@@ -1,5 +1,6 @@
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -10,6 +11,7 @@ import {
   Button,
   Cell,
   Column,
+  Heading,
   Row,
   Table,
   TableBody,
@@ -213,11 +215,14 @@ function TorusCheckbox({ children, index, ...props }) {
                 selectionMode === "multiple"
               ) {
                 setSelectedRows(
-                  new Set(tableIndex.filter((item) => item !== index))
+                  new Set(
+                    Array.from(tableIndex).filter((item) => item !== index)
+                  )
                 );
               } else {
                 if (
-                  Array.from(selectedRows).length + 1 == tableIndex.length &&
+                  Array.from(selectedRows).length + 1 ==
+                    Array.from(tableIndex).length &&
                   selectionMode === "multiple"
                 ) {
                   setSelectedRows(new Set(["all"]));
@@ -239,7 +244,7 @@ function TorusCheckbox({ children, index, ...props }) {
     </Checkbox>
   );
 }
-function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
+function TorusColumnCheckbox({ children, ...props }) {
   const { selectedRows, setSelectedRows } = useContext(TableDataContext);
 
   return (
@@ -281,16 +286,23 @@ function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
   );
 }
 export function TorusTable({
+  isAsync = false,
   allowsSorting = true,
   primaryColumn,
   tableData,
   onSave,
+  onEdit,
   rowsPerPage = 6,
   isEditable = true,
   heading,
   description,
   selectionMode,
   selectionBehavior,
+  getAysncData,
+  selectedRows,
+  setSelectedRows,
+  onDelete,
+  onAdd,
 }) {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState(new Set([]));
@@ -299,9 +311,9 @@ export function TorusTable({
   const [totalPages, setTotalPages] = useState(null);
   const [TotalColumns, setTotalColumns] = useState([]);
   const [serchValue, setSerchValue] = useState("");
-  const [selectedRows, setSelectedRows] = useState(new Set([""]));
-  const [tableDataLength, setTableDataLength] = useState(0);
 
+  const [tableDataLength, setTableDataLength] = useState(0);
+  const [tableIndex, setTableIndex] = useState(new Set([]));
   const descriptions = (description) => {
     if (description) {
       return (
@@ -319,16 +331,32 @@ export function TorusTable({
       return (
         <>
           <div className="text-xs bg-[#F9F5FF] px-1.5 py-[2px] rounded-md">
-            <p className="text-[#0736C4] font-medium">{`${tableDataLength} ${description}`}</p>
+            <p className="text-[#0736C4] font-medium">{`${tableDataLength}+ ${description}`}</p>
           </div>
         </>
       );
     }
   };
+  const handleSerach = useCallback(
+    (e) => {
+      if (isAsync)
+        getAysncData(page, e, rowsPerPage).then((data) => {
+          if (data && data.tableData && data.tableData.length > 0) {
+            setData(data.tableData);
+            setSerchValue(e);
+          } else {
+            setData([]);
+            setSerchValue(e);
+          }
+        });
+      else setSerchValue(e);
+    },
+    [page, rowsPerPage, getAysncData]
+  );
 
   const serachedItems = React.useMemo(() => {
     try {
-      if (!serchValue) return data;
+      if (isAsync) return data;
       return data.filter((item) =>
         Object.values(item)
           .join(" ")
@@ -338,10 +366,11 @@ export function TorusTable({
     } catch (e) {
       console.error(e);
     }
-  }, [serchValue, data]);
+  }, [serchValue, data, page, rowsPerPage, getAysncData]);
 
   const items = React.useMemo(() => {
     try {
+      if (isAsync) return serachedItems;
       const start = (page - 1) * rowsPerPage;
       const end = start + rowsPerPage;
 
@@ -370,21 +399,27 @@ export function TorusTable({
         const first = a[sortDescriptor?.column];
         const second = b[sortDescriptor?.column];
         const cmp = first < second ? -1 : first > second ? 1 : 0;
-
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
       });
     } catch (e) {
       console.error(e);
     }
   }, [sortDescriptor, items]);
-  const tableIndex = useMemo(() => {
+  const tableIndexs = useCallback(() => {
     try {
-      if (!tableData) return [];
-      return tableData.map((item, index) => index);
+      if (data);
+      {
+        setTableIndex((prev) => {
+          return new Set([...prev, ...data.map((item) => item[primaryColumn])]);
+        });
+      }
     } catch (e) {
       console.error(e);
     }
-  }, [tableData]);
+  }, [data]);
+  useEffect(() => {
+    tableIndexs();
+  }, [data]);
   const getColumns = (tableData) => {
     try {
       let newColumns = new Set([]);
@@ -402,7 +437,6 @@ export function TorusTable({
         allowsSorting: allowsSorting,
       }));
       setTotalColumns(cc);
-
       setColumns(newColumns);
     } catch (error) {
       console.error(error);
@@ -410,7 +444,7 @@ export function TorusTable({
   };
   let [selectedKeys, setSelectedKeys] = React.useState(null);
   useEffect(() => {
-    if (Array.isArray(tableData)) {
+    if (Array.isArray(tableData) && !isAsync) {
       getColumns(tableData);
       setData(tableData);
       setTableDataLength(tableData.length);
@@ -419,17 +453,45 @@ export function TorusTable({
         column: primaryColumn,
         direction: "ascending",
       });
+    } else if (isAsync && getAysncData) {
+      initalsAysncData(true, page);
     } else {
       console.error("tableData is not an array");
     }
   }, [tableData, primaryColumn]);
 
+  const initalsAysncData = (isIntial = false, page) => {
+    try {
+      getAysncData(page, serchValue, rowsPerPage).then((data) => {
+        if (
+          data &&
+          data.tableData &&
+          Array.isArray(data.tableData) &&
+          data?.totalPages
+        ) {
+          setData(data.tableData);
+          if (isIntial) {
+            getColumns(data.tableData);
+            setTableDataLength(data.totalPages / rowsPerPage);
+            setTotalPages(data.totalPages);
+            setSortDescriptor({
+              column: primaryColumn,
+              direction: "ascending",
+            });
+          }
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    setTotalPages(Math.ceil(data.length / rowsPerPage));
+    if (!isAsync) setTotalPages(Math.ceil(data.length / rowsPerPage));
   }, [data, rowsPerPage]);
   const handleSave = React.useCallback(() => {
     try {
-      if (onSave) {
+      if (onSave && !isAsync) {
         let returnValue = [];
         if (
           (selectionMode == "multiple" || selectionMode == "single") &&
@@ -449,9 +511,29 @@ export function TorusTable({
       console.error(error);
     }
   }, [data, onSave, selectedRows, selectionMode]);
+  const handlePageChange = async (type) => {
+    let newPage;
+    if (type == "next") {
+      newPage = (p) => {
+        if (p < totalPages) return p + 1;
+        return p;
+      };
+    }
+    if (type == "prev") {
+      newPage = (p) => {
+        if (p > 1) return p - 1;
+        return p;
+      };
+    }
+    if (isAsync && getAysncData) {
+      initalsAysncData(false, newPage(page));
+    }
+    setPage(newPage(page));
+  };
   return (
     <TableDataContext.Provider
       value={{
+        primaryColumn,
         data,
         setData,
         selectedRows,
@@ -459,6 +541,11 @@ export function TorusTable({
         selectionMode,
         selectionBehavior,
         tableIndex,
+        isAsync,
+        onEdit,
+        onDelete,
+        onAdd,
+        TotalColumns,
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
@@ -521,18 +608,29 @@ export function TorusTable({
                   />
                 </div>
                 <div className="w-[25%] h-[100%] flex bg-transparent rounded-md  items-center">
-                  <TorusButton
-                    Children={`Add`}
-                    size={"full"}
-                    btncolor={"#0736C4"}
-                    outlineColor="torus-hover:ring-[#0736C4]/50"
-                    radius={"lg"}
-                    color={"#ffffff"}
-                    gap={"py-[0.2rem] px-[0.2rem]"}
-                    height={"md"}
-                    borderColor={"3px solid #0736C4"}
-                    startContent={<PlusIcon />}
-                    fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                  <TorusDialog
+                    key={"TableDelete"}
+                    triggerElement={
+                      <TorusButton
+                        Children={`Add`}
+                        size={"xs"}
+                        btncolor={"#0736C4"}
+                        outlineColor="torus-hover:ring-[#0736C4]/50"
+                        radius={"lg"}
+                        color={"#ffffff"}
+                        gap={"py-[0.2rem] px-[0.2rem]"}
+                        height={"md"}
+                        borderColor={"3px solid #0736C4"}
+                        startContent={<PlusIcon />}
+                        fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                      />
+                    }
+                    classNames={{
+                      dialogClassName: " flex  border-2 flex-col bg-white",
+                    }}
+                    title={"Add"}
+                    message={"Edit"}
+                    children={({ close }) => <AddAction close={close} />}
                   />
                 </div>
               </div>
@@ -590,7 +688,7 @@ export function TorusTable({
                       borderColor="border-[#000000]/20"
                       outlineColor="torus-focus:ring-[#000000]/50"
                       placeholder="search"
-                      onChange={setSerchValue}
+                      onChange={handleSerach}
                       isDisabled={false}
                       radius="lg"
                       textColor="text-[#000000]"
@@ -653,14 +751,10 @@ export function TorusTable({
                 {sortedItems.map((item, index) => (
                   <>
                     <TorusRow
-                      key={tableData.findIndex(
-                        (el) => el[primaryColumn] == item[primaryColumn]
-                      )}
+                      key={item[primaryColumn]}
                       item={item}
                       id={index}
-                      index={data.findIndex(
-                        (el) => el[primaryColumn] === item[primaryColumn]
-                      )}
+                      index={item[primaryColumn]}
                       columns={[
                         ...filterColmns,
                         isEditable && {
@@ -714,12 +808,7 @@ export function TorusTable({
                     radius={"lg"}
                     gap={"py-[0.2rem] px-[0.5rem]"}
                     // startContent={<GiPreviousButton />}
-                    onPress={() =>
-                      setPage((p) => {
-                        if (p > 1) return p - 1;
-                        return p;
-                      })
-                    }
+                    onPress={() => handlePageChange("prev")}
                   />
                 </div>
 
@@ -734,12 +823,7 @@ export function TorusTable({
                     gap={"py-[0.2rem] px-[0.5rem]"}
                     size={"md"}
                     // startContent={<GiPreviousButton />}
-                    onPress={() =>
-                      setPage((p) => {
-                        if (p < totalPages) return p + 1;
-                        return p;
-                      })
-                    }
+                    onPress={() => handlePageChange("next")}
                   />
                 </div>
               </div>
@@ -756,6 +840,7 @@ const TableCellActions = ({ id }) => {
       <div className="w-[100%] h-[50%] flex justify-center items-center ">
         <div className="w-[25%] h-[100%] flex justify-end items-center">
           <TorusDialog
+            Header="      Do you want to delete this item"
             key={"TableDelete"}
             triggerElement={
               <TorusButton
@@ -765,11 +850,23 @@ const TableCellActions = ({ id }) => {
               />
             }
             classNames={{
-              dialogClassName: " flex  border-2 flex-col bg-white",
+              dialogClassName:
+                " flex  border border-gray-300 rounded-lg flex-col bg-white",
             }}
-            title={"Delete"}
             message={"Edit"}
-            children={({ close }) => <DeleteAction id={id} close={close} />}
+            children={({ close }) => (
+              <>
+                <div className="p-4">
+                  <Heading className="font-medium text-black " slot="title">
+                    Delete Item
+                  </Heading>
+                  <p className="mt-2">
+                    This will permanently delete the selected item. Continue?
+                  </p>
+                  <DeleteAction id={id} close={close} />
+                </div>
+              </>
+            )}
           />
         </div>
 
@@ -825,16 +922,18 @@ const RenderTableChildren = ({ children }) => (
 );
 
 const EditAction = ({ id, close }) => {
-  const { data, setData } = React.useContext(TableDataContext);
+  const { data, setData, primaryColumn, onEdit, isAsync } =
+    React.useContext(TableDataContext);
   const [obj, setObj] = React.useState(null);
   useEffect(() => {
-    setObj(data[id]);
+    setObj(data?.find((item) => item?.[primaryColumn] === id));
   }, [id, data]);
 
   const handleSave = () => {
+    if (isAsync) onEdit(id, obj);
     setData((prev) => {
       return prev.map((item, index) => {
-        if (index === id) {
+        if (item?.[primaryColumn] === id) {
           return { ...item, ...obj };
         }
         return item;
@@ -843,97 +942,161 @@ const EditAction = ({ id, close }) => {
     close();
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      {obj && <Cycle obj={obj} setObj={setObj} />}
-      <TorusButton Children={"Save"} onPress={handleSave} btncolor={"#D0D5DD"} />
+    <div className="w-[300px] bg-white h-[400px] rounded-lg  border-none flex flex-col gap-3 p-2 items-start justify-between">
+      <div className="w-full h-[350px] overflow-y-scroll scrollbar-hide p-2">
+        {obj && <Cycle obj={obj} setObj={setObj} />}
+      </div>
+      <div className="w-full flex justify-center">
+        <TorusButton
+          buttonClassName={
+            "bg-[#0736C4] w-[95%] h-[45px] border-none text-white"
+          }
+          Children={"Save"}
+          onPress={handleSave}
+        />
+      </div>
+    </div>
+  );
+};
+const AddAction = ({ close }) => {
+  const { data, setData, primaryColumn, onAdd, isAsync, TotalColumns } =
+    React.useContext(TableDataContext);
+  const [obj, setObj] = useState(null);
+
+  useEffect(() => {
+    let newObj = {};
+    TotalColumns.forEach((item) => {
+      newObj = { ...newObj, [item?.key]: "" };
+    });
+    setObj(newObj);
+  }, []);
+
+  const handleSave = () => {
+    if (isAsync && onAdd) onAdd(obj[primaryColumn], obj);
+    setData((prev) => {
+      return [...prev, obj];
+    });
+    close();
+  };
+  return (
+    <div className="w-[300px] bg-white h-[400px] rounded-lg  border-none flex flex-col gap-3 p-2 items-start justify-between">
+      <div className="w-full h-[350px] overflow-y-scroll scrollbar-hide p-2">
+        {obj && <Cycle obj={obj} setObj={setObj} />}
+      </div>
+      <div className="w-full flex justify-center">
+        <TorusButton
+          buttonClassName={
+            "bg-[#0736C4] w-[95%] h-[45px] border-none text-white"
+          }
+          Children={"Add"}
+          onPress={handleSave}
+        />
+      </div>
     </div>
   );
 };
 
 const DeleteAction = ({ id, close }) => {
-  const { data, setData } = React.useContext(TableDataContext);
+  const { data, setData, primaryColumn, onDelete, isAsync } =
+    useContext(TableDataContext);
 
   const handleDelete = () => {
+    if (isAsync) onDelete(id);
     setData((prev) => {
-      return prev.filter((item, index) => index !== id);
+      return prev.filter((item, index) => item?.[primaryColumn] !== id);
     });
     close();
   };
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
-      <TorusButton Children={"Cancel"} onPress={close} />
-      <TorusButton Children={"Delete"} onPress={handleDelete} />
+    <div className="w-[400px] bg-white h-[100px] rounded-lg  border-none flex flex-row gap-3 items-center justify-end">
+      <TorusButton
+        buttonClassName={"bg-gray-200 w-[80px] h-[40px] text-black"}
+        Children={"Cancel"}
+        onPress={close}
+      />
+      <TorusButton
+        buttonClassName={"bg-red-500 w-[80px] h-[40px] text-white"}
+        Children={"Delete"}
+        onPress={handleDelete}
+      />
     </div>
   );
 };
 
 const Cycle = ({ obj, setObj }) => {
+  console.log(obj, "obj");
   return (
     <>
-      {obj && Array.isArray(obj) ? (
-        obj.map((ele, index) => (
-          <li>
-            <Cycle
-              key={index}
-              obj={ele}
-              setObj={(newObj) =>
-                setObj(obj.map((e, i) => (i === index ? newObj : e)))
-              }
-            />
-          </li>
-        ))
-      ) : typeof obj == "object" ? (
-        Object.keys(obj).map((ele) => {
-          if (typeof obj[ele] === "object")
+      {obj && Array.isArray(obj)
+        ? obj?.map((ele, index) => (
+            <>
+              {ele && (
+                <li>
+                  <Cycle
+                    key={index}
+                    obj={ele}
+                    setObj={(newObj) =>
+                      setObj(
+                        obj && obj?.map((e, i) => (i === index ? newObj : e))
+                      )
+                    }
+                  />
+                </li>
+              )}
+            </>
+          ))
+        : obj && typeof obj == "object"
+        ? Object.keys(obj).map((ele) => {
+            if (typeof obj[ele] === "object")
+              return (
+                <>
+                  <p>{ele}:</p>
+                  <Cycle
+                    key={ele}
+                    obj={obj[ele]}
+                    setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
+                  />
+                </>
+              );
             return (
-              <>
-                <p>{ele}:</p>
-                <Cycle
-                  key={ele}
-                  obj={obj[ele]}
-                  setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
-                />
-              </>
+              <TorusInput
+                key={ele}
+                variant="bordered"
+                label={ele}
+                labelColor="text-[#000000]/50"
+                borderColor="[#000000]/50"
+                outlineColor="torus-focus:ring-[#000000]/50"
+                placeholder=""
+                isDisabled={false}
+                onChange={(e) => setObj({ ...obj, [ele]: e })}
+                radius="lg"
+                width="xl"
+                height="xl"
+                textColor="text-[#000000]"
+                bgColor="bg-[#FFFFFF]"
+                value={obj[ele]}
+                type="text"
+              />
             );
-          return (
+          })
+        : obj != null && (
             <TorusInput
-              key={ele}
               variant="bordered"
-              label={ele}
               labelColor="text-[#000000]/50"
               borderColor="[#000000]/50"
               outlineColor="torus-focus:ring-[#000000]/50"
               placeholder=""
               isDisabled={false}
-              onChange={(e) => setObj({ ...obj, [ele]: e })}
+              onChange={(e) => setObj(e)}
               radius="lg"
               width="xl"
               height="xl"
               textColor="text-[#000000]"
               bgColor="bg-[#FFFFFF]"
-              value={obj[ele]}
+              value={obj}
               type="text"
             />
-          );
-        })
-      ) : (
-        <TorusInput
-          variant="bordered"
-          labelColor="text-[#000000]/50"
-          borderColor="[#000000]/50"
-          outlineColor="torus-focus:ring-[#000000]/50"
-          placeholder=""
-          isDisabled={false}
-          onChange={(e) => setObj(e)}
-          radius="lg"
-          width="xl"
-          height="xl"
-          textColor="text-[#000000]"
-          bgColor="bg-[#FFFFFF]"
-          value={obj}
-          type="text"
-        />
-      )}
+          )}
     </>
   );
 };

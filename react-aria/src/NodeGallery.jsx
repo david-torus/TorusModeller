@@ -109,11 +109,11 @@ export default function NodeGallery({
       <div
         className={` ${
           showFabricSideBar
-            ? "w-[100%] h-[91%] opacity-100"
+            ? "w-[100%] h-[91.5%] opacity-100"
             : "collapse opacity-0"
         }  pb-2 flex flex-col gap-3 justify-between transition-opacity duration-700 ease-in-out`}
       >
-        <div className="flex flex-col items-start w-full xl:h-[47vh] p-2 justify-between  scrollbar-hide overflow-y-scroll  ">
+        <div className="flex flex-col items-start w-full xl:h-[75%] p-2 justify-between  scrollbar-hide overflow-y-scroll  ">
           <Loop color={color} selectedFabric={selectedFabric} />
         </div>
 
@@ -166,7 +166,7 @@ const Loop = ({ color, selectedFabric }) => {
       {data.map((item, index) => (
         <div
           key={index}
-          className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-md dark:text-white w-full"
+          className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-lg dark:text-white w-full"
           draggable
           onDragStart={(event) => onDragStart(event, "default")}
         >

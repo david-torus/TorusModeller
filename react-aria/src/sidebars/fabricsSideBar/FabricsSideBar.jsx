@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { JsonSidebarIcon } from "../../jonui/Sidebar/JsonSidebarIcon";
 import JsonSidebarDetail from "../../jonui/Sidebar/JsonSidebarDetail";
 
-export default function FabricsSideBar({ obj, handlejs }) {
+export default function FabricsSideBar({ obj, handlejs , OgJson }) {
   const [showObj, setShowObj] = useState(null);
   const [label, setLabel] = useState(null);
 
@@ -29,6 +29,7 @@ export default function FabricsSideBar({ obj, handlejs }) {
           handlejs={handlejs}
           path={path}
           label={label}
+          OgJson={OgJson}
         />
         {/* <FabricsSideBarDetails /> */}
       </div>

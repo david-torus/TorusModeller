@@ -1,41 +1,10 @@
-import { memo, useEffect, useState } from "react";
-import FabricsSideBar from "../sidebars/fabricsSideBar/FabricsSideBar";
-import JsonSidebar from "./Sidebar/JsonSidebar";
-import _, { set } from "lodash";
-import { unflatten } from "flat";
-
 const js = {
-
   orgGrp: [
     {
       grouplabel: "Organization Group1",
       label: "Organization Group",
       orgGrpName: "orgGrp1",
       orgGrpCode: "OG1",
-      SIFlag: {
-        label: "SI Flag",
-        type: "dropdown",
-        selectedValue: [],
-        selectionList: [],
-      },
-      actionAllowed: {
-        label: "Allowed Actions",
-        type: "dropdown",
-        selectedValue: [],
-        selectionList: ["O1", "O2"],
-      },
-      actionDenied: {
-        label: "Denied Actions",
-        type: "dropdown",
-        selectedValue: [],
-        selectionList: ["O3", "O4"],
-      },
-    },
-    {
-      grouplabel: "Organization Group2",
-      label: "Organization Group2",
-      orgGrpName: "orgGrp2",
-      orgGrpCode: "OG2",
       SIFlag: {
         label: "SI Flag",
         type: "dropdown",
@@ -498,117 +467,22 @@ const js = {
     ],
 };
 
-const RenderObject = ({ obj, handlejs,OgJson }) => {
-  return <>{obj && <FabricsSideBar obj={obj} handlejs={handlejs} OgJson={OgJson} />}</>;
+const convertJson = ({ obj }) => {
+  const converted = {};
+  for (let key in obj) {
+    if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+      converted[key.replace(/\//g, ".")] = convertJson(obj[key]); // Changed 'convertKeys' to 'convertJson'
+    } else {
+      converted[key.replace(/\//g, ".")] = obj[key];
+    }
+  }
+  console.log(converted, "ctct");
+
+  return converted;
 };
 
-export const RenderJson = memo(() => {
-  const [dupJson, setDupJson] = useState(structuredClone(js));
-
-  const[convertedJson , setConvertedJson] = useState(null)
-
-  function convertJson(obj) {
-    const converted = {};
-    for (let key in obj) {
-      if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
-        converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
-      } else if (Array.isArray(obj[key])) {
-        converted[key.replace(/\//g, ".")] = obj[key];
-      } else {
-        converted[key.replace(/\//g, ".")] = obj[key];
-      }
-    }
-    console.log(converted, "ctct");
-  
-    return converted;
-  };
-
-
-
-
-
-
-
-function replaceKeys(obj) {
-  if (Array.isArray(obj)) {
-      return obj.map(item => replaceKeys(item));
-  } else if (typeof obj === 'object' && obj !== null) {
-      let newObj = {};
-      for (let key in obj) {
-          if (obj.hasOwnProperty(key)) {
-              let newKey = key.replace(/\//g, '.');
-              newObj[newKey] = replaceKeys(obj[key]);
-          }
-      }
-      return newObj;
-  } else {
-      return obj;
-  }
-}
-
-
-const OgJson = ()=>{
-  const jss = convertJson(dupJson);
-  const newjson = JSON.stringify(jss, null, 2);
-
-   let newjs = unflatten(jss);
-   console.log(newjs, "new");
-
-   setConvertedJson(newjs);
-
-}
-
-console.log(convertedJson, "convertedJson");
-
-  const handlejs = (e, i, key, type, jskey) => {
-    console.log(e, i, key, type, jskey, "rendertype");
-
-    if (type == "obj") {
-      setDupJson((prev) => {
-        return {
-          ...prev,
-          [i]: {
-            ...prev[i],
-            [key]: e,
-          },
-        };
-      });
-    }
-    if (type == "arr") {
-      if (i) {
-        const js = structuredClone(dupJson);
-        _.set(js, i, e);
-        setDupJson(js);
-        console.log(js, "arrjs");
-      }
-    }
-
-    if (type == "dropdown") {
-      if (i) {
-        const js = structuredClone(dupJson);
-        _.set(js, i, e);
-        setDupJson(js);
-        console.log(js, "arrjs");
-      }
-    }
-  };
-
-  console.log(dupJson, "renderjs");
-
-  return (
-    <>
-      {dupJson && Object.keys(dupJson).length > 0 && (
-        <>
-          <div className="   ">
-            {Object.keys(dupJson).length > 0 && (
-              <>
-              
-              <RenderObject obj={dupJson} handlejs={handlejs} OgJson={OgJson} />
-              </>
-            )}
-          </div>
-        </>
-      )}
-    </>
-  );
+const UnFlatjson = memo(() => {
+  return <convertJson obj={js} />;
 });
+
+export default UnFlatjson;
