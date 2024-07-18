@@ -43,6 +43,7 @@ import {
 } from "../SVG_Application";
 import { GiPreviousButton } from "react-icons/gi";
 import TorusCheckBox from "./TorusCheckBox";
+import { merger } from "../utils/utils";
 
 const defaultClassName = {
   table: "",
@@ -51,22 +52,23 @@ const defaultClassName = {
   tableRow: "",
   tableCell: "",
 };
-const TableDataContext = createContext();
-function TorusColumn(props) {
+export const TableDataContext = createContext();
+export function TorusColumn(props) {
   return (
     <Column
       {...props}
-      className={
-        "text-xs font-medium bg-[#EAECF0] py-[0.8rem] torus-focus:outline-none torus-focus:border-none"
-      }
+      className={merger(
+        "text-xs  font-medium px-4 center bg-[#EAECF0] py-[0.8rem] torus-focus:outline-none torus-focus:border-none",
+        props.className
+      )}
     >
       {({ allowsSorting, sortDirection }) => (
         <div className="w-[100%]  flex justify-center items-center">
-          <div className="w-[100%] flex justify-between gap-1">
-            <div className="w-[50%] flex justify-end">
+          <div className="w-[100%] flex items-center justify-center gap-1">
+            <div className="w-[80%] flex items-center justify-center">
               {props.children.charAt(0).toUpperCase() + props.children.slice(1)}
             </div>
-            <div className="w-[50%] flex justify-start">
+            <div className="w-[20%] flex items-center justify-center">
               {allowsSorting && (
                 <span aria-hidden="true" className="sort-indicator">
                   <FaArrowDown
@@ -86,43 +88,52 @@ function TorusColumn(props) {
   );
 }
 
-function TorusTableHeader({ columns, children, selectedKeys }) {
-  const { selectionBehavior, selectionMode } = useContext(TableDataContext);
+export function TorusTableHeader({ columns, children, selectedKeys }) {
+  const { selectionBehavior, selectionMode, isSkeleton } =
+    useContext(TableDataContext);
   return (
-    <TableHeader>
+    <TableHeader className="w-full">
       {/* Add extra columns for drag and drop and selection. */}
       {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
-        <Column className={"bg-[#EAECF0]"}>
+        <Column
+          className={`text-xs w-[${
+            100 / columns.length + 1
+          }%] font-medium bg-[#EAECF0] px-2 py-[0.8rem] torus-focus:outline-none torus-focus:border-none`}
+        >
           {selectionMode === "multiple" && (
             <TorusColumnCheckbox
               slot="selection"
               selectedKeys={selectedKeys}
               className="cursor-pointer"
             />
-
-            // <TorusCheckBox type="single" />
           )}
         </Column>
       )}
-      {columns.map((column) => (
-        <TorusColumn
-          key={column.id}
-          id={column.id}
-          allowsSorting={column.allowsSorting}
-          isRowHeader={column.isRowHeader}
-        >
-          {column.name}
-        </TorusColumn>
-      ))}
-      {/* {children} */}
+      {isSkeleton ? (
+        <>{children({ columns })}</>
+      ) : (
+        <>
+          {columns.map((column) => (
+            <TorusColumn
+              key={column.id}
+              id={column.id}
+              allowsSorting={column.allowsSorting}
+              isRowHeader={column.isRowHeader}
+              className={`w-[${100 / columns.length + 1}%]`}
+            >
+              {column.name}
+            </TorusColumn>
+          ))}
+        </>
+      )}
       {/* <Collection items={columns}>{children}</Collection> */}
     </TableHeader>
   );
 }
 
-function TorusRow({ id, columns, children, ...otherProps }) {
-  let { selectionBehavior } = useContext(TableDataContext);
+export function TorusRow({ id, columns, children, ...otherProps }) {
+  let { selectionBehavior, isSkeleton } = useContext(TableDataContext);
 
   return (
     <>
@@ -144,46 +155,41 @@ function TorusRow({ id, columns, children, ...otherProps }) {
             {/* <TorusCheckBox type="single" /> */}
           </Cell>
         )}
-        {columns.map((column) => {
-          if (column?.id == "Actions") {
-            return (
-              <Cell
-                className={"border-b border-[#EAECF0]"}
-                children={<TableCellActions id={otherProps?.index} />}
-              />
-            );
-          } else
-            return (
-              <Cell
-                className={"border-b border-[#EAECF0]"}
-                children={
-                  <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
-                    <RenderTableChildren
-                      children={otherProps?.item?.[column?.id]}
-                    />
-                    {/* <hr
-                      style={{
-                        marginTop: "0.5rem",
-                        width: "100%",
-                        border: "1px solid #EAECF0",
-                        borderRadius: "10px",
-                      }}
-                    /> */}
-                  </div>
-                }
-              />
-            );
-        })}
 
-        {/* <Collection items={columns}>{children}</Collection> 
-        {children} 
-        <RenderTableChildren key={id} columns={columns} data={children} /> */}
+        {isSkeleton ? (
+          <>{children({ columns, otherProps })}</>
+        ) : (
+          <>
+            {columns.map((column) => {
+              if (column?.id == "Actions") {
+                return (
+                  <Cell
+                    className={"border-b border-[#EAECF0]"}
+                    children={<TableCellActions id={otherProps?.index} />}
+                  />
+                );
+              } else
+                return (
+                  <Cell
+                    className={"border-b border-[#EAECF0]"}
+                    children={
+                      <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
+                        <RenderTableChildren
+                          children={otherProps?.item?.[column?.id]}
+                        />
+                      </div>
+                    }
+                  />
+                );
+            })}
+          </>
+        )}
       </Row>
     </>
   );
 }
 
-function TorusCheckbox({ children, index, ...props }) {
+export function TorusCheckbox({ children, index, ...props }) {
   const { selectedRows, setSelectedRows, tableIndex, selectionMode } =
     useContext(TableDataContext);
   return (
@@ -303,6 +309,10 @@ export function TorusTable({
   setSelectedRows,
   onDelete,
   onAdd,
+  children,
+  editableColumns,
+  addableColumns,
+  isSkeleton = false,
 }) {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState(new Set([]));
@@ -546,11 +556,13 @@ export function TorusTable({
         onDelete,
         onAdd,
         TotalColumns,
+        editableColumns,
+        addableColumns,
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
         <>
-          <div className="w-full h-full flex justify-center items-center">
+          <div className="w-full h-full flex justify-center items-center ">
             <div className="w-[95%] flex justify-between items-center pl-2">
               <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
                 <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
@@ -721,40 +733,27 @@ export function TorusTable({
                 </div>
               </div>
             </div>
-
-            <Table
-              selectedKeys={selectedKeys}
-              onSortChange={setSortDescriptor}
-              sortDescriptor={sortDescriptor}
-              onSelectionChange={setSelectedKeys}
-              className={"w-full h-[90%] mt-2"}
-            >
-              <TorusTableHeader
+            <div className="w-full h-full overflow-scroll ">
+              <Table
                 selectedKeys={selectedKeys}
-                columns={[
-                  ...filterColmns,
-                  isEditable && {
-                    id: "Actions",
-                    name: "Actions",
-                    key: "Actions",
-                    label: "Actions",
-                    isRowHeader: false,
-                  },
-                ]}
-              />
-
-              <TableBody
-                renderEmptyState={() => (
-                  <div className="text-center"> No Data </div>
-                )}
+                onSortChange={setSortDescriptor}
+                sortDescriptor={sortDescriptor}
+                onSelectionChange={setSelectedKeys}
+                className={"w-full h-[90%] mt-2"}
               >
-                {sortedItems.map((item, index) => (
+                {isSkeleton ? (
                   <>
-                    <TorusRow
-                      key={item[primaryColumn]}
-                      item={item}
-                      id={index}
-                      index={item[primaryColumn]}
+                    {children({
+                      selectedKeys,
+                      sortedItems,
+                      filterColmns,
+                      primaryColumn,
+                    })}
+                  </>
+                ) : (
+                  <>
+                    <TorusTableHeader
+                      selectedKeys={selectedKeys}
                       columns={[
                         ...filterColmns,
                         isEditable && {
@@ -765,15 +764,42 @@ export function TorusTable({
                           isRowHeader: false,
                         },
                       ]}
-                      selectedKeys={selectedKeys}
-                      className={
-                        "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
-                      }
                     />
+
+                    <TableBody
+                      renderEmptyState={() => (
+                        <div className="text-center"> No Data </div>
+                      )}
+                    >
+                      {sortedItems.map((item, index) => (
+                        <>
+                          <TorusRow
+                            key={item[primaryColumn]}
+                            item={item}
+                            id={index}
+                            index={item[primaryColumn]}
+                            columns={[
+                              ...filterColmns,
+                              isEditable && {
+                                id: "Actions",
+                                name: "Actions",
+                                key: "Actions",
+                                label: "Actions",
+                                isRowHeader: false,
+                              },
+                            ]}
+                            selectedKeys={selectedKeys}
+                            className={
+                              "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
+                            }
+                          />
+                        </>
+                      ))}
+                    </TableBody>
                   </>
-                ))}
-              </TableBody>
-            </Table>
+                )}
+              </Table>
+            </div>
           </div>
 
           <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[15%] mt-5">
@@ -834,7 +860,7 @@ export function TorusTable({
     </TableDataContext.Provider>
   );
 }
-const TableCellActions = ({ id }) => {
+export const TableCellActions = ({ id }) => {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center ">
       <div className="w-[100%] h-[50%] flex justify-center items-center ">
@@ -844,6 +870,7 @@ const TableCellActions = ({ id }) => {
             key={"TableDelete"}
             triggerElement={
               <TorusButton
+                buttonClassName={"w-10 h-10 rounded-full"}
                 Children={<DeleteIcon />}
                 isIconOnly={true}
                 btncolor={"bg-transparent"}
@@ -853,7 +880,7 @@ const TableCellActions = ({ id }) => {
               dialogClassName:
                 " flex  border border-gray-300 rounded-lg flex-col bg-white",
             }}
-            message={"Edit"}
+            message={"Delete"}
             children={({ close }) => (
               <>
                 <div className="p-4">
@@ -875,6 +902,7 @@ const TableCellActions = ({ id }) => {
             key={"TableEdit"}
             triggerElement={
               <TorusButton
+                buttonClassName={"w-10 h-10 rounded-full"}
                 Children={<EditIcon />}
                 isIconOnly={true}
                 btncolor={"bg-#D0D5DD"}
@@ -892,7 +920,7 @@ const TableCellActions = ({ id }) => {
     </div>
   );
 };
-const RenderTableChildren = ({ children }) => (
+export const RenderTableChildren = ({ children }) => (
   <>
     {children && typeof children === "object" ? (
       <>
@@ -922,11 +950,18 @@ const RenderTableChildren = ({ children }) => (
 );
 
 const EditAction = ({ id, close }) => {
-  const { data, setData, primaryColumn, onEdit, isAsync } =
+  const { data, setData, primaryColumn, onEdit, isAsync, editableColumns } =
     React.useContext(TableDataContext);
   const [obj, setObj] = React.useState(null);
   useEffect(() => {
-    setObj(data?.find((item) => item?.[primaryColumn] === id));
+    let orginalObj = data?.find((item) => item?.[primaryColumn] === id);
+    let modifiedObj = {};
+    Object.keys(orginalObj).forEach((key) => {
+      if (key !== primaryColumn && editableColumns.includes(key)) {
+        modifiedObj[key] = orginalObj[key];
+      }
+    });
+    setObj(modifiedObj);
   }, [id, data]);
 
   const handleSave = () => {
@@ -959,20 +994,28 @@ const EditAction = ({ id, close }) => {
   );
 };
 const AddAction = ({ close }) => {
-  const { data, setData, primaryColumn, onAdd, isAsync, TotalColumns } =
-    React.useContext(TableDataContext);
+  const {
+    data,
+    setData,
+    primaryColumn,
+    onAdd,
+    isAsync,
+    TotalColumns,
+    addableColumns,
+  } = React.useContext(TableDataContext);
   const [obj, setObj] = useState(null);
 
   useEffect(() => {
     let newObj = {};
     TotalColumns.forEach((item) => {
-      newObj = { ...newObj, [item?.key]: "" };
+      if (item.key !== primaryColumn && addableColumns.includes(item?.key))
+        newObj = { ...newObj, [item?.key]: "" };
     });
     setObj(newObj);
   }, []);
 
   const handleSave = () => {
-    if (isAsync && onAdd) onAdd(obj[primaryColumn], obj);
+    if (isAsync && onAdd) onAdd(obj);
     setData((prev) => {
       return [...prev, obj];
     });

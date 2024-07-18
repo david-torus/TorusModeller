@@ -29,6 +29,7 @@ import { useEffect, useRef, useState } from "react";
 import TorusButton from "./TorusButton";
 import { merger } from "../utils/utils";
 import { BsClockHistory } from "react-icons/bs";
+import { parseDate } from "@internationalized/date";
 
 const defaultTropdownClassNames = {
   buttonClassName: `torus-pressed:animate-torusButtonActive 
@@ -42,7 +43,7 @@ const defaultTropdownClassNames = {
     "p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300 rounded-md cursor-pointer transition-colors duration-300",
 };
 
-const TorusCalendar = (props) => {
+const TorusCalendar = ({ calculateDate }) => {
   return (
     <Calendar aria-label="Appointment date " className="w-[100%]">
       <header className="flex justify-center w-[100%]">
@@ -69,17 +70,26 @@ const TorusCalendar = (props) => {
 
       <div className="grid grid-cols-9 justify-between mt-2">
         <div className="  col-span-3 flex justify-center items-center ">
-          <div className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1">
+          <div
+            className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1 cursor-pointer"
+            onClick={() => calculateDate(3)}
+          >
             3 months Ago
           </div>
         </div>
         <div className="  col-span-3 flex justify-center items-center ">
-          <div className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1">
+          <div
+            className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1 cursor-pointer"
+            onClick={() => calculateDate(6)}
+          >
             6 months Ago
           </div>
         </div>
-        <div className="  col-span-3 flex justify-center items-center ">
-          <div className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1">
+        <div
+          className="  col-span-3 flex justify-center items-center "
+          onClick={() => calculateDate(12)}
+        >
+          <div className=" bg-[#F4F5FA] flex justify-center items-center rounded-sm text-xs whitespace-nowrap px-2 py-1 cursor-pointer">
             1 year Ago
           </div>
         </div>
@@ -159,6 +169,20 @@ export function TorusDatePicker({
     setRotate(false);
   };
 
+  const calculateDate = (monthsAgo) => {
+    const date = new Date(defaultValue);
+    date.setMonth(date.getMonth() - monthsAgo);
+    const formattedDate = parseDate(formatDate(date));
+    setValues(formattedDate);
+  };
+
+  const formatDate = (date) => {
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <DatePicker onChange={setValues} defaultValue={defaultValue}>
       <div className="flex justify-start w-[100%]">
@@ -199,12 +223,13 @@ export function TorusDatePicker({
 
       {isPopoverOpen && openBtn && (
         <Popover className="py-5 flex-col items-center w-[20%] bg-[#FFFFFF] rounded-md shadow-xl flex justify-center px-3">
-          <TorusCalendar />
+          <TorusCalendar calculateDate={calculateDate} />
 
           <div className="w-[80%] flex justify-center mt-4">
             <div className="w-[100%] flex justify-center">
               <div className="w-[50%] flex justify-center items-center">
-                <button className="w-[100%] bg-transparent font-semibold p-[3px] rounded-md flex justify-center items-center">
+                <button className="w-[100%] bg-transparent font-semibold p-[3px] rounded-md flex justify-center items-center"
+                onClick={closePopover}>
                   {" "}
                   Cancel
                 </button>
