@@ -31,6 +31,11 @@ import {
 import TorusSearch from "./torusComponents/TorusSearch";
 import TorusPhoneNumberInput from "./torusComponents/TorusPhoneNumberInput";
 import TorusModularInput from "./torusComponents/TorusModularInput.tsx";
+import TorusTextArea from "./torusComponents/TorusModularTextArea.tsx";
+import TorusModularTextArea from "./torusComponents/TorusModularTextArea.tsx";
+import PortalDropdown from "./torusComponents/PortalDropdown.jsx";
+import TorusModularDatePicker from "./torusComponents/TorusDatePicker/TorusModularDatePicker.tsx";
+import TorusModularTimePicker from "./torusComponents/TorusModularTimePicker/TorusModularTimePicker.tsx";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -45,9 +50,19 @@ export default function SignIn() {
   const [radioValues, setRadioValues] = useState("");
   const [search, setSearch] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [textArea, setTextArea] = useState("");
+  const [textValue, setTextValue] = useState("");
 
   const handleInputChange = (value) => {
     setInputValue(value);
+  };
+
+  const handleTexAreaChange = (value) => {
+    setTextValue(value);
+  };
+
+  const handleHeightChange = (height) => {
+    console.log("TextArea height:", height);
   };
 
   const handleChange = (value) => {
@@ -155,6 +170,16 @@ export default function SignIn() {
             defaultValue={date}
           />
 
+          <TorusModularDatePicker
+          label="Date of Birth"
+          slot="end"
+          openBtn="true"
+          setValues={setDate}
+          defaultValue={date}
+          />
+
+          <TorusModularTimePicker/>
+
           <TorusSearch
             variant="bordered"
             labelColor="text-[#000000]/50"
@@ -199,7 +224,7 @@ export default function SignIn() {
             isReadOnly={false} // Whether the input is read-only
             isDisabled={false} // Whether the input is disabled
             errorShown={true} // Whether to show error messages
-            description="This is a required field." // Description or help text
+            description="This is a hint text." // Description or help text
             isClearable={true} // Makes the input clearable
           />
 
@@ -222,26 +247,50 @@ export default function SignIn() {
             startContent={<FaSearchLocation size={15} color="#9CA3AF" />}
             maxLength={20}
             discription="This is a hint text to help user."
+            isClearable={true}
           />
 
-          <TorusModularInput
-            placeholder="Modular input"
-            label="Input"
-            variant="bordered"
-            labelColor="text-[#000000]/50"
-            borderColor="border-[#000000]/20"
+          <TorusModularTextArea
+            // Label for the TextArea
+            label="Description"
+            // Controlled value for the TextArea
+            value={textValue}
+            // Handler for value change
+            onChange={handleTexAreaChange}
+            // Placeholder text for the TextArea
+            placeholder="Enter your text here"
+            // Background color for the TextArea container
+            bgColor="bg-gray-100"
+            // Border color when the TextArea is focused or in an error state
+            borderColor="border-blue-500"
+            // Color of the label text
+            labelColor="text-blue-500"
+            // Color of the TextArea text
+            textColor="text-gray-700"
+            // Size of the TextArea (height)
+            size="md"
+            // Border radius of the TextArea container
+            radius="md"
+            // Top margin of the TextArea container
+            marginT="mt-4"
+            // Indicates if the TextArea is read-only
+            isReadOnly={false}
+            // Indicates if the TextArea is required
+            isRequired={true}
+            // Indicates if the TextArea is disabled
             isDisabled={false}
-            onChange={setModular}
-            radius="lg"
-            textColor="text-[#000000]"
-            bgColor="bg-[#FFFFFF]"
-            value={modular}
-            type="text"
-            marginT="mt-3"
-            endContent={"mm"}
-            maxLength={3}
-            discription="This is a hint text to help user."
-            erroDisable
+            // Indicates if the clear button should be shown
+            isClearable={true}
+            // Description text below the TextArea
+            // description="Please provide a detailed description."
+            // Enables automatic resizing of the TextArea based on content
+            autoSize={true}
+            // Handler for when the height of the TextArea changes
+            onHeightChange={handleHeightChange}
+            // Placement of the label (e.g., top, side)
+            labelPlacement="top"
+            // Indicates if the TextArea value is invalid (for validation purposes)
+            isInvalid={textValue.length < 10}
           />
 
           <TorusPhoneNumberInput
@@ -251,7 +300,7 @@ export default function SignIn() {
             outlineColor="torus-focus:ring-[#000000]/50"
             isDisabled={false}
             onChange={setSearch}
-            radius="lg"
+            radius="md"
             textColor="text-[#000000]"
             bgColor="bg-[#F4F5FA]"
             value={search}
@@ -290,6 +339,7 @@ export default function SignIn() {
             label="Professions"
             value={checkboxValues}
             onChange={setCheckboxValues}
+            type="group"
           />
 
           <TorusRadio
@@ -310,6 +360,29 @@ export default function SignIn() {
             key={radioValues}
             size="md"
             className=""
+          />
+
+          <TorusDropDown
+            title={"None"}
+            classNames={{
+              buttonClassName:
+                " bg-white dark:bg-[#262626] font-semibold torus-pressed:animate-torusButtonActive ",
+
+              listBoxClassName: "bg-white text-black ",
+            }}
+            popOverProps={{ offset: 15 }}
+            selectionMode="single"
+            items={[
+              { key: "v1", label: "v1" },
+              { key: "v2", label: "v2" },
+            ]}
+            btncolor={"#D54CEE"}
+            fontStyle={
+              "font-inter 3xl:text-xs text-black  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+            }
+            radius={"xl"}
+            size={"lg"}
+            
           />
 
           <div className="w-[100%] flex flex-col justify-center items-center mt-5  gap-0.5 bg-white rounded-md px-2 py-3">

@@ -230,12 +230,7 @@ function TorusCheckbox({ children, index, ...props }) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? (
-                  <TickSign />
-               
-              ) : (
-                <UnTickSign/>
-              )}
+              {isIndeterminate ? <TickSign /> : <UnTickSign />}
             </svg>
           </div>
           {children}
@@ -276,11 +271,7 @@ function TorusColumnCheckbox({ children, selectedKeys, ...props }) {
             }}
           >
             <svg className="h-5 w-5" viewBox="0 0 18 18" aria-hidden="true">
-              {isIndeterminate ? (
-                <TickSign />
-              ) : (
-                <UnTickSign/>
-              )}
+              {isIndeterminate ? <TickSign /> : <UnTickSign />}
             </svg>
           </div>
           {children}
@@ -700,6 +691,18 @@ export function TorusTable({
               </div>
 
               <div className="w-[15%] flex items-center justify-end gap-2">
+                {/* <TorusButton
+                  Children={<FaArrowDown  color="white"/>}
+                  size={"md"}
+                  outlineColor="torus-hover:ring-gray-200/50"
+                  btncolor={"warning"}
+                  borderColor={"2px solid #D0D5DD"}
+                  fontStyle={"text-xs font-normal text-[#344054]"}
+                  radius={"lg"}
+                  gap={"py-[0.2rem] px-[0.5rem]"}
+                  isIconOnly={true}
+                /> */}
+
                 <div className="w-[40%] flex justify-start">
                   <TorusButton
                     Children="Previous"
@@ -754,7 +757,13 @@ const TableCellActions = ({ id }) => {
         <div className="w-[25%] h-[100%] flex justify-end items-center">
           <TorusDialog
             key={"TableDelete"}
-            triggerElement={<TorusButton Children={<DeleteIcon />} />}
+            triggerElement={
+              <TorusButton
+                Children={<DeleteIcon />}
+                isIconOnly={true}
+                btncolor={"bg-transparent"}
+              />
+            }
             classNames={{
               dialogClassName: " flex  border-2 flex-col bg-white",
             }}
@@ -767,7 +776,13 @@ const TableCellActions = ({ id }) => {
         <div className="w-[25%] h-[100%] flex justify-start items-center">
           <TorusDialog
             key={"TableEdit"}
-            triggerElement={<TorusButton Children={<EditIcon />} />}
+            triggerElement={
+              <TorusButton
+                Children={<EditIcon />}
+                isIconOnly={true}
+                btncolor={"bg-#D0D5DD"}
+              />
+            }
             classNames={{
               dialogClassName: " flex  border-2 flex-col bg-white",
             }}
@@ -830,7 +845,7 @@ const EditAction = ({ id, close }) => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       {obj && <Cycle obj={obj} setObj={setObj} />}
-      <TorusButton Children={"Save"} onPress={handleSave} />
+      <TorusButton Children={"Save"} onPress={handleSave} btncolor={"#D0D5DD"} />
     </div>
   );
 };

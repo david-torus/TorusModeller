@@ -1,12 +1,13 @@
 import { Button } from "react-aria-components";
 import PropTypes from "prop-types";
 import { merger } from "../utils/utils";
+import { IoIosArrowDown } from "react-icons/io";
 
 const TorusButton = ({
   value,
-  isDisabled = false,
+  isDisabled,
   Children,
-  autoFocus = false,
+  autoFocus,
   gap,
   onPress,
   size = "md",
@@ -21,7 +22,8 @@ const TorusButton = ({
   endContent,
   startContent,
   borderColor,
-  isIconOnly = false,
+  isIconOnly,
+  isDropDown,
 }) => {
   const outlineFn = () => {
     if (outlineColor) {
@@ -49,7 +51,9 @@ const TorusButton = ({
   };
 
   const commonClass = `font-lg w-[100%] ${marginT} 
-  border-none outline-none torus-pressed:animate-torusButtonActive 
+  border-none outline-none  
+  
+    ${isDropDown ? "" : "torus-pressed:animate-torusButtonActive "} 
   torus-hover:outline-none torus-hover:border-2 ${hoverOutline} ${gap} ${
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
@@ -59,8 +63,20 @@ const TorusButton = ({
   return (
     <Button
       style={{
-        background: btncolor,
-        border: borderColor ? borderColor : "",
+        background: `${
+          btncolor && btncolor === "primary"
+            ? "#0736C4"
+            : btncolor === "secondary"
+            ? "#9353D3"
+            : btncolor === "success"
+            ? "#17C964"
+            : btncolor === "danger"
+            ? "#F5A524"
+            : btncolor === "warning"
+            ? "#F5A524"
+            : btncolor
+        }`,
+        border: borderColor ? borderColor : "0736C4",
       }}
       className={merger(commonClass, buttonClassName)}
       value={value}
@@ -69,7 +85,9 @@ const TorusButton = ({
       onPress={onPress}
     >
       {isIconOnly ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
+        <div
+          className={`${contentClass} w-[100%] flex justify-center items-center`}
+        >
           {Children}
         </div>
       ) : startContent ? (
@@ -91,6 +109,17 @@ const TorusButton = ({
             </div>
             <div className="w-[20%] flex justify-center items-center">
               {endContent}
+            </div>
+          </div>
+        </div>
+      ) : isDropDown ? (
+        <div className={`${contentClass} flex justify-center items-center`}>
+          <div className="w-[100%] flex justify-evenly gap-1">
+            <div className={`${fontStyle} w-[80%] flex justify-start pr-1`}>
+              {Children}
+            </div>
+            <div className="w-[20%] flex justify-center items-center">
+              <IoIosArrowDown />
             </div>
           </div>
         </div>
@@ -121,6 +150,7 @@ TorusButton.propTypes = {
   startContent: PropTypes.node,
   borderColor: PropTypes.string,
   isIconOnly: PropTypes.bool,
+  isDropDown: PropTypes.bool,
 };
 
 export default TorusButton;
