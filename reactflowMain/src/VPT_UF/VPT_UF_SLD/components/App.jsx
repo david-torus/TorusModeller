@@ -46,7 +46,7 @@ import {
   textarea,
   timeinput,
   dateinput,
-  dropdown
+  dropdown,
 } from "./customNodes/CustomNode";
 import { ContextMenu } from "../components/ContextMenu";
 import { Button } from "@nextui-org/react";
@@ -54,6 +54,7 @@ import useUndoRedo from "../../../commonComponents/react-flow-pro/useUndoRedo";
 import EventsMain from "../../../VPT_UF/VPT_EVENTS/EventsMain";
 import _ from "lodash";
 import FabricSidebar from "../../../commonComponents/layout/SideBar/FabricSidebar";
+import NavBar from "../../../commonComponents/layout/ActionBar/Navbar copy";
 
 //Node Types
 const nodeTypes = {
@@ -69,7 +70,7 @@ const nodeTypes = {
   textarea: textarea,
   timeinput: timeinput,
   dateinput: dateinput,
-  dropdown: dropdown
+  dropdown: dropdown,
 };
 
 /**
@@ -873,7 +874,7 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                 : "hidden"
             }
           >
-            <FabricsNavbar
+            {/* <FabricsNavbar
               tenant={tenant}
               group={appGroup}
               application={application}
@@ -913,7 +914,26 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                   <p>Preview</p>
                 </Button>
               </div>
-            </FabricsNavbar>
+            </FabricsNavbar> */}
+            <NavBar
+              tenant={tenant}
+              group={appGroup}
+              application={application}
+              fabrics={"UF"}
+              sendDataToFabrics={getDataFromNavBar}
+              getDataFromFabrics={sendDataToNavBar}
+              setdomain={setDomain}
+              setartifact={setArtifact}
+              sendartifact={sendartifact}
+              setMainArtifacts={setMainArtifacts}
+              mainArtifacts={mainArtifacts}
+              setMainVersion={setVersion}
+              mainVersion={mainVersion}
+              undoredo={{ undo, redo, canUndo, canRedo }}
+              setToggleReactflow={setToggleReactflow}
+              selecetedWholeVersion={selecetedWholeVersion}
+              setSelectedWholeVersion={setSelectedWholeVersion}
+            />
             <FabricSidebar fabrics={"UF"} />
             {/* <Sidebar /> */}
           </div>

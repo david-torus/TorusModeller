@@ -19,9 +19,14 @@ import {
 } from "react-aria-components";
 import { FaArrowDown } from "react-icons/fa";
 import { CiSaveUp1 } from "react-icons/ci";
-import { Tabs, TabList, Tab } from "react-aria-components";
-import { Checkbox } from "react-aria-components";
-
+import { Tabs, TabList, Tab, TabPanel } from "react-aria-components";
+import {
+  Checkbox,
+  Collection,
+  useTableOptions,
+  useTable,
+} from "react-aria-components";
+import { v4 as uuidv4 } from "uuid";
 import TorusButton from "./TorusButton";
 import TorusDropDown from "./TorusDropDown";
 import TorusInput from "./TorusInput";
@@ -36,8 +41,8 @@ import {
   TickSign,
   UnTickSign,
 } from "../SVG_Application";
-
-import { merger } from "../utils/utils";
+import { GiPreviousButton } from "react-icons/gi";
+import TorusCheckBox from "./TorusCheckBox";
 
 const defaultClassName = {
   table: "",
@@ -46,23 +51,22 @@ const defaultClassName = {
   tableRow: "",
   tableCell: "",
 };
-export const TableDataContext = createContext();
-export function TorusColumn(props) {
+const TableDataContext = createContext();
+function TorusColumn(props) {
   return (
     <Column
       {...props}
-      className={merger(
-        "text-xs  font-medium px-4 center bg-[#EAECF0] py-[0.8rem] torus-focus:outline-none torus-focus:border-none",
-        props.className
-      )}
+      className={
+        "text-xs font-medium bg-[#EAECF0] py-[0.8rem] torus-focus:outline-none torus-focus:border-none"
+      }
     >
       {({ allowsSorting, sortDirection }) => (
         <div className="w-[100%]  flex justify-center items-center">
-          <div className="w-[100%] flex items-center justify-center gap-1">
-            <div className="w-[80%] flex items-center justify-center">
+          <div className="w-[100%] flex justify-between gap-1">
+            <div className="w-[50%] flex justify-end">
               {props.children.charAt(0).toUpperCase() + props.children.slice(1)}
             </div>
-            <div className="w-[20%] flex items-center justify-center">
+            <div className="w-[50%] flex justify-start">
               {allowsSorting && (
                 <span aria-hidden="true" className="sort-indicator">
                   <FaArrowDown
@@ -82,54 +86,43 @@ export function TorusColumn(props) {
   );
 }
 
-export function TorusTableHeader({ columns, children, selectedKeys }) {
-  const { selectionBehavior, selectionMode, isSkeleton } =
-    useContext(TableDataContext);
+function TorusTableHeader({ columns, children, selectedKeys }) {
+  const { selectionBehavior, selectionMode } = useContext(TableDataContext);
   return (
-    <TableHeader className="w-full">
+    <TableHeader>
       {/* Add extra columns for drag and drop and selection. */}
       {/* {allowsDragging && <Column />} */}
       {selectionBehavior === "toggle" && (
-        <Column
-          className={`text-xs w-[${
-            100 / columns.length + 1
-          }%] font-medium bg-[#EAECF0] px-2 py-[0.8rem] torus-focus:outline-none torus-focus:border-none`}
-        >
+        <Column className={"bg-[#EAECF0]"}>
           {selectionMode === "multiple" && (
             <TorusColumnCheckbox
               slot="selection"
               selectedKeys={selectedKeys}
               className="cursor-pointer"
             />
+
+            // <TorusCheckBox type="single" />
           )}
         </Column>
       )}
-      {isSkeleton ? (
-        <>
-          {children && typeof children === "function" && children({ columns })}
-        </>
-      ) : (
-        <>
-          {columns.map((column) => (
-            <TorusColumn
-              key={column.id}
-              id={column.id}
-              allowsSorting={column.allowsSorting}
-              isRowHeader={column.isRowHeader}
-              className={`w-[${100 / columns.length + 1}%]`}
-            >
-              {column.name}
-            </TorusColumn>
-          ))}
-        </>
-      )}
+      {columns.map((column) => (
+        <TorusColumn
+          key={column.id}
+          id={column.id}
+          allowsSorting={column.allowsSorting}
+          isRowHeader={column.isRowHeader}
+        >
+          {column.name}
+        </TorusColumn>
+      ))}
+      {/* {children} */}
       {/* <Collection items={columns}>{children}</Collection> */}
     </TableHeader>
   );
 }
 
-export function TorusRow({ id, columns, children, ...otherProps }) {
-  let { selectionBehavior, isSkeleton } = useContext(TableDataContext);
+function TorusRow({ id, columns, children, ...otherProps }) {
+  let { selectionBehavior } = useContext(TableDataContext);
 
   return (
     <>
@@ -151,45 +144,46 @@ export function TorusRow({ id, columns, children, ...otherProps }) {
             {/* <TorusCheckBox type="single" /> */}
           </Cell>
         )}
+        {columns.map((column) => {
+          if (column?.id == "Actions") {
+            return (
+              <Cell
+                className={"border-b border-[#EAECF0]"}
+                children={<TableCellActions id={otherProps?.index} />}
+              />
+            );
+          } else
+            return (
+              <Cell
+                className={"border-b border-[#EAECF0]"}
+                children={
+                  <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
+                    <RenderTableChildren
+                      children={otherProps?.item?.[column?.id]}
+                    />
+                    {/* <hr
+                      style={{
+                        marginTop: "0.5rem",
+                        width: "100%",
+                        border: "1px solid #EAECF0",
+                        borderRadius: "10px",
+                      }}
+                    /> */}
+                  </div>
+                }
+              />
+            );
+        })}
 
-        {isSkeleton ? (
-          <>
-            {children &&
-              typeof children === "function" &&
-              children({ columns, otherProps })}
-          </>
-        ) : (
-          <>
-            {columns.map((column) => {
-              if (column?.id == "Actions") {
-                return (
-                  <Cell
-                    className={"border-b border-[#EAECF0]"}
-                    children={<TableCellActions id={otherProps?.index} />}
-                  />
-                );
-              } else
-                return (
-                  <Cell
-                    className={"border-b border-[#EAECF0]"}
-                    children={
-                      <div className="w-full h-full flex flex-col items-center justify-center py-[1rem] text-xs font-normal ">
-                        <RenderTableChildren
-                          children={otherProps?.item?.[column?.id]}
-                        />
-                      </div>
-                    }
-                  />
-                );
-            })}
-          </>
-        )}
+        {/* <Collection items={columns}>{children}</Collection> 
+        {children} 
+        <RenderTableChildren key={id} columns={columns} data={children} /> */}
       </Row>
     </>
   );
 }
 
-export function TorusCheckbox({ children, index, ...props }) {
+function TorusCheckbox({ children, index, ...props }) {
   const { selectedRows, setSelectedRows, tableIndex, selectionMode } =
     useContext(TableDataContext);
   return (
@@ -309,10 +303,6 @@ export function TorusTable({
   setSelectedRows,
   onDelete,
   onAdd,
-  children,
-  editableColumns,
-  addableColumns,
-  isSkeleton = false,
 }) {
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState(new Set([]));
@@ -556,15 +546,12 @@ export function TorusTable({
         onDelete,
         onAdd,
         TotalColumns,
-        editableColumns,
-        addableColumns,
-        isSkeleton,
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
-        <div className="w-full h-screen flex flex-col items-center justify-evenly">
-          <div className="w-full h-[8%] flex justify-center items-center ">
-            <div className="w-[95%] h-full flex justify-between items-center pl-2">
+        <>
+          <div className="w-full h-full flex justify-center items-center">
+            <div className="w-[95%] flex justify-between items-center pl-2">
               <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
                 <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
                   <div className="w-[100%] h-full bg-transparent">
@@ -649,112 +636,125 @@ export function TorusTable({
               </div>
             </div>
           </div>
-          <div className="w-full h-[70%] flex flex-col justify-between items-center">
-            <div className="w-[95%] flex items-center justify-center h-[8%]">
-              <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
-                <div className="w-[20%] h-full bg-white rounded-md pl-2">
-                  <Tabs>
-                    <TabList
-                      aria-label="UnIdentified-Tabs"
-                      className={"flex justify-between gap-0 bg-transparent"}
-                    >
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
-                        }
-                        id="FoR"
+          <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-[95%] flex items-center justify-center h-[100%]">
+              <div className="w-full h-full flex justify-end items-center">
+                <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
+                  <div className="w-[20%] h-full bg-white rounded-md pl-2">
+                    <Tabs>
+                      <TabList
+                        aria-label="UnIdentified-Tabs"
+                        className={"flex justify-between gap-0 bg-transparent"}
                       >
-                        <span className="text-black font-normal text-xs whitespace-nowrap">
-                          view all
-                        </span>
-                      </Tab>
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
-                        }
-                        id="MaR"
-                      >
-                        <span className="text-black font-normal text-xs">
-                          Monitered
-                        </span>
-                      </Tab>
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
-                        }
-                        id="Emp"
-                      >
-                        <span className="text-black font-normal text-xs">
-                          Text
-                        </span>
-                      </Tab>
-                    </TabList>
-                  </Tabs>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
+                          }
+                          id="FoR"
+                        >
+                          <span className="text-black font-normal text-xs whitespace-nowrap">
+                            view all
+                          </span>
+                        </Tab>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
+                          }
+                          id="MaR"
+                        >
+                          <span className="text-black font-normal text-xs">
+                            Monitered
+                          </span>
+                        </Tab>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
+                          }
+                          id="Emp"
+                        >
+                          <span className="text-black font-normal text-xs">
+                            Text
+                          </span>
+                        </Tab>
+                      </TabList>
+                    </Tabs>
+                  </div>
                 </div>
-              </div>
-              <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
-                <div className="w-[80%] flex justify-start items-center">
-                  <TorusSearch
-                    variant="bordered"
-                    labelColor="text-[#000000]/50"
-                    borderColor="border-[#000000]/20"
-                    outlineColor="torus-focus:ring-[#000000]/50"
-                    placeholder="search"
-                    onChange={handleSerach}
-                    isDisabled={false}
-                    radius="lg"
-                    textColor="text-[#000000]"
-                    bgColor="bg-[#FFFFFF]"
-                    value={serchValue}
-                    type="text"
-                  />
-                </div>
-                <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
-                  <TorusDropDown
-                    title={"Filter"}
-                    selectionMode="multiple"
-                    selected={columns}
-                    setSelected={setColumns}
-                    items={TotalColumns.filter(
-                      (col) => col.name != primaryColumn
-                    )}
-                    btWidth={"full"}
-                    btncolor={"#FFFFFF"}
-                    btheight={"md"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    radius={"lg"}
-                    color={"#000000"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    borderColor={"2px solid #D0D5DD"}
-                    startContent={<FilterIcon />}
-                    fontStyle={"text-sm font-medium text-[#344054]"}
-                  />
+                <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
+                  <div className="w-[80%] flex justify-start items-center">
+                    <TorusSearch
+                      variant="bordered"
+                      labelColor="text-[#000000]/50"
+                      borderColor="border-[#000000]/20"
+                      outlineColor="torus-focus:ring-[#000000]/50"
+                      placeholder="search"
+                      onChange={handleSerach}
+                      isDisabled={false}
+                      radius="lg"
+                      textColor="text-[#000000]"
+                      bgColor="bg-[#FFFFFF]"
+                      value={serchValue}
+                      type="text"
+                    />
+                  </div>
+                  <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
+                    <TorusDropDown
+                      title={"Filter"}
+                      selectionMode="multiple"
+                      selected={columns}
+                      setSelected={setColumns}
+                      items={TotalColumns.filter(
+                        (col) => col.name != primaryColumn
+                      )}
+                      btWidth={"full"}
+                      btncolor={"#FFFFFF"}
+                      btheight={"md"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      radius={"lg"}
+                      color={"#000000"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      borderColor={"2px solid #D0D5DD"}
+                      startContent={<FilterIcon />}
+                      fontStyle={"text-sm font-medium text-[#344054]"}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="w-full h-[90%] overflow-scroll ">
-              <Table
+
+            <Table
+              selectedKeys={selectedKeys}
+              onSortChange={setSortDescriptor}
+              sortDescriptor={sortDescriptor}
+              onSelectionChange={setSelectedKeys}
+              className={"w-full h-[90%] mt-2"}
+            >
+              <TorusTableHeader
                 selectedKeys={selectedKeys}
-                onSortChange={setSortDescriptor}
-                sortDescriptor={sortDescriptor}
-                onSelectionChange={setSelectedKeys}
-                className={"w-full h-[90%] mt-2"}
+                columns={[
+                  ...filterColmns,
+                  isEditable && {
+                    id: "Actions",
+                    name: "Actions",
+                    key: "Actions",
+                    label: "Actions",
+                    isRowHeader: false,
+                  },
+                ]}
+              />
+
+              <TableBody
+                renderEmptyState={() => (
+                  <div className="text-center"> No Data </div>
+                )}
               >
-                {isSkeleton ? (
+                {sortedItems.map((item, index) => (
                   <>
-                    {children &&
-                      typeof children === "function" &&
-                      children({
-                        selectedKeys,
-                        sortedItems,
-                        filterColmns,
-                        primaryColumn,
-                      })}
-                  </>
-                ) : (
-                  <>
-                    <TorusTableHeader
-                      selectedKeys={selectedKeys}
+                    <TorusRow
+                      key={item[primaryColumn]}
+                      item={item}
+                      id={index}
+                      index={item[primaryColumn]}
                       columns={[
                         ...filterColmns,
                         isEditable && {
@@ -765,46 +765,19 @@ export function TorusTable({
                           isRowHeader: false,
                         },
                       ]}
+                      selectedKeys={selectedKeys}
+                      className={
+                        "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
+                      }
                     />
-
-                    <TableBody
-                      renderEmptyState={() => (
-                        <div className="text-center"> No Data </div>
-                      )}
-                    >
-                      {sortedItems.map((item, index) => (
-                        <>
-                          <TorusRow
-                            key={item[primaryColumn]}
-                            item={item}
-                            id={index}
-                            index={item[primaryColumn]}
-                            columns={[
-                              ...filterColmns,
-                              isEditable && {
-                                id: "Actions",
-                                name: "Actions",
-                                key: "Actions",
-                                label: "Actions",
-                                isRowHeader: false,
-                              },
-                            ]}
-                            selectedKeys={selectedKeys}
-                            className={
-                              "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
-                            }
-                          />
-                        </>
-                      ))}
-                    </TableBody>
                   </>
-                )}
-              </Table>
-            </div>
+                ))}
+              </TableBody>
+            </Table>
           </div>
 
-          <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
-            <div className="w-[95%] flex justify-between ">
+          <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[15%] mt-5">
+            <div className="w-[95%] flex justify-between mt-3">
               <div className="w-[85%] flex justify-start">
                 <span className="text-sm font-medium text-[#344054]">
                   Page {page} of {totalPages}
@@ -856,12 +829,12 @@ export function TorusTable({
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </TableDataContext.Provider>
   );
 }
-export const TableCellActions = ({ id }) => {
+const TableCellActions = ({ id }) => {
   return (
     <div className=" w-full h-full flex flex-col items-center justify-center ">
       <div className="w-[100%] h-[50%] flex justify-center items-center ">
@@ -871,7 +844,6 @@ export const TableCellActions = ({ id }) => {
             key={"TableDelete"}
             triggerElement={
               <TorusButton
-                buttonClassName={"w-10 h-10 rounded-full"}
                 Children={<DeleteIcon />}
                 isIconOnly={true}
                 btncolor={"bg-transparent"}
@@ -881,7 +853,7 @@ export const TableCellActions = ({ id }) => {
               dialogClassName:
                 " flex  border border-gray-300 rounded-lg flex-col bg-white",
             }}
-            message={"Delete"}
+            message={"Edit"}
             children={({ close }) => (
               <>
                 <div className="p-4">
@@ -903,7 +875,6 @@ export const TableCellActions = ({ id }) => {
             key={"TableEdit"}
             triggerElement={
               <TorusButton
-                buttonClassName={"w-10 h-10 rounded-full"}
                 Children={<EditIcon />}
                 isIconOnly={true}
                 btncolor={"bg-#D0D5DD"}
@@ -921,7 +892,7 @@ export const TableCellActions = ({ id }) => {
     </div>
   );
 };
-export const RenderTableChildren = ({ children }) => (
+const RenderTableChildren = ({ children }) => (
   <>
     {children && typeof children === "object" ? (
       <>
@@ -951,18 +922,11 @@ export const RenderTableChildren = ({ children }) => (
 );
 
 const EditAction = ({ id, close }) => {
-  const { data, setData, primaryColumn, onEdit, isAsync, editableColumns } =
+  const { data, setData, primaryColumn, onEdit, isAsync } =
     React.useContext(TableDataContext);
   const [obj, setObj] = React.useState(null);
   useEffect(() => {
-    let orginalObj = data?.find((item) => item?.[primaryColumn] === id);
-    let modifiedObj = {};
-    Object.keys(orginalObj).forEach((key) => {
-      if (key !== primaryColumn && editableColumns.includes(key)) {
-        modifiedObj[key] = orginalObj[key];
-      }
-    });
-    setObj(modifiedObj);
+    setObj(data?.find((item) => item?.[primaryColumn] === id));
   }, [id, data]);
 
   const handleSave = () => {
@@ -995,28 +959,20 @@ const EditAction = ({ id, close }) => {
   );
 };
 const AddAction = ({ close }) => {
-  const {
-    data,
-    setData,
-    primaryColumn,
-    onAdd,
-    isAsync,
-    TotalColumns,
-    addableColumns,
-  } = React.useContext(TableDataContext);
+  const { data, setData, primaryColumn, onAdd, isAsync, TotalColumns } =
+    React.useContext(TableDataContext);
   const [obj, setObj] = useState(null);
 
   useEffect(() => {
     let newObj = {};
     TotalColumns.forEach((item) => {
-      if (item.key !== primaryColumn && addableColumns.includes(item?.key))
-        newObj = { ...newObj, [item?.key]: "" };
+      newObj = { ...newObj, [item?.key]: "" };
     });
     setObj(newObj);
   }, []);
 
   const handleSave = () => {
-    if (isAsync && onAdd) onAdd(obj);
+    if (isAsync && onAdd) onAdd(obj[primaryColumn], obj);
     setData((prev) => {
       return [...prev, obj];
     });
@@ -1071,76 +1027,76 @@ const Cycle = ({ obj, setObj }) => {
   console.log(obj, "obj");
   return (
     <>
-      {obj && Array.isArray(obj) ? (
-        obj?.map((ele, index) => (
-          <>
-            {ele && (
-              <li>
-                <Cycle
-                  key={index}
-                  obj={ele}
-                  setObj={(newObj) =>
-                    setObj(
-                      obj && obj?.map((e, i) => (i === index ? newObj : e))
-                    )
-                  }
-                />
-              </li>
-            )}
-          </>
-        ))
-      ) : obj && typeof obj == "object" ? (
-        Object.keys(obj).map((ele) => {
-          if (typeof obj[ele] === "object")
+      {obj && Array.isArray(obj)
+        ? obj?.map((ele, index) => (
+            <>
+              {ele && (
+                <li>
+                  <Cycle
+                    key={index}
+                    obj={ele}
+                    setObj={(newObj) =>
+                      setObj(
+                        obj && obj?.map((e, i) => (i === index ? newObj : e))
+                      )
+                    }
+                  />
+                </li>
+              )}
+            </>
+          ))
+        : obj && typeof obj == "object"
+        ? Object.keys(obj).map((ele) => {
+            if (typeof obj[ele] === "object")
+              return (
+                <>
+                  <p>{ele}:</p>
+                  <Cycle
+                    key={ele}
+                    obj={obj[ele]}
+                    setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
+                  />
+                </>
+              );
             return (
-              <>
-                <p>{ele}:</p>
-                <Cycle
-                  key={ele}
-                  obj={obj[ele]}
-                  setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
-                />
-              </>
+              <TorusInput
+                key={ele}
+                variant="bordered"
+                label={ele}
+                labelColor="text-[#000000]/50"
+                borderColor="[#000000]/50"
+                outlineColor="torus-focus:ring-[#000000]/50"
+                placeholder=""
+                isDisabled={false}
+                onChange={(e) => setObj({ ...obj, [ele]: e })}
+                radius="lg"
+                width="xl"
+                height="xl"
+                textColor="text-[#000000]"
+                bgColor="bg-[#FFFFFF]"
+                value={obj[ele]}
+                type="text"
+              />
             );
-          return (
+          })
+        : obj != null && (
             <TorusInput
-              key={ele}
               variant="bordered"
-              label={ele}
               labelColor="text-[#000000]/50"
               borderColor="[#000000]/50"
               outlineColor="torus-focus:ring-[#000000]/50"
               placeholder=""
               isDisabled={false}
-              onChange={(e) => setObj({ ...obj, [ele]: e })}
+              onChange={(e) => setObj(e)}
               radius="lg"
               width="xl"
               height="xl"
               textColor="text-[#000000]"
               bgColor="bg-[#FFFFFF]"
-              value={obj[ele]}
+              value={obj}
               type="text"
             />
-          );
-        })
-      ) : (
-        <TorusInput
-          variant="bordered"
-          labelColor="text-[#000000]/50"
-          borderColor="[#000000]/50"
-          outlineColor="torus-focus:ring-[#000000]/50"
-          placeholder=""
-          isDisabled={false}
-          onChange={(e) => setObj(e)}
-          radius="lg"
-          width="xl"
-          height="xl"
-          textColor="text-[#000000]"
-          bgColor="bg-[#FFFFFF]"
-          value={obj != null ? obj : ""}
-          type="text"
-        />
-      )}
+          )}
     </>
   );
 };
