@@ -44,6 +44,7 @@ export default function TorusRadio(props) {
                     <Input
                       type="radio"
                       key={index}
+                      checked={props.value === value}
                       value={value}
                       name="default-radio"
                       onChange={handleOnChange}

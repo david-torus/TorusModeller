@@ -785,6 +785,18 @@ export function TorusTable({
               </div>
 
               <div className="w-[15%] flex items-center justify-end gap-2">
+                {/* <TorusButton
+                  Children={<FaArrowDown  color="white"/>}
+                  size={"md"}
+                  outlineColor="torus-hover:ring-gray-200/50"
+                  btncolor={"warning"}
+                  borderColor={"2px solid #D0D5DD"}
+                  fontStyle={"text-xs font-normal text-[#344054]"}
+                  radius={"lg"}
+                  gap={"py-[0.2rem] px-[0.5rem]"}
+                  isIconOnly={true}
+                /> */}
+
                 <div className="w-[40%] flex justify-start">
                   <TorusButton
                     Children="Previous"
@@ -830,7 +842,13 @@ const TableCellActions = ({ id }) => {
           <TorusDialog
             Header="      Do you want to delete this item"
             key={"TableDelete"}
-            triggerElement={<TorusButton Children={<DeleteIcon />} />}
+            triggerElement={
+              <TorusButton
+                Children={<DeleteIcon />}
+                isIconOnly={true}
+                btncolor={"bg-transparent"}
+              />
+            }
             classNames={{
               dialogClassName:
                 " flex  border border-gray-300 rounded-lg flex-col bg-white",
@@ -855,7 +873,13 @@ const TableCellActions = ({ id }) => {
         <div className="w-[25%] h-[100%] flex justify-start items-center">
           <TorusDialog
             key={"TableEdit"}
-            triggerElement={<TorusButton Children={<EditIcon />} />}
+            triggerElement={
+              <TorusButton
+                Children={<EditIcon />}
+                isIconOnly={true}
+                btncolor={"bg-#D0D5DD"}
+              />
+            }
             classNames={{
               dialogClassName: " flex  border-2 flex-col bg-white",
             }}

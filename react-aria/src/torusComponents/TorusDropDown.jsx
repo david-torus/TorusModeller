@@ -59,7 +59,9 @@ export default function TorusDropDown({
 }) {
   return (
     <DialogTrigger>
-      <label>{label}</label>
+    <div className="w-[100%] flex justify-between">
+
+    </div>
       <TorusButton
         Children={title}
         buttonClassName={merger(
@@ -78,6 +80,7 @@ export default function TorusDropDown({
         borderColor={borderColor}
         startContent={startContent ? startContent : ""}
         endContent={endContent ? endContent : ""}
+        isDropDown={true}
       />
 
       <Popover

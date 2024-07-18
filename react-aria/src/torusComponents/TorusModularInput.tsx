@@ -80,27 +80,24 @@ const TorusModularInput: React.FC<TorusModularInputProps> = (props) => {
 
   return (
     <div
-      className={`w-full bg-[#FFFFFF] rounded-md px-1.5 py-1 ${
-        props.marginT || "mt-1"
-      } ${clicked ? outlineColor(props.borderColor) : ""}`}
+      className={`w-full bg-[#FFFFFF] rounded-md px-1.5 py-1 ${props.marginT || "mt-1"
+        } ${clicked ? outlineColor(props.borderColor) : ""}`}
     >
       <Label className={labelStyle(props.labelColor)}>{props.label}</Label>
       <TextField
         isReadOnly={props.isReadOnly || false}
         isRequired={props.isRequired || false}
-        className={`w-full flex items-center ${
-          props.startContent ? "justify-center" : "justify-start"
-        } ${colorsBg} ${
-          props.radius === "sm"
+        className={`w-full flex items-center ${props.startContent ? "justify-center" : "justify-start"
+          } ${colorsBg} ${props.radius === "sm"
             ? "rounded-sm"
             : props.radius === "md"
-            ? "rounded-md"
-            : props.radius === "lg"
-            ? "rounded-lg"
-            : props.radius === "full"
-            ? "rounded-full"
-            : "rounded-none"
-        }`}
+              ? "rounded-md"
+              : props.radius === "lg"
+                ? "rounded-lg"
+                : props.radius === "full"
+                  ? "rounded-full"
+                  : "rounded-none"
+          }`}
         isDisabled={props.isDisabled || false}
       >
         {props.startContent && (
@@ -109,9 +106,8 @@ const TorusModularInput: React.FC<TorusModularInputProps> = (props) => {
           </div>
         )}
         <div
-          className={`relative ${
-            props.startContent || props.endContent ? "w-[90%]" : "w-[100%]"
-          }`}
+          className={` flex items-center ${props.startContent || props.endContent ? "w-[90%]" : props.isClearable ? "w-[80%]" : "w-[100%]"
+            }`}
         >
           <Input
             placeholder={props.placeholder || ""}
@@ -120,27 +116,25 @@ const TorusModularInput: React.FC<TorusModularInputProps> = (props) => {
             onBlur={handleBlur}
             value={value}
             type={props.type === "number" ? "text" : props.type}
-            className={`w-[100%] bg-transparent focus:outline-none ${
-              props.textColor
-                ? `${props.textColor} text-base font-normal`
-                : "text-black text-base font-normal"
-            } ${
-              props.size === "sm"
+            className={`w-[100%] bg-transparent focus:outline-none ${props.textColor
+              ? `${props.textColor} text-base font-normal`
+              : "text-black text-base font-normal"
+              } ${props.size === "sm"
                 ? "h-6"
                 : props.size === "md"
-                ? "h-8"
-                : props.size === "lg"
-                ? "h-10"
-                : props.size === "xl"
-                ? "h-12"
-                : "h-10"
-            }`}
+                  ? "h-8"
+                  : props.size === "lg"
+                    ? "h-10"
+                    : props.size === "xl"
+                      ? "h-12"
+                      : "h-10"
+              }`}
           />
           {props.isClearable && value && (
             <button
               type="button"
               onClick={handleClear}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              className="w-[10%] flex justify-center items-center"
             >
               <IoIosCloseCircle
                 size={20}

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Input, Label } from "react-aria-components";
 
-export default function TorusCheckBox(props,type) {
+export default function TorusCheckBox(props) {
   console.log(props.content, "Contents");
 
   const handleOnChange = (e) => {
     const value = e.target.value;
     props.onChange((prevSelectedValues) => {
-      if (prevSelectedValues.includes(value)) {
-        return prevSelectedValues.filter((item) => item !== value);
+      if (value && prevSelectedValues.includes(value)) {
+        var values= prevSelectedValues.filter((item) => item !== value);
+        console.log(values,"ggg")
+        return values;
       } else {
+        console.log("kjjjjj",value)
         return [...prevSelectedValues, value];
       }
     });
@@ -17,7 +20,7 @@ export default function TorusCheckBox(props,type) {
 
   return (
     <>
-      {type === "group " && (
+      {props.type === "group" && (
         <div className=" w-[100%] pt-2">
           <div
             className={`${props.marginT} w-[100%] flex flex-col gap-0.5 bg-white rounded-md px-2 py-3`}
@@ -62,7 +65,7 @@ export default function TorusCheckBox(props,type) {
         </div>
       )}
 
-      {type === "single " && (
+      {props.type === "single " && (
         <div className="w-[100%] g-white rounded-md px-2 py-3">
           <div className="w-[10%] flex justify-start items-center">
             <Input
