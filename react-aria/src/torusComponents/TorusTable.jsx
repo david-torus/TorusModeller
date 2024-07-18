@@ -111,7 +111,9 @@ export function TorusTableHeader({ columns, children, selectedKeys }) {
         </Column>
       )}
       {isSkeleton ? (
-        <>{children({ columns })}</>
+        <>
+          {children && typeof children === "function" && children({ columns })}
+        </>
       ) : (
         <>
           {columns.map((column) => (
@@ -157,7 +159,11 @@ export function TorusRow({ id, columns, children, ...otherProps }) {
         )}
 
         {isSkeleton ? (
-          <>{children({ columns, otherProps })}</>
+          <>
+            {children &&
+              typeof children === "function" &&
+              children({ columns, otherProps })}
+          </>
         ) : (
           <>
             {columns.map((column) => {
@@ -558,12 +564,13 @@ export function TorusTable({
         TotalColumns,
         editableColumns,
         addableColumns,
+        isSkeleton,
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
-        <>
-          <div className="w-full h-full flex justify-center items-center ">
-            <div className="w-[95%] flex justify-between items-center pl-2">
+        <div className="w-full h-full flex flex-col items-center justify-evenly">
+          <div className="w-full h-[8%] flex justify-center items-center ">
+            <div className="w-[95%] h-full flex justify-between items-center pl-2">
               <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
                 <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
                   <div className="w-[100%] h-full bg-transparent">
@@ -648,92 +655,90 @@ export function TorusTable({
               </div>
             </div>
           </div>
-          <div className="w-full h-full flex flex-col justify-center items-center">
-            <div className="w-[95%] flex items-center justify-center h-[100%]">
-              <div className="w-full h-full flex justify-end items-center">
-                <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
-                  <div className="w-[20%] h-full bg-white rounded-md pl-2">
-                    <Tabs>
-                      <TabList
-                        aria-label="UnIdentified-Tabs"
-                        className={"flex justify-between gap-0 bg-transparent"}
+          <div className="w-full h-[70%] flex flex-col justify-between items-center">
+            <div className="w-[95%] flex items-center justify-center h-[8%]">
+              <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
+                <div className="w-[20%] h-full bg-white rounded-md pl-2">
+                  <Tabs>
+                    <TabList
+                      aria-label="UnIdentified-Tabs"
+                      className={"flex justify-between gap-0 bg-transparent"}
+                    >
+                      <Tab
+                        className={
+                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
+                        }
+                        id="FoR"
                       >
-                        <Tab
-                          className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
-                          }
-                          id="FoR"
-                        >
-                          <span className="text-black font-normal text-xs whitespace-nowrap">
-                            view all
-                          </span>
-                        </Tab>
-                        <Tab
-                          className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
-                          }
-                          id="MaR"
-                        >
-                          <span className="text-black font-normal text-xs">
-                            Monitered
-                          </span>
-                        </Tab>
-                        <Tab
-                          className={
-                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
-                          }
-                          id="Emp"
-                        >
-                          <span className="text-black font-normal text-xs">
-                            Text
-                          </span>
-                        </Tab>
-                      </TabList>
-                    </Tabs>
-                  </div>
+                        <span className="text-black font-normal text-xs whitespace-nowrap">
+                          view all
+                        </span>
+                      </Tab>
+                      <Tab
+                        className={
+                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
+                        }
+                        id="MaR"
+                      >
+                        <span className="text-black font-normal text-xs">
+                          Monitered
+                        </span>
+                      </Tab>
+                      <Tab
+                        className={
+                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
+                        }
+                        id="Emp"
+                      >
+                        <span className="text-black font-normal text-xs">
+                          Text
+                        </span>
+                      </Tab>
+                    </TabList>
+                  </Tabs>
                 </div>
-                <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
-                  <div className="w-[80%] flex justify-start items-center">
-                    <TorusSearch
-                      variant="bordered"
-                      labelColor="text-[#000000]/50"
-                      borderColor="border-[#000000]/20"
-                      outlineColor="torus-focus:ring-[#000000]/50"
-                      placeholder="search"
-                      onChange={handleSerach}
-                      isDisabled={false}
-                      radius="lg"
-                      textColor="text-[#000000]"
-                      bgColor="bg-[#FFFFFF]"
-                      value={serchValue}
-                      type="text"
-                    />
-                  </div>
-                  <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
-                    <TorusDropDown
-                      title={"Filter"}
-                      selectionMode="multiple"
-                      selected={columns}
-                      setSelected={setColumns}
-                      items={TotalColumns.filter(
-                        (col) => col.name != primaryColumn
-                      )}
-                      btWidth={"full"}
-                      btncolor={"#FFFFFF"}
-                      btheight={"md"}
-                      outlineColor="torus-hover:ring-gray-200/50"
-                      radius={"lg"}
-                      color={"#000000"}
-                      gap={"py-[0.2rem] px-[0.5rem]"}
-                      borderColor={"2px solid #D0D5DD"}
-                      startContent={<FilterIcon />}
-                      fontStyle={"text-sm font-medium text-[#344054]"}
-                    />
-                  </div>
+              </div>
+              <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
+                <div className="w-[80%] flex justify-start items-center">
+                  <TorusSearch
+                    variant="bordered"
+                    labelColor="text-[#000000]/50"
+                    borderColor="border-[#000000]/20"
+                    outlineColor="torus-focus:ring-[#000000]/50"
+                    placeholder="search"
+                    onChange={handleSerach}
+                    isDisabled={false}
+                    radius="lg"
+                    textColor="text-[#000000]"
+                    bgColor="bg-[#FFFFFF]"
+                    value={serchValue}
+                    type="text"
+                  />
+                </div>
+                <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
+                  <TorusDropDown
+                    title={"Filter"}
+                    selectionMode="multiple"
+                    selected={columns}
+                    setSelected={setColumns}
+                    items={TotalColumns.filter(
+                      (col) => col.name != primaryColumn
+                    )}
+                    btWidth={"full"}
+                    btncolor={"#FFFFFF"}
+                    btheight={"md"}
+                    outlineColor="torus-hover:ring-gray-200/50"
+                    radius={"lg"}
+                    color={"#000000"}
+                    gap={"py-[0.2rem] px-[0.5rem]"}
+                    borderColor={"2px solid #D0D5DD"}
+                    startContent={<FilterIcon />}
+                    fontStyle={"text-sm font-medium text-[#344054]"}
+                  />
                 </div>
               </div>
             </div>
-            <div className="w-full h-full overflow-scroll ">
+            <div className="w-full h-[90%] overflow-scroll ">
               <Table
                 selectedKeys={selectedKeys}
                 onSortChange={setSortDescriptor}
@@ -743,12 +748,14 @@ export function TorusTable({
               >
                 {isSkeleton ? (
                   <>
-                    {children({
-                      selectedKeys,
-                      sortedItems,
-                      filterColmns,
-                      primaryColumn,
-                    })}
+                    {children &&
+                      typeof children === "function" &&
+                      children({
+                        selectedKeys,
+                        sortedItems,
+                        filterColmns,
+                        primaryColumn,
+                      })}
                   </>
                 ) : (
                   <>
@@ -802,8 +809,8 @@ export function TorusTable({
             </div>
           </div>
 
-          <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[15%] mt-5">
-            <div className="w-[95%] flex justify-between mt-3">
+          <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
+            <div className="w-[95%] flex justify-between ">
               <div className="w-[85%] flex justify-start">
                 <span className="text-sm font-medium text-[#344054]">
                   Page {page} of {totalPages}
@@ -855,7 +862,7 @@ export function TorusTable({
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </TableDataContext.Provider>
   );
