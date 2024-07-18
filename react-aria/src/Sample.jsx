@@ -83,7 +83,7 @@ export default function Sample() {
       onEdit={post}
       onDelete={deleteTableData}
       rowsPerPage={10}
-      editableColumns={["name","bank_code"]}
+      editableColumns={["name","bank_code","created_by"]}
       addableColumns={["name"]}
     >
       {({ selectedKeys, filterColmns, sortedItems, primaryColumn }) => (

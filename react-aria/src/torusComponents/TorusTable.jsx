@@ -19,14 +19,9 @@ import {
 } from "react-aria-components";
 import { FaArrowDown } from "react-icons/fa";
 import { CiSaveUp1 } from "react-icons/ci";
-import { Tabs, TabList, Tab, TabPanel } from "react-aria-components";
-import {
-  Checkbox,
-  Collection,
-  useTableOptions,
-  useTable,
-} from "react-aria-components";
-import { v4 as uuidv4 } from "uuid";
+import { Tabs, TabList, Tab } from "react-aria-components";
+import { Checkbox } from "react-aria-components";
+
 import TorusButton from "./TorusButton";
 import TorusDropDown from "./TorusDropDown";
 import TorusInput from "./TorusInput";
@@ -41,8 +36,7 @@ import {
   TickSign,
   UnTickSign,
 } from "../SVG_Application";
-import { GiPreviousButton } from "react-icons/gi";
-import TorusCheckBox from "./TorusCheckBox";
+
 import { merger } from "../utils/utils";
 
 const defaultClassName = {
@@ -568,7 +562,7 @@ export function TorusTable({
       }}
     >
       {filterColmns.length > 0 && sortDescriptor && totalPages && (
-        <div className="w-full h-full flex flex-col items-center justify-evenly">
+        <div className="w-full h-screen flex flex-col items-center justify-evenly">
           <div className="w-full h-[8%] flex justify-center items-center ">
             <div className="w-[95%] h-full flex justify-between items-center pl-2">
               <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
@@ -1077,76 +1071,76 @@ const Cycle = ({ obj, setObj }) => {
   console.log(obj, "obj");
   return (
     <>
-      {obj && Array.isArray(obj)
-        ? obj?.map((ele, index) => (
-            <>
-              {ele && (
-                <li>
-                  <Cycle
-                    key={index}
-                    obj={ele}
-                    setObj={(newObj) =>
-                      setObj(
-                        obj && obj?.map((e, i) => (i === index ? newObj : e))
-                      )
-                    }
-                  />
-                </li>
-              )}
-            </>
-          ))
-        : obj && typeof obj == "object"
-        ? Object.keys(obj).map((ele) => {
-            if (typeof obj[ele] === "object")
-              return (
-                <>
-                  <p>{ele}:</p>
-                  <Cycle
-                    key={ele}
-                    obj={obj[ele]}
-                    setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
-                  />
-                </>
-              );
+      {obj && Array.isArray(obj) ? (
+        obj?.map((ele, index) => (
+          <>
+            {ele && (
+              <li>
+                <Cycle
+                  key={index}
+                  obj={ele}
+                  setObj={(newObj) =>
+                    setObj(
+                      obj && obj?.map((e, i) => (i === index ? newObj : e))
+                    )
+                  }
+                />
+              </li>
+            )}
+          </>
+        ))
+      ) : obj && typeof obj == "object" ? (
+        Object.keys(obj).map((ele) => {
+          if (typeof obj[ele] === "object")
             return (
-              <TorusInput
-                key={ele}
-                variant="bordered"
-                label={ele}
-                labelColor="text-[#000000]/50"
-                borderColor="[#000000]/50"
-                outlineColor="torus-focus:ring-[#000000]/50"
-                placeholder=""
-                isDisabled={false}
-                onChange={(e) => setObj({ ...obj, [ele]: e })}
-                radius="lg"
-                width="xl"
-                height="xl"
-                textColor="text-[#000000]"
-                bgColor="bg-[#FFFFFF]"
-                value={obj[ele]}
-                type="text"
-              />
+              <>
+                <p>{ele}:</p>
+                <Cycle
+                  key={ele}
+                  obj={obj[ele]}
+                  setObj={(newObj) => setObj({ ...obj, [ele]: newObj })}
+                />
+              </>
             );
-          })
-        : obj != null && (
+          return (
             <TorusInput
+              key={ele}
               variant="bordered"
+              label={ele}
               labelColor="text-[#000000]/50"
               borderColor="[#000000]/50"
               outlineColor="torus-focus:ring-[#000000]/50"
               placeholder=""
               isDisabled={false}
-              onChange={(e) => setObj(e)}
+              onChange={(e) => setObj({ ...obj, [ele]: e })}
               radius="lg"
               width="xl"
               height="xl"
               textColor="text-[#000000]"
               bgColor="bg-[#FFFFFF]"
-              value={obj}
+              value={obj[ele]}
               type="text"
             />
-          )}
+          );
+        })
+      ) : (
+        <TorusInput
+          variant="bordered"
+          labelColor="text-[#000000]/50"
+          borderColor="[#000000]/50"
+          outlineColor="torus-focus:ring-[#000000]/50"
+          placeholder=""
+          isDisabled={false}
+          onChange={(e) => setObj(e)}
+          radius="lg"
+          width="xl"
+          height="xl"
+          textColor="text-[#000000]"
+          bgColor="bg-[#FFFFFF]"
+          value={obj != null ? obj : ""}
+          type="text"
+        />
+      )}
     </>
   );
 };
