@@ -68,7 +68,7 @@ export default function Sample() {
 
   return (
     <TorusTable
-      isSkeleton={true}
+      isSkeleton={false}
       isAsync={true}
       heading="Torus Table"
       description="Records"
@@ -83,6 +83,8 @@ export default function Sample() {
       onEdit={post}
       onDelete={deleteTableData}
       rowsPerPage={10}
+      editableColumns={["name","bank_code"]}
+      addableColumns={["name"]}
     >
       {({ selectedKeys, filterColmns, sortedItems, primaryColumn }) => (
         <>
