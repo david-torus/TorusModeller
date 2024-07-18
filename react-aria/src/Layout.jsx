@@ -138,7 +138,7 @@ export default function Layout() {
          `}
     >
       <div className="w-full h-[8%] sticky top-0">
-        <Navbar    color={colors[selectedFabric]?.light} />
+        <Navbar color={colors[selectedFabric]?.light} />
       </div>
 
       <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
@@ -178,7 +178,7 @@ export default function Layout() {
               style={{ bottom: "8%" }}
               maskColor="transparent"
               // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-              className="border border-slate-300 rounded-lg w-[20%] h-[25%]  dark:bg-[#161616] dark:border-[#21212126]/15"
+              className="border border-slate-300 rounded-lg w-[17%] h-[22%]  dark:bg-[#161616] dark:border-[#21212126]/15"
             />
             <CanvasPanel />
 

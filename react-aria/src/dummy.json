@@ -1,0 +1,124 @@
+{
+  "clients": [
+    {
+      "name": "Client 1",
+      "projects": [
+        {
+          "name": "Project 1",
+          "artifacts": [
+            {
+              "name": "BankMaster",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "BankMoney",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "DataVault",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "SecurityShield",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "FinanceGuru",
+              "versions": ["v1", "v2", "v3"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Client 2",
+      "projects": [
+        {
+          "name": "Project 2",
+          "artifacts": [
+            {
+              "name": "BankMaster",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "BankMoney",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "DataVault",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "SecurityShield",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "FinanceGuru",
+              "versions": ["v1", "v2", "v3"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Client 3",
+      "projects": [
+        {
+          "name": "Project 3",
+          "artifacts": [
+            {
+              "name": "BankMaster",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "BankMoney",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "DataVault",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "SecurityShield",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "FinanceGuru",
+              "versions": ["v1", "v2", "v3"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Client 4",
+      "projects": [
+        {
+          "name": "Project 4",
+          "artifacts": [
+            {
+              "name": "BankMaster",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "BankMoney",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "DataVault",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "SecurityShield",
+              "versions": ["v1", "v2", "v3"]
+            },
+            {
+              "name": "FinanceGuru",
+              "versions": ["v1", "v2", "v3"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,21 +5,15 @@ import {
   Shared,
   TorusLogo,
   VerticalLine,
-  ZoomIn,
-  Search,
-  Close,
 } from "./SVG_Application";
 import { DarkModeContext } from "./context/darkmodeContext";
 import { IoIosArrowDown } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusPopOver from "./torusComponents/TorusPopOver";
-import { BiZoomIn } from "react-icons/bi";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
-import TorusDropDown from "./torusComponents/TorusDropDown.tsx";
-import TorusInput from "./torusComponents/TorusInput";
-import TorusModularInput from "./torusComponents/TorusModularInput.tsx";
+import { IoIosArrowForward } from "react-icons/io";
 
 export default function Navbar({ color }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
@@ -54,7 +48,7 @@ export default function Navbar({ color }) {
                 </div>
               }
               children={
-                <div className="w-[330px] mt-[4%] h-[365px] border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg flex flex-col justify-between">
+                <div className="w-[470px] 2xl:w-[700px] 2xl:h-[580px] mt-[3%] ml-[-8%] h-[365px] border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg flex flex-col justify-between">
                   <div className="w-[100%] flex flex-row p-2 border-b border-gray-300 dark:border-[#212121]">
                     <div className="w-1/3 flex justify-start">
                       <p className="text-sm font-medium text-black dark:text-white text-start px-2">
@@ -67,57 +61,30 @@ export default function Navbar({ color }) {
                       <IoCloseOutline />
                     </div>
                   </div>
-                  <div className="w-[95%] h-[95%] items-center justify-center grid grid-cols-2 gap-3 ">
-                    {/* <TorusModularInput
-                      isRequired={true}
-                      isReadOnly={false}
-                      placeholder="Artifact"
-                      // label="Input"
-                      variant="bordered"
-                      labelColor="text-[#000000]/50"
-                      borderColor="border-[#000000]/20"
-                      isDisabled={false}
-                      // onChange={setModular}
-                      radius="lg"
-                      textColor="text-[#000000]"
-                      bgColor="bg-[#FFFFFF]"
-                      value={"this is value from state "}
-                      type="text"
-                      marginT="mt-3"
-                      // startContent={
-                      //   <FaSearchLocation size={15} color="#9CA3AF" />
-                      // }
-                      maxLength={20}
-                      discription="This is a hint text to help user."
-                      isClearable={true}
-                      className="w-[50px] h-[40px] "
-                    />
-
-                    <TorusDropDown
-                      label={"Select Version"}
-                      options={["1.0.0", "2.0.0", "3.0.0"]}
-                      onChange={(e) => setSelectedVersion(new Set([e]))}
-                      value={Array.from(selectedVersion)[0] || "1.0.0"}
-                      className="w-[90%] h-[40px]  border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg"
-                    /> */}
+                  <div className="w-[100%] h-[100%] flex flex-row ">
+                    <div className="w-1/3 border-r border-gray-300 "></div>
+                    <div className="w-2/3 "></div>
                   </div>
-                  <div className="w-[100%] p-2 border-t border-gray-300 dark:border-[#212121] flex flex-row space-x-2 ">
-                    <div className="w-1/3 flex justify-start">
-                      <TorusButton
-                        buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
-                        Children={"Make a copy"}
-                      />
-                    </div>
 
-                    <div className="w-2/3 flex justify-end gap-4">
-                      <TorusButton
-                        buttonClassName=" bg-transparent w-[40px] text-[#0736C4] text-xs dark:text-white flex justify-center items-center"
-                        Children={"Save"}
-                      />
-                      <TorusButton
-                        buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
-                        Children={"Save as"}
-                      />
+                  <div className="w-[100%]  border-t border-gray-300 dark:border-[#212121] flex flex-row  ">
+                    <div className="w-1/3 flex justify-start  "></div>
+                    <div className="w-2/3 flex  p-2">
+                      <div className="w-[40%] flex justify-start ">
+                        <TorusButton
+                          buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
+                          Children={"Make a copy"}
+                        />
+                      </div>
+                      <div className="w-[60%] flex justify-end gap-4">
+                        <TorusButton
+                          buttonClassName=" bg-transparent w-[40px] text-[#0736C4] text-xs dark:text-white flex justify-center items-center"
+                          Children={"Save"}
+                        />
+                        <TorusButton
+                          buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                          Children={"Save as"}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
