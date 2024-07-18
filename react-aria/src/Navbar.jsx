@@ -17,7 +17,7 @@ import { BiZoomIn } from "react-icons/bi";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
-import TorusDropDown from "./torusComponents/TorusDropDown";
+import TorusDropDown from "./torusComponents/TorusDropDown.tsx";
 import TorusInput from "./torusComponents/TorusInput";
 import TorusModularInput from "./torusComponents/TorusModularInput.tsx";
 

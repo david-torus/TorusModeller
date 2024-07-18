@@ -28,7 +28,7 @@ import {
 } from "react-aria-components";
 import { v4 as uuidv4 } from "uuid";
 import TorusButton from "./TorusButton";
-import TorusDropDown from "./TorusDropDown";
+import TorusDropDown from "./TorusDropDown.tsx";
 import TorusInput from "./TorusInput";
 import TorusDialog from "./TorusDialog";
 import TorusSearch from "./TorusSearch";
