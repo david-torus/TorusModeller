@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { FaExchangeAlt } from "react-icons/fa";
-import TorusDropDown from "../../torusComponents/TorusDropDown";
+import TorusDropDown from "../../torusComponents/TorusDropDown.tsx";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";

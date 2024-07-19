@@ -31,14 +31,14 @@ export default function TorusCheckBox(props) {
             <div className="w-[100%]">
               <div
                 className={`flex items-center justify-start ${
-                  props.content?.length > 2 ? "grid grid-cols-8" : " gap-2.5"
+                  props.content?.length > 3 ? "grid grid-cols-8" : ""
                 }`}
               >
                 {props.content?.map((value, index) => {
                   return (
                     <div
                       className={`${
-                        props.content?.length > 1 ? "col-span-4 justify-between gap-1" : "w-[100%]"
+                        props.content?.length > 2 ? "col-span-4" : "w-[100%]"
                       } flex items-center`}
                     >
                       <div className="w-[10%] flex justify-start items-center">
@@ -52,7 +52,7 @@ export default function TorusCheckBox(props) {
                         />
                       </div>
                       <div className="w-[90%] flex justify-start items-center">
-                        <Label className="ps-2 text-sm text-[#000000] whitespace-nowrap">
+                        <Label className="ms-2 text-sm text-[#000000] whitespace-nowrap">
                           {value}
                         </Label>
                       </div>

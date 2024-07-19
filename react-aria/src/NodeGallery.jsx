@@ -90,22 +90,27 @@ export default function NodeGallery({
           "xl:h-[9%] lg:h-[7%] 2xl:h-[7%] 3xl:h-[5%]   dark:text-white font-medium border-b border-slate-300  dark:border-[#212121] flex justify-between p-2   items-center"
         } `}
       >
-        <Header
-          className={`${
-            showFabricSideBar ? "opacity-100" : "hidden  opacity-0"
-          } font-inter font-semibold  tracking-normal 3xl:text-sm xl:text-base  transition-opacity duration-1000 ease-in-out `}
-        >
-          Node Gallery
-        </Header>
-
-        <TorusButton
-          buttonClassName={`${
-            !showFabricSideBar ? "rotate-180 " : "rotate-0"
-          } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white dark:bg-[#161616] `}
-          width={showFabricSideBar ? "sm" : "none"}
-          onPress={handleSidebarToggle}
-          Children={<Back />}
-        />
+        <div className="w-[100%] flex felx-col">
+          <div className="w-[70%] flex justify-start items-center">
+            <Header
+              className={`${
+                showFabricSideBar ? "opacity-100" : "hidden  opacity-0"
+              } font-inter font-semibold  tracking-normal 3xl:text-sm xl:text-sm  transition-opacity duration-1000 ease-in-out `}
+            >
+              Node Gallery
+            </Header>
+          </div>
+          <div className="w-[25%] flex justify-end items-center">
+            <TorusButton
+              buttonClassName={`${
+                !showFabricSideBar ? "rotate-180 " : "rotate-0"
+              } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white dark:bg-[#161616] `}
+              width={showFabricSideBar ? "sm" : "none"}
+              onPress={handleSidebarToggle}
+              Children={<Back />}
+            />
+          </div>
+        </div>
       </div>
       <div
         className={` ${

@@ -8,16 +8,16 @@ import {
   TorusLogo,
   VerticalLine,
   ZoomIn,
-} from "./SVG_Application";
+} from "../../../SVG_Application";
 import { Heading } from "react-aria-components";
-import TorusDropDown from "./torusComponents/TorusDropDown";
-import { DarkModeContext } from "./context/darkmodeContext";
+import TorusDropDown from "../../torusComponents/TorusDropDown";
+import  {DarkmodeContext}  from "../../context/DarkmodeContext";
 import { IoIosArrowDown } from "react-icons/io";
-import TorusButton from "./torusComponents/TorusButton";
+import TorusButton from "../../torusComponents/TorusButton";
 
 export default function NavBar() {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
-  const { darkMode } = useContext(DarkModeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   return (
     <div className="w-full h-full bg-white border-b border-slate-300 flex items-center justify-center">

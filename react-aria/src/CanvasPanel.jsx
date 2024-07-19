@@ -27,7 +27,7 @@ export default function CanvasPanel() {
   return (
     <Panel
       position="bottom-right"
-      className="w-[30%] bg-transparent flex justify-end h-[6%]  "
+      className="w-[26%] bg-transparent flex justify-end h-[6%]  "
     >
       <div className="w-[95%]  h-full  flex justify-between items-center rounded-lg">
         <div className="w-[25%] h-full border  border-slate-300 flex items-center justify-center rounded-lg bg-white dark:bg-[#161616] dark:border-[#21212126]/15">
@@ -68,7 +68,7 @@ export default function CanvasPanel() {
             }
             onPress={() => handleZoom("Out")}
           />
-          <span className="font-bold text-base font-inter text-[#1C274C] dark:text-white">
+          <span className="font-bold text-sm font-inter text-[#1C274C] dark:text-white">
             100%
           </span>
           <TorusButton
