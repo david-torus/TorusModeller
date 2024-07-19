@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Header, Section, Text } from "react-aria-components";
 import { Back, User } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
 // import "./index.css";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
+import { FabricsContexts } from "./Layout";
 const data = [
   {
     label: "User",
@@ -70,19 +71,21 @@ const data = [
 ];
 export default function NodeGallery({
   color,
-  selectedFabric,
+
   showFabricSideBar,
   handleSidebarToggle,
   children,
 }) {
+  const { selectedFabric } = useContext(FabricsContexts);
   return (
     <Panel
       position="top-left"
       style={{
-        left:"6%"
+        left: "6%",
       }}
       className={` 
-    ${showFabricSideBar
+    ${
+      showFabricSideBar
         ? "md:w-4/12 lg:w-2/12  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white  border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
         : "h-[6%] w-[5%] flex items-center justify-center"
     }`}
@@ -172,27 +175,28 @@ const Loop = ({ color, selectedFabric }) => {
   };
   return (
     <>
-      {EnvSideData[selectedFabric] &&EnvSideData[selectedFabric].map((item, index) => (
-        <div
-          key={index}
-          className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-lg dark:text-white w-full"
-          draggable
-          onDragStart={(event) => onDragStart(event,item.nodeType)}
-        >
+      {EnvSideData[selectedFabric] &&
+        EnvSideData[selectedFabric].map((item, index) => (
           <div
-            className={` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
+            key={index}
+            className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-lg dark:text-white w-full"
+            draggable
+            onDragStart={(event) => onDragStart(event, item.nodeType)}
           >
-            {React.createElement(item.icon, {
-              color: color ? color : "#0736C4",
-              size: 18,
-              selectedFabric: selectedFabric,
-            })}
+            <div
+              className={` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
+            >
+              {React.createElement(item.icon, {
+                color: color ? color : "#0736C4",
+                size: 18,
+                selectedFabric: selectedFabric,
+              })}
+            </div>
+            <span className="3xl:text-xs xl:text-sm font-normal tracking-normal font-inter cursor-grab">
+              {item.label}
+            </span>
           </div>
-          <span className="3xl:text-xs xl:text-sm font-normal tracking-normal font-inter cursor-grab">
-            {item.label}
-          </span>
-        </div>
-      ))}
+        ))}
     </>
   );
 };

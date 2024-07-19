@@ -32,9 +32,9 @@ function App() {
   const [darkMode, setDarkmode] = useState("");
   const [clientDetails, setClientDetails] = useState({});
 
-  // useEffect(() => {
-  //   AOS.init();
-  // }, []);
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   const handleToken = useCallback(
     async (tok) => {

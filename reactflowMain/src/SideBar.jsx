@@ -18,6 +18,7 @@ import TorusAvatar from "./torusComponents/TorusAvatar";
 
 import { BiMoon, BiSun } from "react-icons/bi";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
+import { FabricsContexts } from "./Layout";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -56,13 +57,8 @@ const focusBLcolor = {
   },
 };
 
-export default function SideBar({
-  color,
-  selectedFabric,
-  showFabricSideBar,
-  handleSidebarToggle,
-  handleTabChange,
-}) {
+export default function SideBar() {
+  const { selectedFabric, handleTabChange } = useContext(FabricsContexts);
   const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
   const borderFn = () => {
     if (selectedFabric === "home") {
@@ -88,6 +84,7 @@ export default function SideBar({
     >
       <div className="h-[30%] w-[100%] flex flex-col  items-center   ">
         <TorusTab
+          defaultSelectedKey={selectedFabric}
           key="TorusTab"
           orientation="vertical"
           classNames={{
@@ -96,12 +93,12 @@ export default function SideBar({
             tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
           }}
           tabs={[
-            // {
-            //   id: "Home",
-            //   content: ({ isSelected }) => (
-            //     <Home strokeColor={!isSelected ? "#A59E92" : "teal"} />
-            //   ),
-            // },
+            {
+              id: "Home",
+              content: ({ isSelected }) => (
+                <Home strokeColor={!isSelected ? "#A59E92" : "teal"} />
+              ),
+            },
             {
               id: "DF",
               content: ({ isSelected }) => (
