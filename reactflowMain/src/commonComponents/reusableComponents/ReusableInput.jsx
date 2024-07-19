@@ -7,7 +7,7 @@ export default function ReusableInput({
   defaultValue,
   placeholder,
   type = "text",
-  darkmode,
+  darkMode,
   handleChange,
   errrMsg,
   labelPlacement = "outside",
@@ -33,19 +33,19 @@ export default function ReusableInput({
       endContent={endContent}
       labelPlacement={labelPlacement}
       style={{
-        color: darkmode ? "white" : "black",
+        color: darkMode ? "white" : "black",
       }}
       className="text-gray-700 shadow-md"
       classNames={{
-        base: darkmode ? "w-full text-gray-200" : " w-full text-slate-700",
-        label: darkmode
+        base: darkMode ? "w-full text-gray-200" : " w-full text-slate-700",
+        label: darkMode
           ? ["data-[focused=true]:border-none text-sm font-bold text-white"]
           : ["data-[focused=true]:border-none text-sm font-bold text-zinc-700"],
         mainWrapper: "h-full text-slate-700 ",
-        input: darkmode
+        input: darkMode
           ? ["bg-transparent", "text-white", "placeholder:text-sm text-white "]
           : ["bg-transparent", "text-black", "placeholder:text-sm text-black "],
-        inputWrapper: darkmode
+        inputWrapper: darkMode
           ? [
               "h-[8px] rounded-md text-slate-700 bg-transparent hover:bg-[#D9DEE8] hover:border-blue-500/50 hover:text-slate-700 border border-slate-500/50 ",
               "data-[focused=true]:border-pink-500/50",

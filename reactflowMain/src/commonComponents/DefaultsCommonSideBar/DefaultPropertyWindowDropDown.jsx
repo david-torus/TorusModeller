@@ -8,12 +8,12 @@ export default function DefaultPropertyWindowDropDown({
   model,
   handleSelectedProperty,
 }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <ReusableDropDown
       selectedKey={new Set([propertyDatas[model]])}
       handleSelectedKey={handleSelectedProperty}
-      darkmode={darkmode}
+      darkMode={darkMode}
       title={propertyDatas[model]}
       selectionMode="single"
       items={propertyData}

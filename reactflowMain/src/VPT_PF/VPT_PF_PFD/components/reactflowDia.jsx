@@ -63,7 +63,7 @@ const ReactFlowDia = ({
   setartifact,
 }) => {
   const proOptions = { hideAttribution: true };
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [fabricsKey, setFabricsKey] = useState(null);
   const [upIdKey, setUpIdKey] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState({
@@ -79,7 +79,7 @@ const ReactFlowDia = ({
         height: "100%",
         margin: "0",
         padding: "0",
-        backgroundColor: darkmode ? "#121212" : "#E9E8E8",
+        backgroundColor: darkMode ? "#121212" : "#E9E8E8",
       }}
     >
       <div
@@ -173,7 +173,7 @@ const ReactFlowDia = ({
           )}
           <Background
             variant="dots"
-            color={darkmode ? "#ccc" : "black"}
+            color={darkMode ? "#ccc" : "black"}
             gap={25}
             size={1}
           />

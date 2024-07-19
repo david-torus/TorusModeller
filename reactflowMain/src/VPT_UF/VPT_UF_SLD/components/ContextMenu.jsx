@@ -66,13 +66,13 @@ export const ContextMenu = ({
     (store) => !!store.nodeInternals.get(id)?.parentNode
   );
   const onDetach = () => detachNodes([id]);
-  const { darkmode } = React.useContext(DarkmodeContext);
+  const { darkMode } = React.useContext(DarkmodeContext);
 
   return (
     <div
       style={{ top, left, right, bottom }}
       className={
-        `${darkmode ? "bg-[#363636]  " : "bg-white   "}` +
+        `${darkMode ? "bg-[#363636]  " : "bg-white   "}` +
         `${
           hasChildNodes || hasParent
             ? "w-[170px] h-[180px] flex flex-col items-center justify-center  z-10 absolute rounded-md "
@@ -89,7 +89,7 @@ export const ContextMenu = ({
       >
         <p
           className={
-            darkmode
+            darkMode
               ? "text-start font-semibold capitalize mb-2 mt-2 text-white"
               : "text-start font-semibold capitalize mb-2 mt-2 text-black/75"
           }
@@ -99,16 +99,16 @@ export const ContextMenu = ({
       </div>
 
       {/* contextmenu-menu */}
-      <div className={`${darkmode ? " p-2 w-full" : " p-2 w-full "}`}>
+      <div className={`${darkMode ? " p-2 w-full" : " p-2 w-full "}`}>
         <div
           className={
-            darkmode
+            darkMode
               ? "flex flex-row whitespace-nowrap w-full   gap-[18px] p-[10px] hover:bg-slate-500/40 rounded-lg "
               : "flex flex-row whitespace-nowrap  gap-[18px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
           }
         >
           <span>
-            <BiEdit size={20} color={darkmode ? "#fff" : "#8C8C8C"} />
+            <BiEdit size={20} color={darkMode ? "#fff" : "#8C8C8C"} />
           </span>
           <button
             onClick={() => {
@@ -120,7 +120,7 @@ export const ContextMenu = ({
           >
             <span
               className={`text-base ${
-                darkmode ? "text-white" : "text-black/80"
+                darkMode ? "text-white" : "text-black/80"
               } ml-2`}
             >
               Edit Node
@@ -131,7 +131,7 @@ export const ContextMenu = ({
         {node.type === "group" && hasChildNodes && (
           <div
             className={
-              darkmode
+              darkMode
                 ? "flex flex-row whitespace-nowrap w-full   gap-[18px] p-[10px] hover:bg-slate-500/40 rounded-lg "
                 : "flex flex-row whitespace-nowrap  gap-[18px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
             }
@@ -139,7 +139,7 @@ export const ContextMenu = ({
             <span>
               <FaRegObjectUngroup
                 size={20}
-                color={darkmode ? "#fff" : "#8C8C8C"}
+                color={darkMode ? "#fff" : "#8C8C8C"}
               />
             </span>
             <button
@@ -151,7 +151,7 @@ export const ContextMenu = ({
             >
               <span
                 className={`text-base ${
-                  darkmode ? "text-white" : "text-black/80"
+                  darkMode ? "text-white" : "text-black/80"
                 } ml-2`}
               >
                 Ungroup
@@ -162,13 +162,13 @@ export const ContextMenu = ({
         {node.type !== "group" && hasParent && (
           <div
             className={
-              darkmode
+              darkMode
                 ? "flex flex-row whitespace-nowrap w-full   gap-[18px] p-[10px] hover:bg-slate-500/40 rounded-lg "
                 : "flex flex-row whitespace-nowrap  gap-[18px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
             }
           >
             <span>
-              <GrDetach size={20} color={darkmode ? "#fff" : "#8C8C8C"} />
+              <GrDetach size={20} color={darkMode ? "#fff" : "#8C8C8C"} />
             </span>
             <button
               onClick={() => {
@@ -179,7 +179,7 @@ export const ContextMenu = ({
             >
               <span
                 className={`text-base ${
-                  darkmode ? "text-white" : "text-black/80"
+                  darkMode ? "text-white" : "text-black/80"
                 } ml-2`}
               >
                 Detach
@@ -189,7 +189,7 @@ export const ContextMenu = ({
         )}
         <div
           className={
-            darkmode
+            darkMode
               ? "flex flex-row  gap-[20px]  p-[10px] whitespace-nowrap hover:bg-slate-500/40 rounded-lg "
               : "flex flex-row gap-[20px]  whitespace-nowrap p-[10px] hover:bg-gray-300/50 rounded-lg "
           }
@@ -204,13 +204,13 @@ export const ContextMenu = ({
           >
             <span>
               <AiOutlineDelete
-                color={darkmode ? "#fff" : "#8C8C8C"}
+                color={darkMode ? "#fff" : "#8C8C8C"}
                 size={20}
               />
             </span>
             <span
               className={`text-base ml-[26px]  ${
-                darkmode ? "text-white" : "text-black/80"
+                darkMode ? "text-white" : "text-black/80"
               }`}
             >
               Delete

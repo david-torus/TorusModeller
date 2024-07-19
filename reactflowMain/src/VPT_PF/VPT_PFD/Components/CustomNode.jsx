@@ -21,13 +21,13 @@ import { SvgApiCustomNode } from "../../../asset/SvgsApplication";
  * @return {JSX.Element} The rendered API node.
  */
 export function ApiNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div
       className="custom-node"
       style={{
         border: "1px solid" + data.nodeColor,
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       <span
@@ -76,7 +76,7 @@ export function ApiNode({ data, isConnectable }) {
           width: "80%",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: darkmode ? "white" : "black",
+          color: darkMode ? "white" : "black",
           textAlign: "center",
         }}
       >
@@ -85,7 +85,7 @@ export function ApiNode({ data, isConnectable }) {
           style={{
             textAlign: "center",
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -106,14 +106,14 @@ export function ApiNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered decision node.
  */
 export function DecisionNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
       className="custom-node"
       style={{
         border: "1px solid" + data.nodeColor,
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       {
@@ -126,7 +126,7 @@ export function DecisionNode({ data, isConnectable }) {
             marginBottom: "-5px",
           }}
         >
-          <AiOutlineApartment color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+          <AiOutlineApartment color={darkMode ? "#CCCCCC" : "gray"} size={22} />
         </span>
       }
       {isConnectable && (
@@ -190,7 +190,7 @@ export function DecisionNode({ data, isConnectable }) {
           width: "80%",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: darkmode ? "white" : "black",
+          color: darkMode ? "white" : "black",
           textAlign: "center",
         }}
       >
@@ -199,7 +199,7 @@ export function DecisionNode({ data, isConnectable }) {
           style={{
             textAlign: "center",
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -219,7 +219,7 @@ export function DecisionNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered EndNode component.
  */
 export function EndNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -227,7 +227,7 @@ export function EndNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: `1px solid #FFA09A`,
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         {
@@ -240,7 +240,7 @@ export function EndNode({ data, isConnectable }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <FaRegStopCircle color={darkmode ? "white" : "gray"} size={22} />
+            <FaRegStopCircle color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -257,7 +257,7 @@ export function EndNode({ data, isConnectable }) {
         <div
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
         >
@@ -278,24 +278,24 @@ export function EndNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered StartNode component.
  */
 export function StartNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
       <div
         className="custom-node"
         style={{
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
 
           border: `1px solid #83E283`,
         }}
       >
-        {<MdOutlineNotStarted color={darkmode ? "white" : "gray"} size={22} />}
+        {<MdOutlineNotStarted color={darkMode ? "white" : "gray"} size={22} />}
         <label
           title={isConnectable ? "Start" : data?.nodeType}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -331,13 +331,13 @@ export function StartNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered DefaultNode component.
  */
 export function DefaultNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
       className="custom-node"
       style={{
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       {isConnectable && (
@@ -370,7 +370,7 @@ export function DefaultNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -379,7 +379,7 @@ export function DefaultNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -417,7 +417,7 @@ export function DefaultNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom database node component.
  */
 export function DatabaseNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -425,7 +425,7 @@ export function DatabaseNode({ data, isConnectable }) {
         className="custom-node "
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         <span
@@ -437,7 +437,7 @@ export function DatabaseNode({ data, isConnectable }) {
             marginBottom: data.label !== "" ? "-5px" : "",
           }}
         >
-          <GrMysql color={darkmode ? "white" : "gray"} size={22} />
+          <GrMysql color={darkMode ? "white" : "gray"} size={22} />
         </span>
         {isConnectable && (
           <>
@@ -473,7 +473,7 @@ export function DatabaseNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -482,7 +482,7 @@ export function DatabaseNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -504,7 +504,7 @@ export function DatabaseNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom Kafka node component.
  */
 export function KafkaNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -512,7 +512,7 @@ export function KafkaNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         {
@@ -525,7 +525,7 @@ export function KafkaNode({ data, isConnectable }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <SiApachekafka color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+            <SiApachekafka color={darkMode ? "#CCCCCC" : "gray"} size={22} />
           </span>
         }
         {isConnectable && (
@@ -562,7 +562,7 @@ export function KafkaNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -571,7 +571,7 @@ export function KafkaNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -592,7 +592,7 @@ export function KafkaNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom Postgres node component.
  */
 export function PostgresNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -600,7 +600,7 @@ export function PostgresNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           boxShadow: `  0 0 1px 1px ${data.nodeColor}`,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -613,7 +613,7 @@ export function PostgresNode({ data, isConnectable }) {
               marginBottom: "-5px",
             }}
           >
-            <SiPostgresql color={darkmode ? "white" : "gray"} size={22} />
+            <SiPostgresql color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         {isConnectable && (
@@ -650,7 +650,7 @@ export function PostgresNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -659,7 +659,7 @@ export function PostgresNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -680,7 +680,7 @@ export function PostgresNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom Docker node component.
  */
 export function DockerNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -688,7 +688,7 @@ export function DockerNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -701,7 +701,7 @@ export function DockerNode({ data, isConnectable }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <FaDocker color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+            <FaDocker color={darkMode ? "#CCCCCC" : "gray"} size={22} />
           </span>
         }
         {isConnectable && (
@@ -737,7 +737,7 @@ export function DockerNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -746,7 +746,7 @@ export function DockerNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -768,7 +768,7 @@ export function DockerNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered InputNode component.
  */
 export function InputNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -776,7 +776,7 @@ export function InputNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -789,7 +789,7 @@ export function InputNode({ data, isConnectable }) {
               marginBottom: "-5px",
             }}
           >
-            <RxInput color={darkmode ? "white" : "gray"} size={22} />
+            <RxInput color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         {isConnectable && (
@@ -826,7 +826,7 @@ export function InputNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -835,7 +835,7 @@ export function InputNode({ data, isConnectable }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -856,7 +856,7 @@ export function InputNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom Output node component.
  */
 export function OutputNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -864,7 +864,7 @@ export function OutputNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -878,7 +878,7 @@ export function OutputNode({ data, isConnectable }) {
             }}
           >
             <LiaLaptopCodeSolid
-              color={darkmode ? "#CCCCCC" : "gray"}
+              color={darkMode ? "#CCCCCC" : "gray"}
               size={22}
             />
           </span>
@@ -917,7 +917,7 @@ export function OutputNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -925,7 +925,7 @@ export function OutputNode({ data, isConnectable }) {
             title={isConnectable ? data.label : data?.nodeType}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -946,7 +946,7 @@ export function OutputNode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom code node component.
  */
 export function CustomCode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -954,7 +954,7 @@ export function CustomCode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -1000,7 +1000,7 @@ export function CustomCode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -1008,7 +1008,7 @@ export function CustomCode({ data, isConnectable }) {
             title={isConnectable ? data.label : data?.nodeType}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
             }}
             htmlFor=""
           >
@@ -1029,7 +1029,7 @@ export function CustomCode({ data, isConnectable }) {
  * @return {JSX.Element} The rendered custom human task node component.
  */
 export function HumanTaskNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -1037,7 +1037,7 @@ export function HumanTaskNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -1083,7 +1083,7 @@ export function HumanTaskNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -1091,7 +1091,7 @@ export function HumanTaskNode({ data, isConnectable }) {
             title={data.label}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""

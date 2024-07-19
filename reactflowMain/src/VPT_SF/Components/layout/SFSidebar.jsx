@@ -37,7 +37,7 @@ const SFSidebar = ({
   group,
   application,
 }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationList, setApplicationList] = useState([]);
   const [versionsList, setVersionList] = useState([]);
@@ -908,7 +908,7 @@ const SFSidebar = ({
   return (
     <Sidebar
       visible={sidebarVisible}
-      className={darkmode ? "bg-[#242424]" : "bg-[#fff]"}
+      className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
       position="right"
       style={{ height: "100%", width: "30vw" }}
       onHide={() => {
@@ -934,7 +934,7 @@ const SFSidebar = ({
           <Button
             variant="outline"
             className={`${
-              darkmode
+              darkMode
                 ? "w-full border border-slate-600 right-5  bg-[#368289] rounded-md text-[#F4F4F5] "
                 : "w-full border border-slate-400/30 right-5 bg-[#023F8A] text-white "
             }`}
@@ -968,7 +968,7 @@ const SFSidebar = ({
 
               toast.success("Data saved successfully!", {
                 position: "bottom-right",
-                theme: darkmode ? "dark" : "light",
+                theme: darkMode ? "dark" : "light",
                 autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -989,7 +989,7 @@ const SFSidebar = ({
               isDisabled={
                 applicationList && applicationList.length < 0 ? true : false
               }
-              darkmode={darkmode}
+              darkMode={darkMode}
               key={"sfApplication"}
               title={
                 (selectedapplication && Array.from(selectedapplication)[0]) ||
@@ -1034,7 +1034,7 @@ const SFSidebar = ({
               isDisabled={
                 artifactsList && artifactsList.length < 0 ? true : false
               }
-              darkmode={darkmode}
+              darkMode={darkMode}
               key={"sfArtifact"}
               title={
                 (selectedArtifacts && Array.from(selectedArtifacts)[0]) ||
@@ -1076,7 +1076,7 @@ const SFSidebar = ({
           <div className="col-span-3">
             {/** Versions Secetions based on the seleceted fabrics  */}
             <ReusableDropDown
-              darkmode={darkmode}
+              darkMode={darkMode}
               key={"sfversion"}
               title={
                 (selectedVerison && Array.from(selectedVerison)[0]) || "Version"
@@ -1114,7 +1114,7 @@ const SFSidebar = ({
                   size="sm"
                   variant="outline"
                   className={`${
-                    darkmode
+                    darkMode
                       ? "w-full border border-slate-400/30 text-[#F4F4F5] "
                       : "w-full border border-slate-400/30 text-black "
                   }`}

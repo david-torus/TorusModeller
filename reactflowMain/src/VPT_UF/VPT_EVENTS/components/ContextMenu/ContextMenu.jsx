@@ -68,7 +68,7 @@ export default function ContextMenu({
   });
   const responsedata = ["defaults", "success", "fail"];
   const [selectedResponseData, setSelectedResponseData] = useState("defaults");
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [files, setFiles] = useState(null);
   const toast = useRef(null);
   const [nodeInfo, setNodeInfo] = useState(null);
@@ -1220,13 +1220,13 @@ export default function ContextMenu({
         {...props}
         className={`${
           node?.data?.label
-            ? `${darkmode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute rounded-md `
-            : `${darkmode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute  rounded-md `
+            ? `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute rounded-md `
+            : `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute  rounded-md `
         }`}
       >
         <div
           className={`flex justify-between gap-3 w-full  
-          ${darkmode ? "bg-[#363636] py-1 px-1 rounded-md border border-[#979BA1]" : "bg-[#ffffff] border border-[#15181a]  py-1 px-1 rounded-md"}`}
+          ${darkMode ? "bg-[#363636] py-1 px-1 rounded-md border border-[#979BA1]" : "bg-[#ffffff] border border-[#15181a]  py-1 px-1 rounded-md"}`}
         >
           {" "}
           {!toogleInputNameEdit ? (
@@ -1237,7 +1237,7 @@ export default function ContextMenu({
                     setToogleInputNameEdit(!toogleInputNameEdit);
                   }}
                   className={
-                    darkmode
+                    darkMode
                       ? "w-full text-white font-semibold text-medium cursor-pointer"
                       : "w-full text-black font-semibold text-medium cursor-pointer"
                   }
@@ -1250,7 +1250,7 @@ export default function ContextMenu({
                     setToogleInputNameEdit(!toogleInputNameEdit);
                   }}
                   className={
-                    darkmode
+                    darkMode
                       ? "w-full text-white font-semibold text-medium cursor-pointer"
                       : "w-full text-black font-semibold text-medium cursor-pointer"
                   }
@@ -1275,8 +1275,8 @@ export default function ContextMenu({
           )}
           <div className="min-w-max-[20%] flex items-center justify-center">
             <Tooltip content={id}>
-              <button className={darkmode ? "text-white" : "text-black"}>
-                <AiOutlineInfoCircle color={darkmode ? "white" : "black"} />
+              <button className={darkMode ? "text-white" : "text-black"}>
+                <AiOutlineInfoCircle color={darkMode ? "white" : "black"} />
               </button>
             </Tooltip>
           </div>
@@ -1285,7 +1285,7 @@ export default function ContextMenu({
         {(node?.type === "handlerNode" || node?.type === "eventNode") && (
           <div className="flex items-center justify-center w-[100%]">
             <ReusableDropDown
-              darkmode={darkmode}
+              darkMode={darkMode}
               key={node.id + node.type}
               title={
                 (selectedResponseData && selectedResponseData) ||
@@ -1329,7 +1329,7 @@ export default function ContextMenu({
                 }, 1000);
               }}
               className={
-                darkmode
+                darkMode
                   ? "w-full rounded-md bg-transparent text-white text-sm mt-1"
                   : "w-full rounded-md bg-transparent text-black text-sm mt-1"
               }
@@ -1354,7 +1354,7 @@ export default function ContextMenu({
                   setToogle(node, id);
                 }}
                 className={
-                  darkmode
+                  darkMode
                     ? "w-full rounded-md bg-transparent text-white text-sm mt-1"
                     : "w-full rounded-md bg-transparent text-black text-sm mt-1"
                 }
@@ -1379,7 +1379,7 @@ export default function ContextMenu({
                 }, 1000);
               }}
               className={
-                darkmode
+                darkMode
                   ? "w-full rounded-md bg-transparent text-white mt-1 text-sm"
                   : "w-full rounded-md bg-transparent text-black mt-1 text-sm"
               }
@@ -1395,7 +1395,7 @@ export default function ContextMenu({
             </button>
           </div>
         )}
-        <Divider className={darkmode ? "bg-white" : "bg-black"} />
+        <Divider className={darkMode ? "bg-white" : "bg-black"} />
 
         {/*Edit node */}
         <button
@@ -1404,7 +1404,7 @@ export default function ContextMenu({
             setToogle(node, id);
           }}
           className={
-            darkmode
+            darkMode
               ? "w-full bg-transparent text-slate-50 font-bold rounded-md py-1"
               : "w-full bg-transparent text-slate-950 font-bold rounded-md py-1"
           }
@@ -1415,7 +1415,7 @@ export default function ContextMenu({
         {/*Delete node */}
         <button
           className={
-            darkmode
+            darkMode
               ? "w-full bg-transparent  text-slate-50 font-bold rounded-md py-1"
               : "w-full bg-transparent  text-slate-950 font-bold rounded-md py-1"
           }
@@ -1550,7 +1550,7 @@ export default function ContextMenu({
                                                 }}
                                               >
                                                 <div
-                                                  className={`${darkmode ? "text-black" : ""} text-lg`}
+                                                  className={`${darkMode ? "text-black" : ""} text-lg`}
                                                 >
                                                   {key2} : {key1[key2]}
                                                 </div>
@@ -1568,7 +1568,7 @@ export default function ContextMenu({
                                                     setMenu(null);
                                                   }, 1000);
                                                 }}
-                                                className={`${darkmode ? "text-black" : ""} text-lg`}
+                                                className={`${darkMode ? "text-black" : ""} text-lg`}
                                               >
                                                 {key2} : {key1[key2]}
                                               </div>
@@ -1596,7 +1596,7 @@ export default function ContextMenu({
             setMenu(null);
           }}
           position="right"
-          className={darkmode ? "bg-[#333334]" : "bg-[#f0f0f0]"}
+          className={darkMode ? "bg-[#333334]" : "bg-[#f0f0f0]"}
         >
           <div className=" flex flex-col justify-start items-start w-[100%]">
             {node && node?.type === "handlerNode" && (
@@ -1701,12 +1701,12 @@ export default function ContextMenu({
 
             <div>
               <div
-                className={`${darkmode ? "text-white text-sm font-semibold mb-3 cursor-pointer" : "text-black text-sm font-semibold mb-3 cursor-pointer"}  `}
+                className={`${darkMode ? "text-white text-sm font-semibold mb-3 cursor-pointer" : "text-black text-sm font-semibold mb-3 cursor-pointer"}  `}
               >
                 nodeID :
               </div>
               <div
-                className={`${darkmode ? "text-white text-xs font-medium whitespace-nowrap" : "text-black text-xs font-medium whitespace-nowrap  "}`}
+                className={`${darkMode ? "text-white text-xs font-medium whitespace-nowrap" : "text-black text-xs font-medium whitespace-nowrap  "}`}
               >
                 {node?.id}
               </div>
@@ -1722,7 +1722,7 @@ export default function ContextMenu({
                         <div className="w-[50%] flex justify-start">
                           <div
                             className={
-                              darkmode
+                              darkMode
                                 ? "text-white font-semibold "
                                 : "text-black font-semibold"
                             }
@@ -1733,7 +1733,7 @@ export default function ContextMenu({
                         :
                         <div className="w-[50%] flex justify-start">
                           <div
-                            className={darkmode ? "text-white" : "text-black"}
+                            className={darkMode ? "text-white" : "text-black"}
                           >
                             {value}
                           </div>
@@ -1751,7 +1751,7 @@ export default function ContextMenu({
                               <div className="w-[50%] flex justify-start">
                                 <div
                                   className={
-                                    darkmode
+                                    darkMode
                                       ? "text-white font-semibold "
                                       : "text-black font-semibold"
                                   }
@@ -1763,7 +1763,7 @@ export default function ContextMenu({
                               <div className="w-[50%] flex justify-start">
                                 <div
                                   className={
-                                    darkmode ? "text-white" : "text-black"
+                                    darkMode ? "text-white" : "text-black"
                                   }
                                 >
                                   {value}
@@ -1779,7 +1779,7 @@ export default function ContextMenu({
                                   changeProperty({ [key]: e.target.value })
                                 }
                                 label={key}
-                                darkmode={darkmode}
+                                darkMode={darkMode}
                                 defaultValue={value}
                               />
                             </div>

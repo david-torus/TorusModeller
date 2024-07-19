@@ -166,11 +166,7 @@ div[data-slot="inner-wrapper"]::after {
   width: 80%;
   color: #495057;
 }
-.react-flow__zoompane {
-  max-height: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
+
 
 .react-flow__edge .react-flow__edge-path {
   stroke: #2196f3;
@@ -180,7 +176,7 @@ div[data-slot="inner-wrapper"]::after {
 
 .react-flow__edge-path {
   opacity: 2;
-  /* color: #8aaae5; */
+
 }
 
 .scroll {
@@ -1095,37 +1091,13 @@ input:checked + .toggle-slider:before {
   box-shadow: -40vmin 0 5.845165503125377vmin currentColor;
 }
 
-.react-flow__panel {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 10px !important;
-  background-color: transparent !important;
-}
 
-.react-flow__panel button svg path {
-  color: #00ffd5 !important;
-}
 
-.react-flow__panel button {
-  transition: all 0.5s !important;
-  border-bottom: none !important;
-  border-radius: 20% !important;
-  background-color: rgba(255, 255, 255, 0.5) !important;
-  padding: 10px !important;
-  /* margin-bottom: 10px; */
-  color: #49cb8f !important;
-  /* box-shadow: 1px 1px 4px 0px rgba(255, 255, 255, 0.5) !important; */
-}
 
-.react-flow__controls-button:hover {
-  border-radius: 30% !important;
-  background: #0f4465 !important;
-  color: white !important;
-}
 
-div.react-flow__panel a {
-  display: none !important;
-}
+
+
+
 
 
 

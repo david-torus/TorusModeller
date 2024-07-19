@@ -14,13 +14,13 @@ import { handlepath } from "../utils/utils";
 const CustomInput = ({ keyJson, Objkey, value, path }) => {
   const { editedValues, setEditedValues } = useContext(BuilderContext);
   const [toogleInput, setToogleInput] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="w-full h-full flex items-start">
       {!toogleInput ? (
         <div className="flex gap-2">
-          <span className={darkmode ? "text-white" : "text-grey-700"}>
+          <span className={darkMode ? "text-white" : "text-grey-700"}>
             {Objkey}:
           </span>
           {keyJson &&
@@ -34,13 +34,13 @@ const CustomInput = ({ keyJson, Objkey, value, path }) => {
               >
                 <div className="flex gap-2 items-center">
                   <span>
-                    <AiOutlineInfoCircle color={darkmode ? "white" : "black"} />
+                    <AiOutlineInfoCircle color={darkMode ? "white" : "black"} />
                   </span>
                 </div>
               </Tooltip>
             )}
           <span
-            className={darkmode ? "text-white" : "text-grey-700"}
+            className={darkMode ? "text-white" : "text-grey-700"}
             onDoubleClick={() => setToogleInput(true)}
           >
             {value || "Double Click to Edit"}
@@ -48,16 +48,16 @@ const CustomInput = ({ keyJson, Objkey, value, path }) => {
         </div>
       ) : (
         <div className="flex g-2">
-          <span className={darkmode ? "text-white" : "text-grey-700"}>
+          <span className={darkMode ? "text-white" : "text-grey-700"}>
             {Objkey}:
           </span>
           <div className=" ">
             <ReusableInput
               key={path + "." + Objkey}
               type="text"
-              darkmode={darkmode}
+              darkMode={darkMode}
               defaultValue={value}
-              className={`border-gray-600/80 ${darkmode ? "text-white" : "text-grey-700"}  border-2  rounded-2xl outline-none shadow-none h-[100%] w-[80%] bg-transparent`}
+              className={`border-gray-600/80 ${darkMode ? "text-white" : "text-grey-700"}  border-2  rounded-2xl outline-none shadow-none h-[100%] w-[80%] bg-transparent`}
               value={editedValues[path + "." + Objkey]}
               handleChange={(e) =>
                 setEditedValues((prev) => ({
@@ -80,7 +80,7 @@ const CustomInput = ({ keyJson, Objkey, value, path }) => {
 
 export default function Tableuidecider({ data, path, keyJson }) {
   const [newData, setNewData] = useState({});
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const { functionality, editedValues, setEditedValues } =
     useContext(BuilderContext);
@@ -130,7 +130,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
     return (
       <div className="bg-transparent">
         <ReusableDropDown
-          darkmode={darkmode}
+          darkMode={darkMode}
           key={path}
           title={
             editedValues[path + "." + "selectedValue"] ||
@@ -169,7 +169,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
     return (
       <div>
         <ReusableDropDown
-          darkmode={darkmode}
+          darkMode={darkMode}
           key={path}
           title={
             <span className=" truncate">
@@ -180,7 +180,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
             </span>
           }
           buttonClassName={`${
-            darkmode
+            darkMode
               ? " border border-slate-400/30 text-[#F4F4F5] "
               : " border border-slate-400/30 text-black "
           } w-[100px]`}
@@ -227,7 +227,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
                 if (typeof newData[key] == "object") {
                   return (
                     <li key={key} className="flex flex-row gap-2">
-                      <label className={darkmode ? "text-white" : "text-black"}>
+                      <label className={darkMode ? "text-white" : "text-black"}>
                         {key}:
                       </label>
                       <Tableuidecider

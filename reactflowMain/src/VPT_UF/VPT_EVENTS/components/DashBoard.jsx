@@ -61,7 +61,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
   const [uniqueNames, setUniqueNames] = useState([]);
   const [nodeData, setNodeData] = useState(null);
   const [mainSequence, setMainSequence] = useState(0);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [miniMapOpn, setMinimapOpn] = useState(true);
 
   const NODE_TYPES = useMemo(
@@ -751,14 +751,14 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
     >
       <Panel
         position="top-right"
-        className={darkmode ? "bg-[#323232]" : "bg-[#eeeeee]"}
+        className={darkMode ? "bg-[#323232]" : "bg-[#eeeeee]"}
       >
         <Accordion
           variant="shadow"
           className="flex flex-col gap-1 w-full max-w-[200px] max-h-[300px]"
           itemClasses={{
             base: "py-0 w-[75%] h-[500px] bg-transparent border-0",
-            title: darkmode
+            title: darkMode
               ? "font-normal text-small text-black font-bold whitespace-nowrap"
               : "font-normal text-small text-black font-bold whitespace-nowrap",
             trigger:
@@ -834,12 +834,12 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   className="w-full"
                   classNames={{
                     base: "max-w-sm",
-                    filler: darkmode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
+                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
                     labelWrapper: "mb-2 ",
-                    label: darkmode
+                    label: darkMode
                       ? "font-medium text-gray-700 text-small"
                       : "font-small text-gray-700 text-small",
-                    value: darkmode
+                    value: darkMode
                       ? "font-small text-gray-700 text-small"
                       : "font-small text-gray-700 text-small",
                     track: "border-1-slate-100",
@@ -851,14 +851,14 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                     offset: 10,
                     placement: "bottom",
                     classNames: {
-                      base: darkmode
+                      base: darkMode
                         ? [
                             "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
                           ]
                         : [
                             "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
                           ],
-                      content: darkmode
+                      content: darkMode
                         ? [
                             "py-2 shadow-xl",
                             "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
@@ -872,7 +872,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   renderThumb={(props) => (
                     <div
                       {...props}
-                      className={`group p-[6px]  top-1/2 ${darkmode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkmode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
+                      className={`group p-[6px]  top-1/2 ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
                     >
                       <span className="transition-transform bg-gradient-to-br shadow-small from-secondary-100 to-secondary-500 rounded-full w-3 h-4 block group-data-[dragging=true]:scale-100" />
                     </div>
@@ -892,12 +892,12 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   className="w-full"
                   classNames={{
                     base: "max-w-sm",
-                    filler: darkmode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
+                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
                     labelWrapper: "mb-2",
-                    label: darkmode
+                    label: darkMode
                       ? "font-medium text-gray-700 text-medium"
                       : "font-medium text-gray-700 text-medium",
-                    value: darkmode
+                    value: darkMode
                       ? "font-medium text-gray-700 text-small"
                       : "font-medium text-gray-700 text-medium",
                     track: "border-1-slate-100",
@@ -909,14 +909,14 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                     offset: 10,
                     placement: "bottom",
                     classNames: {
-                      base: darkmode
+                      base: darkMode
                         ? [
                             "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
                           ]
                         : [
                             "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
                           ],
-                      content: darkmode
+                      content: darkMode
                         ? [
                             "py-2 shadow-xl",
                             "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
@@ -930,7 +930,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   renderThumb={(props) => (
                     <div
                       {...props}
-                      className={`group p-[6px]  top-1/2 ${darkmode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkmode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
+                      className={`group p-[6px]  top-1/2 ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
                     >
                       <span className="transition-transform bg-gradient-to-br shadow-small from-secondary-100 to-secondary-500 rounded-full w-3 h-4 block group-data-[dragging=true]:scale-100" />
                     </div>
@@ -948,14 +948,14 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
           onPress={() => setMinimapOpn(true)}
           isIconOnly
         >
-          <PiMapTrifoldBold color={darkmode ? "white" : "black"} />
+          <PiMapTrifoldBold color={darkMode ? "white" : "black"} />
         </Button>
       )}
 
       {miniMapOpn && (
         <Button
           className={
-            darkmode
+            darkMode
               ? "bg-[#333334] w-[5px] rounded-full absolute right-0 bottom-[180px] z-50 cursor-pointer"
               : "bg-[#E4E3E3] w-[5px] rounded-full absolute right-0 bottom-[180px] z-50 cursor-pointer"
           }
@@ -963,7 +963,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
           isIconOnly
         >
           <IoMdCloseCircleOutline
-            color={darkmode ? "white" : "black"}
+            color={darkMode ? "white" : "black"}
             size={25}
           />
         </Button>
@@ -979,7 +979,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
             transition={{ duration: 0.3 }}
           >
             <MiniMap
-              maskColor={darkmode ? "#333334" : "#E4E3E3"}
+              maskColor={darkMode ? "#333334" : "#E4E3E3"}
               className="rounded-md"
               nodeComponent={MinimapComponent}
             />
@@ -990,7 +990,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
         variant="dots"
         gap={25}
         size={1.8}
-        color={darkmode ? "#ccc" : "black"}
+        color={darkMode ? "#ccc" : "black"}
       />
       {menu && (
         <ContextMenu

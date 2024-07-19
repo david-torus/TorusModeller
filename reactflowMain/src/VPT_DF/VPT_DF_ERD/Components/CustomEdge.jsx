@@ -31,7 +31,7 @@ export default function CustomEdge({
     targetY,
     targetPosition,
   });
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Updates the edges array by modifying the specified edge's data based on the type of click.
@@ -97,7 +97,7 @@ export default function CustomEdge({
    * @param {number} props.labelY - The y-coordinate for label positioning.
    * @param {boolean} props.toogle - The toggle state for conditional rendering.
    * @param {object} props.data - The data object containing startLabel and endLabel properties.
-   * @param {boolean} props.darkmode - The dark mode state.
+   * @param {boolean} props.darkMode - The dark mode state.
    * @param {function} props.onEdgeClick - The function to handle edge click event.
    * @param {function} props.setToogle - The function to set the toggle state.
    */
@@ -151,7 +151,7 @@ export default function CustomEdge({
             <div>
               <span
                 style={{
-                  color: darkmode ? "white" : "#616A6B ",
+                  color: darkMode ? "white" : "#616A6B ",
                   cursor: "pointer",
                   fontSize: 15,
                   backgroundColor: "transparent",
@@ -166,7 +166,7 @@ export default function CustomEdge({
           )}
           <SiRelay
             className="text-2xl p-1"
-            color={darkmode ? "white" : "#616A6B "}
+            color={darkMode ? "white" : "#616A6B "}
           />
           {toggle && (
             <div
@@ -198,7 +198,7 @@ export default function CustomEdge({
           {!toggle && (
             <span
               style={{
-                color: darkmode ? "white" : "#616A6B ",
+                color: darkMode ? "white" : "#616A6B ",
                 fontSize: 15,
                 fontFamily: "sans-serif",
                 backgroundColor: "transparent",

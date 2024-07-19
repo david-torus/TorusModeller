@@ -43,7 +43,7 @@ export default function EventNavbar({
     useState(null);
 
 
-  const { darkmode, toggleDarkmode } = useContext(DarkmodeContext);
+  const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
 
   const [selectedComponent, setSelectedComponent] = useState(null);
 
@@ -83,11 +83,11 @@ export default function EventNavbar({
         toast.error("Cannot find Events by version", {
           position: "bottom-right",
           autoClose: 2000,
-          theme: darkmode ? "dark" : "light",
+          theme: darkMode ? "dark" : "light",
         });
       }
     },
-    [darkmode,setData] 
+    [darkMode,setData] 
   );
   
 
@@ -122,11 +122,11 @@ export default function EventNavbar({
         toast.error("Cannot find Events Version list", {
           position: "bottom-right",
           autoClose: 2000,
-          theme: darkmode ? "dark" : "light",
+          theme: darkMode ? "dark" : "light",
         });
       }
     },
-    [darkmode] // Add any other dependencies needed inside useCallback
+    [darkMode] // Add any other dependencies needed inside useCallback
   );
   
   const handleClick = () => {
@@ -152,7 +152,7 @@ export default function EventNavbar({
 
         autoClose: 2000,
 
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
       });
       console.error(err);
     }
@@ -180,7 +180,7 @@ export default function EventNavbar({
       toast.error("Cannot find Events Version list", {
         position: "bottom-right",
         autoClose: 2000,
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
       });
     }
   }, [
@@ -188,7 +188,7 @@ export default function EventNavbar({
     selectedControlName,
     appGroup,
     application,
-    darkmode,
+    darkMode,
     fabrics,
     mainArtifacts,
     mainVersion,
@@ -214,7 +214,7 @@ export default function EventNavbar({
           toast.success(`Events fetched successfully from ${selectedVersion}`, {
             position: "bottom-right",
             autoClose: 2000,
-            theme: darkmode ? "dark" : "light",
+            theme: darkMode ? "dark" : "light",
           });
         });
       } else {
@@ -224,7 +224,7 @@ export default function EventNavbar({
       toast.error("Failed to fetch events.", {
         position: "bottom-right",
         autoClose: 2000,
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
       });
   
       console.error("Error fetching events:", error);
@@ -233,7 +233,7 @@ export default function EventNavbar({
     selectedVersion,
     appGroup,
     application,
-    darkmode,
+    darkMode,
     fabrics,
     getEventsfromVersion,
     mainArtifacts,
@@ -306,7 +306,7 @@ export default function EventNavbar({
 
           autoClose: 2000,
 
-          theme: darkmode ? "dark" : "light",
+          theme: darkMode ? "dark" : "light",
         });
       }
     } catch (error) {
@@ -317,7 +317,7 @@ export default function EventNavbar({
 
         autoClose: 2000,
 
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
       });
     }
   };
@@ -435,7 +435,7 @@ export default function EventNavbar({
           transitionDuration: "0.4s",
         }}
         className={`${
-          darkmode
+          darkMode
             ? "bg-[#1E1E1E]/90 backdrop-blur-sm border-b border-gray-600  pl-1 pt-2 pr-2 pb-2 "
             : "bg-[#F0F0F0] backdrop-blur-sm border-b border-gray-600 pl-1 pt-2 pr-2 pb-2 "
         } `}
@@ -449,30 +449,30 @@ export default function EventNavbar({
         >
           <div className="w-[35%] flex flex-row items-center justify-around gap-1">
             <p
-              className={`border ${darkmode ? "border-gray-300/50" : "border-gray-800/50"}  p-[3px]  rounded-md cursor-pointer active:opacity-50 transition-all `}
+              className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  p-[3px]  rounded-md cursor-pointer active:opacity-50 transition-all `}
               onClick={handleClick}
             >
               <MdOutlineClose
-                color={darkmode ? "#F4F4F5" : "#1D1D1D"}
+                color={darkMode ? "#F4F4F5" : "#1D1D1D"}
                 size={20}
               />
             </p>
 
             <div
               className={`${
-                darkmode
+                darkMode
                   ? "w-[80%] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30   bg-gray-50/10 rounded-md p-1   "
                   : "w-[80%] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30  bg-gray-600/10 rounded-md p-1 "
               }`}
             >
               <ReusableDropDown
-                darkmode={darkmode}
+                darkMode={darkMode}
                 key={"EcomponentDropdown"}
                 title={
                   selectedComponentName ? selectedComponentName : "Component"
                 }
                 buttonClassName={
-                  darkmode
+                  darkMode
                     ? " flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-300  bg-[#323232] border rounded-md hover:animate-pulse hover:bg-[#424242] border-gray-600 text-white/70"
                     : "flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-600  bg-[#ffffff] border rounded-md hover:animate-pulse hover:bg-[#c7c6c6] border-gray-300 text-black/70"
                 }
@@ -484,12 +484,12 @@ export default function EventNavbar({
               />
 
               <ReusableDropDown
-                darkmode={darkmode}
+                darkMode={darkMode}
                 key={"EcontrolDropdown"}
                 isDisabled={selectedComponentName ? false : true}
                 title={selectedControlName ? selectedControlName : "Control"}
                 buttonClassName={
-                  darkmode
+                  darkMode
                     ? " flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-300  bg-[#323232] border rounded-md hover:animate-pulse hover:bg-[#424242] border-gray-600 text-white/70"
                     : "flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-600  bg-[#ffffff] border rounded-md hover:animate-pulse hover:bg-[#c7c6c6] border-gray-300 text-black/70"
                 }
@@ -518,7 +518,7 @@ export default function EventNavbar({
                       closeOnClick: true,
                       pauseOnHover: true,
                       progress: undefined,
-                      theme: darkmode ? "dark" : "light",
+                      theme: darkMode ? "dark" : "light",
                     });
                   }
                 }}
@@ -533,36 +533,36 @@ export default function EventNavbar({
               isIconOnly
               variant="outline"
               className=" flex flex-row w-[20%] justify-center gap-2 items-center p-2"
-              onClick={() => toggleDarkmode(!darkmode)}
+              onClick={() => toggleDarkMode(!darkMode)}
             >
               <Tooltip
                 content=" Dark Mode"
                 className={`rounded-md ${
-                  darkmode
+                  darkMode
                     ? "bg-[#E9E8E8] text-black  "
                     : "bg-[#333333] text-white "
                 }`}
               >
                 <span>
-                  {darkmode ? (
+                  {darkMode ? (
                     <FaMoon
                       className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80 "
                           : " hover:text-gray-700 hover:border-gray-700"
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   ) : (
                     <IoSunny
                       className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80 "
                           : " hover:text-gray-700 hover:border-gray-700"
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   )}
                 </span>
@@ -572,13 +572,13 @@ export default function EventNavbar({
             <div className="w-[80%] ml-[0%] p-[5px] h-12 mt-[-5px] scale-[0.9]">
               <div
                 className={`${
-                  darkmode
+                  darkMode
                     ? "w-[140px] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30   bg-gray-50/10 rounded-md p-1   "
                     : "w-[140px] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30  bg-gray-600/10 rounded-md p-1 "
                 }`}
               >
                 <ReusableDropDown
-                  darkmode={darkmode}
+                  darkMode={darkMode}
                   key={"eversion"}
                   isDisabled={versions && versions.length > 0 ? false : true}
                   title={
@@ -649,19 +649,19 @@ export default function EventNavbar({
                   <Tooltip
                     content="Upload"
                     className={`rounded-md ${
-                      darkmode
+                      darkMode
                         ? "bg-[#E9E8E8] text-black  "
                         : "bg-[#333333] text-white  "
                     }`}
                   >
                     <MdOutlineUploadFile
                       className={`border border-gray-600 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-300 "
                           : " hover:text-gray-700 hover:border-gray-700 "
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   </Tooltip>
                 </Button>
@@ -669,7 +669,7 @@ export default function EventNavbar({
                 <Tooltip
                   content="Save"
                   className={`rounded-md  ${
-                    darkmode
+                    darkMode
                       ? "bg-[#E9E8E8] text-black  "
                       : "bg-[#333333] text-white  "
                   }`}
@@ -706,12 +706,12 @@ export default function EventNavbar({
                   >
                     <MdOutlineSave
                       className={` p-[3px] rounded cursor-pointer border-gray-600 active:opacity-50 transition-all border${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-300"
                           : " hover:text-gray-700 hover:border-gray-700 "
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   </Button>
                 </Tooltip>

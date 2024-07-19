@@ -10,14 +10,14 @@ import { BuilderContext } from "../../builder";
 import ReusableDropDown from "../../../commonComponents/reusableComponents/ReusableDropDown";
 const MultipleSelectDropdown = memo(({ data, path }) => {
   const { editedValues, setEditedValues } = useContext(BuilderContext);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [selected, setSelected] = useState(null);
 
   return (
     <>
       {data && Object.keys(data).length > 0 && (
         <ReusableDropDown
-          darkmode={darkmode}
+          darkMode={darkMode}
           key={path}
           title={(
             editedValues[path + "." + "selectedValue"] ||
@@ -59,14 +59,14 @@ const MultipleSelectDropdown = memo(({ data, path }) => {
 
 const AllMultipleSelectDropdown = memo(({ data, path }) => {
   const { editedValues, setEditedValues } = useContext(BuilderContext);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [selected, setSelected] = useState(null);
 
   return (
     <>
       {data && Object.keys(data).length > 0 && (
         <ReusableDropDown
-          darkmode={darkmode}
+          darkMode={darkMode}
           key={path}
           title={(
             editedValues[path + "." + "selectedValue"] ||
@@ -129,7 +129,7 @@ const AllMultipleSelectDropdown = memo(({ data, path }) => {
   );
 });
 const SingleSelectDropdown = memo(({ data, path }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const { editedValues, setEditedValues } = useContext(BuilderContext);
   const [selected, setSelected] = useState(null);
 
@@ -138,7 +138,7 @@ const SingleSelectDropdown = memo(({ data, path }) => {
       {data && Object.keys(data).length > 0 && (
         <div className="bg-transparent">
           <ReusableDropDown
-            darkmode={darkmode}
+            darkMode={darkMode}
             key={path}
             title={
               editedValues[path + "." + "selectedValue"] ||
@@ -191,7 +191,7 @@ export const Rendertype = ({ isAdmin, key, keys, obj, setObj, path }) => {
   const [keyvalue, setKeyvalue] = useState(null);
   const [value, setValue] = useState(null);
   const [isValid, setIsValid] = useState(true);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const handleCheckboxChange = (value, isChecked) => {
     if (isChecked) {
@@ -528,10 +528,10 @@ export const Rendertype = ({ isAdmin, key, keys, obj, setObj, path }) => {
                     value={obj.values}
                     classNames={{
                       base: "w-full",
-                      input: darkmode
+                      input: darkMode
                         ? "bg-transparent text-white"
                         : "bg-transparent text-slate-700",
-                      inputWrapper: darkmode
+                      inputWrapper: darkMode
                         ? [
                             "bg-transparent",
                             "text-white",
@@ -544,14 +544,14 @@ export const Rendertype = ({ isAdmin, key, keys, obj, setObj, path }) => {
                             "text-sm",
                             "placeholder:text-sm text-zinc-700",
                           ],
-                      label: darkmode
+                      label: darkMode
                         ? [
                             "data-[focused=true]:border-none text-sm font-bold text-white",
                           ]
                         : [
                             "data-[focused=true]:border-none text-sm font-bold text-black",
                           ],
-                      inputWrapper: darkmode
+                      inputWrapper: darkMode
                         ? [
                             "h-[10px] rounded-md text-white bg-transparent hover:bg-[#D9DEE8] hover:text-slate-700 border border-slate-50/50  ",
                           ]

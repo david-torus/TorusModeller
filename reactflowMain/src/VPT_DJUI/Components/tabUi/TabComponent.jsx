@@ -43,7 +43,7 @@ export default function TabComponent({
   const [show, setShow] = useState(null);
 
   const modalRef = useOnClickOutsideRef(() => setShow(null));
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   useEffect(() => {
     setValue(json);
@@ -67,7 +67,7 @@ export default function TabComponent({
             width: "100%",
             height: "100%",
             padding: "10px",
-            backgroundColor: darkmode ? "#1F2937" : "white",
+            backgroundColor: darkMode ? "#1F2937" : "white",
           }}
         >
           <section
@@ -88,7 +88,7 @@ export default function TabComponent({
                 padding: "0.5em",
 
                 borderRadius: "100vw",
-                backgroundColor: darkmode ? "#1F2937" : "white",
+                backgroundColor: darkMode ? "#1F2937" : "white",
 
                 boxShadow: "1px 1px 7px 0 rgba(0, 0, 0, 0.16)",
                 fontSize: "0.8rem",
@@ -112,7 +112,7 @@ export default function TabComponent({
                           "tablabel cursor-pointer " +
                           (selectedTab === ele + index
                             ? ` text-black rounded-xl ${
-                                darkmode
+                                darkMode
                                   ? "bg-slate-400/20 w-[-10px]"
                                   : "bg-gray-100"
                               }`
@@ -162,7 +162,7 @@ export default function TabComponent({
                               style={{
                                 display:
                                   show === ele + index ? "none " : "block",
-                                color: darkmode ? "white" : "black",
+                                color: darkMode ? "white" : "black",
                               }}
                               onDoubleClick={(e) => {
                                 e.preventDefault();
@@ -188,7 +188,7 @@ export default function TabComponent({
                                   <div className="flex gap-2 items-center">
                                     <span>
                                       <AiOutlineInfoCircle
-                                        color={darkmode ? "white" : "black"}
+                                        color={darkMode ? "white" : "black"}
                                       />
                                     </span>
                                   </div>
@@ -203,7 +203,7 @@ export default function TabComponent({
                               }}
                             >
                               <ReusableInput
-                                darkmode={darkmode}
+                                darkMode={darkMode}
                                 type="text"
                                 defaultValue={ele}
                                 handleChange={(e) => {
@@ -226,7 +226,7 @@ export default function TabComponent({
                                     }}
                                   >
                                     <AiOutlineCloseCircle
-                                      color={darkmode ? "white" : "black"}
+                                      color={darkMode ? "white" : "black"}
                                     />
                                   </span>
                                 }

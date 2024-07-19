@@ -51,7 +51,7 @@ export default function NodeInfoSidebar({
   const [methods] = useState([]);
   const selectedproperty = sideBarData?.defaults?.pw?.property_Window_UI;
   const [tabopen, seTabopen] = useState(1);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [activeTab, setActiveTab] = useState("");
   const [selectedIPC, setSelectedIPC] = useState("");
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
@@ -776,7 +776,7 @@ export default function NodeInfoSidebar({
       {sideBarData && Object.keys(sideBarData).length && (
         <div className="nodeInfoSideBar_wrapper">
           <Sidebar
-            className={`${darkmode ? "bg-[#242424]" : "bg-white"} 
+            className={`${darkMode ? "bg-[#242424]" : "bg-white"} 
             ${currentDrawing === "UF" ? "w-[24%]" : "w-[27%]"}`}
             visible={visiblity}
             position="right"
@@ -797,7 +797,7 @@ export default function NodeInfoSidebar({
                   <div className="w-full h-[70px]">
                     <div
                       className={
-                        darkmode
+                        darkMode
                           ? "w-full   bg-zinc-700 rounded-md text-zinc-200 flex justify-between px-2 py-2  gap-1 transition-all"
                           : "w-full   bg-[#a5a7aa] rounded-md text-slate-800 flex justify-between px-2 py-2  gap-1 transition-all"
                       }
@@ -812,7 +812,7 @@ export default function NodeInfoSidebar({
                         handleOpenModal={handleOpenModal}
                         setToggleReactflow={setToggleReactflow}
                         setFiles={setFiles}
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         contextMenuVisible={contextMenuVisible}
                         contextMenuPosition={contextMenuPosition}
                       />
@@ -825,14 +825,14 @@ export default function NodeInfoSidebar({
                   <div className="grid grid-cols-4 gap-2 w-[100%]">
                     <div
                       className={` flex items-start ${
-                        darkmode
+                        darkMode
                           ? "px-2 py-2 col-span-4 bg-[#242424] mt-3 flex flex-col justify-between items-start "
                           : "px-2 py-2 col-span-4 bg-[#f1f4f8] mt-3 flex flex-col justify-between items-start"
                       } `}
                     >
                       <h1
                         className={`${
-                          darkmode
+                          darkMode
                             ? "text-[#F4F4F5]  font-bold mb-2"
                             : "text-black/80  font-bold mb-2"
                         }   cursor-pointer  `}
@@ -843,7 +843,7 @@ export default function NodeInfoSidebar({
                       {sideBarData?.id ? (
                         <div
                           className={`${
-                            darkmode
+                            darkMode
                               ? "text-[#F4F4F5] text-xs font-medium whitespace-nowrap"
                               : "text-black/80 text-xs font-medium whitespace-nowrap"
                           }`}
@@ -853,7 +853,7 @@ export default function NodeInfoSidebar({
                       ) : (
                         <p
                           className={`${
-                            darkmode
+                            darkMode
                               ? "text-sm font-medium text-[#F4F4F5] "
                               : "text-sm font-medium text-black"
                           }`}
@@ -865,7 +865,7 @@ export default function NodeInfoSidebar({
                       <div className="flex justify-start mt-4 items-center w-full">
                         <h1
                           className={`${
-                            darkmode
+                            darkMode
                               ? "text-[#F4F4F5]  font-bold mb-2"
                               : "text-black/80  font-bold mb-2"
                           }cursor-pointer  `}
@@ -876,7 +876,7 @@ export default function NodeInfoSidebar({
                         {sideBarData?.data?.label ? (
                           <div
                             className={`${
-                              darkmode
+                              darkMode
                                 ? "text-[#F4F4F5] text-xs font-medium whitespace-nowrap pl-3"
                                 : "text-black/80 text-xs font-medium whitespace-nowrap pl-3"
                             }`}
@@ -886,7 +886,7 @@ export default function NodeInfoSidebar({
                         ) : (
                           <p
                             className={`${
-                              darkmode
+                              darkMode
                                 ? "text-sm font-medium text-[#F4F4F5] pl-3"
                                 : "text-sm font-medium text-black pl-3"
                             }`}
@@ -906,12 +906,12 @@ export default function NodeInfoSidebar({
                                 <div className="mt-0 px-2 w-[100%] py-2">
                                   <div className="flex flex-row ">
                                     <h1
-                                      className={`${darkmode ? "text-white" : "text-black/80"} font-bold`}
+                                      className={`${darkMode ? "text-white" : "text-black/80"} font-bold`}
                                     >
                                       nodeType :
                                     </h1>
                                     <span
-                                      className={`${darkmode ? "text-white" : "text-black/80"} font-normal ml-[5px]`}
+                                      className={`${darkMode ? "text-white" : "text-black/80"} font-normal ml-[5px]`}
                                     >
                                       {value && value}
                                     </span>
@@ -930,7 +930,7 @@ export default function NodeInfoSidebar({
                             sideBarData={sideBarData}
                             currentDrawing={currentDrawing}
                             handleNames={handleNames}
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             changeProperty={changeProperty}
                             selectedIPC={selectedIPC}
                             handleIPCselection={handleIPCselection}
@@ -951,7 +951,7 @@ export default function NodeInfoSidebar({
                             sideResponse={sideResponse}
                             currentDrawing={currentDrawing}
                             sideBarData={sideBarData}
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             SIFlag={SIFlag}
                             handleSIFlagselection={handleSIFlagselection}
                             actionAllowed={actionAllowed}
@@ -982,7 +982,7 @@ export default function NodeInfoSidebar({
                             sideResponse={sideResponse}
                             currentDrawing={currentDrawing}
                             sideBarData={sideBarData}
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             SIFlag={SIFlag}
                             handleSIFlagselection={handleSIFlagselection}
                             actionAllowed={actionAllowed}
@@ -1066,7 +1066,7 @@ export default function NodeInfoSidebar({
             group={group}
             application={application}
             selectedproperty={selectedproperty}
-            darkmode={darkmode}
+            darkMode={darkMode}
             updatedNodeConfig={updatedNodeConfig}
             helperJson={helperjson}
           />

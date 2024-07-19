@@ -85,7 +85,7 @@ export default function Index({
 
   const toast = useRef(null);
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Deletes a node from the flow.
@@ -601,7 +601,7 @@ export default function Index({
       style={{
         height: "100%",
         width: "100%",
-        backgroundColor: darkmode ? "#121212" : "#E9E8E8",
+        backgroundColor: darkMode ? "#121212" : "#E9E8E8",
       }}
     >
       <Toast ref={toast} />

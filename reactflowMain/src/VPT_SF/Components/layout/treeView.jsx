@@ -6,7 +6,7 @@ import { Button } from "@nextui-org/react";
 import { useEffect } from "react";
 
 const Treearr = ({ data, parentdata }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [getparent, setGetParent] = useState({});
   const [filteredObj, setFilteredObj] = useState({});
 
@@ -88,7 +88,7 @@ const Treearr = ({ data, parentdata }) => {
         data.map((item, index) => (
           <div
             key={index}
-            className={` ${darkmode ? "border-gray-300/50 bg-[#313137]" : "border-slate-700 bg-[#f1f3f3]"} border p-1 rounded-sm shadow-md mb-2`}
+            className={` ${darkMode ? "border-gray-300/50 bg-[#313137]" : "border-slate-700 bg-[#f1f3f3]"} border p-1 rounded-sm shadow-md mb-2`}
           >
             {Object.entries(item) &&
               Object.entries(item).length > 0 &&
@@ -97,17 +97,17 @@ const Treearr = ({ data, parentdata }) => {
                   {key.includes("Code") ? (
                     <div className="w-full  gap-1 flex justify-around items-center">
                       <div
-                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkmode ? "text-white" : "text-black"}`}
+                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
                       >
                         {key}
                         <p
-                          className={`${darkmode ? "text-white" : "text-black"}`}
+                          className={`${darkMode ? "text-white" : "text-black"}`}
                         >
                           :
                         </p>
                       </div>
                       <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkmode ? "text-white" : "text-black"} `}
+                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
                       >
                         {value}
                       </div>
@@ -122,18 +122,18 @@ const Treearr = ({ data, parentdata }) => {
                         draggable
                       >
                         <div
-                          className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkmode ? "text-white" : "text-black"}`}
+                          className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
                         >
                           {key}
                           <p
-                            className={`${darkmode ? "text-white" : "text-black"}`}
+                            className={`${darkMode ? "text-white" : "text-black"}`}
                           >
                             :
                           </p>
                         </div>
 
                         <div
-                          className={` w-[45%] flex justify-center items-center text-sm ${darkmode ? "text-white" : "text-black"} `}
+                          className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
                         >
                           {value}
                         </div>
@@ -149,7 +149,7 @@ const Treearr = ({ data, parentdata }) => {
 };
 
 const TreeObj = ({ obj }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [expanded, setExpanded] = useState(false);
   const [getparent, setGetParent] = useState({});
   const [filteredObj, setFilteredObj] = useState({});
@@ -247,7 +247,7 @@ const TreeObj = ({ obj }) => {
 
   return (
     <div
-      className={`${darkmode ? "bg-[#1d1c20]" : "bg-[#e9e8e8]"} border-1 ${darkmode ? "border-gray-300/50" : "border-slate-700"}  rounded-md p-2 mb-2 shadow-lg`}
+      className={`${darkMode ? "bg-[#1d1c20]" : "bg-[#e9e8e8]"} border-1 ${darkMode ? "border-gray-300/50" : "border-slate-700"}  rounded-md p-2 mb-2 shadow-lg`}
     >
       {obj &&
         Object.keys(obj) &&
@@ -267,18 +267,18 @@ const TreeObj = ({ obj }) => {
                   <>
                     <div className="w-full  gap-1 flex justify-around items-center ml-[17.2px]">
                       <div
-                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkmode ? "text-white" : "text-black"}`}
+                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
                       >
                         {key}
                         <p
-                          className={`${darkmode ? "text-white" : "text-black"}`}
+                          className={`${darkMode ? "text-white" : "text-black"}`}
                         >
                           :
                         </p>
                       </div>
 
                       <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkmode ? "text-white" : "text-black"} `}
+                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
                       >
                         {obj[key]}
                       </div>
@@ -293,7 +293,7 @@ const TreeObj = ({ obj }) => {
                       onClick={toggleExpansion}
                     >
                       <IoIosArrowForward
-                        color={darkmode ? "white" : "black"}
+                        color={darkMode ? "white" : "black"}
                         size={15}
                         className={`transition-all ease-in-out duration-200 delay-75 ${expanded ? "rotate-90" : ""}`}
                       />
@@ -307,18 +307,18 @@ const TreeObj = ({ obj }) => {
                       draggable
                     >
                       <div
-                        className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkmode ? "text-white" : "text-black"}`}
+                        className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
                       >
                         {key}
                         <p
-                          className={`${darkmode ? "text-white" : "text-black"}`}
+                          className={`${darkMode ? "text-white" : "text-black"}`}
                         >
                           :
                         </p>
                       </div>
 
                       <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkmode ? "text-white" : "text-black"} `}
+                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
                       >
                         {obj[key]}
                       </div>

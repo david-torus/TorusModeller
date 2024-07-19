@@ -67,7 +67,7 @@ export default function TableMain({
           onClick={() => tabvisible(1)}
           className={`flex flex-row gap-2 capitalize transition-all items-center text-center select-none  
                  xl:px-[25px] xl:py-[3px] px-[21px] py-[4px]  xl:text-md text-sm
-                  text-slate-600 rounded-md  cursor-pointer text-${darkmode ? "white" : "black"} 
+                  text-slate-600 rounded-md  cursor-pointer text-${darkMode ? "white" : "black"} 
                  
                 ${tabopen === 1 && `border border-slate-500/50 font-bold `}`}
         >
@@ -79,7 +79,7 @@ export default function TableMain({
           className={`flex flex-row xl:gap-2 capitalize transition-all gap-1 items-center text-center 
                 xl:text-md text-sm text-slate-600 select-none  
                  xl:px-[28px] xl:py-[3px] px-[21px] py-[4px] 
-                  cursor-pointer rounded-md text-${darkmode ? "white" : "black"}
+                  cursor-pointer rounded-md text-${darkMode ? "white" : "black"}
                   ${tabopen === 2 && `border border-slate-500/50  font-bold `} `}
         >
           <VscSymbolMethod className="text-xl" />

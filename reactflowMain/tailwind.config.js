@@ -18,9 +18,6 @@ module.exports = {
     },
     darkMode: "class",
     extend: {
-     
-    
-
       animation: {
         torusPopOverOpen: "torusPopOverOpen 150ms ease-in",
         torusPopOverClose: "torusPopOverClose 150ms ease-in",

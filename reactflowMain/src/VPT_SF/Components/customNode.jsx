@@ -6,13 +6,13 @@ import { GoOrganization } from "react-icons/go";
 import { RoleNameIcon, RoleNodeIcon } from "../../asset/SvgsApplication";
 
 export function OrgNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
-      className={`new-custom-node ${selected && " ring-2"} ${darkmode ? "bg-[#99ffdd]/30" : "bg-[#99ffdd]/40"} `}
+      className={`new-custom-node ${selected && " ring-2"} ${darkMode ? "bg-[#99ffdd]/30" : "bg-[#99ffdd]/40"} `}
       style={{
-        border: darkmode
+        border: darkMode
           ? "1px solid" + (data.nodeColor || "#a8f0e2")
           : "1px solid" + (data.nodeColor || "#82E0AA"),
 
@@ -31,7 +31,7 @@ export function OrgNode({ data, isConnectable, selected }) {
             marginBottom: data.label !== "" ? "-5px" : "",
           }}
         >
-          <GoOrganization size={25} color={darkmode ? "white" : "#616A6B"} />
+          <GoOrganization size={25} color={darkMode ? "white" : "#616A6B"} />
         </span>
       }
 
@@ -64,7 +64,7 @@ export function OrgNode({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "#616A6B",
+            color: darkMode ? "white" : "#616A6B",
             fontFamily: "sans-serif",
           }}
         >
@@ -76,7 +76,7 @@ export function OrgNode({ data, isConnectable, selected }) {
 }
 
 export function OrgName({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
@@ -101,7 +101,7 @@ export function OrgName({ data, isConnectable, selected }) {
         >
           <SiAwsorganizations
             size={25}
-            color={darkmode ? "white" : "#616A6B"}
+            color={darkMode ? "white" : "#616A6B"}
           />
         </span>
       }
@@ -148,7 +148,7 @@ export function OrgName({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "#616A6B",
+            color: darkMode ? "white" : "#616A6B",
             fontFamily: "sans-serif",
           }}
         >
@@ -160,13 +160,13 @@ export function OrgName({ data, isConnectable, selected }) {
 }
 
 export function RoleNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
       className={`new-custom-node ${selected && " ring-2"} bg-[#ffffb3]/30 `}
       style={{
-        border: darkmode
+        border: darkMode
           ? "1px solid" + (data.nodeColor || "#ffff99")
           : "1px solid" + (data.nodeColor || "#F7DC6F"),
 
@@ -231,7 +231,7 @@ export function RoleNode({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "#616A6B",
+            color: darkMode ? "white" : "#616A6B",
             fontFamily: "sans-serif",
           }}
         >
@@ -243,7 +243,7 @@ export function RoleNode({ data, isConnectable, selected }) {
 }
 
 export function RoleName({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
@@ -251,7 +251,7 @@ export function RoleName({ data, isConnectable, selected }) {
       style={{
         border: "1px solid" + (data.nodeColor || "#ffff99"),
         // borderWidth: "2px",
-        // backgroundColor: darkmode ? "	 #ffffb3" : "	 #ffffb3",
+        // backgroundColor: darkMode ? "	 #ffffb3" : "	 #ffffb3",
         borderRadius: "50%",
         width: "60px",
         height: "60px",
@@ -313,7 +313,7 @@ export function RoleName({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "6px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "sans-serif",
           }}
         >
@@ -325,7 +325,7 @@ export function RoleName({ data, isConnectable, selected }) {
 }
 
 export function PsNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
@@ -333,7 +333,7 @@ export function PsNode({ data, isConnectable, selected }) {
       style={{
         border: "1px solid " + (data.nodeColor || " #ff99cc"),
 
-        // backgroundColor: darkmode ? " #ffb3d9" : " #ffb3d9",
+        // backgroundColor: darkMode ? " #ffb3d9" : " #ffb3d9",
         borderRadius: "50%",
         width: "60px",
         height: "60px",
@@ -351,7 +351,7 @@ export function PsNode({ data, isConnectable, selected }) {
         >
           <SiAwsorganizations
             size={25}
-            color={darkmode ? "white" : "#616A6B"}
+            color={darkMode ? "white" : "#616A6B"}
           />
         </span>
       }
@@ -397,7 +397,7 @@ export function PsNode({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "#616A6B",
+            color: darkMode ? "white" : "#616A6B",
             fontFamily: "sans-serif",
           }}
         >
@@ -409,7 +409,7 @@ export function PsNode({ data, isConnectable, selected }) {
 }
 
 export function PsName({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
@@ -417,7 +417,7 @@ export function PsName({ data, isConnectable, selected }) {
       style={{
         border: "1px solid" + (data.nodeColor || " #ff99cc"),
 
-        // backgroundColor: darkmode ? "#ffcce6" : " #ffcce6",
+        // backgroundColor: darkMode ? "#ffcce6" : " #ffcce6",
         borderRadius: "50%",
         width: "60px",
         height: "60px",
@@ -435,7 +435,7 @@ export function PsName({ data, isConnectable, selected }) {
         >
           <SiAwsorganizations
             size={25}
-            color={darkmode ? "white" : "#616A6B"}
+            color={darkMode ? "white" : "#616A6B"}
           />
         </span>
       }
@@ -469,7 +469,7 @@ export function PsName({ data, isConnectable, selected }) {
           title={data.label}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "#616A6B",
+            color: darkMode ? "white" : "#616A6B",
             fontFamily: "sans-serif",
           }}
         >

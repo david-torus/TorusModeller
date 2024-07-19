@@ -20,7 +20,7 @@ const DefaulltSidebar = ({ fabrics }) => {
   const [open, setOpen] = useState(false);
   const [clickToEdit, setClickToEdit] = useState(null);
   const [search, setSearch] = useState("");
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Sets the data transfer for a drag start event and allows the move effect.
@@ -58,13 +58,13 @@ const DefaulltSidebar = ({ fabrics }) => {
         }}
         animate={open ? "open" : "closed"}
         className={`${
-          darkmode
+          darkMode
             ? "bg-[#1F1F1F] drop-shadow-lg relative rounded-lg  border border-gray-500  "
             : "backdrop-blur-sm drop-shadow-lg relative rounded-lg  border border-gray-500  "
         }`}
       >
         <FaPlus
-          color={darkmode ? "white" : "#6B7280"}
+          color={darkMode ? "white" : "#6B7280"}
           style={{
             zIndex: 110,
             top: 15,
@@ -87,12 +87,12 @@ const DefaulltSidebar = ({ fabrics }) => {
           <div className="pb-2">
             <ReusableInput
               key={"DefaultSideBarNavbarInput1"}
-              darkmode={darkmode}
+              darkMode={darkMode}
               placeholder="Type to search..."
               startContent={
                 <FiSearch
                   size={16}
-                  color={darkmode ? "stone-100" : "slate-600/60"}
+                  color={darkMode ? "stone-100" : "slate-600/60"}
                 />
               }
               isClearable={false}
@@ -126,7 +126,7 @@ const DefaulltSidebar = ({ fabrics }) => {
                       isFooterBlurred
                       radius="lg"
                       className={`${
-                        darkmode
+                        darkMode
                           ? "text-white/70  flex flex-col items-start cursor-grab active:cursor-grabbing  gap-2 bg-[#1D1C20] border border-gray-400/50  mb-3 "
                           : "text-black/70  flex flex-col items-start cursor-grab active:cursor-grabbing  gap-2 bg-[#E9E8E8] border border-gray-400  mb-3 "
                       }`}
@@ -138,7 +138,7 @@ const DefaulltSidebar = ({ fabrics }) => {
                         })}
                         <div
                           className={`${
-                            darkmode
+                            darkMode
                               ? "text-white/70 font-bold w-[70%] cursor-pointer "
                               : "text-black font-bold w-[70%] cursor-pointer "
                           }`}
@@ -146,7 +146,7 @@ const DefaulltSidebar = ({ fabrics }) => {
                           {clickToEdit === index ? (
                             <ReusableInput
                               key={"DefaultSideBarNavbarInput2"}
-                              darkmode={darkmode}
+                              darkMode={darkMode}
                               defaultValue={item.label}
                               size="sm"
                               handleChange={(e) => {
@@ -179,7 +179,7 @@ const DefaulltSidebar = ({ fabrics }) => {
                       <div className="flex justify-center items-center">
                         <CardFooter
                           className={`${
-                            darkmode
+                            darkMode
                               ? "mb-[12px] text-start  text-white/70 text-sm justify-between bg-[#313137] border-gray-300/20 border-1 overflow-hidden py-1  rounded-lg bottom-1 w-[90%] shadow-small   "
                               : "mb-[12px] text-start text-black/70 text-sm justify-between bg-gray-100 border-gray-300/20 border-1 overflow-hidden py-1  rounded-lg bottom-1 w-[90%] shadow-small   "
                           }`}

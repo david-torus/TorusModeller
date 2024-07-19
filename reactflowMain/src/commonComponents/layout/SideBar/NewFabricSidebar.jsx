@@ -14,11 +14,10 @@ import {
   Wire,
 } from "../../FabricsSvg-assests/SVG_Application";
 
-
-import { DarkmodeContext, DarkModeContext } from "../../context/DarkmodeContext";
 import { BiMoon, BiSun } from "react-icons/bi";
-import TorusTab from  "../../../torusComponents/TorusTab";
+import TorusTab from "../../../torusComponents/TorusTab";
 import TorusAvatar from "../../../torusComponents/TorusAvatar";
+import { DarkmodeContext } from "../../context/DarkmodeContext";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -77,7 +76,6 @@ export default function NewFabricSidebar({
     } else if (selectedFabric === "SF") {
       return focusBLcolor.SF.dark;
     }
-
   };
 
   const borderLeft = borderFn();
@@ -86,7 +84,7 @@ export default function NewFabricSidebar({
   return (
     <Panel
       position="top-left"
-      className=" w-[5%] h-[90%] flex flex-col   items-center py-2   bg-white  border  border-slate-300 dark:border-[#212121] rounded-lg  "
+      className=" w-[5%] z-100 h-[90%] flex flex-col   items-center py-2   bg-white  border  border-slate-300 dark:border-[#212121] rounded-lg  "
     >
       <div className=" w-[100%] flex flex-col  items-center   ">
         <TorusTab
@@ -144,53 +142,49 @@ export default function NewFabricSidebar({
                 />
               ),
             },
-           
           ]}
           onSelectionChange={handleTabChange}
         />
-        
 
-
-      <div className="rotate-90 p-2 py-5 h-[5%] flex items-center ">
-        <VerticalLine className={"stroke-white"} />
-      </div>
-
-      <div className="  h-[30%] w-[100%]  mb-5 flex flex-col items-center gap-3 cursor-pointer">
-        <FabricBar className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
-
-        <Faq className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
-
-        <Support className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
-      </div>
-
-      <div className="flex flex-col h-[40%] justify-end  items-center gap-3">
-        <div
-          className="cursor-pointer"
-          onClick={() => toggleDarkMode(!darkMode)}
-        >
-          {darkMode ? (
-            <BiSun color={"#A59E92"} />
-          ) : (
-            <BiMoon color={"#A59E92"} />
-          )}
-        </div>
-        <div>
-          <NodeGallerIcon color={"#A59E92"} />
+        <div className="rotate-90 p-2 py-5 h-[5%] flex items-center ">
+          <VerticalLine className={"stroke-white"} />
         </div>
 
-        <div>
-          <TorusAvatar
-            radius={"full"}
-            size={"lg"}
-            borderColor={"#A59E92"}
-            src={
-              "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-            }
-          />
+        <div className="  h-[30%] w-[100%]  mb-5 flex flex-col items-center gap-3 cursor-pointer">
+          <FabricBar className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+
+          <Faq className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+
+          <Support className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
+        </div>
+
+        <div className="flex flex-col h-[40%] justify-end  items-center gap-3">
+          <div
+            className="cursor-pointer"
+            onClick={() => toggleDarkMode(!darkMode)}
+          >
+            {darkMode ? (
+              <BiSun color={"#A59E92"} />
+            ) : (
+              <BiMoon color={"#A59E92"} />
+            )}
+          </div>
+          <div>
+            <NodeGallerIcon color={"#A59E92"} />
+          </div>
+
+          <div>
+            <TorusAvatar
+              radius={"full"}
+              size={"lg"}
+              borderColor={"#A59E92"}
+              src={
+                "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
+              }
+            />
+          </div>
         </div>
       </div>
-      </div>
-
     </Panel>
   );
 }
