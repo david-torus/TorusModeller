@@ -138,7 +138,7 @@ export default function Layout() {
          `}
     >
       <div className="w-full h-[8%] sticky top-0">
-        <Navbar    color={colors[selectedFabric]?.light} />
+        <Navbar />
       </div>
 
       <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>

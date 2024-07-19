@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { Header, Section, Text } from "react-aria-components";
-import { Back, User } from "./SVG_Application";
-import TorusButton from "./torusComponents/TorusButton";
-import "./index.css";
-import { Panel } from "reactflow";
+import { Back, User } from "../FabricsSvg-assests/SVG_Application";
+import TorusButton from "../../torusComponents/TorusButton";
+import "../../index.css";
+import { Panel, ReactFlowProvider } from "reactflow";
+import PFMain from "../../VPT_PF/VPT_PF_PFD/PFMain";
+import UFDMain from "../../VPT_UF/VPT_UF_SLD/UFDMain";
+import SFMain from "../../VPT_SF/SFMain";
+import ERDMain from "../../VPT_DF/VPT_DF_ERD/ERDMain";
+import PFDefaults from "../../VPT_PF/VPT_PFD/PFDDefaults";
+import DFDDefaults from "../../VPT_DF/VPT_DFD/DFDefaults";
+import UFDefaults from "../../VPT_UF/VPT_UFD/UFDefaults";
+import DJUIMain from "../../VPT_DJUI/DJUIMain";
 const data = [
   {
     label: "User",
@@ -67,7 +75,7 @@ const data = [
     icon: User,
   },
 ];
-export default function NodeGallery({
+export default function NewSidebar({
   color,
   selectedFabric,
   showFabricSideBar,
@@ -80,8 +88,8 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "md:w-4/12 lg:w-2/12 ml-[80px]  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white  border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
-        : "h-[6%] w-[5%]"
+        ? " h-[90%]   w-[20%] bg-white  border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
+        : "h-[6%] w-[5% ]"
     }  `}
     >
       <div
@@ -162,29 +170,84 @@ const Loop = ({ color, selectedFabric }) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
+
+  const Loopbody = (color, selectedFabric, onDragStart) => {
+    switch (selectedFabric) {
+        case "PF":
+          return (
+            <div
+              className={`${!true ? " h-[100%] bg-[#1d1d1d] " : "h-[100%] bg-[#EEEEEE] "}`}
+            >
+              <ReactFlowProvider className="w-[100%] h-full">
+                <PFMain
+                  
+                />
+              </ReactFlowProvider>
+            </div>
+          );
+  
+        case "UF":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <UFDMain
+             
+              />
+            </ReactFlowProvider>
+          );
+  
+        case "SF":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <SFMain
+          
+              />
+            </ReactFlowProvider>
+          );
+  
+        case "DF":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <ERDMain
+             
+              />
+            </ReactFlowProvider>
+          );
+  
+        case "PFD":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <PFDefaults />
+            </ReactFlowProvider>
+          );
+  
+        case "DFD":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <DFDDefaults />
+            </ReactFlowProvider>
+          );
+  
+        case "UFD":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <UFDefaults />
+            </ReactFlowProvider>
+          );
+        case "DJUI":
+          return (
+            <ReactFlowProvider className="w-[100%] h-full">
+              <DJUIMain />
+            </ReactFlowProvider>
+          );
+  
+        default:
+          return null;
+      }
+  }
+
   return (
     <>
-      {data.map((item, index) => (
-        <div
-          key={index}
-          className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-lg dark:text-white w-full"
-          draggable
-          onDragStart={(event) => onDragStart(event, "default")}
-        >
-          <div
-            className={` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
-          >
-            {React.createElement(item.icon, {
-              color: color ? color : "#0736C4",
-              size: 18,
-              selectedFabric: selectedFabric,
-            })}
-          </div>
-          <span className="3xl:text-xs xl:text-sm font-normal tracking-normal font-inter cursor-grab">
-            {item.label}
-          </span>
-        </div>
-      ))}
+     {selectedFabric && Loopbody(color, selectedFabric, onDragStart)}
     </>
   );
 };
