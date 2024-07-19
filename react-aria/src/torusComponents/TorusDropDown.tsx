@@ -20,8 +20,7 @@ const defaultTropdownClassNames = {
   listBoxClassName:
     " torus-entering:animate-dropdownOpen torus-exiting:animate-dropdownClose w-full bg-slate-200 border-2 border-gray-300 transition-all p-1 rounded-md gap-1 flex flex-col items-center",
   listBoxItemClassName:
-    "p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300 rounded-md cursor-pointer transition-colors duration-300 data-disabled:text-red-500"
-  ,
+    "p-1 w-full torus-focus:outline-none torus-hover:bg-blue-300 rounded-md cursor-pointer transition-colors duration-300 data-disabled:text-red-500",
 };
 
 interface Item {
@@ -43,6 +42,7 @@ interface DropDownButtonProps {
   startContent?: React.ReactNode;
   endContent?: React.ReactNode;
   children: React.ReactNode;
+  selected?: any;
 }
 
 interface TorusDropDownProps {
@@ -74,6 +74,7 @@ interface TorusDropDownProps {
   disabledKeys?: string[];
   onAction?: () => void;
   description?: string;
+  clicked?: boolean;
 }
 
 const sizeClasses = {
@@ -92,8 +93,6 @@ const radiusClasses = {
   full: "rounded-full",
 };
 
-;
-
 const DropDownButton: React.FC<DropDownButtonProps> = (props) => {
   const outlineFn = () => {
     if (props.outlineColor) {
@@ -103,35 +102,44 @@ const DropDownButton: React.FC<DropDownButtonProps> = (props) => {
   };
 
   const hoverOutline = outlineFn();
-  const commonClass = `font-lg w-[100%] ${props.marginT} border-none outline-none  torus-hover:outline-none torus-hover:border-2 ${hoverOutline} ${props.gap} ${(props.startContent || props.endContent) && "flex justify-center items-center"} ${radiusClasses[props.radius || "rounded-lg"]}`;
+  const commonClass = `font-lg w-[100%] ${
+    props.marginT
+  } border-none outline-none  torus-hover:outline-none torus-hover:border-2 ${hoverOutline} ${
+    props.gap
+  } ${
+    (props.startContent || props.endContent) &&
+    "flex justify-center items-center"
+  } ${radiusClasses[props.radius || "rounded-lg"]}`;
   const contentClass = sizeClasses[props.size || "px-2.5 py-1.5"];
 
   return (
     <Button
       className={merger(commonClass, props.buttonClassName)}
       style={{
-        background: props.btncolor === "primary"
-          ? "#0736C4"
-          : props.btncolor === "secondary"
+        background:
+          props.btncolor === "primary"
+            ? "#0736C4"
+            : props.btncolor === "secondary"
             ? "#9353D3"
             : props.btncolor === "success"
-              ? "#17C964"
-              : props.btncolor === "danger"
-                ? "#F5A524"
-                : props.btncolor === "warning"
-                  ? "#F5A524"
-                  : "#ffffff",
-        border: props.borderColor === "primary"
-          ? "#0736C4"
-          : props.borderColor === "secondary"
+            ? "#17C964"
+            : props.btncolor === "danger"
+            ? "#F5A524"
+            : props.btncolor === "warning"
+            ? "#F5A524"
+            : "#ffffff",
+        border:
+          props.borderColor === "primary"
+            ? "#0736C4"
+            : props.borderColor === "secondary"
             ? "#9353D3"
             : props.borderColor === "success"
-              ? "#17C964"
-              : props.borderColor === "danger"
-                ? "#F5A524"
-                : props.borderColor === "warning"
-                  ? "#F5A524"
-                  : "#ffffff",
+            ? "#17C964"
+            : props.borderColor === "danger"
+            ? "#F5A524"
+            : props.borderColor === "warning"
+            ? "#F5A524"
+            : "#ffffff",
       }}
     >
       <div className={`w-[100%] flex justify-center ${contentClass}`}>
@@ -140,9 +148,11 @@ const DropDownButton: React.FC<DropDownButtonProps> = (props) => {
         >
           {props.children}
         </div>
-        <div className="w-[10%] flex justify-start">
-          <IoIosArrowDown />
-        </div>
+        {props.selected && Array.from(props.selected).length > 0 && (
+          <div className="w-[10%] flex justify-start">
+            <IoIosArrowDown />
+          </div>
+        )}
       </div>
     </Button>
   );
@@ -174,11 +184,8 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
   disabledKeys,
   onAction,
   description,
-
 }) => {
   const [clicked, setClicked] = useState(false);
-
-  console.log("selectingsss", Array.from(selected));
 
   const labelStyle = (style?: string) => {
     return `text-xs font-medium text-[#000000]/50 ${style}`;
@@ -204,20 +211,15 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
             borderColor={borderColor}
             buttonClassName={classNames?.buttonClassName}
             size={size}
+            selected={selected}
           >
-            {Array.from(selected).length > 0 ?
-              (<>
-                {
-                  Array.from(selected).join(",")
-                }
-              </>) : <>
-                {title}
-              </>
-            }
+            {Array.from(selected || []).length > 0 ? (
+              <>{Array.from(selected).join(",")}</>
+            ) : (
+              <>{title}</>
+            )}
           </DropDownButton>
         </div>
-
-
 
         <Popover
           placement="bottom"
@@ -232,7 +234,6 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
               defaultTropdownClassNames.dialogClassName,
               classNames?.dialogClassName
             )}
-
           >
             {({ close }) => (
               <ListBox
@@ -252,17 +253,15 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
                 {...listBoxProps}
                 disabledKeys={disabledKeys}
 
-
-              // onAction={onAction} // incase onAction is provided means value doesnt takes any action
+                // onAction={onAction} // incase onAction is provided means value doesnt takes any action
               >
                 {(item) => (
                   <ListBoxItem
                     key={item.key}
                     className={merger(
                       defaultTropdownClassNames.listBoxItemClassName,
-                      classNames?.listBoxItemClassName,
+                      classNames?.listBoxItemClassName
                     )}
-
                   >
                     {({ isSelected }) => (
                       <div className="w-full flex justify-between items-center">
@@ -272,8 +271,9 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
 
                         <div className="flex justify-end">
                           <span
-                            className={`transition-all duration-150 ${isSelected ? "opacity-100" : "opacity-0"
-                              }`}
+                            className={`transition-all duration-150 ${
+                              isSelected ? "opacity-100" : "opacity-0"
+                            }`}
                           >
                             <IoIosCheckmark size={20} className="text-black" />
                           </span>
@@ -287,9 +287,7 @@ const TorusDropDown: React.FC<TorusDropDownProps> = ({
             )}
           </Dialog>
         </Popover>
-        {description && (
-          <p className="text-gray-500 text-xs">{description}</p>
-        )}
+        {description && <p className="text-gray-500 text-xs">{description}</p>}
       </DialogTrigger>
     </div>
   );
