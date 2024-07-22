@@ -16,7 +16,7 @@ import { IoCloseOutline } from "react-icons/io5";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash3 } from "react-icons/bs";
 import { Input } from "react-aria-components";
-import TorusDropDown from "./torusComponents/TorusDropDown";
+
 import DropDown from "./NewDropdown";
 
 const versions = ["v1.25", "v1.26", "v1.27", "v1.28"];
