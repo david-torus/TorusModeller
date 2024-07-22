@@ -55,8 +55,6 @@ const TorusButton = ({
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
 
-  
-
   const contentClass = sizeClasses[size] || "px-2.5 py-1.5";
 
   return (
@@ -66,7 +64,7 @@ const TorusButton = ({
           btncolor && btncolor === "primary"
             ? "#0736C4"
             : btncolor === "secondary"
-            ? "#9353D3"
+            ? "#F4F5FA"
             : btncolor === "success"
             ? "#17C964"
             : btncolor === "danger"
