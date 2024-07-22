@@ -39,7 +39,7 @@ export default function Tableui({
 }) {
   const { functionality, editedValues, setEditedValues } =
     useContext(BuilderContext);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const [deltekys, setdleteKyes] = useState(null);
 
@@ -308,7 +308,7 @@ export default function Tableui({
             <Button
               className={
                 " rounded-md  flex select-none  text-sm font-bold border  border-slate-500/50 items-center  " +
-                (darkmode ? " bg-[#242424]  text-white" : "text-gray-500 ")
+                (darkMode ? " bg-[#242424]  text-white" : "text-gray-500 ")
               }
               onClick={() => {
                 if (json && uniqueColumns.length > 0) handlerow();
@@ -329,19 +329,19 @@ export default function Tableui({
                     size="sm"
                     className={
                       "rounded-md  flex select-none  text-sm font-bold border  border-slate-500/50  items-center  " +
-                      (darkmode
+                      (darkMode
                         ? " bg-[#242424]  text-white"
                         : "text-gray-500 ")
                     }
                     isIconOnly={true}
                   >
-                    <FaPlus color={darkmode ? "white" : "#326FD1"} />
+                    <FaPlus color={darkMode ? "white" : "#326FD1"} />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className={
                     " h-[60%] p-1 font-bold text-sm text-gray-500  rounded-sm " +
-                    (darkmode ? " bg-[#242424]  text-white" : "text-gray-500 ")
+                    (darkMode ? " bg-[#242424]  text-white" : "text-gray-500 ")
                   }
                   key="keys"
                   aria-label="Keys"
@@ -349,7 +349,7 @@ export default function Tableui({
                 >
                   <div className=" flex flex-row justify-center items-center ">
                     <ReusableInput
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       placeholder="Enter key"
                       size="sm"
                       key={"table" + path}
@@ -363,7 +363,7 @@ export default function Tableui({
                           <button
                             className={
                               " rounded-full p-1 " +
-                              (darkmode ? "bg-transparent  " : "bg-white")
+                              (darkMode ? "bg-transparent  " : "bg-white")
                             }
                             onClick={() => {
                               handlekeyhead(newkey);
@@ -379,7 +379,7 @@ export default function Tableui({
                           <button
                             className={
                               " rounded-full p-1 " +
-                              (darkmode ? "bg-transparent  " : "bg-white")
+                              (darkMode ? "bg-transparent  " : "bg-white")
                             }
                             onClick={() => {
                               setNewkey("");
@@ -397,10 +397,10 @@ export default function Tableui({
                         classNames: {
                           base: "  w-[100%]",
                           mainWrapper: "h-full ",
-                          input: darkmode
+                          input: darkMode
                             ? "text-white text-small"
                             : "text-small text-black",
-                          inputWrapper: darkmode
+                          inputWrapper: darkMode
                             ? "h-[10px] font-normal rounded-md text-white bg-transparent hover:bg-transparent/80 hover:text-gray-700 border border-slate-500/50 "
                             : "h-[10px] font-normal rounded-md text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50 ",
                         },
@@ -418,12 +418,12 @@ export default function Tableui({
           <div className={`transition-all flex justify-end  gap-1  w-[50%]  `}>
             <ReusableInput
               key={path + "search"}
-              darkmode={darkmode}
+              darkMode={darkMode}
               placeholder="Type to search..."
               startContent={
                 <FiSearch
                   size={16}
-                  className={darkmode ? "text-[#41425B]" : "text-gray-500"}
+                  className={darkMode ? "text-[#41425B]" : "text-gray-500"}
                 />
               }
               isClearable={false}
@@ -436,10 +436,10 @@ export default function Tableui({
                 classNames: {
                   base: " w-[50%] h-[30px] ",
 
-                  input: darkmode
+                  input: darkMode
                     ? "text-white text-small"
                     : "text-small text-black",
-                  inputWrapper: darkmode
+                  inputWrapper: darkMode
                     ? "h-[10px] font-normal rounded-md text-white bg-transparent hover:bg-transparent/80 hover:text-gray-700 border border-slate-500/50 "
                     : "h-[10px] font-normal rounded-md text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50 ",
                 },
@@ -451,10 +451,10 @@ export default function Tableui({
                 <Button
                   isIconOnly
                   size="sm"
-                  className={`bg-[${darkmode ? "#41425B" : "#D9DEE8"}] rounded-md border border-slate-500/50 eclipse h-[30px] w-[6%] items-center justify-center flex mr-[-16px]`}
+                  className={`bg-[${darkMode ? "#41425B" : "#D9DEE8"}] rounded-md border border-slate-500/50 eclipse h-[30px] w-[6%] items-center justify-center flex mr-[-16px]`}
                 >
                   <IoFilterSharp
-                    className={`truncate ${darkmode ? "text-white" : "text-blue-600"}`}
+                    className={`truncate ${darkMode ? "text-white" : "text-blue-600"}`}
                     title={selectedColumns.join(",")}
                     size={15}
                     alt="filter"
@@ -520,7 +520,7 @@ export default function Tableui({
             }}
             className={
               " border-1 border-slate-500/50 " +
-              (darkmode
+              (darkMode
                 ? "text-[#F4F4F5] bg-[#1D1D1D]"
                 : " bg-[#F1F3F9] text-[#41425B]/85  ")
             }
@@ -535,7 +535,7 @@ export default function Tableui({
                         {showhead && selectedhead == ele + index ? (
                           <ReusableInput
                             key={ele + index}
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             type="text"
                             defaultValue={ele}
                             handleChange={(e) => {
@@ -590,7 +590,7 @@ export default function Tableui({
                                   <div className="flex gap-2 items-center">
                                     <span>
                                       <AiOutlineInfoCircle
-                                        color={darkmode ? "white" : "black"}
+                                        color={darkMode ? "white" : "black"}
                                       />
                                     </span>
                                   </div>
@@ -614,7 +614,7 @@ export default function Tableui({
                               }}
                             >
                               <RiDeleteBin6Line
-                                color={darkmode ? "white" : "black"}
+                                color={darkMode ? "white" : "black"}
                               />
                             </span>
                           </div>
@@ -655,12 +655,12 @@ export default function Tableui({
                               }}
                               key={path + "." + parentKey + "." + key}
                               scope="row"
-                              className={`${darkmode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
+                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
                               overflow-hidden  `}
                             >
                               <ReusableInput
                                 key={path + "." + parentKey + "." + key}
-                                className={`border-gray-500/30 h-10 ${darkmode ? "text-gray-200" : "text-gray-700"} border rounded-2xl outline-none shadow-none  w-10 bg-transparent`}
+                                className={`border-gray-500/30 h-10 ${darkMode ? "text-gray-200" : "text-gray-700"} border rounded-2xl outline-none shadow-none  w-10 bg-transparent`}
                                 type="text"
                                 defaultValue={json[parentKey][key]}
                                 value={
@@ -668,7 +668,7 @@ export default function Tableui({
                                     path + "." + parentKey + "." + key
                                   ]
                                 }
-                                darkmode={darkmode}
+                                darkMode={darkMode}
                                 handleChange={(e) => {
                                   setEditedValues((prev) => ({
                                     ...prev,
@@ -696,12 +696,12 @@ export default function Tableui({
                               }}
                               key={path + "." + parentKey + "." + key}
                               scope="row"
-                              className={`${darkmode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
+                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
                               overflow-hidden  `}
                             >
                               <span
                                 className={`${
-                                  darkmode ? "text-white" : "text-gray-700"
+                                  darkMode ? "text-white" : "text-gray-700"
                                 } text-center`}
                                 title={json[parentKey][key]}
                               >
@@ -721,7 +721,7 @@ export default function Tableui({
                                 width: 100 / selectedColumns.length + "%",
                               }}
                               key={path + "." + parentKey + "." + key}
-                              className={`${darkmode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
+                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
                             overflow-hidden  `}
                             >
                               <TableUidecider
@@ -742,7 +742,7 @@ export default function Tableui({
                               style={{
                                 width: 100 / selectedColumns.length + "%",
                               }}
-                              className={`${darkmode ? "bg-[#1D1D1D] text-white" : "bg-[#F1F3F9] text-black"}  whitespace-nowrap 
+                              className={`${darkMode ? "bg-[#1D1D1D] text-white" : "bg-[#F1F3F9] text-black"}  whitespace-nowrap 
                         overflow-hidden  `}
                             >
                               ---
@@ -774,11 +774,11 @@ export default function Tableui({
         <div className="h-[10%]">
           <Pagination
             classNames={{
-              item: darkmode ? "text-white" : "text-black",
-              next: darkmode ? "text-white" : "text-black",
-              prev: darkmode ? "text-white" : "text-black",
+              item: darkMode ? "text-white" : "text-black",
+              next: darkMode ? "text-white" : "text-black",
+              prev: darkMode ? "text-white" : "text-black",
             }}
-            className={darkmode ? "text-white" : "text-black"}
+            className={darkMode ? "text-white" : "text-black"}
             showControls
             variant="light"
             initialPage={page}

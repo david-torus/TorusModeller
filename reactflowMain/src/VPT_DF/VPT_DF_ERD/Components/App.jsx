@@ -54,30 +54,31 @@ const NODE_HEIGHT = 36;
 export const uniQueNameContext = createContext(null);
 
 //App Function
-export default function App({
-  tenant,
-  group,
-  fabrics,
-  application,
-  currentFabric,
+export default function AppDF({
+  nodes,
+  edges,
+  setNodes,
+  setEdges,
+  onNodesChange,
+  onEdgesChange,
+  children,
 }) {
   const edgeUpdateSuccessful = useRef(true);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
   const entityJson = {};
   const reactflowwrapper = useRef(null);
   const [menu, setMenu] = useState(null);
   const [nodeConfig, setNodeConfig] = useState({});
-  const [uniqueNames, setUniqueNames] = useState([]);
+
   const [reactFlowInstance, setreactflowinstance] = useState(null);
   const toast = useRef(null);
-  const drawingTrack = currentFabric;
+  const drawingTrack = "DF";
   const [nodeData, setNodeData] = useState(null);
   const [toggleSide, setToggleSide] = useState(false);
   const [propertywindow, setPropertywindow] = useState(false);
   const [defaults, setDefaults] = useState({});
   const proOptions = { hideAttribution: true };
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
 
   //Declaring node types
@@ -113,9 +114,7 @@ export default function App({
   );
 
   //useEFfect for get data from navbar
-
-  //useEFfect for get data from flow
-  useEffect(() => {
+  const uniqueNames = useMemo(() => {
     if (nodes.length > 0) {
       let uniqNameArray = [];
       for (let node of nodes) {
@@ -123,9 +122,11 @@ export default function App({
           uniqNameArray.push(node.data.label);
         }
       }
-      setUniqueNames(uniqNameArray);
+      return uniqNameArray;
+    } else {
+      return [];
     }
-  }, [nodes]);
+  });
 
   //This function is used to update the edges
   const onEdgeUpdateStart = useCallback(() => {
@@ -359,9 +360,9 @@ export default function App({
     }
   };
 
-  useEffect(() => {
-    getDefaultsForNodes();
-  }, []);
+  // useEffect(() => {
+  //   getDefaultsForNodes();
+  // }, []);
 
   /**
    * Updates the ER JSON data for a specific node based on the provided data and ID.
@@ -601,15 +602,7 @@ export default function App({
   // Returns JSX
   return (
     <uniQueNameContext.Provider value={{ uniqueNames, nodeConfig }}>
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          backgroundColor: darkmode ? "#121212" : "#E9E8E8",
-        }}
-      >
+      <>
         <Toast ref={toast} />
         <ReactFlow
           proOptions={proOptions}
@@ -636,22 +629,24 @@ export default function App({
             padding: 0.2,
           }}
         >
-          <FabricsNavbar
-            undoredo={{
-              undo: undo,
-              redo: redo,
-              canRedo: canRedo,
-              canUndo: canUndo,
-            }}
-            tenant={tenant}
-            group={group}
-            fabrics={fabrics}
-            application={application}
-            getDataFromFabrics={sendDataToNavBar}
-            sendDataToFabrics={getDataFromNavBar}
-          />
-          {/* <Sidebar  /> */}
-          <FabricSidebar fabrics={fabrics} />
+          {children}
+
+          {/* {menu && (
+            <ContextMenu
+              deleteNode={deleteNode}
+              nodeConfig={entityJson}
+              showerror={showerror}
+              showsuccess={showsuccess}
+              updatedNodeConfig={updateERDJson}
+              setMenu={setMenu}
+              isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
+              onClick={onPaneClick}
+              controlPolicyApi={controlPolicyApi}
+              sideBarToggle={sideBarToggle}
+              funcNodedata={setSidebar}
+              {...menu}
+            />
+          )} */}
 
           <NodeInfoSidebar
             nodeConfig={nodeConfig}
@@ -669,26 +664,28 @@ export default function App({
             setPropertywindow={setPropertywindow}
           />
 
-          <Background variant="dots" gap={12} size={1} />
+          {/* <FabricsNavbar
+            undoredo={{
+              undo: undo,
+              redo: redo,
+              canRedo: canRedo,
+              canUndo: canUndo,
+            }}
+            tenant={tenant}
+            group={group}
+            fabrics={fabrics}
+            application={application}
+            getDataFromFabrics={sendDataToNavBar}
+            sendDataToFabrics={getDataFromNavBar}
+          />
 
-          {menu && (
-            <ContextMenu
-              deleteNode={deleteNode}
-              nodeConfig={entityJson}
-              showerror={showerror}
-              showsuccess={showsuccess}
-              updatedNodeConfig={updateERDJson}
-              setMenu={setMenu}
-              isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-              onClick={onPaneClick}
-              controlPolicyApi={controlPolicyApi}
-              sideBarToggle={sideBarToggle}
-              funcNodedata={setSidebar}
-              {...menu}
-            />
-          )}
+          <FabricSidebar fabrics={fabrics} />
+
+      
+
+          <Background variant="dots" gap={12} size={1} /> */}
         </ReactFlow>
-      </div>
+      </>
     </uniQueNameContext.Provider>
   );
 }

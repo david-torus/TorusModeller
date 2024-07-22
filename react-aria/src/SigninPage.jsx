@@ -13,7 +13,7 @@ import TorusRadio from "./torusComponents/TorusRadio";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusModifiedInput1 from "./torusComponents/TorusInput";
 import TorusInput from "./torusComponents/TorusInput";
-import TorusDropDown from "./torusComponents/TorusDropDown";
+import TorusDropDown from "./torusComponents/TorusDropDown.tsx";
 import { BsClockHistory } from "react-icons/bs";
 import TorusSelector from "./torusComponents/TorusSelector";
 import TorusSwitch from "./torusComponents/TorusSwitch";
@@ -83,7 +83,13 @@ export default function SignIn() {
     checked,
     radioValues,
     modular,
+    selectedValues,
   };
+
+  useEffect(() => {
+    console.log(selectedValues, "selectedValues");
+    console.log(Array.from(selectedValues), "selector");
+  }, [selectedValues]);
 
   console.log(date, "date");
 
@@ -171,14 +177,14 @@ export default function SignIn() {
           />
 
           <TorusModularDatePicker
-          label="Date of Birth"
-          slot="end"
-          openBtn="true"
-          setValues={setDate}
-          defaultValue={date}
+            label="Date of Birth"
+            slot="end"
+            openBtn="true"
+            setValues={setDate}
+            defaultValue={date}
           />
 
-          <TorusModularTimePicker/>
+          <TorusModularTimePicker />
 
           <TorusSearch
             variant="bordered"
@@ -330,10 +336,6 @@ export default function SignIn() {
               "Frontend developer",
               "Backend developer",
               "UI/UX designer",
-              "Bussiness analyst",
-              "Data analyst",
-              "Data scienntist",
-              "Others",
             ]}
             orientation="horizontal"
             label="Professions"
@@ -343,46 +345,47 @@ export default function SignIn() {
           />
 
           <TorusRadio
-            content={[
-              "True",
-              "False",
-              "Backend developer",
-              "UI/UX designer",
-              "Bussiness analyst",
-              "Data analyst",
-              "Data scienntist",
-              "Others",
-            ]}
+            content={["True", "False", "Backend developer"]}
             marginT="mt-5"
             label="Defaults"
             value={radioValues}
             onChange={setRadioValues}
             key={radioValues}
-            size="md"
             className=""
           />
 
           <TorusDropDown
-            title={"None"}
+            title={"Testing Pupose"}
+            label="Testing Pupose"
             classNames={{
-              buttonClassName:
-                " bg-white dark:bg-[#262626] font-semibold torus-pressed:animate-torusButtonActive ",
+              buttonClassName: " font-semibold",
 
               listBoxClassName: "bg-white text-black ",
             }}
             popOverProps={{ offset: 15 }}
-            selectionMode="single"
-            items={[
+            selectionMode="multiple"
+            dynamicItems={[
               { key: "v1", label: "v1" },
               { key: "v2", label: "v2" },
+              { key: "v3", label: "v3" },
+              { key: "v4", label: "v4" },
+              { key: "v5", label: "v5" },
+              { key: "v6", label: "v6" },
+              { key: "v7", label: "v7" },
+              { key: "v8", label: "v8" },
             ]}
+            selected={selectedValues}
             btncolor={"#D54CEE"}
             fontStyle={
               "font-inter 3xl:text-xs text-black  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
             }
             radius={"xl"}
-            size={"lg"}
-            
+            // size={"lg"}
+            setSelected={setSelectedValues}
+            disabledKeys={["v1", "v2", "v3"]}
+            onAction={(key) => console.log(key, "clickedkey")}
+            description={"This is a description"}
+            buttonClassName="py-2"
           />
 
           <div className="w-[100%] flex flex-col justify-center items-center mt-5  gap-0.5 bg-white rounded-md px-2 py-3">
@@ -407,7 +410,7 @@ export default function SignIn() {
               Children="Submit"
               onPress={outPutFn}
               width={"full"}
-              btncolor={"#D54CEE"}
+              // btncolor={"#D54CEE"}
               outlineColor="torus-hover:ring-fuchsia-500/50"
               radius={"lg"}
               pressFunc={outPutFn}

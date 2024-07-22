@@ -7,7 +7,7 @@ import { Tabs, Tab } from "@nextui-org/react";
 
 const OrpsSidebar = ({ dropdownJson, fabrics }) => {
   const [open, setOpen] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
@@ -32,13 +32,13 @@ const OrpsSidebar = ({ dropdownJson, fabrics }) => {
         }}
         animate={open ? "open" : "closed"}
         className={`${
-          darkmode
+          darkMode
             ? "bg-[#1F1F1F] drop-shadow-lg relative rounded-lg  border border-gray-500  "
             : "bg-[#e7e6e6] backdrop-blur-sm drop-shadow-lg relative rounded-lg  border border-gray-500  "
         }`}
       >
         <FaPlus
-          color={darkmode ? "#E0E0E0" : "#6B7280"}
+          color={darkMode ? "#E0E0E0" : "#6B7280"}
           style={{
             zIndex: 45,
             top: 15,
@@ -66,13 +66,13 @@ const OrpsSidebar = ({ dropdownJson, fabrics }) => {
               classNames={{
                 tabList:
                   "gap-4 w-full relative rounded-none pl-2 border-b border-divider",
-                cursor: darkmode
+                cursor: darkMode
                   ? "w-full bg-[#9c9c9c]"
                   : "w-full bg-slate-800",
-                tab: darkmode
+                tab: darkMode
                   ? "max-w-fit px-0 h-12 text-white"
                   : "max-w-fit px-0 h-12 text-black",
-                tabContent: darkmode
+                tabContent: darkMode
                   ? "group-data-[selected=true]:text-[#9c9c9c]"
                   : "group-data-[selected=true]:text-[#9c9c9c]",
                 base: "w-full bg-transparent",
@@ -105,7 +105,7 @@ const OrpsSidebar = ({ dropdownJson, fabrics }) => {
                   ) : (
                     <p
                       className={
-                        darkmode
+                        darkMode
                           ? "text-white text-center"
                           : "text-black text-center"
                       }

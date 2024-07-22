@@ -27,13 +27,13 @@ export default function ERDMain({
         position: "relative",
       }}
     >
-      <App
+      {/* <App
         currentFabric={currentFabric}
         tenant={tenant}
         group={appGroup}
         fabrics={currentFabric}
         application={application}
-      />
+      /> */}
     </div>
   );
 }

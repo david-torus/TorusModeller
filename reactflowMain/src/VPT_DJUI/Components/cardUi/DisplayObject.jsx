@@ -43,7 +43,7 @@ export default function DisplayObject({
 
   const [expanded, setExpanded] = useState(false);
 
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [show, setShow] = useState(false);
   const { functionality, collapse } = useContext(BuilderContext);
   const [visible, setVisible] = useState(false);
@@ -82,7 +82,7 @@ export default function DisplayObject({
           <details
             open={expanded}
             className={
-              darkmode
+              darkMode
                 ? " bg-[#494949] border-2 rounded-lg border-gray-500/50 obj-box"
                 : "bg-white obj-box"
             }
@@ -90,7 +90,7 @@ export default function DisplayObject({
           >
             <summary
               className={
-                darkmode
+                darkMode
                   ? `summary-title  bg-${
                       expanded ? "[#595959]" : "[#494949]"
                     } text-white`
@@ -115,7 +115,7 @@ export default function DisplayObject({
                 >
                   <span class="text">{totalOptions[depth]?.L}</span>
                 </div>
-                <span style={{ color: darkmode ? "white" : "black" }}>
+                <span style={{ color: darkMode ? "white" : "black" }}>
               {  headerValue}
                 </span>
                 {keyJson && keyJson.hasOwnProperty(handlepath(path)) && (
@@ -127,21 +127,21 @@ export default function DisplayObject({
                     <div className="flex gap-2 items-center">
                       <span>
                         <AiOutlineInfoCircle
-                          color={darkmode ? "white" : "black"}
+                          color={darkMode ? "white" : "black"}
                         />
                       </span>
                     </div>
                   </Tooltip>
                 )}
-                <PiBracketsCurlyBold color={darkmode ? "white" : "black"} />
+                <PiBracketsCurlyBold color={darkMode ? "white" : "black"} />
                 <span> {children} </span>
               </div>
 
               <div
                 className={`opacity-${show ? "100" : "0"}  flex bg-${
-                  darkmode ? "slate-500" : "gray-300"
+                  darkMode ? "slate-500" : "gray-300"
                 } p-1 gap-2 rounded-md transition-all ease-in-out duration-500 hover:bg-${
-                  darkmode ? "slate-400 " : "white"
+                  darkMode ? "slate-400 " : "white"
                 }`}
               >
                 <span

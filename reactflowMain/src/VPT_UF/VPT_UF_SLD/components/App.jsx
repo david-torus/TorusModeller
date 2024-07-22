@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
+  useMemo,
 } from "react";
 import ReactFlow, {
   Background,
@@ -84,9 +85,17 @@ const nodeTypes = {
  *   - {string} currentFabric - The currentFabric value.
  * @returns {JSX.Element} The rendered App component.
  */
-const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
-  const [nodes, setNodes] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+const FlowWithProviderUF = ({
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+
+  onEdgesChange,
+
+  children,
+  proOptions,
+}) => {
   const [helperLineHorizontal, setHelperLineHorizontal] = useState(undefined);
   const [helperLineVertical, setHelperLineVertical] = useState(undefined);
   const { getIntersectingNodes, flowToScreenPosition, getNode } =
@@ -97,12 +106,12 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
   const [nodepropertydata, setNodePropertyData] = useState(null);
   const [selectedNodeid, setSelectedNodeid] = useState(null);
   const [nodeConfig, setNodeConfig] = useState([]);
-  const [uniqueNames, setUniqueNames] = useState([]);
+
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [showbuilder, setShowBuilder] = useState(false);
   const [menu, setMenu] = useState(false);
   const [propertywindow, setPropertywindow] = useState(null);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [senddomain, setSendDomain] = useState(null);
   const [sendartifact, setSendArtifact] = useState(null);
   const [mainArtifacts, setMainArtifacts] = useState([]);
@@ -381,8 +390,8 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
     };
     if (type !== "group") {
       const response = await getLatestVersion("torus", "Fintech", "UF", type);
-      if (response && response?.data?.nodes[0]?.data?.nodeProperty) {
-        nodeProperty = response?.data?.nodes[0]?.data?.nodeProperty;
+      if (response && response?.data?.nodes?.[0]?.data?.nodeProperty) {
+        nodeProperty = response?.data?.nodes?.[0]?.data?.nodeProperty;
       }
     }
     let ids = uuidv4();
@@ -754,7 +763,7 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
     });
   };
 
-  useEffect(() => {
+  const uniqueNames = useMemo(() => {
     if (nodes && nodes.length > 0) {
       let uniqNameArray = [];
       for (let node of nodes) {
@@ -764,9 +773,13 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
           uniqNameArray = uniqNameArray;
         }
       }
-      setUniqueNames(uniqNameArray);
+      return uniqNameArray;
+    } else {
+      return [];
     }
-  }, [nodes]);
+  });
+
+  useEffect(() => {}, [nodes]);
 
   /**
    * Deletes a node from the state.
@@ -856,16 +869,10 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
   );
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: darkmode ? "#121212" : "#E9E8E8",
-      }}
-    >
+    <>
       {!showbuilder ? (
         <>
-          <div
+          {/* <div
             className={
               !toggleReactflow.events &&
               !toggleReactflow.mapper &&
@@ -874,7 +881,7 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                 : "hidden"
             }
           >
-            {/* <FabricsNavbar
+             <FabricsNavbar
               tenant={tenant}
               group={appGroup}
               application={application}
@@ -903,19 +910,19 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                 >
                   <VscPreview
                     className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                      darkmode
+                      darkMode
                         ? " hover:text-white hover:border-gray-200/80 "
                         : " hover:text-gray-700 hover:border-gray-700 "
                     }`}
                     size={25}
-                    color={darkmode ? "#F4F4F5" : "#616A6B "}
+                    color={darkMode ? "#F4F4F5" : "#616A6B "}
                   />
 
                   <p>Preview</p>
                 </Button>
               </div>
-            </FabricsNavbar> */}
-            <NavBar
+            </FabricsNavbar> 
+             <NavBar
               tenant={tenant}
               group={appGroup}
               application={application}
@@ -933,10 +940,10 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
               setToggleReactflow={setToggleReactflow}
               selecetedWholeVersion={selecetedWholeVersion}
               setSelectedWholeVersion={setSelectedWholeVersion}
-            />
+            /> 
             <FabricSidebar fabrics={"UF"} />
-            {/* <Sidebar /> */}
-          </div>
+            <Sidebar />
+          </div> */}
           {!toggleReactflow.events &&
           !toggleReactflow.mapper &&
           !toggleReactflow.rule ? (
@@ -980,6 +987,20 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
               onEdgeUpdate={onEdgeUpdate}
               connectionLineStyle={connectionLineStyle}
             >
+              {children}
+              {/* {menu && (
+                <ContextMenu
+                  setToogle={setSidebar}
+                  sideT={sideT}
+                  node={nodes}
+                  onClick={onPaneClick}
+                  deleteNode={deleteNode}
+                  {...menu}
+                  setMenu={setMenu}
+                  setSelectedNodeid={setSelectedNodeid}
+                  // updatedNodeConfig={updatedNodeConfig}
+                />
+              )} */}
               <HelperLines
                 horizontal={helperLineHorizontal}
                 vertical={helperLineVertical}
@@ -990,7 +1011,7 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                 updatedNodeConfig={updatedNodeConfig}
                 uniqueNames={uniqueNames}
                 changeProperty={updatenodeDetails}
-                currentDrawing={currentFabric}
+                currentDrawing={"UF"}
                 visiblity={toggleSide}
                 setVisiblity={sideT}
                 nodeData={nodeData}
@@ -1004,26 +1025,14 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
                 setPropertywindow={setPropertywindow}
               />
 
-              {menu && (
-                <ContextMenu
-                  setToogle={setSidebar}
-                  sideT={sideT}
-                  node={nodes}
-                  onClick={onPaneClick}
-                  deleteNode={deleteNode}
-                  {...menu}
-                  setMenu={setMenu}
-                  setSelectedNodeid={setSelectedNodeid}
-                  // updatedNodeConfig={updatedNodeConfig}
-                />
-              )}
+              {/* 
               <Background
                 variant="dots"
-                color={darkmode ? "#ccc" : "black"}
+                color={darkMode ? "#ccc" : "black"}
                 gap={25}
                 size={1.4}
               />
-              <MiniMap nodeStrokeWidth={3} pannable zoomable />
+              <MiniMap nodeStrokeWidth={3} pannable zoomable /> */}
             </ReactFlow>
           ) : (
             toggleReactflow.events &&
@@ -1065,7 +1074,7 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
           />
         </>
       )}
-    </div>
+    </>
   );
 };
 
@@ -1075,12 +1084,5 @@ const App = ({ tenant, appGroup, stateTrack, application, currentFabric }) => {
  * @param {Object} props - The properties passed to the component.
  * @return {JSX.Element} The rendered React element.
  */
-function FlowWithProvider(props) {
-  return (
-    <ReactFlowProvider style={{ width: "100%", height: "100%" }}>
-      <App {...props} />
-    </ReactFlowProvider>
-  );
-}
 
-export default FlowWithProvider;
+export default FlowWithProviderUF;

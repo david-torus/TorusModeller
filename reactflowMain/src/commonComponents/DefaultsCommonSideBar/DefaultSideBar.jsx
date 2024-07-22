@@ -14,7 +14,7 @@ export default function DefaultSideBar({
   currentDefault,
   updatedNodeConfig,
 }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [tabData, setTabData] = useState({});
   const [tabDataHelper, setTabDataHelper] = useState({});
   const [openBuilder, setOpenBuilder] = useState(false);
@@ -230,7 +230,7 @@ export default function DefaultSideBar({
 
   return (
     <Sidebar
-      className={`${darkmode ? "bg-[#242424]" : "bg-white"} `}
+      className={`${darkMode ? "bg-[#242424]" : "bg-white"} `}
       position="right"
       visible={visible}
       onHide={() => {
@@ -258,7 +258,7 @@ export default function DefaultSideBar({
         setContextMenuVisible={setContextMenuVisible}
         nodeInfoTabs={defaultInfoTabs}
         currentDefaults={currentDefault}
-        darkmode={true}
+        darkMode={true}
         handleContextMenu={handleContextMenu}
         handleOpenModal={handleOpenModel}
         setFiles={handleFileUpload}

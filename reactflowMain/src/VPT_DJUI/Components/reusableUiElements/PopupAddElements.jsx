@@ -26,7 +26,7 @@ export const PopupAddElements = ({
   const [inputValues, setInputValues] = useState([""]);
   const [dropvalues, setDropValues] = useState([""]);
   const [radiovalues, setRadioValues] = useState([""]);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const toast = useRef(null);
 
@@ -218,17 +218,17 @@ export const PopupAddElements = ({
   return (
     <Dialog
       className={
-        darkmode
+        darkMode
           ? `border-2 border-[#4b4b4b] shadow-lg rounded-md w-96 bg-[#363636]  backdrop-blur-sm min-h-[200px] max-h-[600px] `
           : `border-2 border-[#cfcfcf] shadow-lg rounded-md w-96 bg-[#ffffff]  backdrop-blur-sm min-h-[200px] max-h-[600px]`
       }
       header="Add Elements"
       headerStyle={{
-        backgroundColor: darkmode ? "#363636" : "#E1E1E1",
-        color: darkmode ? "white" : "black",
+        backgroundColor: darkMode ? "#363636" : "#E1E1E1",
+        color: darkMode ? "white" : "black",
       }}
       contentStyle={{
-        backgroundColor: darkmode ? "#363636" : "#E1E1E1",
+        backgroundColor: darkMode ? "#363636" : "#E1E1E1",
       }}
       visible={visible}
       onHide={() => setVisble(false)}
@@ -259,7 +259,7 @@ export const PopupAddElements = ({
               type="text"
               key="Popupkey"
               label={"Key"}
-              darkmode={darkmode}
+              darkMode={darkMode}
               handleChange={(e) => setKey(e.target.value)}
               labelPlacement="outside"
               placeholder={"Enter Key"}
@@ -275,7 +275,7 @@ export const PopupAddElements = ({
               className="rounded-2xl "
               id="dropdown"
               selectionMode="single"
-              darkmode={darkmode}
+              darkMode={darkMode}
               buttonProps={{
                 size: "xl",
                 style: {
@@ -287,8 +287,8 @@ export const PopupAddElements = ({
               title={selected || "Select an Option"}
               handleSelectedKey={(e) => setSelected(Array.from(e)[0])}
               // style={{
-              //   backgroundColor: darkmode ? "#363636" : "#ffffff ",
-              //   color: darkmode ? "white" : "#999999",
+              //   backgroundColor: darkMode ? "#363636" : "#ffffff ",
+              //   color: darkMode ? "white" : "#999999",
               //   border: "none",
               //   minWidth: "100%",
               //   padding: "5px",
@@ -321,7 +321,7 @@ export const PopupAddElements = ({
             >
               <ReusableInput
                 key="popupString"
-                darkmode={darkmode}
+                darkMode={darkMode}
                 defaultValue=""
                 type="text"
                 id="value"
@@ -341,7 +341,7 @@ export const PopupAddElements = ({
               <ReusableInput
                 defaultValue=""
                 key="popupInput"
-                darkmode={darkmode}
+                darkMode={darkMode}
                 type="text"
                 id="value"
                 handleChange={(e) => setValue(e.target.value)}
@@ -372,7 +372,7 @@ export const PopupAddElements = ({
                   border: "none",
                   padding: "5px",
                   boxShadow: "none",
-                  backgroundColor: darkmode ? "#363636" : "#ffffff",
+                  backgroundColor: darkMode ? "#363636" : "#ffffff",
                   color: "white",
                 }}
               />
@@ -389,7 +389,7 @@ export const PopupAddElements = ({
               <ReusableInput
                 defaultValue={1}
                 key={"popupNumber"}
-                darkmode={darkmode}
+                darkMode={darkMode}
                 type="number"
                 id="value"
                 handleChange={(e) => setValue(e.target.value)}
@@ -413,7 +413,7 @@ export const PopupAddElements = ({
                       <ReusableInput
                         defaultValue={""}
                         key={index + "popupDropdown"}
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         type="text"
                         id="key"
                         value={value}
@@ -441,7 +441,7 @@ export const PopupAddElements = ({
               <button
                 onClick={() => handleAddInput("dropdown")}
                 className={
-                  darkmode
+                  darkMode
                     ? `mr-56 text-white text-sm min-h-[30px] min-w-[90px]  p-2 rounded-xl font-bold  bg-[#363636] cursor-pointer
                   border border-gray-300/60 hover:bg-[#609AF8] `
                     : `mr-56 text-black text-sm min-h-[30px] min-w-[90px]  p-2 rounded-xl font-bold  bg-[#D3D3D3] cursor-pointer
@@ -468,7 +468,7 @@ export const PopupAddElements = ({
                       <ReusableInput
                         defaultValue={""}
                         key={index + "popupCheckbox"}
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         type="text"
                         id="key"
                         value={value}
@@ -496,7 +496,7 @@ export const PopupAddElements = ({
               <button
                 onClick={() => handleAddInput("checkbox")}
                 className={
-                  darkmode
+                  darkMode
                     ? `mr-56 text-white text-sm min-h-[30px] min-w-[90px]  p-2 rounded-xl font-bold  bg-[#363636] cursor-pointer
                    border border-gray-300/60 hover:bg-[#609AF8] `
                     : `mr-56 text-black text-sm min-h-[30px] min-w-[90px]  p-2 rounded-xl font-bold  bg-[#D3D3D3] cursor-pointer
@@ -523,7 +523,7 @@ export const PopupAddElements = ({
                       <ReusableInput
                         defaultValue={""}
                         key={index + "popupRadio"}
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         type="text"
                         id="key"
                         value={value}
@@ -562,7 +562,7 @@ export const PopupAddElements = ({
           <div className="model-buttons">
             <span
               className={
-                darkmode
+                darkMode
                   ? `ml-[265px] bg-[#363636] rounded-md cursor-pointer border text-white  border-gray-300/40 hover:bg-[#609AF8] transition-all duration-200`
                   : `ml-[265px] bg-[#D3D3D3] rounded-md cursor-pointer border text-gray-600  border-gray-300/40 hover:bg-[#609AF8] transition-all duration-200`
               }

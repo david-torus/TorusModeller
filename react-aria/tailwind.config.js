@@ -9,6 +9,8 @@ module.exports = {
         torusPopOverClose: "torusPopOverClose 150ms ease-in",
         torusButtonActive: "torusButtonActive 0.5s",
         buttonHoverAnimation: "buttonHoverAnimation 0.5s ease-in-out ",
+        dropdownOpen: "dropdownOpen 0.5s ease-in-out",
+        dropdownClose: "dropdownClose 0.5s ease-in-out",
       },
       keyframes: {
         torusPopOverOpen: {
@@ -51,6 +53,24 @@ module.exports = {
           "50%": { transform: "scale(1.1, 0.9)" },
           "75%": { transform: "scale(0.95, 1.05)" },
         },
+        dropdownOpen: {
+          "from, to" :{
+            opacity: "0",
+            transform: "translateY(-100%)"},
+            "75%": { transform: "translateY(0)" },
+            "100%": { opacity: "1" },
+        },
+        dropdodropdownClose: {
+          "from": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+          "to": {
+            opacity: "0",
+            transform: "translateY(-100%)",
+          },
+        },
+
         cardHoverAnimation: {
           "0%, 10%, 20%, 30%, 40%, 60%, 70%, 80%, 90%, 100%": {
             transform: "scale(1)",

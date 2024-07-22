@@ -52,8 +52,7 @@ const ReactFlowDia = ({
   nodeConfig,
   controlPolicyApi,
   connectionLine,
-  showSuccess,
-  showError,
+
   onEdgeUpdateStart,
   onEdgeUpdateEnd,
   uniqueNames,
@@ -61,9 +60,10 @@ const ReactFlowDia = ({
   setDefaults,
   setdomain,
   setartifact,
+  children,
 }) => {
   const proOptions = { hideAttribution: true };
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [fabricsKey, setFabricsKey] = useState(null);
   const [upIdKey, setUpIdKey] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState({
@@ -73,16 +73,8 @@ const ReactFlowDia = ({
   });
   const { getNode } = useReactFlow();
   return (
-    <div
-      style={{
-        width: widths,
-        height: "100%",
-        margin: "0",
-        padding: "0",
-        backgroundColor: darkmode ? "#121212" : "#E9E8E8",
-      }}
-    >
-      <div
+    <>
+      {/* <div
         style={{
           display:
             !toggleReactflow.rule &&
@@ -107,7 +99,7 @@ const ReactFlowDia = ({
         />
 
         <FabricSidebar fabrics={fabrics} />
-      </div>
+      </div> */}
 
       {!toggleReactflow.rule &&
       !toggleReactflow.mapper &&
@@ -151,8 +143,8 @@ const ReactFlowDia = ({
             uniqueNames={uniqueNames}
             changeProperty={changeProperty}
           />
-
-          {menu && (
+          {children}
+          {/* {menu && (
             <ContextMenu
               customCodeKey={fabricsKey}
               onClick={onPaneClick}
@@ -165,15 +157,13 @@ const ReactFlowDia = ({
               isAdmin={isAdmin}
               nodeConfig={nodeConfig}
               controlPolicyApi={controlPolicyApi}
-              showerror={showError}
-              showsuccess={showSuccess}
               defaults={defaults}
               setDefaults={setDefaults}
             />
-          )}
+          )} */}
           <Background
             variant="dots"
-            color={darkmode ? "#ccc" : "black"}
+            color={darkMode ? "#ccc" : "black"}
             gap={25}
             size={1}
           />
@@ -203,7 +193,7 @@ const ReactFlowDia = ({
       ) : (
         <>nothing</>
       )}
-    </div>
+    </>
   );
 };
 

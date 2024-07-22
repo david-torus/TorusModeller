@@ -63,7 +63,7 @@ export default function ContextMenu({
   const [kjDialog, setKjDialog] = useState(false);
   const [keyJson, setKeyJson] = useState(null);
   const [controlPolicy, setControlPolicy] = useState(null);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [showSide, setShowSide] = useState(false);
   /**
    * Sets the mode to the default mode when the defaultsMode value changes.
@@ -185,7 +185,7 @@ export default function ContextMenu({
           <div
             style={{ top, left, right, bottom  }}
             className={
-              `${darkmode ? "bg-[#363636]  " : "bg-white   "}` +
+              `${darkMode ? "bg-[#363636]  " : "bg-white   "}` +
               `${
                 node.type
                   ? "min-w-[170px] max-w-[200px] min-h-[190px] max-h-[320px] shadow-lg flex flex-col items-center justify-center  z-10 absolute rounded-md "
@@ -203,7 +203,7 @@ export default function ContextMenu({
             >
               <p
                 className={
-                  darkmode
+                  darkMode
                     ? "text-start font-semibold capitalize mb-2 mt-2 text-white"
                     : "text-start font-semibold capitalize mb-2 mt-2 text-black/75"
                 }
@@ -212,10 +212,10 @@ export default function ContextMenu({
               </p>
             </div>
 
-            <div className={`${darkmode ? " p-2 w-full" : " p-2 w-full "}`}>
+            <div className={`${darkMode ? " p-2 w-full" : " p-2 w-full "}`}>
               <div
                 className={
-                  darkmode
+                  darkMode
                     ? "flex flex-row whitespace-nowrap w-full   gap-[11px] p-[10px] hover:bg-slate-500/40 rounded-lg "
                     : "flex flex-row whitespace-nowrap  gap-[11px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
                 }
@@ -223,7 +223,7 @@ export default function ContextMenu({
                 <span>
                   <TbSettings2
                     size={20}
-                    color={darkmode ? "#fff" : "#8C8C8C"}
+                    color={darkMode ? "#fff" : "#8C8C8C"}
                   />
                 </span>
                 <button
@@ -238,7 +238,7 @@ export default function ContextMenu({
                 >
                   <span
                     className={`text-base ${
-                      darkmode ? "text-white" : "text-black/80"
+                      darkMode ? "text-white" : "text-black/80"
                     } ml-2`}
                     style={{ cursor: "pointer" }}
                   >
@@ -249,7 +249,7 @@ export default function ContextMenu({
 
               <div
                 className={
-                  darkmode
+                  darkMode
                     ? "flex flex-row  gap-[11px]  p-[10px] whitespace-nowrap hover:bg-slate-500/40 rounded-lg "
                     : "flex flex-row gap-[11px]  whitespace-nowrap p-[10px] hover:bg-gray-300/50 rounded-lg "
                 }
@@ -260,7 +260,7 @@ export default function ContextMenu({
                 <span>
                   <AiOutlineDelete
                     size={20}
-                    color={darkmode ? "#fff" : "#8C8C8C"}
+                    color={darkMode ? "#fff" : "#8C8C8C"}
                   />
                 </span>
                 <button
@@ -279,7 +279,7 @@ export default function ContextMenu({
                 >
                   <span
                     className={`text-base ${
-                      darkmode ? "text-white" : "text-black/80"
+                      darkMode ? "text-white" : "text-black/80"
                     } ml-2`}
                     style={{ cursor: "pointer" }}
                   >

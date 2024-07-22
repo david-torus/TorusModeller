@@ -21,7 +21,7 @@ export default function CustomEdge({
   markerEnd,
   label,
 }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [toogle, setToogle] = useState(false);
   const { setEdges } = useReactFlow();
   const [edgePath, labelX, labelY] = getSmoothStepPath({
@@ -94,7 +94,7 @@ export default function CustomEdge({
                   width: "100px",
                   fontSize: 2,
                   backgroundColor: "transparent",
-                  color: darkmode ? "white" : "black",
+                  color: darkMode ? "white" : "black",
                 }}
               />
               <button
@@ -104,7 +104,7 @@ export default function CustomEdge({
                 style={{
                   fontSize: 10,
                   backgroundColor: "transparent",
-                  color: darkmode ? "white" : "black",
+                  color: darkMode ? "white" : "black",
                 }}
               >
                 x
@@ -117,7 +117,7 @@ export default function CustomEdge({
                 zIndex: 20,
                 fontSize: 8,
                 backgroundColor: "transparent",
-                color: darkmode ? "white" : "black",
+                color: darkMode ? "white" : "black",
               }}
               onClick={() => setToogle(!toogle)}
             >

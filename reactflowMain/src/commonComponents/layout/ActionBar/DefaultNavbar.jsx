@@ -66,7 +66,7 @@ export default function DefaultNavbar({
   const [selectedDeletingVersinItem, setSelectedDeletingVersionItem] =
     useState(null);
 
-  const { darkmode, toggleDarkmode } = useContext(DarkmodeContext);
+  const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
 
   const handleSubmit = async (e) => {
     try {
@@ -431,7 +431,7 @@ export default function DefaultNavbar({
           transitionDuration: "0.4s",
         }}
         className={`${
-          darkmode
+          darkMode
             ? "bg-[#1E1E1E]/90 relative rounded-lg  border border-gray-500"
             : "backdrop-blur-sm relative rounded-lg  border border-gray-500"
         } `}
@@ -465,30 +465,30 @@ export default function DefaultNavbar({
             >
               <BreadcrumbItem
                 classNames={{
-                  item: darkmode
+                  item: darkMode
                     ? "text-white/70  font-bold"
                     : "text-black/70  font-bold",
-                  separator: darkmode ? "text-white/70  " : "text-black/70  ",
+                  separator: darkMode ? "text-white/70  " : "text-black/70  ",
                 }}
               >
                 {tenant}
               </BreadcrumbItem>
               <BreadcrumbItem
                 classNames={{
-                  item: darkmode
+                  item: darkMode
                     ? "text-white/70  font-bold"
                     : "text-black/70  font-bold",
-                  separator: darkmode ? "text-white/70  " : "text-black/70  ",
+                  separator: darkMode ? "text-white/70  " : "text-black/70  ",
                 }}
               >
                 {group}
               </BreadcrumbItem>
               <BreadcrumbItem
                 classNames={{
-                  item: darkmode
+                  item: darkMode
                     ? "text-white/70  font-bold"
                     : "text-black/70  font-bold",
-                  separator: darkmode ? "text-white/70  " : "text-black/70  ",
+                  separator: darkMode ? "text-white/70  " : "text-black/70  ",
                 }}
               >
                 {fabrics}
@@ -507,36 +507,36 @@ export default function DefaultNavbar({
               isIconOnly
               variant="outline"
               className=" flex flex-row w-full justify-center gap-2 items-center p-2"
-              onClick={() => toggleDarkmode(!darkmode)}
+              onClick={() => toggleDarkMode(!darkMode)}
             >
               <Tooltip
                 content="Dark Mode"
                 className={`rounded-md ${
-                  darkmode
+                  darkMode
                     ? "bg-[#E9E8E8] text-black  "
                     : "bg-[#333333] text-white "
                 }`}
               >
                 <span>
-                  {darkmode ? (
+                  {darkMode ? (
                     <FaMoon
                       className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80 "
                           : " hover:text-gray-700 hover:border-gray-700"
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   ) : (
                     <IoSunny
                       className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80 "
                           : " hover:text-gray-700 hover:border-gray-700"
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   )}
                 </span>
@@ -545,7 +545,7 @@ export default function DefaultNavbar({
             <div className="flex  flex-row items-center justify-center gap-1   ">
               <div
                 className={`${
-                  darkmode
+                  darkMode
                     ? "bg-[#353535]/80 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-gray-400/50 cursor-pointer"
                     : "bg-gray-600/10 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-white cursor-pointer"
                 }  `}
@@ -569,7 +569,7 @@ export default function DefaultNavbar({
                           : false
                       }
                       className={`${
-                        darkmode
+                        darkMode
                           ? " border border-slate-400/30 text-[#F4F4F5] "
                           : " border border-slate-400/30 text-black "
                       }`}
@@ -579,7 +579,7 @@ export default function DefaultNavbar({
                   </>
                 )}
                 <ReusableDropDown
-                  darkmode={darkmode}
+                  darkMode={darkMode}
                   isDisabled={artifacts && artifacts.length < 0 ? true : false}
                   key={"DartifactsDropdown"}
                   title={
@@ -626,7 +626,7 @@ export default function DefaultNavbar({
                 />
 
                 <ReusableDropDown
-                  darkmode={darkmode}
+                  darkMode={darkMode}
                   isDisabled={artifacts && artifacts.length < 0 ? true : false}
                   key={"DversionDropdown"}
                   title={
@@ -670,7 +670,7 @@ export default function DefaultNavbar({
                     <Tooltip
                       content="Create Artifact"
                       className={`rounded-md ${
-                        darkmode
+                        darkMode
                           ? "bg-[#E9E8E8] text-black  "
                           : "bg-[#333333] text-white  "
                       }`}
@@ -678,24 +678,24 @@ export default function DefaultNavbar({
                       <span>
                         <IoMdAdd
                           className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                            darkmode
+                            darkMode
                               ? " hover:text-white hover:border-gray-200/80 "
                               : " hover:text-gray-700 hover:border-gray-700 "
                           }`}
                           size={25}
-                          color={darkmode ? "#F4F4F5" : "#616A6B "}
+                          color={darkMode ? "#F4F4F5" : "#616A6B "}
                         />
                       </span>
                     </Tooltip>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
-                  className={`${darkmode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
+                  className={`${darkMode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
                 >
                   <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
                     <ReusableInput
                       key={"defaultsNavbarInput1"}
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       value={newArtifactsName}
                       isInvalid={newArtifactsNameValidation}
                       errrMsg={
@@ -727,7 +727,7 @@ export default function DefaultNavbar({
 
               <div
                 className={`${
-                  darkmode
+                  darkMode
                     ? "flex flex-row justify-center items-center gap-[-3px] bg-[#121212] rounded-md p-1  "
                     : "flex flex-row justify-center items-center gap-[-3px] bg-gray-600/10 rounded-md p-1 "
                 }`}
@@ -735,7 +735,7 @@ export default function DefaultNavbar({
                 <Tooltip
                   content="Update"
                   className={`rounded-md ${
-                    darkmode
+                    darkMode
                       ? "bg-[#E9E8E8] text-black  "
                       : "bg-[#333333] text-white "
                   }`}
@@ -756,12 +756,12 @@ export default function DefaultNavbar({
                     >
                       <MdOutlineUploadFile
                         className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                          darkmode
+                          darkMode
                             ? " hover:text-white hover:border-gray-200/80 "
                             : " hover:text-gray-700 hover:border-gray-700 "
                         }`}
                         size={25}
-                        color={darkmode ? "#F4F4F5" : "#616A6B "}
+                        color={darkMode ? "#F4F4F5" : "#616A6B "}
                       />
                     </Button>
                   </span>
@@ -769,7 +769,7 @@ export default function DefaultNavbar({
                 <Tooltip
                   content="Save"
                   className={`rounded-md ${
-                    darkmode
+                    darkMode
                       ? "bg-[#E9E8E8] text-black  "
                       : "bg-[#333333] text-white "
                   }`}
@@ -789,12 +789,12 @@ export default function DefaultNavbar({
                     >
                       <MdOutlineSave
                         className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                          darkmode
+                          darkMode
                             ? " hover:text-white hover:border-gray-200/80 "
                             : " hover:text-gray-700 hover:border-gray-700 "
                         }`}
                         size={25}
-                        color={darkmode ? "#F4F4F5" : "#616A6B "}
+                        color={darkMode ? "#F4F4F5" : "#616A6B "}
                       />
                     </Button>
                   </span>

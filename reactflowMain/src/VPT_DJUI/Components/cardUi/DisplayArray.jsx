@@ -43,7 +43,7 @@ export default function DisplayArray({
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState(null);
   const iRef = useRef(null);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [show, setShow] = useState(false);
   const [visible, setVisible] = useState(false);
   const { functionality } = useContext(BuilderContext);
@@ -72,11 +72,11 @@ export default function DisplayArray({
         <div
           className="list-array-obj "
           key={path + "arr"}
-          style={{ backgroundColor: darkmode ? "#494949" : "white" }}
+          style={{ backgroundColor: darkMode ? "#494949" : "white" }}
         >
           <div
             className="array-title"
-            style={{ backgroundColor: darkmode ? "#494949" : "white" }}
+            style={{ backgroundColor: darkMode ? "#494949" : "white" }}
             onMouseEnter={() => {
               setShow(true);
             }}
@@ -86,7 +86,7 @@ export default function DisplayArray({
           >
             <div
               className="array-titles flex"
-              style={{ backgroundColor: darkmode ? "#494949" : "white" }}
+              style={{ backgroundColor: darkMode ? "#494949" : "white" }}
             >
               {selected ? (
                 <div
@@ -99,7 +99,7 @@ export default function DisplayArray({
                   <div>
                     <ReusableInput
                       type="text"
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       defaultValue={title}
                       handleChange={(e) => {
                         handlekey(e.target.value);
@@ -147,7 +147,7 @@ export default function DisplayArray({
                       <span class="text">{totalOptions[depth]?.L}</span>
                     </div>
                   </span>
-                  <span className={darkmode ? "text-white" : "text-gray-950"}>
+                  <span className={darkMode ? "text-white" : "text-gray-950"}>
                     {title} :
                   </span>
                   {keyJson && keyJson.hasOwnProperty(handlepath(path)) && (
@@ -159,22 +159,22 @@ export default function DisplayArray({
                       <div className="flex gap-2 items-center">
                         <span>
                           <AiOutlineInfoCircle
-                            color={darkmode ? "white" : "black"}
+                            color={darkMode ? "white" : "black"}
                           />
                         </span>
                       </div>
                     </Tooltip>
                   )}
-                  <TbBrackets color={darkmode ? "white" : "black"} />
+                  <TbBrackets color={darkMode ? "white" : "black"} />
                   <div>{children}</div>
                 </span>
               )}
 
               <div
                 className={`opacity-${show ? "100" : "0"}  flex bg-${
-                  darkmode ? "slate-500" : "white"
+                  darkMode ? "slate-500" : "white"
                 } p-1 gap-2 rounded-md transition-all ease-in-out duration-500 hover:bg-${
-                  darkmode ? "slate-400 " : "gray-300"
+                  darkMode ? "slate-400 " : "gray-300"
                 }`}
               >
                 <span

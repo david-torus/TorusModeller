@@ -17,7 +17,7 @@ export default function ContextMenu({
   ...props
 }) {
   const { getNode, setNodes, setEdges, getNodes, getEdges } = useReactFlow();
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Deletes a node and its associated edges from the graph.
@@ -92,7 +92,7 @@ export default function ContextMenu({
     <div
       style={{ top, left, right, bottom }}
       className={
-        `${darkmode ? "bg-[#363636]  " : "bg-white   "}` +
+        `${darkMode ? "bg-[#363636]  " : "bg-white   "}` +
         `${
           getNode(id).data.label
             ? "w-[170px] h-[145px] flex flex-col items-center justify-center  z-10 absolute rounded-md "
@@ -110,7 +110,7 @@ export default function ContextMenu({
       >
         <span
           className={
-            darkmode
+            darkMode
               ? "text-start font-semibold capitalize mb-2  text-white"
               : "text-start font-semibold capitalize mb-2  text-black/75"
           }
@@ -118,10 +118,10 @@ export default function ContextMenu({
           {getNode(id).data.label}
         </span>
       </div>
-      <div className={`${darkmode ? " p-2 w-full" : " p-2 w-full "}`}>
+      <div className={`${darkMode ? " p-2 w-full" : " p-2 w-full "}`}>
         <div
           className={
-            darkmode
+            darkMode
               ? "flex flex-row whitespace-nowrap w-full cursor-pointer  gap-[20px] p-[10px] hover:bg-slate-500/40 rounded-lg "
               : "flex flex-row whitespace-nowrap cursor-pointer gap-[20px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
           }
@@ -131,13 +131,13 @@ export default function ContextMenu({
           }}
         >
           <span>
-            <BiEdit size={20} color={darkmode ? "#fff" : "#8C8C8C"} />
+            <BiEdit size={20} color={darkMode ? "#fff" : "#8C8C8C"} />
           </span>
 
           <button>
             <span
               className={`text-base ${
-                darkmode ? "text-white" : "text-black/80"
+                darkMode ? "text-white" : "text-black/80"
               } ml-2`}
             >
               Edit Node
@@ -146,19 +146,19 @@ export default function ContextMenu({
         </div>
         <div
           className={
-            darkmode
+            darkMode
               ? "flex flex-row whitespace-nowrap w-full cursor-pointer  gap-[20px] p-[10px] hover:bg-slate-500/40 rounded-lg "
               : "flex flex-row whitespace-nowrap cursor-pointer gap-[20px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
           }
           onClick={deleteNode}
         >
           <span>
-            <AiOutlineDelete color={darkmode ? "#fff" : "#8C8C8C"} size={20} />
+            <AiOutlineDelete color={darkMode ? "#fff" : "#8C8C8C"} size={20} />
           </span>
           <button>
             <span
               className={`text-base ml-[12px]  ${
-                darkmode ? "text-white" : "text-black/80"
+                darkMode ? "text-white" : "text-black/80"
               }`}
             >
               Delete

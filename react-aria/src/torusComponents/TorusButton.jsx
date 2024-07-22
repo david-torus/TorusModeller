@@ -23,7 +23,6 @@ const TorusButton = ({
   startContent,
   borderColor,
   isIconOnly,
-  isDropDown,
 }) => {
   const outlineFn = () => {
     if (outlineColor) {
@@ -51,12 +50,12 @@ const TorusButton = ({
   };
 
   const commonClass = `font-lg w-[100%] ${marginT} 
-  border-none outline-none  
-  
-    ${isDropDown ? "" : "torus-pressed:animate-torusButtonActive "} 
+  border-none outline-none torus-pressed:animate-torusButtonActive 
   torus-hover:outline-none torus-hover:border-2 ${hoverOutline} ${gap} ${
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
+
+  
 
   const contentClass = sizeClasses[size] || "px-2.5 py-1.5";
 
@@ -74,7 +73,7 @@ const TorusButton = ({
             ? "#F5A524"
             : btncolor === "warning"
             ? "#F5A524"
-            : btncolor
+            : "#ffffff"
         }`,
         border: borderColor ? borderColor : "0736C4",
       }}
@@ -109,17 +108,6 @@ const TorusButton = ({
             </div>
             <div className="w-[20%] flex justify-center items-center">
               {endContent}
-            </div>
-          </div>
-        </div>
-      ) : isDropDown ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
-          <div className="w-[100%] flex justify-evenly gap-1">
-            <div className={`${fontStyle} w-[80%] flex justify-start pr-1`}>
-              {Children}
-            </div>
-            <div className="w-[20%] flex justify-center items-center">
-              <IoIosArrowDown />
             </div>
           </div>
         </div>

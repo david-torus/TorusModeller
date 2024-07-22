@@ -23,7 +23,7 @@ import { Tabs, TabList, Tab } from "react-aria-components";
 import { Checkbox } from "react-aria-components";
 
 import TorusButton from "./TorusButton";
-import TorusDropDown from "./TorusDropDown";
+import TorusDropDown from "./TorusDropDown.tsx";
 import TorusInput from "./TorusInput";
 import TorusDialog from "./TorusDialog";
 import TorusSearch from "./TorusSearch";

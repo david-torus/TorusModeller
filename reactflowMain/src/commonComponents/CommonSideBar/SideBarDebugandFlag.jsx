@@ -13,7 +13,7 @@ import ReusableDropDown from "../reusableComponents/ReusableDropDown";
 export const SideBarDebugandFlag = ({
   sideBarData,
   currentDrawing,
-  darkmode,
+  darkMode,
   SIFlag,
   handleSIFlagselection,
   actionAllowed,
@@ -55,7 +55,7 @@ export const SideBarDebugandFlag = ({
                             : "SI-Flag"
                       }
                       buttonClassName={`${
-                        darkmode
+                        darkMode
                           ? "w-full h-[40px] border border-slate-400/30 text-[#F4F4F5] "
                           : "w-full h-[40px] border border-slate-400/30 text-black "
                       }`}
@@ -88,7 +88,7 @@ export const SideBarDebugandFlag = ({
                             : "Action Allowed"
                       }
                       buttonClassName={`${
-                        darkmode
+                        darkMode
                           ? "w-full h-[40px] border border-slate-400/30 text-[#F4F4F5] "
                           : "w-full h-[40px] border border-slate-400/30 text-black "
                       }`}
@@ -120,7 +120,7 @@ export const SideBarDebugandFlag = ({
                         },
                       }}
                       buttonClassName={`${
-                        darkmode
+                        darkMode
                           ? "w-full h-[40px] border border-slate-400/30 text-[#F4F4F5] "
                           : "w-full h-[40px] border border-slate-400/30 text-black "
                       }`}
@@ -178,17 +178,17 @@ export const SideBarDebugandFlag = ({
               title="Debug"
               classNames={{
                 titleWrapper: "w-full",
-                title: darkmode
+                title: darkMode
                   ? "w-full text-md font-bold text-blue-400"
                   : "w-full text-md font-bold text-blue-700",
-                indicator: darkmode
+                indicator: darkMode
                   ? "text-white font-bolder text-md"
                   : "text-black font-bolder text-md",
               }}
               startContent={
                 <IoIosInformationCircle
                   className={
-                    darkmode
+                    darkMode
                       ? "text-blue-400 font-bolder text-lg"
                       : "text-blue-700 font-bolder text-lg"
                   }
@@ -200,7 +200,7 @@ export const SideBarDebugandFlag = ({
                   <Button
                     isDisabled={!upIdKey}
                     className={
-                      darkmode
+                      darkMode
                         ? `rounded-md w-[100px] h-[35px] hover:bg-blue-500 hover:shadow-lg ml-[5px] mt-[-5px]
                             ${!activeTab ? "bg-slate-600 text-slate-800/65" : " bg-[#009BC9] text-slate-50"}  
                             flex items-center justify-center cursor-pointer  shadow-md`
@@ -213,17 +213,17 @@ export const SideBarDebugandFlag = ({
                   >
                     <VscDebug
                       className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80"
                           : " hover:text-gray-700 hover:border-gray-700 "
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   </Button>
                   <p
                     className={`${
-                      darkmode
+                      darkMode
                         ? "text-[#F4F4F5] text-sm ml-[20px] mt-1 font-semibold mb-3 "
                         : "text-black text-sm  ml-[20px] mt-1  font-semibold mb-3"
                     }   cursor-pointer }`}
@@ -236,7 +236,7 @@ export const SideBarDebugandFlag = ({
                     isDisabled={!upIdKey}
                     onClick={handleRequest}
                     className={
-                      darkmode
+                      darkMode
                         ? `rounded-md w-[100px] h-[35px] hover:bg-blue-500 hover:shadow-lg ml-[5px] mt-[-5px]
                             ${!activeTab ? "bg-slate-600 text-slate-800/65" : " bg-[#009BC9] text-slate-50"}  
                             flex items-center justify-center cursor-pointer  shadow-md`
@@ -247,17 +247,17 @@ export const SideBarDebugandFlag = ({
                   >
                     <VscGitPullRequestGoToChanges
                       className={`  p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80"
                           : " hover:text-gray-700 hover:border-gray-700 "
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   </Button>
                   <p
                     className={`${
-                      darkmode
+                      darkMode
                         ? "text-[#F4F4F5] text-sm ml-[27px] mt-1 font-semibold mb-3 "
                         : "text-black text-sm  ml-[27px] mt-1  font-semibold mb-3"
                     }   cursor-pointer }`}
@@ -269,7 +269,7 @@ export const SideBarDebugandFlag = ({
                 <div className="flex flex-col mt-4">
                   <Button
                     className={
-                      darkmode
+                      darkMode
                         ? `rounded-md w-[100px] h-[35px] hover:bg-blue-500 hover:shadow-lg ml-[5px] mt-[-5px]
                             ${!activeTab ? "bg-slate-600 text-slate-800/65" : " bg-[#009BC9] text-slate-50"}  
                             flex items-center justify-center cursor-pointer  shadow-md`
@@ -282,17 +282,17 @@ export const SideBarDebugandFlag = ({
                   >
                     <VscSaveAll
                       className={`  p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                        darkmode
+                        darkMode
                           ? " hover:text-white hover:border-gray-200/80"
                           : " hover:text-gray-700 hover:border-gray-700 "
                       }`}
                       size={25}
-                      color={darkmode ? "#F4F4F5" : "#616A6B "}
+                      color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   </Button>
                   <p
                     className={`${
-                      darkmode
+                      darkMode
                         ? "text-[#F4F4F5] text-sm ml-[20px] mt-1 font-semibold mb-3 "
                         : "text-black text-sm  ml-[20px] mt-1  font-semibold mb-3"
                     }   cursor-pointer }`}
@@ -304,7 +304,7 @@ export const SideBarDebugandFlag = ({
               <div className="ml-[85px] flex flex-col mt-1">
                 <Button
                   className={
-                    darkmode
+                    darkMode
                       ? `rounded-md w-[150px] h-[35px] hover:bg-blue-500 hover:shadow-lg ml-[-16px] mt-[-5px]
                             ${!activeTab ? "bg-blue-500 text-slate-800/65" : " bg-[#009BC9] text-slate-50"}  
                             flex items-center justify-center cursor-pointer  shadow-md`
@@ -319,17 +319,17 @@ export const SideBarDebugandFlag = ({
                 >
                   <BsCollectionPlay
                     className={`  p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                      darkmode
+                      darkMode
                         ? " hover:text-white hover:border-gray-200/80"
                         : " hover:text-gray-700 hover:border-gray-700 "
                     }`}
                     size={25}
-                    color={darkmode ? "#F4F4F5" : "#616A6B "}
+                    color={darkMode ? "#F4F4F5" : "#616A6B "}
                   />
                 </Button>
                 <p
                   className={`${
-                    darkmode
+                    darkMode
                       ? "text-[#F4F4F5] text-sm ml-[15px] mt-1 font-semibold mb-3 "
                       : "text-black text-sm  ml-[15px] mt-1  font-semibold mb-3"
                   }   cursor-pointer }`}

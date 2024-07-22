@@ -43,7 +43,7 @@ export default function Render({
   setSelectedApp,
 }) {
   const [selectedFabric, setSelectedFabric] = useState(null);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   useEffect(() => {
     /**
@@ -229,7 +229,7 @@ export default function Render({
       {selectedFabric == null ? (
         <>
           <div
-            className={`w-[100%] h-full flex flex-col items-center justify-center  gap-2 ${darkmode ? "bg-transparent " : "bg-[#EEEEEE] "} `}
+            className={`w-[100%] h-full flex flex-col items-center justify-center  gap-2 ${darkMode ? "bg-transparent " : "bg-[#EEEEEE] "} `}
           >
             <div className="slider-conatiner  w-[76%] h-[76%] p-4 flex items-center justify-center overflow-scroll">
               <FabricCards
@@ -252,25 +252,25 @@ export default function Render({
             <div className="flex flex-row gap-3">
               {/* <IoIosArrowRoundBack
                 size={40}
-                color={darkmode ? "#D3D3D3" : "#474747"}
+                color={darkMode ? "#D3D3D3" : "#474747"}
               /> */}
               <Breadcrumbs className="mr-[685px] mt-[10px]  ">
                 <BreadcrumbItem
                   classNames={{
-                    item: darkmode
+                    item: darkMode
                       ? "text-white/70  font-bold"
                       : "text-black/70  font-bold",
-                    separator: darkmode ? "text-white/70  " : "text-black/70  ",
+                    separator: darkMode ? "text-white/70  " : "text-black/70  ",
                   }}
                 >
                   {tenant}
                 </BreadcrumbItem>
                 <BreadcrumbItem
                   classNames={{
-                    item: darkmode
+                    item: darkMode
                       ? "text-white/70  font-bold"
                       : "text-black/70  font-bold",
-                    separator: darkmode ? "text-white/70  " : "text-black/70  ",
+                    separator: darkMode ? "text-white/70  " : "text-black/70  ",
                   }}
                 >
                   {appGroup}
@@ -282,10 +282,10 @@ export default function Render({
       ) : (
         <FabricContext.Provider value={setSelectedFabric}>
           <div
-            className={`${darkmode ? "bg-transparent  w-full h-full flex flex-row relative " : "bg-[#EEEEEE]  w-full h-full flex flex-row relative "}   `}
+            className={`${darkMode ? "bg-transparent  w-full h-full flex flex-row relative " : "bg-[#EEEEEE]  w-full h-full flex flex-row relative "}   `}
           >
             <div className="w-[100%] h-full">
-              {Fabrics(selectedFabric, darkmode)}
+              {Fabrics(selectedFabric, darkMode)}
             </div>
           </div>
         </FabricContext.Provider>

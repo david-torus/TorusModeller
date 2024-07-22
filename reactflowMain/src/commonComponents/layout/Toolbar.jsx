@@ -28,7 +28,7 @@ import { Tooltip } from "@nextui-org/react";
 import useCopyPaste from "../react-flow-pro/useCopyPaste";
 
 const Toolbar = ({ undoredo, setMenu, open }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const { zoomIn, zoomOut, fitView, getNodes } = useReactFlow();
   const setSelectedFabric = useContext(FabricContext);
 
@@ -39,7 +39,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
     if (!canvas) {
       return toast.error("Canvas not found!", {
         position: "bottom-right",
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
       });
     }
     function downloadImage(dataUrl, type) {
@@ -101,7 +101,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
       },
       {
         position: "bottom-right",
-        theme: darkmode ? "dark" : "light",
+        theme: darkMode ? "dark" : "light",
         autoClose: 300,
       }
     );
@@ -140,7 +140,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
         display: open ? "block" : "none",
       }}
       className={`  w-[100%] h-[100%]  ${
-        darkmode
+        darkMode
           ? "bg-[#1D1D1D]   border-gray-300/40 rounded-b-lg border-t text-white  "
           : " bg-[#E9E8E8]  border-gray-300/40 rounded-b-lg border-t text-black "
       }`}
@@ -159,7 +159,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Save"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -167,12 +167,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <FaRegSave
                   className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700"
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -180,7 +180,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Reload"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -188,12 +188,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <TfiReload
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -204,7 +204,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Undo"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -212,12 +212,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <FaUndo
                   className={`p-[3px] border border-gray-600/50 rounded active:opacity-50 transition-all ${!undoredo?.canUndo ? "cursor-pointer" : "cursor-not-allowed"} ${
-                    darkmode
+                    darkMode
                       ? ` hover:text-white hover:border-gray-200/80  `
                       : "  hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                   onClick={() => {
                     if (!undoredo?.canUndo) {
                       undoredo?.undo();
@@ -231,7 +231,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Redo"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -239,12 +239,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <FaRedo
                   className={` border border-gray-600/50 p-[3px] rounded active:opacity-50 transition-all ${!undoredo?.canRedo ? "cursor-pointer" : "cursor-not-allowed"} ${
-                    darkmode
+                    darkMode
                       ? ` hover:text-white hover:border-gray-200/80 `
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                   onClick={() => {
                     if (!undoredo?.canRedo) {
                       undoredo?.redo();
@@ -261,7 +261,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Cut"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -271,12 +271,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                   onClick={() => cut()}
                   disabled={!canCopy}
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -284,7 +284,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Copy"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -294,12 +294,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                   onClick={() => copy()}
                   disabled={!canCopy}
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -307,7 +307,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Paste"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -317,12 +317,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                   onClick={() => paste({ x: 0, y: 0 })}
                   disabled={!canPaste}
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -333,7 +333,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Full Screen"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -341,12 +341,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <MdOutlineCheckBoxOutlineBlank
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                   onClick={() => handleFullScreen()}
                 />
               </span>
@@ -355,7 +355,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Window Mode"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -363,12 +363,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <BsWindow
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -379,7 +379,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Search"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -387,12 +387,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <FiSearch
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -403,7 +403,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Save as PNG or SVG"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -412,12 +412,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                 <BsFiletypeSvg
                   onClick={() => saveAsPngOrSvg("svg")}
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -425,7 +425,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Save as PNG"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -434,12 +434,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                 <BsFiletypePng
                   onClick={() => saveAsPngOrSvg("png")}
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -448,7 +448,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Auto Layout Connection"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -456,12 +456,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <AiOutlineLayout
                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80 "
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -472,7 +472,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Debug"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -480,12 +480,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               <span>
                 <VscDebug
                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -497,19 +497,19 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
           >
             <span
               className={`text-sm cursor-pointer ${
-                darkmode ? "text-white/70 " : " text-black/80  "
+                darkMode ? "text-white/70 " : " text-black/80  "
               }`}
             >
               Publish
             </span>
             <IoPlayOutline
               className={` p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                darkmode
+                darkMode
                   ? " hover:text-white hover:border-gray-200/80 "
                   : "  hover:text-gray-700 hover:border-gray-700 "
               }`}
               size={25}
-              color={darkmode ? "#F4F4F5" : "#616A6B "}
+              color={darkMode ? "#F4F4F5" : "#616A6B "}
             />
           </div>
           <div
@@ -518,16 +518,16 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
           >
             <span
               className={`text-sm cursor-pointer ${
-                darkmode ? "text-white/70 " : " text-black/80  "
+                darkMode ? "text-white/70 " : " text-black/80  "
               }`}
             >
               Preview
             </span>
             <GrMonitor
               size={20}
-              color={darkmode ? "#F4F4F5" : "#616A6B "}
+              color={darkMode ? "#F4F4F5" : "#616A6B "}
               className={` p-[3px] ml-1 rounded cursor-pointer active:opacity-50 transition-all ${
-                darkmode
+                darkMode
                   ? "  hover:text-white hover:border-gray-200/80 "
                   : "  hover:text-gray-700 hover:border-gray-700 "
               }`}
@@ -538,7 +538,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Zoom In"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -549,12 +549,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                     zoomIn();
                   }}
                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -562,7 +562,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Zoom Out"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -573,12 +573,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                     zoomOut();
                   }}
                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -586,7 +586,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Fit View"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -597,12 +597,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                     fitView();
                   }}
                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>
@@ -610,7 +610,7 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
               placement="bottom"
               content="Close"
               className={`rounded-md ${
-                darkmode
+                darkMode
                   ? "bg-[#E9E8E8] text-black  "
                   : "bg-[#333333] text-white "
               }`}
@@ -621,12 +621,12 @@ const Toolbar = ({ undoredo, setMenu, open }) => {
                     setSelectedFabric(null);
                   }}
                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                    darkmode
+                    darkMode
                       ? " hover:text-white hover:border-gray-200/80"
                       : " hover:text-gray-700 hover:border-gray-700 "
                   }`}
                   size={25}
-                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                 />
               </span>
             </Tooltip>

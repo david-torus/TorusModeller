@@ -22,7 +22,7 @@ export const TextAreaEditor = memo(
 
     const modalRef = useOnClickOutsideRef(() => setShow(false));
 
-    const { darkmode } = useContext(DarkmodeContext);
+    const { darkMode } = useContext(DarkmodeContext);
 
     const ToggleFlip = (ele) => {
       try {
@@ -68,7 +68,7 @@ export const TextAreaEditor = memo(
           <div className="flex gap-[1px] items-center">
             <b
               style={{
-                color: darkmode ? "#fff" : "#000",
+                color: darkMode ? "#fff" : "#000",
                 fontSize: "12px",
                 display: show ? "none " : "block",
                 userSelect: "none",
@@ -93,7 +93,7 @@ export const TextAreaEditor = memo(
               >
                 <div className="flex gap-2 items-center">
                   <span>
-                    <AiOutlineInfoCircle color={darkmode ? "#fff" : "#000"} />
+                    <AiOutlineInfoCircle color={darkMode ? "#fff" : "#000"} />
                   </span>
                 </div>
               </Tooltip>
@@ -116,7 +116,7 @@ export const TextAreaEditor = memo(
               endContent={
                 <div className="flex justify-end  items-end w-5 gap-1">
                   <button
-                    className={` ${darkmode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full  p-[5px] hover:bg-blue-700/40 hover:text-white`}
+                    className={` ${darkMode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full  p-[5px] hover:bg-blue-700/40 hover:text-white`}
                     onClick={() => {
                       ToggleFlip("key");
                       handleDoubleClick("key");
@@ -124,12 +124,12 @@ export const TextAreaEditor = memo(
                   >
                     <FaCheck
                       className="text-[50%]"
-                      color={darkmode ? "white" : "black"}
+                      color={darkMode ? "white" : "black"}
                     />
                   </button>
 
                   <button
-                    className={`${darkmode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full p-[5px]   hover:bg-pink-700/40 hover:text-white`}
+                    className={`${darkMode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full p-[5px]   hover:bg-pink-700/40 hover:text-white`}
                     onClick={() => {
                       ToggleFlip("key");
                       handleDoubleClick("key", false);
@@ -137,7 +137,7 @@ export const TextAreaEditor = memo(
                   >
                     <IoMdClose
                       className="text-[50%]"
-                      color={darkmode ? "white" : "black"}
+                      color={darkMode ? "white" : "black"}
                     />
                   </button>
                 </div>
@@ -156,7 +156,7 @@ export const TextAreaEditor = memo(
                 base: " w-full ",
                 label: "text-sm font-bold text-zinc-700",
                 mainWrapper: "h-full text-slate-700 ",
-                input: darkmode
+                input: darkMode
                   ? [
                       "bg-transparent",
                       "text-white",
@@ -171,7 +171,7 @@ export const TextAreaEditor = memo(
                       "text-sm",
                       "font-bold",
                     ],
-                inputWrapper: darkmode
+                inputWrapper: darkMode
                   ? [
                       "h-[10px]",
                       "rounded-md bg-transparent border border-slate-500/50",
@@ -216,7 +216,7 @@ export const TextAreaEditor = memo(
               base: " w-full ",
               label: "text-sm font-bold text-zinc-700",
               mainWrapper: "h-full text-slate-700 ",
-              input: darkmode
+              input: darkMode
                 ? [
                     "bg-transparent",
                     "text-white",
@@ -231,7 +231,7 @@ export const TextAreaEditor = memo(
                     "text-sm",
                     "font-bold",
                   ],
-              inputWrapper: darkmode
+              inputWrapper: darkMode
                 ? [
                     "h-[10px]",
                     "rounded-md bg-transparent border border-slate-500/50",

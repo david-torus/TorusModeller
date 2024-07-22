@@ -6,7 +6,7 @@ import { uniQueNameDFDContext } from "./App";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
 
 export function CustomTableNode({ id, data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [editingHeader, setEditingHeader] = useState(false);
   const [editedHeader, setEditedHeader] = useState("");
   const [showError, setShowError] = useState(false);
@@ -121,7 +121,7 @@ export function CustomTableNode({ id, data, isConnectable }) {
             className="custom-node"
             style={{
               border: "1px solid" + data.nodeColor,
-              backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+              backgroundColor: darkMode ? "transparent" : "#F1EFEF",
             }}
           >
             {
@@ -169,7 +169,7 @@ export function CustomTableNode({ id, data, isConnectable }) {
                 width: "80%",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                color: darkmode ? "white" : "black",
+                color: darkMode ? "white" : "black",
                 textAlign: "center",
               }}
             >
@@ -177,7 +177,7 @@ export function CustomTableNode({ id, data, isConnectable }) {
                 title={isConnectable ? data.label : data?.nodeType}
                 style={{
                   fontSize: "8px",
-                  color: darkmode ? "white" : "black",
+                  color: darkMode ? "white" : "black",
                   fontFamily: "monospace",
                 }}
                 htmlFor=""
@@ -294,7 +294,7 @@ export function CustomTableNode({ id, data, isConnectable }) {
  * @return {JSX.Element} The custom table node component.
  */
 export function TableNode({ data, isConnectable }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   //Returning th JSX for the table node
   return (
@@ -303,7 +303,7 @@ export function TableNode({ data, isConnectable }) {
         className="custom-node"
         style={{
           border: "1px solid" + data.nodeColor,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -353,7 +353,7 @@ export function TableNode({ data, isConnectable }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -361,7 +361,7 @@ export function TableNode({ data, isConnectable }) {
             title={isConnectable ? data.label : data?.nodeType}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""

@@ -21,7 +21,9 @@ import DropDown from "./NewDropdown";
 
 const versions = ["v1.25", "v1.26", "v1.27", "v1.28"];
 
-export default function Navbar({ color }) {
+export default function Navbar(
+  {color}
+) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
   const [inputchange, setInputchange] = useState(false);

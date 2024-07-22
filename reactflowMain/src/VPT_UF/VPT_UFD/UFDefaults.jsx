@@ -1,7 +1,7 @@
 
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
-import "/node_modules/primeflex/primeflex.css";
+
 import { useState } from "react";
 import App from "./Components/App";
 import DefaulltSidebar from "../../commonComponents/layout/SideBar/DefaulltSidebar";

@@ -103,7 +103,7 @@ export default function App({
   const [uniqueNames, setUniqueNames] = useState([]);
   const toast = useRef(null);
 
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Updates the PWUI state with the provided data.
@@ -422,7 +422,7 @@ export default function App({
       style={{
         height: "100%",
         width: "100%",
-        backgroundColor: darkmode ? "#121212" : "#E9E8E8",
+        backgroundColor: darkMode ? "#121212" : "#E9E8E8",
       }}
     >
       <div

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { FaExchangeAlt } from "react-icons/fa";
-import TorusDropDown from "../../torusComponents/TorusDropDown";
+import TorusDropDown from "../../torusComponents/TorusDropDown.tsx";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 import TorusSelector from "../../torusComponents/TorusSelector";
@@ -353,11 +353,16 @@ export default function JsonSidebarDetail({
   return (
     <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
-        <p className="p-2 text-black dark:text-white"> Properties</p>
-
-        <span onClick ={()=>OgJson()}>
-          save
+        <span className="flex justify-between">
+          <p className="p-2 text-black dark:text-white"> Properties</p>
+          <span
+            onClick={() => OgJson()}
+            className="cursor-pointer rounded-lg  p-2  bg-[#0736C4] w-[20%]  text-white mb-2 active:scale-95"
+          >
+            save
+          </span>
         </span>
+
         <TorusTab
           orientation="horizontal"
           classNames={{

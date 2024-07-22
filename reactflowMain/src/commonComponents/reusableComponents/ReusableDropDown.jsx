@@ -12,7 +12,7 @@ export default function ReusableDropDown({
   title,
   buttonProps,
   selectionMode = "single",
-  darkmode,
+  darkMode,
   DropdownMenuClassName,
   items,
   buttonClassName,
@@ -30,7 +30,7 @@ export default function ReusableDropDown({
           className={
             buttonClassName ??
             `${
-              darkmode
+              darkMode
                 ? " border border-slate-400/30 text-[#F4F4F5] "
                 : " border border-slate-400/30 text-black "
             } w-[100%] `

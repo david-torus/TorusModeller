@@ -9,6 +9,7 @@ const data = [
     label: "User",
     icon: User,
   },
+  
   {
     label: "User",
     icon: User,
@@ -148,7 +149,7 @@ export default function NodeGallery({
                 color={"white"}
                 size={"sm"}
                 marginT={"mt-2"}
-                btncolor={color}
+                btncolor={"#0736C4"}
                 fontStyle={
                   "font-sfpros 3xl:text-xs 3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
                 }

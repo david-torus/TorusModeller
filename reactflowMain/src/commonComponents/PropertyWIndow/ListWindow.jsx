@@ -32,7 +32,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
     hasObject: false,
     hasString: false,
   });
-  const   {darkmode} = useContext(DarkmodeContext);
+  const   {darkMode} = useContext(DarkmodeContext);
 
   /**
    * Retrieves the data at the specified path in the given object.
@@ -141,7 +141,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
    * Renders a breadcrumb component with a list of breadcrumb items.
    * The breadcrumb items are generated from the breadcrumbs array.
    * The breadcrumb items have click event handlers that call the handleBreadcrumbClick function.
-   * The breadcrumb items are styled based on the darkmode state.
+   * The breadcrumb items are styled based on the darkMode state.
    *
    * @return {JSX.Element} The rendered breadcrumb component.
    */
@@ -152,10 +152,10 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
           <Breadcrumbs>
             <BreadcrumbItem
               classNames={{
-                item: darkmode
+                item: darkMode
                   ? "text-white font-bold"
                   : "text-slate-700 font-bold",
-                separator: darkmode ? "text-white" : "text-slate-700",
+                separator: darkMode ? "text-white" : "text-slate-700",
               }}
               onClick={() => handleBreadcrumbClick(-1)}
               style={{ cursor: "pointer", color: "black" }}
@@ -165,10 +165,10 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
             {breadcrumbs.map((crumb, index) => (
               <BreadcrumbItem
                 classNames={{
-                  item: darkmode
+                  item: darkMode
                     ? "text-white font-bold"
                     : "text-slate-700 font-bold",
-                  separator: darkmode ? "text-white" : "text-slate-700",
+                  separator: darkMode ? "text-white" : "text-slate-700",
                 }}
                 key={index}
                 onClick={() => handleBreadcrumbClick(index)}
@@ -187,7 +187,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
    * The tab items are generated from the object keys.
    * If the value of a key is an object, it renders a button with the key as the button label.
    * The button has a click event handler that calls the handleTabClick function.
-   * The button is styled based on the darkmode state.
+   * The button is styled based on the darkMode state.
    * If the value of a key is not an object, it returns null.
    *
    * @param {object} obj - The object used to generate the tab items.
@@ -204,7 +204,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
                   <Button
                     size="sm"
                     className={`${
-                      darkmode
+                      darkMode
                         ? "mt-0 w-[100%] text-sm text-white border shadow-none hover:bg-[#5a5a5a] bg-[#363636] hover:text-slate-700 border-slate-500/50 rounded-md h-[35px]"
                         : "mt-0 w-[100%] text-sm  text-black/70 border hover:bg-[#D9DEE8] bg-[#D9DEE8] hover:text-gray-600 border-slate-500/50 rounded-md h-[35px]"
                     }`}
@@ -256,7 +256,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
    * If the value of a key is not an object, it renders an input field with the key as the label.
    * The input field has a default value, onValueChange event handler, and onKeyDown event handler.
    * If the key has a corresponding tooltip in the keyJson object, it renders a tooltip with the tooltip content.
-   * The input field is styled based on the darkmode state.
+   * The input field is styled based on the darkMode state.
    * If the value of a key is an object, it returns null.
    *
    * @param {object} obj - The object used to generate the input fields.
@@ -304,7 +304,7 @@ const JsonEditor = ({ data, setData, setSidebarData, keyJson }) => {
                         )}
                     </div>
                     <ReusableInput
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       key={path ? path + "." + key : key}
                       type="text"
                       defaultValue={obj[key]}
