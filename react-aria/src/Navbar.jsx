@@ -15,7 +15,9 @@ import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 import { IoIosArrowForward } from "react-icons/io";
 
-export default function Navbar() {
+export default function Navbar(
+  {color}
+) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
   const [selectedVersion, setSelectedVersion] = useState(new Set());
