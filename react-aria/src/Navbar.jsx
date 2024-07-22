@@ -13,12 +13,23 @@ import TorusPopOver from "./torusComponents/TorusPopOver";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
-import { IoIosArrowForward } from "react-icons/io";
+import { FiEdit2 } from "react-icons/fi";
+import { BsTrash3 } from "react-icons/bs";
+import { Input } from "react-aria-components";
+import TorusDropDown from "./torusComponents/TorusDropDown";
+import DropDown from "./NewDropdown";
 
-export default function Navbar() {
+const versions = ["v1.25", "v1.26", "v1.27", "v1.28"];
+
+export default function Navbar(
+  {color}
+) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
+  const [inputchange, setInputchange] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [selectedVersion, setSelectedVersion] = useState(new Set());
+  const [value, setValue] = useState(null);
   return (
     <div className="w-full h-full bg-white dark:bg-[#161616] dark:border-none border-b border-slate-300 flex items-center justify-center">
       <div className="w-[100%] h-[90%] flex flex-col items-center justify-center">
@@ -49,21 +60,98 @@ export default function Navbar() {
               }
               children={
                 <div className="w-[470px] 2xl:w-[700px] 2xl:h-[580px] mt-[3%] ml-[-8%] h-[365px] border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg flex flex-col justify-between">
-                  <div className="w-[100%] flex flex-row p-2 border-b border-gray-300 dark:border-[#212121]">
-                    <div className="w-1/3 flex justify-start">
+                  <div className="w-[100%] h-[15%] flex flex-row p-2 border-b border-gray-300 dark:border-[#212121]">
+                    <div className="w-[15%] flex items-center justify-start">
                       <p className="text-sm font-medium text-black dark:text-white text-start px-2">
-                        Artifact
+                        Library
                       </p>
                     </div>
-                    <div className="w-2/3 flex justify-end gap-2">
-                      <CiSquarePlus />
-                      <CiSearch />
+                    <div className="w-[70%] flex items-center justify-center gap-2">
+                      <Input
+                        startcontent={<CiSearch />}
+                        value={inputValue}
+                        placeholder="Enter text"
+                        className={
+                          "bg-[#F4F5FA] p-2 text-sm border border-gray-300 dark:bg-[#0F0F0F] w-[100%] h-[25px]  text-black dark:text-white rounded-md flex justify-center items-center"
+                        }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            setInputchange(false);
+                          }
+                        }}
+                        onChange={(e) => {
+                          setInputValue(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div className="w-[15%] flex items-center justify-end">
                       <IoCloseOutline />
                     </div>
                   </div>
                   <div className="w-[100%] h-[100%] flex flex-row ">
                     <div className="w-1/3 border-r border-gray-300 "></div>
-                    <div className="w-2/3 "></div>
+                    <div className="w-2/3 ">
+                      <div className="w-[95%] h-[95%]">
+                        <div className="w-full h-full flex items-center justify-center ">
+                          <div className="w-[75%] h-full p-2 flex flex-row ">
+                            {inputchange == false ? (
+                              <div className="w-[100%] h-[30px] bg-[#F4F5FA] dark:bg-[#0F0F0F] rounded-md flex flex-row">
+                                <div className="w-full flex text-sm items-center justify-start p-2 ">
+                                  {inputValue}
+                                </div>
+                                <div className="w-full flex items-center justify-end gap-2 p-2">
+                                  <span
+                                    className="cursor-pointer"
+                                    onClick={() => setInputchange(true)}
+                                  >
+                                    <FiEdit2 color="black" size={13} />
+                                  </span>
+                                  <span
+                                    className="cursor-pointer"
+                                    onClick={() => setInputValue("")}
+                                  >
+                                    <BsTrash3 color="red" size={13} />
+                                  </span>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="w-full">
+                                <Input
+                                  value={inputValue}
+                                  placeholder="Enter text"
+                                  className={
+                                    "bg-[#F4F5FA] p-2 text-sm dark:bg-[#0F0F0F] w-[100%] h-[30px]  text-black dark:text-white rounded-md flex justify-center items-center"
+                                  }
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      setInputchange(false);
+                                    }
+                                  }}
+                                  onChange={(e) => {
+                                    setInputValue(e.target.value);
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          <div className="w-[25%] h-full ">
+                            <DropDown
+                              triggerButton="Version"
+                              selectedKeys={selectedVersion}
+                              setSelectedKeys={setSelectedVersion}
+                              items={versions}
+                              classNames={{
+                                triggerButton:
+                                  " rounded-lg w-[100%] text-xs h-[30px] font-medium mt-2 p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] dark:text-white",
+                                popover: "w-[5%]",
+                                listbox: "overflow-y-auto",
+                                listboxItem: "flex text-sm justify-between",
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="w-[100%]  border-t border-gray-300 dark:border-[#212121] flex flex-row  ">

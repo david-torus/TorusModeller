@@ -9,6 +9,8 @@ import { RenderJson } from "./jonui/JsonUI";
 import Sample from "./Sample";
 import { TorusDatePicker } from "./torusComponents/TorusDate&TimePickers";
 import Formpage from "./Formpage";
+import TorusNavBar from "./torusComponents/TorusNavBar";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,6 +24,8 @@ root.render(
           <Route path="/table" element={<Sample />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/form" element={<Formpage />} />
+          <Route path='/nav' element={<TorusNavBar />} />
+
         </Routes>
       </Router>
     </DarkmodeProvider>
