@@ -31,18 +31,21 @@ import Navbar from "./Navbar";
 
 import NodeGallery from "./NodeGallery";
 import SideBar from "./SideBar";
+import NodeInfoSidebar from "./commonComponents/CommonSideBar/NodeInfoSidebar";
 export const FabricsContexts = createContext(null);
 export default function Layout({ client }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
-
+  const [showNodeProperty, setShowNodeProperty] = useState(false);
   const { screenToFlowPosition } = useReactFlow();
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
   const [reactFlowInstance, setreactflowinstance] = useState(null);
   const [menu, setMenu] = useState(null);
   const [recentClicked, setrecentClicked] = useState(false);
   const ref = useRef(null);
+  const [nodePropertyData, setNodePropertyData] = useState({});
+  const { getNode } = useReactFlow();
   const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
@@ -66,8 +69,8 @@ export default function Layout({ client }) {
   );
 
   const handleTabChange = (fabric) => {
-    console.log("clicked", fabric,recentClicked);
-    if (fabric == selectedFabric ) return;
+    console.log("clicked", fabric, recentClicked);
+    if (fabric == selectedFabric) return;
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
@@ -130,7 +133,7 @@ export default function Layout({ client }) {
     },
     [setMenu]
   );
-
+  console.log(showNodeProperty, "showNodeProperty");
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -170,7 +173,16 @@ export default function Layout({ client }) {
 
       <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
         <div className="h-full flex w-[100%]">
-          <FabricsContexts.Provider value={{ selectedFabric, handleTabChange }}>
+          <FabricsContexts.Provider
+            value={{
+              selectedFabric,
+              handleTabChange,
+              ref,
+              onNodeContextMenu,
+              onPaneClick,
+              nodePropertyData,
+            }}
+          >
             <FabricsSelector
               fabric={selectedFabric}
               nodes={nodes}
@@ -181,30 +193,56 @@ export default function Layout({ client }) {
               onEdgesChange={onEdgesChange}
               onInit={setreactflowinstance}
             >
-              <SideBar />
-              <NodeGallery
-                color={colors[selectedFabric]?.light}
-                showFabricSideBar={showFabricSideBar}
-                handleSidebarToggle={handleSidebarToggle}
-              />
-              <MiniMap
-                position="bottom-right"
-                style={{ bottom: "8%" }}
-                maskColor="transparent"
-                // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                className="border border-slate-300 rounded-lg w-[17%] h-[22%]  dark:bg-[#161616] dark:border-[#21212126]/15"
-              />
-              <CanvasPanel />
+              {({
+                setToggleReactflow,
+                uniqueNames,
+                changeProperty,
+                updatedNodeConfig,
+              }) => (
+                <>
+                  <SideBar />
+                  <NodeGallery
+                    color={colors[selectedFabric]?.light}
+                    showFabricSideBar={showFabricSideBar}
+                    handleSidebarToggle={handleSidebarToggle}
+                  />
+                  <MiniMap
+                    position="bottom-right"
+                    style={{ bottom: "8%" }}
+                    maskColor="transparent"
+                    // maskStrokeColor="rgba(22, 22, 22, 0.6)"
+                    className="border border-slate-300 rounded-lg w-[17%] h-[22%]  dark:bg-[#161616] dark:border-[#21212126]/15"
+                  />
+                  <CanvasPanel />
 
-              {/* <MiniMap /> */}
-              {/* {menu && (
-              <ContextMenuSelector
-                fabric={selectedFabric}
-                onClick={onPaneClick}
-                {...menu}
-              />
-            )} */}
-              <Background variant="dots" gap={12} size={1} />
+                  <NodeInfoSidebar
+                    upIdKey={"FRK"}
+                    setToggleReactflow={setToggleReactflow}
+                    customCodeKey={"gg"}
+                    updatedNodeConfig={updatedNodeConfig}
+                    currentDrawing={selectedFabric}
+                    visiblity={showNodeProperty}
+                    setVisiblity={() => setShowNodeProperty(!showNodeProperty)}
+                    sideBarData={getNode(nodePropertyData?.id)}
+                    uniqueNames={uniqueNames}
+                    changeProperty={changeProperty}
+                  />
+
+                  {/* <MiniMap /> */}
+                  {menu && (
+                    <ContextMenuSelector
+                      onEdit={(id) => {
+                        setNodePropertyData(getNode(id));
+                        setShowNodeProperty(!showNodeProperty);
+                      }}
+                      fabric={selectedFabric}
+                      onClick={onPaneClick}
+                      {...menu}
+                    />
+                  )}
+                  <Background variant="dots" gap={12} size={1} />
+                </>
+              )}
             </FabricsSelector>
           </FabricsContexts.Provider>
 

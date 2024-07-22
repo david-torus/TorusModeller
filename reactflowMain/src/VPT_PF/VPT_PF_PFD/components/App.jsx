@@ -1,5 +1,12 @@
 /* eslint-disable */
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   useNodesState,
   useEdgesState,
@@ -35,6 +42,7 @@ import CustomEdge from "./CustomEdge";
 import { getLatestVersion } from "../../../commonComponents/api/fabricsApi";
 import useUndoRedo from "../../../commonComponents/react-flow-pro/useUndoRedo";
 import { TfiControlShuffle } from "react-icons/tfi";
+import { FabricsContexts } from "../../../Layout";
 
 //Node types
 const NODE_TYPE = {
@@ -71,8 +79,8 @@ const AppPF = ({
   proOptions,
 }) => {
   const [defaults, setDefaults] = useState({});
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
 
-  const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const [toggleSide, setToggleSide] = useState(false);
@@ -163,7 +171,6 @@ const AppPF = ({
     try {
       setToggleSide(!toggleSide);
       setNodeData(node);
-
       setSelectedRole({
         role: node.data.role,
       });
@@ -304,31 +311,31 @@ const AppPF = ({
   };
 
   //context menu
-  const onNodeContextMenu = useCallback(
-    (event, node) => {
-      try {
-        event.preventDefault();
-        const pane = reactFlowWrapper.current.getBoundingClientRect();
+  // const onNodeContextMenu = useCallback(
+  //   (event, node) => {
+  //     try {
+  //       event.preventDefault();
+  //       const pane = ref.current.getBoundingClientRect();
 
-        setMenu({
-          id: node.id,
-          top: event.clientY < pane.height - 200 && event.clientY - 80,
-          left: event.clientX < pane.width - 200 && event.clientX - 80,
-          right:
-            event.clientX >= pane.width - 200 &&
-            pane.width - event.clientX + 80,
-          bottom:
-            event.clientY >= pane.height - 200 &&
-            pane.height - event.clientY + 80,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [setMenu]
-  );
+  //       setMenu({
+  //         id: node.id,
+  //         top: event.clientY < pane.height - 200 && event.clientY - 80,
+  //         left: event.clientX < pane.width - 200 && event.clientX - 80,
+  //         right:
+  //           event.clientX >= pane.width - 200 &&
+  //           pane.width - event.clientX + 80,
+  //         bottom:
+  //           event.clientY >= pane.height - 200 &&
+  //           pane.height - event.clientY + 80,
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   },
+  //   [setMenu]
+  // );
 
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+  // const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
   /**
    * Function to handle connect nodes in react flow work space through edges
@@ -630,8 +637,7 @@ const AppPF = ({
       try {
         takeSnapshot();
         event.preventDefault();
-        const reactFlowBounds =
-          reactFlowWrapper.current.getBoundingClientRect();
+        const reactFlowBounds = ref.current.getBoundingClientRect();
         const type = event.dataTransfer.getData("application/reactflow");
         const name = event.dataTransfer.getData("application/name");
         if (typeof type === "undefined" || !type) {
@@ -917,7 +923,7 @@ const AppPF = ({
         onNodesChange={onNodesChange}
         onDragOver={onDragOver}
         onDrop={onDrop}
-        reactFlowWrapper={reactFlowWrapper}
+        ref={ref}
         setReactFlowInstance={setReactFlowInstance}
         onEdgeUpdate={onEdgeUpdate}
         nodeTypes={NODE_TYPE}

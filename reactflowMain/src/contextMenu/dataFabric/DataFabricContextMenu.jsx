@@ -4,7 +4,7 @@ import TorusButton from "../../torusComponents/TorusButton";
 import { Text } from "react-aria-components";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 import { DarkmodeContext } from "../../commonComponents/context/DarkmodeContext";
-
+import useCopyPaste from "../../commonComponents/react-flow-pro/useCopyPaste";
 
 export default function DataFabricContextMenu({
   id,
@@ -15,9 +15,12 @@ export default function DataFabricContextMenu({
   ...props
 }) {
   console.log(top, left, right, bottom);
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, getNodes } = useReactFlow();
   const node = getNode(id);
   const { darkMode } = useContext(DarkmodeContext);
+  const { cut, copy, paste, bufferedNodes } = useCopyPaste();
+  const canCopy = getNodes().some(({ selected }) => selected);
+  const canPaste = bufferedNodes.length > 0;
   const duplicateNode = useCallback(() => {
     const position = {
       x: node.position.x + 50,
@@ -49,12 +52,14 @@ export default function DataFabricContextMenu({
           <Text className="text-xl capitalize py-1 text-black dark:text-white w-full  border-b dark:border-[#212121] ">
             {node?.data?.label}
           </Text>
+
           <div className="flex flex-col gap-1">
             <TorusButton
               key={"df_edit"}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
+              onPress={() => props?.onEdit(id)}
               Children={
                 <div>
                   <div className=" w-full  text-black dark:text-white h-full flex justify-center gap-2 items-center">
@@ -66,9 +71,11 @@ export default function DataFabricContextMenu({
             />
             <TorusButton
               key={"df_cut"}
+              isDisabled={!canCopy}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
+              onPress={() => cut(id)}
               Children={
                 <div>
                   <div className=" w-full h-full text-black dark:text-white   flex justify-center gap-2 items-center">
@@ -80,6 +87,8 @@ export default function DataFabricContextMenu({
             />
             <TorusButton
               key={"df_copy"}
+              isDisabled={!canCopy}
+              onPress={() => copy(id)}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
@@ -94,6 +103,8 @@ export default function DataFabricContextMenu({
             />
             <TorusButton
               key={"df_paste"}
+              isDisabled={!canPaste}
+              onPress={() => paste()}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }

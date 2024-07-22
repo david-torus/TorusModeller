@@ -3,8 +3,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useId,
-  useMemo,
   useState,
 } from "react";
 import {
@@ -312,6 +310,7 @@ export function TorusTable({
   children,
   editableColumns,
   addableColumns,
+  visibleColumns,
   isSkeleton = false,
 }) {
   const [data, setData] = useState([]);
@@ -430,7 +429,7 @@ export function TorusTable({
   useEffect(() => {
     tableIndexs();
   }, [data]);
-  const getColumns = (tableData) => {
+  const getColumns = (tableData, visibleColumns) => {
     try {
       let newColumns = new Set([]);
       tableData.forEach((item) => {
@@ -446,7 +445,33 @@ export function TorusTable({
         isRowHeader: key == primaryColumn ? true : false,
         allowsSorting: allowsSorting,
       }));
-      setTotalColumns(cc);
+      if (visibleColumns && visibleColumns.length > 0) {
+        setTotalColumns([
+          {
+            id: primaryColumn,
+            name: primaryColumn,
+            key: primaryColumn,
+            label: primaryColumn,
+            isRowHeader: true,
+            allowsSorting: allowsSorting,
+          },
+          ...visibleColumns.map((key) => {
+            if (key !== primaryColumn) {
+              return {
+                id: key,
+                name: key,
+                key: key,
+                label: key,
+                isRowHeader: key == primaryColumn ? true : false,
+                allowsSorting: allowsSorting,
+              };
+            }
+          }),
+        ]);
+      } else {
+        setTotalColumns(cc);
+      }
+
       setColumns(newColumns);
     } catch (error) {
       console.error(error);
@@ -455,7 +480,7 @@ export function TorusTable({
   let [selectedKeys, setSelectedKeys] = React.useState(null);
   useEffect(() => {
     if (Array.isArray(tableData) && !isAsync) {
-      getColumns(tableData);
+      getColumns(tableData, visibleColumns);
       setData(tableData);
       setTableDataLength(tableData.length);
 
@@ -468,7 +493,7 @@ export function TorusTable({
     } else {
       console.error("tableData is not an array");
     }
-  }, [tableData, primaryColumn]);
+  }, [tableData, primaryColumn, visibleColumns]);
 
   const initalsAysncData = (isIntial = false, page) => {
     try {
@@ -481,7 +506,7 @@ export function TorusTable({
         ) {
           setData(data.tableData);
           if (isIntial) {
-            getColumns(data.tableData);
+            getColumns(data.tableData, visibleColumns);
             setTableDataLength(data.totalPages / rowsPerPage);
             setTotalPages(data.totalPages);
             setSortDescriptor({
@@ -715,7 +740,7 @@ export function TorusTable({
                     selectionMode="multiple"
                     selected={columns}
                     setSelected={setColumns}
-                    items={TotalColumns.filter(
+                    dynamicItems={TotalColumns.filter(
                       (col) => col.name != primaryColumn
                     )}
                     btWidth={"full"}

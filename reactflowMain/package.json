@@ -63,8 +63,8 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "react-scripts": "^5.0.1",
     "tailwindcss": "^3.4.3"
   }

@@ -72,7 +72,7 @@ function MonacoEditor({
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0a19] text-gray-500">
+    <div className="w-[100%] h-[100%] bg-[#0f0a19] text-gray-500">
       <div className="h-[2%]">
         <p
           className=" ml-4 mt-2 w-[33px] p-2 text-white rounded  bg-[#4095FD]  text-center hover:cursor-pointer z-50"
@@ -87,7 +87,7 @@ function MonacoEditor({
           customCode={json}
           onChange={(val) => setJson(val)}
           fabricsKey={fabricsKey}
-          nodeName={sideBarData.data.label}
+          nodeName={sideBarData?.data?.label}
         />
       </div>
     </div>

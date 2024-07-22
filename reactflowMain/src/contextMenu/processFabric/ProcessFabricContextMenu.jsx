@@ -1,8 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { useReactFlow } from "reactflow";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 import TorusButton from "../../torusComponents/TorusButton";
 import { Text } from "react-aria-components";
+import useCopyPaste from "../../commonComponents/react-flow-pro/useCopyPaste";
+import { DarkmodeContext } from "../../commonComponents/context/DarkmodeContext";
 export default function ProcessFabricContextMenu({
   id,
   top,
@@ -11,8 +13,13 @@ export default function ProcessFabricContextMenu({
   bottom,
   ...props
 }) {
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, getNodes } = useReactFlow();
   const node = getNode(id);
+  const { darkMode } = useContext(DarkmodeContext);
+  const { cut, copy, paste, bufferedNodes } = useCopyPaste();
+  const canCopy = getNodes().some(({ selected }) => selected);
+  const canPaste = bufferedNodes.length > 0;
+
   const duplicateNode = useCallback(() => {
     const position = {
       x: node.position.x + 50,
@@ -50,17 +57,20 @@ export default function ProcessFabricContextMenu({
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
+              onPress={() => props?.onEdit(id)}
               Children={
-                <div>
+                <>
                   <div className=" w-full  text-black dark:text-white h-full flex justify-center gap-2 items-center">
                     <EditNode className={"stroke-black dark:stroke-white "} />
                     Edit Node
                   </div>
-                </div>
+                </>
               }
             />
             <TorusButton
               key={"pf_cut"}
+              onPress={() => cut(id)}
+              disabled={!canCopy}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
@@ -75,6 +85,8 @@ export default function ProcessFabricContextMenu({
             />
             <TorusButton
               key={"pf_copy"}
+              onPress={() => copy(id)}
+              disabled={!canCopy}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
@@ -89,6 +101,8 @@ export default function ProcessFabricContextMenu({
             />
             <TorusButton
               key={"pf_paste"}
+              disabled={!canPaste}
+              onPress={() => paste()}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }

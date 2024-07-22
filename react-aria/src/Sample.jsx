@@ -83,8 +83,10 @@ export default function Sample() {
       onEdit={post}
       onDelete={deleteTableData}
       rowsPerPage={10}
-      editableColumns={["name","bank_code","created_by"]}
-      addableColumns={["name"]}
+      isEditable={true}
+      visibleColumns={["vmsp_id","bank_code", "created_by"]}
+      editableColumns={["name", "bank_code", "created_by"]}
+      addableColumns={["name", "bank_code", "created_by"]}
     >
       {({ selectedKeys, filterColmns, sortedItems, primaryColumn }) => (
         <>
