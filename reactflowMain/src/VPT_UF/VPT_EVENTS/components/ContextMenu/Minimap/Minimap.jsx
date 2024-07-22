@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DarkmodeContext } from "../../../../../commonComponents/context/DarkmodeContext";
 
 export const MinimapComponent = ({ x, y, width }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <circle
@@ -10,8 +10,8 @@ export const MinimapComponent = ({ x, y, width }) => {
       cy={y}
       r={width / 2 + 10}
       strokeWidth={1}
-      color={darkmode ? "white" : "black"}
-      fill={darkmode ? "#333334" : "#E4E3E3"}
+      color={darkMode ? "white" : "black"}
+      fill={darkMode ? "#333334" : "#E4E3E3"}
     />
   );
 };

@@ -3,21 +3,21 @@ import { createContext, useEffect, useState } from "react";
 const DarkmodeContext = createContext();
 
 function DarkmodeProvider(props) {
-  const [darkmode, setDarkmode] = useState(true);
+  const [darkMode, setDarkMode] = useState(true);
 
-  const toggleDarkmode = () => {
-    setDarkmode(!darkmode);
-   
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
+    document.body.classList.toggle("dark");
   };
 
   useEffect(()=>{
-    props.getContext(darkmode)
-  },[darkmode, props])
+    props.getContext(darkMode)
+  },[darkMode, props])
 
   return (
     <DarkmodeContext.Provider
       className="w-full h-full"
-      value={{ darkmode, toggleDarkmode }}
+      value={{ darkMode, toggleDarkMode }}
     >
       {props.children}
     </DarkmodeContext.Provider>

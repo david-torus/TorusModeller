@@ -1,17 +1,17 @@
 import { toast } from "react-toastify";
 
 export const getJson = async (
-  application,
+  project,
   version,
   artifact,
-  tenant,
-  appGroup,
+  tKey,
+  client,
   fabrics
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/?applicationName=${application}&version=${version}&artifact=${artifact}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`,
+      `${BASE_URL}/?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
       {
         method: "GET",
       }
@@ -46,16 +46,17 @@ export const saveWorkFlow = async (
   resquestBody,
   type,
   version,
-  tenant,
-  appGroup,
+  tKey,
+  client,
   fabrics
 ) => {
   try {
+    console.log(resquestBody, "resquestBody");
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const URL =
       type === "create"
-        ? `${BASE_URL}/?type=${type}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`
-        : `${BASE_URL}/?type=${type}&version=${version}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`;
+        ? `${BASE_URL}/?type=${type}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`
+        : `${BASE_URL}/?type=${type}&version=${version}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`;
     const response = await fetch(URL, {
       method: "POST",
       headers: {
@@ -89,12 +90,12 @@ export const saveWorkFlow = async (
   }
 };
 
-export const artifactList = async (tenant, appGroup, application, fabrics) => {
+export const artifactList = async (tKey, client, project, fabrics) => {
   try {
-    console.log(application ,"app");
+    console.log(project ,"app");
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/artifactList?applicationName=${application}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`,
+      `${BASE_URL}/artifactList?project=${project}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
       {
         method: "GET",
       }
@@ -111,11 +112,11 @@ export const artifactList = async (tenant, appGroup, application, fabrics) => {
   }
 };
 
-export const applicationLists = async (tenant, appGroup, fabrics) => {
+export const applicationLists = async (tKey, client, fabrics) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/applicationList/?tenant=${tenant}&appGroup=${appGroup}`,
+      `${BASE_URL}/applicationList/?tKey=${tKey}&client=${client}`,
       {
         method: "GET",
       }
@@ -131,7 +132,7 @@ export const applicationLists = async (tenant, appGroup, fabrics) => {
       //throw new Error(`HTTP error! status: ${response.status}`);
     }
   } catch (error) {
-    toast.error("Error getting application list", {
+    toast.error("Error getting project list", {
       position: "bottom-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -180,16 +181,16 @@ export const getLatestVersion = async (source, domain, fabrics, artifact) => {
 };
 
 export const versionList = async (
-  tenant,
-  appGroup,
-  application,
+  tKey,
+  client,
+  project,
   artifact,
   fabrics
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/versionList?applicationName=${application}&artifact=${artifact}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`,
+      `${BASE_URL}/versionList?project=${project}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
       {
         method: "GET",
       }
@@ -221,16 +222,16 @@ export const versionList = async (
 };
 
 export const deleteArtifact = async (
-  tenant,
-  appGroup,
-  application,
+  tKey,
+  client,
+  project,
   fabrics,
   artifact
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/deleteFlowArtifact?tenant=${tenant}&appGroup=${appGroup}&applicationName=${application}&fabrics=${fabrics}&artifact=${artifact}`,
+      `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}`,
       {
         method: "DELETE",
       }
@@ -262,16 +263,16 @@ export const deleteArtifact = async (
 };
 
 export const getWholeVersion = async (
-  tenant,
-  appGroup,
-  application,
+  tKey,
+  client,
+  project,
   version,
   artifacts
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}events`;
     const response = await fetch(
-      `${BASE_URL}/?tenant=${tenant}&appGroup=${appGroup}&app=${application}&artifact=${artifacts}&version=${version}&events`,
+      `${BASE_URL}/?tKey=${tKey}&client=${client}&app=${project}&artifact=${artifacts}&version=${version}&events`,
       {
         method: "GET",
       }
@@ -303,16 +304,16 @@ export const getWholeVersion = async (
 };
 
 export const saveWholeVersion = async (
-  tenant,
-  appGroup,
-  application,
+  tKey,
+  client,
+  project,
   version,
   artifacts
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}events/wholeVersion`;
     const response = await fetch(
-      `${BASE_URL}/?tenant=${tenant}&appGroup=${appGroup}&app=${application}&artifact=${artifacts}&version=${version}&events`,
+      `${BASE_URL}/?tKey=${tKey}&client=${client}&app=${project}&artifact=${artifacts}&version=${version}&events`,
       {
         method: "POST",
       }
@@ -344,17 +345,17 @@ export const saveWholeVersion = async (
 };
 
 export const getNodeList = async (
-  applicationName,
+  project,
   version,
   artifact,
-  tenant,
-  appGroup,
+  tKey,
+  client,
   fabrics
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/getNodeList?applicationName=${applicationName}&version=${version}&artifact=${artifact}&tenant=${tenant}&appGroup=${appGroup}&fabrics=${fabrics}`,
+      `${BASE_URL}/getNodeList?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
       {
         method: "GET",
       }

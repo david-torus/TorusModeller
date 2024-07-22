@@ -103,7 +103,7 @@ export default function FabricsNavbar({
   const [selectedDeletingProjectItem, setSelectedDeletingProjectItem] =
     useState(null);
 
-  const { darkmode, toggleDarkmode } = useContext(DarkmodeContext);
+  const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
 
   const [peModal, setPeModal] = useState("");
   const [peurlopen, setPeurlopen] = useState(false);
@@ -958,7 +958,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
               transitionDuration: "0.4s",
             }}
             className={`${
-              darkmode
+              darkMode
                 ? "bg-[#1E1E1E]/90 relative rounded-lg  border border-gray-500"
                 : "backdrop-blur-sm relative rounded-lg  border border-gray-500"
             } `}
@@ -985,10 +985,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                 <Breadcrumbs className="ml-14  select-none ">
                   <BreadcrumbItem
                     classNames={{
-                      item: darkmode
+                      item: darkMode
                         ? "text-white/70  font-bold"
                         : "text-black/70  font-bold",
-                      separator: darkmode
+                      separator: darkMode
                         ? "text-white/70  "
                         : "text-black/70  ",
                     }}
@@ -997,10 +997,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   </BreadcrumbItem>
                   <BreadcrumbItem
                     classNames={{
-                      item: darkmode
+                      item: darkMode
                         ? "text-white/70  font-bold"
                         : "text-black/70  font-bold",
-                      separator: darkmode
+                      separator: darkMode
                         ? "text-white/70  "
                         : "text-black/70  ",
                     }}
@@ -1010,10 +1010,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
                   {/* <BreadcrumbItem
                     classNames={{
-                      item: darkmode
+                      item: darkMode
                         ? "text-white/70  font-bold"
                         : "text-black/70  font-bold",
-                      separator: darkmode
+                      separator: darkMode
                         ? "text-white/70  "
                         : "text-black/70  ",
                     }}
@@ -1022,10 +1022,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   </BreadcrumbItem> */}
                   <BreadcrumbItem
                     classNames={{
-                      item: darkmode
+                      item: darkMode
                         ? "text-white/70  font-bold"
                         : "text-black/70  font-bold",
-                      separator: darkmode
+                      separator: darkMode
                         ? "text-white/70  "
                         : "text-black/70  ",
                     }}
@@ -1055,7 +1055,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       <Tooltip
                         content="Load Default Template"
                         className={`rounded-md ${
-                          darkmode
+                          darkMode
                             ? "bg-[#E9E8E8] text-black  "
                             : "bg-[#333333] text-white  "
                         }`}
@@ -1063,12 +1063,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <span>
                           <TbTemplate
                             className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                              darkmode
+                              darkMode
                                 ? " hover:text-white hover:border-gray-200/80 "
                                 : " hover:text-gray-700 hover:border-gray-700 "
                             }`}
                             size={25}
-                            color={darkmode ? "#F4F4F5" : "#616A6B "}
+                            color={darkMode ? "#F4F4F5" : "#616A6B "}
                           />
                         </span>
                       </Tooltip>
@@ -1091,7 +1091,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           "Domain Name"
                         }
                         buttonClassName="bg-[#143C59]/70 border border-slate-400/30 text-white"
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         isDisabled={
                           domainList && domainList.length < 0 ? true : false
                         }
@@ -1121,7 +1121,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           "Artifacts Name"
                         }
                         buttonClassName="bg-[#143C59]/70 border border-slate-400/30 text-white"
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         isDisabled={
                           defaultArtifactList && defaultArtifactList.length < 0
                             ? true
@@ -1153,7 +1153,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           "Version List"
                         }
                         buttonClassName="bg-[#143C59]/70 border border-slate-400/30 text-white"
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         isDisabled={
                           defaultVersionList && defaultVersionList.length < 0
                             ? true
@@ -1193,36 +1193,36 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   isIconOnly
                   variant="outline"
                   className=" flex flex-row w-full justify-center gap-2 items-center p-2"
-                  onClick={() => toggleDarkmode(!darkmode)}
+                  onClick={() => toggleDarkMode(!darkMode)}
                 >
                   <Tooltip
                     className={`rounded-md ${
-                      darkmode
+                      darkMode
                         ? "bg-[#E9E8E8] text-black  "
                         : "bg-[#333333] text-white "
                     }`}
                     content="Dark Mode"
                   >
                     <span>
-                      {darkmode ? (
+                      {darkMode ? (
                         <FaMoon
                           className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                            darkmode
+                            darkMode
                               ? " hover:text-white hover:border-gray-200/80 "
                               : " hover:text-gray-700 hover:border-gray-700"
                           }`}
                           size={25}
-                          color={darkmode ? "#F4F4F5" : "#616A6B "}
+                          color={darkMode ? "#F4F4F5" : "#616A6B "}
                         />
                       ) : (
                         <IoSunny
                           className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
-                            darkmode
+                            darkMode
                               ? " hover:text-white hover:border-gray-200/80 "
                               : " hover:text-gray-700 hover:border-gray-700"
                           }`}
                           size={25}
-                          color={darkmode ? "#F4F4F5" : "#616A6B "}
+                          color={darkMode ? "#F4F4F5" : "#616A6B "}
                         />
                       )}
                     </span>
@@ -1261,7 +1261,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                 <div className="flex  flex-row items-center justify-center gap-1  ">
                   <div
                     className={`${
-                      darkmode
+                      darkMode
                         ? "bg-[#353535]/80 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-gray-400/50 cursor-pointer"
                         : "bg-gray-600/10 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-white cursor-pointer"
                     }  `}
@@ -1273,7 +1273,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           Array.from(selectedApplictionName)[0]) ||
                         "Projects"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={applicationList.length < 0 ? true : false}
                       DropdownMenuClassName={
                         applicationList.length > 6
@@ -1304,7 +1304,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           Array.from(selectedArtifacts)[0]) ||
                         "Artifacts"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={!selectedApplictionName ? true : false}
                       DropdownMenuClassName={
                         artifactsList && artifactsList.length > 6
@@ -1334,7 +1334,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         (selectedVerison && Array.from(selectedVerison)[0]) ||
                         "Version"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={
                         selectedArtifacts && Array.from(selectedArtifacts)[0]
                           ? false
@@ -1386,7 +1386,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               closeOnClick: true,
                               pauseOnHover: true,
                               progress: undefined,
-                              theme: darkmode ? "dark" : "light",
+                              theme: darkMode ? "dark" : "light",
                             });
                           }
                         }}
@@ -1394,7 +1394,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <Tooltip
                           content="Events"
                           className={`rounded-md ${
-                            darkmode
+                            darkMode
                               ? "bg-[#E9E8E8] text-black  "
                               : "bg-[#333333] text-white  "
                           }`}
@@ -1402,12 +1402,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           <span>
                             <MdOutlineEventNote
                               className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                                darkmode
+                                darkMode
                                   ? " hover:text-white hover:border-gray-200/80 "
                                   : " hover:text-gray-700 hover:border-gray-700 "
                               }`}
                               size={25}
-                              color={darkmode ? "#F4F4F5" : "#616A6B "}
+                              color={darkMode ? "#F4F4F5" : "#616A6B "}
                             />
                           </span>
                         </Tooltip>
@@ -1427,7 +1427,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             <Tooltip
                               content="PE_EXECUTE"
                               className={`rounded-md ${
-                                darkmode
+                                darkMode
                                   ? "bg-[#E9E8E8] text-black  "
                                   : "bg-[#333333] text-white  "
                               }`}
@@ -1435,12 +1435,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               <span>
                                 <VscServerProcess
                                   className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                                    darkmode
+                                    darkMode
                                       ? " hover:text-white hover:border-gray-200/80 "
                                       : " hover:text-gray-700 hover:border-gray-700 "
                                   }`}
                                   size={25}
-                                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                                 />
                               </span>
                             </Tooltip>
@@ -1455,7 +1455,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             <Tooltip
                               content="DEBUG"
                               className={`rounded-md ${
-                                darkmode
+                                darkMode
                                   ? "bg-[#E9E8E8] text-black  "
                                   : "bg-[#333333] text-white  "
                               }`}
@@ -1463,12 +1463,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               <span>
                                 <VscDebug
                                   className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
-                                    darkmode
+                                    darkMode
                                       ? " hover:text-white hover:border-gray-200/80"
                                       : " hover:text-gray-700 hover:border-gray-700 "
                                   }`}
                                   size={25}
-                                  color={darkmode ? "#F4F4F5" : "#616A6B "}
+                                  color={darkMode ? "#F4F4F5" : "#616A6B "}
                                 />
                               </span>
                             </Tooltip>
@@ -1491,7 +1491,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <Tooltip
                           content="Create Project"
                           className={`rounded-md ${
-                            darkmode
+                            darkMode
                               ? "bg-[#E9E8E8] text-black  "
                               : "bg-[#333333] text-white  "
                           }`}
@@ -1500,24 +1500,24 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                 
                             <IoIosCreate
                               className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                                darkmode
+                                darkMode
                                   ? " hover:text-white hover:border-gray-200/80 "
                                   : " hover:text-gray-700 hover:border-gray-700 "
                               }`}
                               size={25}
-                              color={darkmode ? "#ffffff" : "#616A6B "}
+                              color={darkMode ? "#ffffff" : "#616A6B "}
                             />
                           </span>
                         </Tooltip>
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent
-                      className={`${darkmode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
+                      className={`${darkMode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
                     >
                       <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
                         <ReusableInput
                           key={"fabricsNavbarInput1"}
-                          darkmode={darkmode}
+                          darkMode={darkMode}
                           value={newProjectName}
                           isInvalid={newProjectNameValidation}
                           errrMsg={
@@ -1534,7 +1534,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
                         <ReusableInput
                           key={"fabricsNavbarInput1"}
-                          darkmode={darkmode}
+                          darkMode={darkMode}
                           value={newArtifactsName}
                           isInvalid={newArtifactsNameValidation}
                           errrMsg={
@@ -1583,7 +1583,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <Tooltip
                           content="Create Artifact"
                           className={`rounded-md ${
-                            darkmode
+                            darkMode
                               ? "bg-[#E9E8E8] text-black  "
                               : "bg-[#333333] text-white  "
                           }`}
@@ -1591,26 +1591,26 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           <span>
                             <IoMdAdd
                               className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                                darkmode
+                                darkMode
                                   ? " hover:text-white hover:border-gray-200/80 "
                                   : " hover:text-gray-700 hover:border-gray-700 "
                               }`}
                               size={25}
-                              color={darkmode ? "#F4F4F5" : "#616A6B "}
+                              color={darkMode ? "#F4F4F5" : "#616A6B "}
                             />
                           </span>
                         </Tooltip>
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent
-                      className={`${darkmode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
+                      className={`${darkMode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
                     >
                       <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
                        
 
                         <ReusableInput
                           key={"fabricsNavbarInput1"}
-                          darkmode={darkmode}
+                          darkMode={darkMode}
                           value={newArtifactsName}
                           isInvalid={newArtifactsNameValidation}
                           errrMsg={
@@ -1646,7 +1646,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
                   <div
                     className={`${
-                      darkmode
+                      darkMode
                         ? "flex flex-row justify-center items-center gap-2  bg-[#121212] rounded-md p-1  "
                         : "flex flex-row justify-center items-center gap-2  bg-gray-600/10 rounded-md p-1 "
                     }`}
@@ -1675,7 +1675,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       <Tooltip
                         content="Update"
                         className={`rounded-md ${
-                          darkmode
+                          darkMode
                             ? "bg-[#E9E8E8] text-black  "
                             : "bg-[#333333] text-white  "
                         }`}
@@ -1683,12 +1683,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <span>
                           <MdOutlineUploadFile
                             className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                              darkmode
+                              darkMode
                                 ? " hover:text-white hover:border-gray-200/80 "
                                 : " hover:text-gray-700 hover:border-gray-700 "
                             }`}
                             size={25}
-                            color={darkmode ? "#F4F4F5" : "#616A6B "}
+                            color={darkMode ? "#F4F4F5" : "#616A6B "}
                           />
                         </span>
                       </Tooltip>
@@ -1717,7 +1717,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       <Tooltip
                         content="Save"
                         className={`rounded-md ${
-                          darkmode
+                          darkMode
                             ? "bg-[#E9E8E8] text-black  "
                             : "bg-[#333333] text-white  "
                         }`}
@@ -1725,12 +1725,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <span>
                           <MdOutlineSave
                             className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                              darkmode
+                              darkMode
                                 ? " hover:text-white hover:border-gray-200/80 "
                                 : " hover:text-gray-700 hover:border-gray-700 "
                             }`}
                             size={25}
-                            color={darkmode ? "#F4F4F5" : "#616A6B "}
+                            color={darkMode ? "#F4F4F5" : "#616A6B "}
                           />
                         </span>
                       </Tooltip>
@@ -1763,7 +1763,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           <Tooltip
                             content="Save As"
                             className={`rounded-md ${
-                              darkmode
+                              darkMode
                                 ? "bg-[#E9E8E8] text-black  "
                                 : "bg-[#333333] text-white  "
                             }`}
@@ -1771,12 +1771,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             <span>
                               <VscSaveAs
                                 className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
-                                  darkmode
+                                  darkMode
                                     ? " hover:text-white hover:border-gray-200/80 "
                                     : " hover:text-gray-700 hover:border-gray-700 "
                                 }`}
                                 size={25}
-                                color={darkmode ? "#F4F4F5" : "#616A6B "}
+                                color={darkMode ? "#F4F4F5" : "#616A6B "}
                               />
                             </span>
                           </Tooltip>
@@ -1793,7 +1793,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               "Application"
                             }
                             buttonClassName="bg-[#143C59]/70 border border-slate-400/30 text-white"
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             isDisabled={
                               applicationList.length < 0 ? true : false
                             }
@@ -1823,7 +1823,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               "Artifact Name"
                             }
                             buttonClassName="bg-[#143C59]/70 border border-slate-400/30 text-white"
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             isDisabled={
                               applicationArtifactsName.length < 0 ? true : false
                             }

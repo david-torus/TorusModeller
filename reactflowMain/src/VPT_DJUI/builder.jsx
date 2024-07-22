@@ -36,7 +36,7 @@ export default function Builder({
   type = "",
 }) {
   const [totalOptions, setTotalOptions] = useState([]);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [json, setJson] = useState({});
   const [dupJson, setDupJson] = useState({});
 
@@ -361,7 +361,7 @@ export default function Builder({
           // <GrCheckboxSelected
           //   size={15}
           //   color={`${
-          //     darkmode
+          //     darkMode
           //       ? "white"
           //       : ` ${uiPolicy[`Level${[Number(1)]}`] === "table" ? "#727D8D" : "black"}`
           //   } `}
@@ -376,7 +376,7 @@ export default function Builder({
           <BsDatabaseFillDown
             size={15}
             color={`${
-              darkmode
+              darkMode
                 ? "white"
                 : ` ${uiPolicy[`Level${[Number(1)]}`] === "table" ? "#727D8D" : "black"}`
             } `}
@@ -415,7 +415,7 @@ export default function Builder({
                 <div
                   className={`flex flex-row items-center 
                     ${uiPolicy[`Level${[Number(1)]}`] === "table" ? "w-[5rem] h-5" : "w-[8rem]  h-10 "} 
-                    ${darkmode ? "bg-[#5b5b5b]" : "bg-[#cbd0d8]"}
+                    ${darkMode ? "bg-[#5b5b5b]" : "bg-[#cbd0d8]"}
                   justify-around gap-[0.2rem] rounded-md py-3 px-1`}
                 >
                   <span
@@ -423,7 +423,7 @@ export default function Builder({
                     onClick={() => handleSave(editedValues, json)}
                     className={` flex justify-center rounded-md items-center w-[25px] h-[25px] cursor-pointer hover:text-[#03DAC6]
                       ${
-                        darkmode
+                        darkMode
                           ? ` ${uiPolicy[`Level${[Number(1)]}`] === "table" ? "bg-transparent " : "bg-transparent"} `
                           : ` ${uiPolicy[`Level${[Number(1)]}`] === "table" ? "bg-transparent" : "bg-transparent"}`
                       }  border-0 hover:bg-[#4A90E2]`}
@@ -434,12 +434,12 @@ export default function Builder({
                   {uiPolicy["Level1"] !== "table" && (
                     <span
                       onClick={() => setCollapse(!collapse)}
-                      className={` flex justify-center rounded-md items-center w-[25px] h-[25px] ${darkmode ? "bg-transparent" : "bg-transparent"} border-0 hover:bg-[#4A90E2]  `}
+                      className={` flex justify-center rounded-md items-center w-[25px] h-[25px] ${darkMode ? "bg-transparent" : "bg-transparent"} border-0 hover:bg-[#4A90E2]  `}
                     >
                       <MdExpand
                         size={15}
                         className="rotate-45"
-                        color={darkmode ? "white" : "black"}
+                        color={darkMode ? "white" : "black"}
                       />
                     </span>
                   )}
@@ -454,7 +454,7 @@ export default function Builder({
                     <span className="fileUpload">
                       <span
                         className={` flex justify-center rounded-md items-center w-[25px] h-[25px] 
-                          ${darkmode ? "bg-transparent" : "bg-transparent"} border-0 hover:bg-[#4A90E2]  `}
+                          ${darkMode ? "bg-transparent" : "bg-transparent"} border-0 hover:bg-[#4A90E2]  `}
                       >
                         <Upload
                           id={"builderUpload"}

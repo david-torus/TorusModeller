@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   useNodesState,
   useEdgesState,
@@ -59,11 +59,19 @@ const edgeTypes = {
   floatEdge: FloatingEdge,
 };
 
-const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
-  const [uniqueNames, setUniqueNames] = useState([]);
+const AppPF = ({
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+  onNodesChange,
+  onEdgesChange,
+
+  children,
+  proOptions,
+}) => {
   const [defaults, setDefaults] = useState({});
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
@@ -73,31 +81,14 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
   const [menu, setMenu] = useState(null);
   const [nodeConfig, setNodeConfig] = useState({});
   const edgeUpdateSuccessful = useRef(true);
-  const toast = useRef(null);
-  const isAdmin = admin;
+
   const userRoleDetails = null;
-  const drawingTrack = currentFabric;
+
   const [selectedRole, setSelectedRole] = useState(null);
   const [senddomain, setSendDomain] = useState(null);
   const [sendartifact, setSendArtifact] = useState(null);
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
 
-  const showSuccess = (msg) => {
-    toast.current.show({
-      severity: "success",
-      summary: "Success",
-      detail: `${msg}`,
-      life: 1000,
-    });
-  };
-  const showError = (msg) => {
-    toast.current.show({
-      severity: "error",
-      summary: "Error",
-      detail: msg,
-      life: 1000,
-    });
-  };
   const setDomain = (data) => {
     setSendDomain(data);
   };
@@ -130,17 +121,20 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
           setNodeConfig(data);
         }
 
-        setNodes((nodes) => nodes.filter((node) => {
-          if(node.id !== id) {
-            if(node.T_parentId.includes(id)) {
-              node.T_parentId = node.T_parentId.filter((parentId) => parentId !== id);
+        setNodes((nodes) =>
+          nodes.filter((node) => {
+            if (node.id !== id) {
+              if (node.T_parentId.includes(id)) {
+                node.T_parentId = node.T_parentId.filter(
+                  (parentId) => parentId !== id
+                );
+                return node;
+              }
               return node;
             }
-            return node;
+          })
+        );
 
-          }
-        }));
-    
         setEdges((edges) =>
           edges.filter((edge) => {
             if (edge.source !== id && edge.target !== id) {
@@ -366,7 +360,7 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
                 eds
               );
             } else {
-              showError("Source and Target cannot be same");
+              console.error("Source and Target cannot be same");
               return addEdge(eds);
             }
           });
@@ -644,21 +638,15 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
           return;
         }
 
-       
         const position = reactFlowInstance.project({
           x: event.clientX - reactFlowBounds.left,
           y: event.clientY - reactFlowBounds.top,
         });
         let nodeProperty = {};
 
-        const response = await getLatestVersion(
-          "torus",
-          "Fintech",
-          fabrics,
-          type
-        );
+        const response = await getLatestVersion("torus", "Fintech", "PF", type);
         console.log(response, type, "response");
-        if (response && (type!=="startnode" && type!=="endnode") ) {
+        if (response && type !== "startnode" && type !== "endnode") {
           nodeProperty = response?.data?.nodes[0]?.data?.nodeProperty ?? {};
         }
 
@@ -688,7 +676,7 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
         console.error(error);
       }
     },
-    [reactFlowInstance, setNodes, takeSnapshot, fabrics]
+    [reactFlowInstance, setNodes, takeSnapshot]
   );
 
   console.log(nodes, "<--nodes");
@@ -850,8 +838,7 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
+  const uniqueNames = useMemo(() => {
     if (nodes && nodes.length > 0) {
       let uniqueName = [];
       for (let i = 0; i < nodes.length; i++) {
@@ -861,9 +848,11 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
         )
           uniqueName.push(nodes[i].property.name.toLowerCase());
       }
-      setUniqueNames(uniqueName);
+      return uniqueName;
+    } else {
+      return [];
     }
-  }, [nodes]);
+  });
 
   /**
    * Retrieves the control policy configuration and workflow policy for a given type.
@@ -903,29 +892,21 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
   );
 
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Toast ref={toast} />
+    <>
       <ReactFlowDia
-        tenant={tenant}
-        group={group}
+        // tenant={tenant}
+        // group={group}
         undoRedo={{
           undo: undo,
           redo: redo,
           canRedo: canRedo,
           canUndo: canUndo,
         }}
-        fabrics={fabrics}
-        application={application}
+        fabrics={"PF"}
+        // application={application}
         getDataFromNavBar={getDataFromNavBar}
         sendDataToNavBar={sendDataToNavBar}
-        currentDrawing={drawingTrack}
+        currentDrawing={"PF"}
         nodes={nodes}
         edges={edges}
         edgeTypes={edgeTypes}
@@ -955,16 +936,15 @@ const App = ({ tenant, group, fabrics, application, admin, currentFabric }) => {
         deleteNode={deleteNode}
         setMenu={setMenu}
         updatedNodeConfig={updatedNodeConfig}
-        isAdmin={isAdmin}
+        isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
         nodeConfig={nodeConfig}
         userRoleDetails={userRoleDetails}
         selectedRole={selectedRole}
-        showSuccess={showSuccess}
-        showError={showError}
         uniqueNames={uniqueNames}
+        children={children}
       />
-    </div>
+    </>
   );
 };
 
-export default App;
+export default AppPF;

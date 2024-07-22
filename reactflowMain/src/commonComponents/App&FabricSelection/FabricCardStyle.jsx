@@ -13,7 +13,7 @@ import { DarkmodeContext } from "../context/DarkmodeContext";
 
 const Slide = ({ slide, setSelectedFabric }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   /**
    * Handles the mouse move event by getting the clientX and clientY coordinates.
@@ -80,7 +80,7 @@ const Slide = ({ slide, setSelectedFabric }) => {
   //Returning the slide component with the appropriate SVG component and the appropriate headline.
   return (
     <div
-      className={`transition-all flex flex-col gap-4 justify-between items-between delay-100 border cursor-pointer ${darkmode ? "bg-[#292929] border-gray-300/40" : "bg-[#E7E7E7] border-gray-600/80"}    rounded-md shadow-lg   slide ${isHovered ? "scale-105 shadow-sm  " : "scale-100"}`}
+      className={`transition-all flex flex-col gap-4 justify-between items-between delay-100 border cursor-pointer ${darkMode ? "bg-[#292929] border-gray-300/40" : "bg-[#E7E7E7] border-gray-600/80"}    rounded-md shadow-lg   slide ${isHovered ? "scale-105 shadow-sm  " : "scale-100"}`}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -96,7 +96,7 @@ const Slide = ({ slide, setSelectedFabric }) => {
         className={` w-[100%] p-1 rounded-md  bg-transparent flex  justify-center items-center`}
       >
         <h3
-          className={`whitespace-nowrap  ${darkmode ? "text-slate-50/90" : "text-black/70"}  object-cover  text-center font-bold`}
+          className={`whitespace-nowrap  ${darkMode ? "text-slate-50/90" : "text-black/70"}  object-cover  text-center font-bold`}
         >
           {slide.headline}
         </h3>
@@ -107,7 +107,7 @@ const Slide = ({ slide, setSelectedFabric }) => {
 
 const CornerSlide = ({ slide, setSelectedFabric }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const  {darkmode} = useContext(DarkmodeContext);
+  const  {darkMode} = useContext(DarkmodeContext);
 
 
 
@@ -153,7 +153,7 @@ const CornerSlide = ({ slide, setSelectedFabric }) => {
           <button>
             <IoSettingsOutline
               size={23}
-              color={darkmode ? "#D3D3D3" : "#474747"}
+              color={darkMode ? "#D3D3D3" : "#474747"}
             />
           </button>
         </PopoverTrigger>

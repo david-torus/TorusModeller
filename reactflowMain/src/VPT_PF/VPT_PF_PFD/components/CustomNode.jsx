@@ -29,13 +29,13 @@ import { SvgApiCustomNode } from "../../../asset/SvgsApplication";
  */
 
 export function ApiNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
         border: "1px solid" + (data.nodeColor || "#ccc"),
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       <span
@@ -81,7 +81,7 @@ export function ApiNode({ data, isConnectable, selected }) {
           width: "80%",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: darkmode ? "white" : "black",
+          color: darkMode ? "white" : "black",
           textAlign: "center",
         }}
       >
@@ -90,7 +90,7 @@ export function ApiNode({ data, isConnectable, selected }) {
           style={{
             textAlign: "center",
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -102,14 +102,14 @@ export function ApiNode({ data, isConnectable, selected }) {
   );
 }
 export function DecisionNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
         border: "1px solid" + (data.nodeColor || "#ccc"),
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       {
@@ -122,7 +122,7 @@ export function DecisionNode({ data, isConnectable, selected }) {
             marginBottom: data.label !== "" ? "-5px" : "",
           }}
         >
-          <AiOutlineApartment color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+          <AiOutlineApartment color={darkMode ? "#CCCCCC" : "gray"} size={22} />
         </span>
       }
       <Handle
@@ -182,7 +182,7 @@ export function DecisionNode({ data, isConnectable, selected }) {
           width: "80%",
           overflow: "hidden",
           textOverflow: "ellipsis",
-          color: darkmode ? "white" : "black",
+          color: darkMode ? "white" : "black",
           textAlign: "center",
         }}
       >
@@ -191,7 +191,7 @@ export function DecisionNode({ data, isConnectable, selected }) {
           style={{
             textAlign: "center",
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -203,7 +203,7 @@ export function DecisionNode({ data, isConnectable, selected }) {
   );
 }
 export function EndNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <div className="custom-node-img">
@@ -211,7 +211,7 @@ export function EndNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: `1px solid #FFA09A`,
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         {
@@ -224,7 +224,7 @@ export function EndNode({ data, isConnectable, selected }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <FaRegStopCircle color={darkmode ? "white" : "gray"} size={22} />
+            <FaRegStopCircle color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -242,7 +242,7 @@ export function EndNode({ data, isConnectable, selected }) {
         <div
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
         >
@@ -255,24 +255,24 @@ export function EndNode({ data, isConnectable, selected }) {
   );
 }
 export function StartNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
 
           border: `1px solid #83E283`,
         }}
       >
-        <MdOutlineNotStarted color={darkmode ? "white" : "gray"} size={22} />
+        <MdOutlineNotStarted color={darkMode ? "white" : "gray"} size={22} />
 
         <label
           title={"Start"}
           style={{
             fontSize: "8px",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             fontFamily: "monospace",
           }}
           htmlFor=""
@@ -298,12 +298,12 @@ export function StartNode({ data, isConnectable, selected }) {
   );
 }
 export function DefaultNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
-        backgroundColor: darkmode ? "transparent" : "#F0EEED",
+        backgroundColor: darkMode ? "transparent" : "#F0EEED",
       }}
     >
       <Handle
@@ -334,7 +334,7 @@ export function DefaultNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -343,7 +343,7 @@ export function DefaultNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -370,14 +370,14 @@ export function DefaultNode({ data, isConnectable, selected }) {
   );
 }
 export function DatabaseNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className="custom-node "
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         <span
@@ -389,7 +389,7 @@ export function DatabaseNode({ data, isConnectable, selected }) {
             marginBottom: data.label !== "" ? "-5px" : "",
           }}
         >
-          <GrMysql color={darkmode ? "white" : "gray"} size={22} />
+          <GrMysql color={darkMode ? "white" : "gray"} size={22} />
         </span>
 
         <Handle
@@ -421,7 +421,7 @@ export function DatabaseNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -430,7 +430,7 @@ export function DatabaseNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -443,14 +443,14 @@ export function DatabaseNode({ data, isConnectable, selected }) {
   );
 }
 export function KafkaNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F0EEED",
+          backgroundColor: darkMode ? "transparent" : "#F0EEED",
         }}
       >
         {
@@ -463,7 +463,7 @@ export function KafkaNode({ data, isConnectable, selected }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <SiApachekafka color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+            <SiApachekafka color={darkMode ? "#CCCCCC" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -494,7 +494,7 @@ export function KafkaNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -503,7 +503,7 @@ export function KafkaNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -516,14 +516,14 @@ export function KafkaNode({ data, isConnectable, selected }) {
   );
 }
 export function PostgresNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           boxShadow: `  0 0 1px 1px ${data.nodeColor || "#ccc"}`,
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -536,7 +536,7 @@ export function PostgresNode({ data, isConnectable, selected }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <SiPostgresql color={darkmode ? "white" : "gray"} size={22} />
+            <SiPostgresql color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -567,7 +567,7 @@ export function PostgresNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -576,7 +576,7 @@ export function PostgresNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -589,14 +589,14 @@ export function PostgresNode({ data, isConnectable, selected }) {
   );
 }
 export function DockerNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -609,7 +609,7 @@ export function DockerNode({ data, isConnectable, selected }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <FaDocker color={darkmode ? "#CCCCCC" : "gray"} size={22} />
+            <FaDocker color={darkMode ? "#CCCCCC" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -640,7 +640,7 @@ export function DockerNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -649,7 +649,7 @@ export function DockerNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -662,14 +662,14 @@ export function DockerNode({ data, isConnectable, selected }) {
   );
 }
 export function InputNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -682,7 +682,7 @@ export function InputNode({ data, isConnectable, selected }) {
               marginBottom: data.label !== "" ? "-5px" : "",
             }}
           >
-            <RxInput color={darkmode ? "white" : "gray"} size={22} />
+            <RxInput color={darkMode ? "white" : "gray"} size={22} />
           </span>
         }
         <Handle
@@ -713,7 +713,7 @@ export function InputNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -722,7 +722,7 @@ export function InputNode({ data, isConnectable, selected }) {
             style={{
               textAlign: "center",
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -735,14 +735,14 @@ export function InputNode({ data, isConnectable, selected }) {
   );
 }
 export function OutputNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -756,7 +756,7 @@ export function OutputNode({ data, isConnectable, selected }) {
             }}
           >
             <LiaLaptopCodeSolid
-              color={darkmode ? "#CCCCCC" : "gray"}
+              color={darkMode ? "#CCCCCC" : "gray"}
               size={22}
             />
           </span>
@@ -791,7 +791,7 @@ export function OutputNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -799,7 +799,7 @@ export function OutputNode({ data, isConnectable, selected }) {
             title={data.label}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -813,14 +813,14 @@ export function OutputNode({ data, isConnectable, selected }) {
 }
 
 export function CustomCode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -866,7 +866,7 @@ export function CustomCode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -874,7 +874,7 @@ export function CustomCode({ data, isConnectable, selected }) {
             title={data.label}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""
@@ -887,14 +887,14 @@ export function CustomCode({ data, isConnectable, selected }) {
   );
 }
 export function HumanTaskNode({ data, isConnectable, selected }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <div className="custom-node-img">
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkmode ? "transparent" : "#F1EFEF",
+          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
         }}
       >
         {
@@ -940,7 +940,7 @@ export function HumanTaskNode({ data, isConnectable, selected }) {
             width: "80%",
             overflow: "hidden",
             textOverflow: "ellipsis",
-            color: darkmode ? "white" : "black",
+            color: darkMode ? "white" : "black",
             textAlign: "center",
           }}
         >
@@ -948,7 +948,7 @@ export function HumanTaskNode({ data, isConnectable, selected }) {
             title={data.label}
             style={{
               fontSize: "8px",
-              color: darkmode ? "white" : "black",
+              color: darkMode ? "white" : "black",
               fontFamily: "monospace",
             }}
             htmlFor=""

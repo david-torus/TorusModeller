@@ -15,7 +15,7 @@ export const DefaultTabs = ({
   contextMenuVisible,
   contextMenuPosition,
 }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   useEffect(() => {
     try {
@@ -40,7 +40,7 @@ export const DefaultTabs = ({
     <>
       <Tabs
         aria-label="Options"
-        color={darkmode ? "transparent" : "transparent"}
+        color={darkMode ? "transparent" : "transparent"}
         variant="underlined"
         classNames={{
           tabList:
@@ -58,7 +58,7 @@ export const DefaultTabs = ({
                 <Tooltip content={value.label}>
                   <span
                     className={
-                      darkmode
+                      darkMode
                         ? `rounded-md w-[35px] h-[35px] hover:bg-blue-500 hover:shadow-lg 
                                               ${activeTab === value.modelOpen ? "bg-[#009BC9] text-slate-800/65" : " bg-slate-600 text-slate-50"}  
                                               flex items-center justify-center cursor-pointer px-[3px] shadow-md`
@@ -80,7 +80,7 @@ export const DefaultTabs = ({
                 <div
                   className={
                     "fixed  rounded-md " +
-                    (darkmode ? "bg-[#242424]" : "bg-white")
+                    (darkMode ? "bg-[#242424]" : "bg-white")
                   }
                   style={{
                     zIndex: 9999,

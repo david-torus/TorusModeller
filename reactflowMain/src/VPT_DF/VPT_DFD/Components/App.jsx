@@ -45,7 +45,7 @@ export default function App({
   const [menu, setMenu] = useState([]);
   const [typesInFlow, setTypesInFlow] = useState([]);
 
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const toast = useRef(null);
   const [uniqueNames, setUniqueNames] = useState([]);
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
@@ -385,7 +385,7 @@ export default function App({
         style={{
           height: "100%",
           width: "100%",
-          backgroundColor: darkmode ? "#121212" : "#E9E8E8",
+          backgroundColor: darkMode ? "#121212" : "#E9E8E8",
         }}
       >
         <Toast ref={toast} />

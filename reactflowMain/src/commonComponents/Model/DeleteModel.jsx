@@ -20,7 +20,7 @@ export const DeleteModel = ({
   deleteFunction,
   handleEmpty,
 }) => {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <Modal
@@ -29,16 +29,16 @@ export const DeleteModel = ({
       isDismissable={false}
       isKeyboardDismissDisabled={true}
       classNames={{
-        backdrop: darkmode
+        backdrop: darkMode
           ? "bg-[#353535]/70 backdrop-opacity-60"
           : "bg-slate-300/70 backdrop-opacity-60",
-        base: darkmode
+        base: darkMode
           ? "border-[#2B2B2B] bg-[#404142] shadow-xl"
           : "border-[#2B2B2B] bg-slate-300 shadow-xl",
-        header: darkmode ? " text-white" : " text-slate-900",
-        body: darkmode ? "text-white" : "text-slate-900",
-        footer: darkmode ? "   text-white" : "   text-slate-900",
-        closeButton: darkmode
+        header: darkMode ? " text-white" : " text-slate-900",
+        body: darkMode ? "text-white" : "text-slate-900",
+        footer: darkMode ? "   text-white" : "   text-slate-900",
+        closeButton: darkMode
           ? "hover:bg-white/5 active:bg-white/10"
           : "hover:bg-white/5 active:bg-white/10",
       }}

@@ -14,17 +14,17 @@ export default function EventDisplay({
   currentDrawing,
   selectedControlEvents,
 }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <eventSourceNodesJsonContext.Provider value={controlJson}>
       <div
-        className={`w-full h-full flex items-center mt-[0px] ${darkmode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
+        className={`w-full h-full flex items-center mt-[0px] ${darkMode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
       >
         {selectedControlEvents && (
           <AnimatePresence mode="sync">
             <motion.div
-              className={`h-[100%] w-[15%] overflow-scroll transition-all  ${darkmode ? "bg-[#1D1D1D]/90  " : "bg-[#e4e3e3] "} border-r border-neutral-600`}
+              className={`h-[100%] w-[15%] overflow-scroll transition-all  ${darkMode ? "bg-[#1D1D1D]/90  " : "bg-[#e4e3e3] "} border-r border-neutral-600`}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
@@ -73,13 +73,13 @@ const EventScreen = ({ json }) => {
     event.dataTransfer.effectAllowed = "move";
   };
 
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <>
       {json && (
         <>
-          <span className={`${darkmode ? "text-white" : "text-black"} `}>
+          <span className={`${darkMode ? "text-white" : "text-black"} `}>
             {json?.nodeName || json?.nodeType}
           </span>
           {json?.events &&
@@ -91,7 +91,7 @@ const EventScreen = ({ json }) => {
                   onDragStart={(event) => onDragStart(event, item.name, json)}
                   draggable
                 >
-                  <span className={`${darkmode ? "text-white" : "text-black"}`}>
+                  <span className={`${darkMode ? "text-white" : "text-black"}`}>
                     {item.name}
                   </span>
                 </div>

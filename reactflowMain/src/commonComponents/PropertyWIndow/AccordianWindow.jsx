@@ -21,7 +21,7 @@ const RenderAccordion = ({
 }) => {
   const [handleValue, setHandleValue] = useState(null);
   const [visible, setVisible] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const handleInput = (e, value, path) => {
     setHandleValue(e);
@@ -48,7 +48,7 @@ const RenderAccordion = ({
                 <Accordion
                   key={key}
                   itemClasses={{
-                    title: darkmode ? "text-white" : "text-black",
+                    title: darkMode ? "text-white" : "text-black",
                   }}
                   className={`flex text-base gap-4 w-[100%] overflow-x-auto overflow-y-scroll
                  scrollbar-hide px-2 border-none`}
@@ -56,7 +56,7 @@ const RenderAccordion = ({
                 >
                   <AccordionItem
                     title={key}
-                    className={`${darkmode ? "w-[100%] text-white" : "w-[100%] text-black"}`}
+                    className={`${darkMode ? "w-[100%] text-white" : "w-[100%] text-black"}`}
                   >
                     <>
                       {keyJson && (
@@ -67,11 +67,11 @@ const RenderAccordion = ({
                         >
                           <div className="flex gap-2 items-center">
                             <span
-                              className={`${darkmode ? " text-white" : " text-black"}`}
+                              className={`${darkMode ? " text-white" : " text-black"}`}
                               onMouseEnter={() => handleTooltip(currentPath)}
                             >
                               <AiOutlineInfoCircle
-                                color={darkmode ? "white" : "black"}
+                                color={darkMode ? "white" : "black"}
                               />
                             </span>
                           </div>
@@ -112,7 +112,7 @@ const RenderAccordion = ({
                       >
                         <span
                           className={
-                            darkmode
+                            darkMode
                               ? "text-white text-sm font-bold"
                               : "text-slate-900 text-sm font-bold "
                           }
@@ -164,7 +164,7 @@ const RenderAccordion = ({
                                 onMouseEnter={() => handleTooltip(currentPath)}
                               >
                                 <AiOutlineInfoCircle
-                                  color={darkmode ? "white" : "black"}
+                                  color={darkMode ? "white" : "black"}
                                 />
                               </span>
                             </div>
@@ -214,7 +214,7 @@ const RenderAccordion = ({
                       >
                         <span
                           className={
-                            darkmode
+                            darkMode
                               ? "text-white text-sm font-bold"
                               : "text-slate-900 text-sm font-bold "
                           }
@@ -266,7 +266,7 @@ const RenderAccordion = ({
                                 onMouseEnter={() => handleTooltip(currentPath)}
                               >
                                 <AiOutlineInfoCircle
-                                  color={darkmode ? "white" : "black"}
+                                  color={darkMode ? "white" : "black"}
                                 />
                               </span>
                             </div>
@@ -282,12 +282,12 @@ const RenderAccordion = ({
                         <div key={index} className="my-2 py-1">
                           <ReusableInput
                             key={index + "Accordian"}
-                            darkmode={darkmode}
+                            darkMode={darkMode}
                             labelPlacement="outside"
                             label={
                               <label
                                 className={
-                                  darkmode
+                                  darkMode
                                     ? "text-white text-sm font-bold"
                                     : "text-gray-700 text-sm font-bold"
                                 }
@@ -330,12 +330,12 @@ const RenderAccordion = ({
                 <>
                   <ReusableInput
                     key={key + "Accordian"}
-                    darkmode={darkmode}
+                    darkMode={darkMode}
                     labelPlacement="outside"
                     label={
                       <label
                         className={
-                          darkmode
+                          darkMode
                             ? "text-white text-sm font-bold"
                             : "text-gray-700 text-sm font-bold"
                         }
@@ -407,7 +407,7 @@ export const AccordianWindow = ({
   const [dupjson, setDupjson] = useState(null);
   const [tooltip, setTooltip] = useState(null);
   const [visible, setVisible] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const [files, setFiles] = useState(null);
 
   useEffect(() => {
@@ -509,7 +509,7 @@ export const AccordianWindow = ({
                             }}
                           >
                             <span
-                              className={`${darkmode ? "text-white" : "text-black"} text-md `}
+                              className={`${darkMode ? "text-white" : "text-black"} text-md `}
                             >
                               {key}
                             </span>
@@ -557,7 +557,7 @@ export const AccordianWindow = ({
                                 <div className="flex gap-2 items-center">
                                   <span onMouseEnter={() => handleTooltip(key)}>
                                     <AiOutlineInfoCircle
-                                      color={darkmode ? "white" : "black"}
+                                      color={darkMode ? "white" : "black"}
                                     />
                                   </span>
                                 </div>
@@ -582,7 +582,7 @@ export const AccordianWindow = ({
                     <div>
                       <ReusableInput
                         key={key + "Accordian"}
-                        darkmode={darkmode}
+                        darkMode={darkMode}
                         label={key}
                         labelPlacement="outside"
                         handleChange={(e) => {
@@ -636,7 +636,7 @@ export const AccordianWindow = ({
                             >
                               <span onMouseEnter={() => handleTooltip(key)}>
                                 <AiOutlineInfoCircle
-                                  color={darkmode ? "white" : "black"}
+                                  color={darkMode ? "white" : "black"}
                                 />
                               </span>
                             </Tooltip>
@@ -663,13 +663,13 @@ export const AccordianWindow = ({
                           radius="lg"
                           className="text-gray-700 shadow-md"
                           style={{
-                            color: darkmode ? "white" : "black",
+                            color: darkMode ? "white" : "black",
                           }}
                           classNames={{
-                            base: darkmode
+                            base: darkMode
                               ? "w-full text-gray-200"
                               : " w-full text-slate-700",
-                            label: darkmode
+                            label: darkMode
                               ? [
                                   "data-[focused=true]:border-none text-sm font-bold text-white",
                                 ]
@@ -677,7 +677,7 @@ export const AccordianWindow = ({
                                   "data-[focused=true]:border-none text-sm font-bold text-zinc-700",
                                 ],
                             mainWrapper: "h-full text-slate-700 ",
-                            input: darkmode
+                            input: darkMode
                               ? [
                                   "bg-transparent",
                                   "text-white",
@@ -688,7 +688,7 @@ export const AccordianWindow = ({
                                   "text-black",
                                   "placeholder:text-sm text-black ",
                                 ],
-                            inputWrapper: darkmode
+                            inputWrapper: darkMode
                               ? [
                                   "h-[10px] rounded-md text-slate-700 bg-transparent hover:bg-[#D9DEE8] hover:border-blue-500/50 hover:text-slate-700 border border-slate-500/50 ",
                                   "data-[focused=true]:border-pink-500/50",
@@ -721,7 +721,7 @@ export const AccordianWindow = ({
         >
           <span
             className="fileUpload"
-            style={{ color: darkmode ? "white" : "black" }}
+            style={{ color: darkMode ? "white" : "black" }}
           >
             <Upload id="accordianUpload" setFiles={setFiles} />
           </span>

@@ -15,7 +15,7 @@ export const NodeInfoSidebarNodeInformation = ({
   sideBarData,
   currentDrawing,
   handleNames,
-  darkmode,
+  darkMode,
   changeProperty,
   selectedIPC,
   handleIPCselection,
@@ -29,17 +29,17 @@ export const NodeInfoSidebarNodeInformation = ({
           title="Node Information"
           classNames={{
             titleWrapper: "w-full",
-            title: darkmode
+            title: darkMode
               ? "w-full text-md font-bold text-blue-400"
               : "w-full text-md font-bold text-blue-700",
-            indicator: darkmode
+            indicator: darkMode
               ? "text-white font-bolder text-md"
               : "text-black font-bolder text-md",
           }}
           startContent={
             <IoIosInformationCircle
               className={
-                darkmode
+                darkMode
                   ? "text-blue-400 font-bolder text-lg"
                   : "text-blue-700 font-bolder text-lg"
               }
@@ -57,7 +57,7 @@ export const NodeInfoSidebarNodeInformation = ({
                       (!value && "Please Enter Application Name")
                     }
                     type="text"
-                    darkmode={darkmode}
+                    darkMode={darkMode}
                     isInvalid={err}
                     defaultValue={value}
                     label={key}
@@ -73,7 +73,7 @@ export const NodeInfoSidebarNodeInformation = ({
                 <div className="mt-0 px-2 w-full py-2">
                   <Textarea
                     defaultValue={value}
-                    variant={darkmode ? "bordered" : "flat"}
+                    variant={darkMode ? "bordered" : "flat"}
                     placeholder={key}
                     disableAutosize
                     onValueChange={(e) => changeProperty({ [key]: e })}
@@ -89,7 +89,7 @@ export const NodeInfoSidebarNodeInformation = ({
                       base: " w-full ",
                       label: "text-sm font-bold text-zinc-700",
                       mainWrapper: "h-full text-slate-700 ",
-                      input: darkmode
+                      input: darkMode
                         ? [
                             "bg-transparent",
                             "text-white",
@@ -104,7 +104,7 @@ export const NodeInfoSidebarNodeInformation = ({
                             "text-sm",
                             "font-bold",
                           ],
-                      inputWrapper: darkmode
+                      inputWrapper: darkMode
                         ? [
                             "h-[10px]",
                             "rounded-md bg-transparent border border-slate-500/50",
@@ -155,7 +155,7 @@ export const NodeInfoSidebarNodeInformation = ({
                       <span className="">
                         <p
                           className={
-                            darkmode
+                            darkMode
                               ? "text-white"
                               : "text-black text-md font-bold"
                           }

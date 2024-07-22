@@ -3,7 +3,7 @@ import { useReactFlow } from "reactflow";
 import TorusButton from "../../torusComponents/TorusButton";
 import { Text } from "react-aria-components";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
-import { DarkModeContext } from "../../context/darkmodeContext";
+import { DarkmodeContext } from "../../context/darkmodeContext";
 
 export default function DataFabricContextMenu({
   id,
@@ -16,7 +16,7 @@ export default function DataFabricContextMenu({
   console.log(top, left, right, bottom);
   const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
   const node = getNode(id);
-  const { darkMode } = useContext(DarkModeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const duplicateNode = useCallback(() => {
     const position = {
       x: node.position.x + 50,

@@ -19,19 +19,19 @@ export default function DefaultDailog({
   propertyWindow,
 }) {
   const [activeTab, setActiveTab] = useState("1");
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   return (
     <Dialog
       headerStyle={{
         height: "40px",
         textAlign: "center",
         textTransform: "capitalize",
-        backgroundColor: darkmode ? "#363636" : "#E9E8E8",
-        color: darkmode ? "white" : "black",
+        backgroundColor: darkMode ? "#363636" : "#E9E8E8",
+        color: darkMode ? "white" : "black",
       }}
       contentStyle={{
-        backgroundColor: darkmode ? "#363636" : "#E9E8E8",
-        color: darkmode ? "white" : "black",
+        backgroundColor: darkMode ? "#363636" : "#E9E8E8",
+        color: darkMode ? "white" : "black",
       }}
       visible={visible}
       onHide={() => setVisible(false)}

@@ -3,7 +3,7 @@ import { MdDriveFolderUpload } from "react-icons/md";
 import { DarkmodeContext } from "../context/DarkmodeContext";
 
 export function Upload({ setFiles, id }) {
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   const handleChange = (e) => {
     try {
@@ -22,7 +22,7 @@ export function Upload({ setFiles, id }) {
   return (
     <>
       <label htmlFor={id} className="fileUploadLabel">
-        <MdDriveFolderUpload size={20} color={darkmode ? "white" : "black"} />
+        <MdDriveFolderUpload size={20} color={darkMode ? "white" : "black"} />
       </label>
       <input
         style={{ display: "none" }}

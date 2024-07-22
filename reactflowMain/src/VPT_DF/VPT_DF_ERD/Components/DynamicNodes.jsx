@@ -10,7 +10,7 @@ export function CustomTableNode({ data, id }) {
   const [editingHeader, setEditingHeader] = useState(false);
   const [editedHeader, setEditedHeader] = useState("");
   const [showError, setShowError] = useState(false);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const { setNodes } = useReactFlow();
 
   //UseEffect for editing header
@@ -124,12 +124,12 @@ export function CustomTableNode({ data, id }) {
     <table
       removeWrapper
       topContentPlacement="top"
-      className={`${darkmode ? "ring-neutral-500/60 bg-neutral-700" : "ring-neutral-400 bg-neutral-400"} w-[200px] ring-2    rounded-sm    `}
+      className={`${darkMode ? "ring-neutral-500/60 bg-neutral-700" : "ring-neutral-400 bg-neutral-400"} w-[200px] ring-2    rounded-sm    `}
     >
       <th className="relative ">
         <tr
           onClick={handleHeaderClick}
-          className={`${darkmode ? "bg-neutral-800 text-white" : "bg-neutral-300/70 text-black"} h-[40px]   flex items-center justify-center `}
+          className={`${darkMode ? "bg-neutral-800 text-white" : "bg-neutral-300/70 text-black"} h-[40px]   flex items-center justify-center `}
         >
           {editingHeader ? (
             <div>
@@ -159,10 +159,10 @@ export function CustomTableNode({ data, id }) {
                 style={{
                   width: "6%",
                   height: "28%",
-                  backgroundColor: darkmode ? "#363636" : "#E9E8E8",
+                  backgroundColor: darkMode ? "#363636" : "#E9E8E8",
                   cursor: "crosshair",
                   border: "2px solid #E9E8E8",
-                  borderColor: darkmode ? "#E9E8E8" : "#9E9E9E",
+                  borderColor: darkMode ? "#E9E8E8" : "#9E9E9E",
                   marginLeft: "8.5px",
                   ...positionStyles[Position.Left],
                 }}
@@ -176,10 +176,10 @@ export function CustomTableNode({ data, id }) {
                 style={{
                   width: "6%",
                   height: "28%",
-                  backgroundColor: darkmode ? "#A3A3A3" : "#A3A3A3",
+                  backgroundColor: darkMode ? "#A3A3A3" : "#A3A3A3",
                   cursor: "crosshair",
                   border: "2px solid ",
-                  borderColor: darkmode ? "#363636" : "#E9E8E8",
+                  borderColor: darkMode ? "#363636" : "#E9E8E8",
                   marginRight: "10px",
                   ...positionStyles[Position.Right],
                 }}
@@ -198,7 +198,7 @@ export function CustomTableNode({ data, id }) {
               datas?.attributes[key].cname !== "" && (
                 <td
                   key={index}
-                  className={`${darkmode ? "bg-[#333333] text-white border-neutral-500" : "bg-neutral-200/80 text-black/70 border-neutral-400"}  flex h-[43px] text-md flex-col  justify-center   border-t-2 p-[10px] 
+                  className={`${darkMode ? "bg-[#333333] text-white border-neutral-500" : "bg-neutral-200/80 text-black/70 border-neutral-400"}  flex h-[43px] text-md flex-col  justify-center   border-t-2 p-[10px] 
                   hover:bg-neutral-600/10
                   transition-ease-in-out duration-150 last:rounded-b-sm first:border-none`}
                 >
@@ -212,9 +212,9 @@ export function CustomTableNode({ data, id }) {
                         height: "50%",
                         position: "absolute",
                         left: "-17px",
-                        backgroundColor: darkmode ? "#363636" : "#E9E8E8",
+                        backgroundColor: darkMode ? "#363636" : "#E9E8E8",
                         border: "2px solid #E9E8E8",
-                        borderColor: darkmode ? "#E9E8E8" : "#9E9E9E",
+                        borderColor: darkMode ? "#E9E8E8" : "#9E9E9E",
                       }}
                     />
 
@@ -229,9 +229,9 @@ export function CustomTableNode({ data, id }) {
                         height: "50%",
                         position: "absolute",
                         right: "-17px",
-                        backgroundColor: darkmode ? "#A3A3A3" : "#A3A3A3",
+                        backgroundColor: darkMode ? "#A3A3A3" : "#A3A3A3",
                         border: "2px solid #E9E8E8",
-                        borderColor: darkmode ? "#363636" : "#E9E8E8",
+                        borderColor: darkMode ? "#363636" : "#E9E8E8",
                       }}
                     />
                   </tr>

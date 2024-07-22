@@ -32,7 +32,7 @@ export default function ContextMenu({
 }) {
   const { getNode } = useReactFlow();
   const node = getNode(id);
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <>
@@ -41,7 +41,7 @@ export default function ContextMenu({
           <div
             style={{ top, left, right, bottom }}
             className={
-              `${darkmode ? "bg-[#363636]  " : "bg-white   "}` +
+              `${darkMode ? "bg-[#363636]  " : "bg-white   "}` +
               `${
                 node.data.label
                   ? "w-[170px] h-[145px] flex flex-col items-center justify-center  z-10 absolute rounded-md "
@@ -58,7 +58,7 @@ export default function ContextMenu({
             >
               <span
                 className={
-                  darkmode
+                  darkMode
                     ? "text-start font-semibold capitalize mb-2  text-white"
                     : "text-start font-semibold capitalize mb-2  text-black/75"
                 }
@@ -67,10 +67,10 @@ export default function ContextMenu({
               </span>
             </div>
 
-            <div className={`${darkmode ? " p-2 w-full" : " p-2 w-full "}`}>
+            <div className={`${darkMode ? " p-2 w-full" : " p-2 w-full "}`}>
               <div
                 className={
-                  darkmode
+                  darkMode
                     ? "flex flex-row whitespace-nowrap w-full   gap-[20px] p-[10px] hover:bg-slate-500/40 rounded-lg "
                     : "flex flex-row whitespace-nowrap  gap-[20px]  p-[10px] hover:bg-gray-300/50 rounded-lg "
                 }
@@ -81,7 +81,7 @@ export default function ContextMenu({
                 <span>
                   <TbSettings2
                     size={20}
-                    color={darkmode ? "#fff" : "#8C8C8C"}
+                    color={darkMode ? "#fff" : "#8C8C8C"}
                   />
                 </span>
 
@@ -103,7 +103,7 @@ export default function ContextMenu({
                 >
                   <span
                     className={`text-base ${
-                      darkmode ? "text-white" : "text-black/80"
+                      darkMode ? "text-white" : "text-black/80"
                     } ml-2`}
                   >
                     Edit Node
@@ -113,7 +113,7 @@ export default function ContextMenu({
               </div>
               <div
                 className={
-                  darkmode
+                  darkMode
                     ? "flex flex-row  gap-[20px]  p-[10px] whitespace-nowrap hover:bg-slate-500/40 rounded-lg "
                     : "flex flex-row gap-[20px]  whitespace-nowrap p-[10px] hover:bg-gray-300/50 rounded-lg "
                 }
@@ -123,7 +123,7 @@ export default function ContextMenu({
               >
                 <span>
                   <AiOutlineDelete
-                    color={darkmode ? "#fff" : "#8C8C8C"}
+                    color={darkMode ? "#fff" : "#8C8C8C"}
                     size={20}
                   />
                 </span>
@@ -140,7 +140,7 @@ export default function ContextMenu({
                 >
                   <span
                     className={`text-base ml-[12px]  ${
-                      darkmode ? "text-white" : "text-black/80"
+                      darkMode ? "text-white" : "text-black/80"
                     }`}
                   >
                     Delete

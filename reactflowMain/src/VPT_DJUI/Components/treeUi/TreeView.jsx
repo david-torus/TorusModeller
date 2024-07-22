@@ -46,7 +46,7 @@ const HoverIcon = memo(
     path,
   }) => {
     const [toggleAdd, setToggleAdd] = useState(false);
-    const { darkmode } = useContext(DarkmodeContext);
+    const { darkMode } = useContext(DarkmodeContext);
 
     const { functionality } = useContext(BuilderContext);
 
@@ -81,7 +81,7 @@ const HoverIcon = memo(
                 onClick={() => setToggleAdd(true)}
               >
                 <RiAddBoxLine
-                  color={darkmode ? "white" : "black"}
+                  color={darkMode ? "white" : "black"}
                   opacity={0.5}
                 />
               </span>
@@ -150,7 +150,7 @@ const TreeObj = memo(
     const [selected, setSelected] = useState(null);
     const [selectedkey, setSelectedkey] = useState(null);
     const modalRef = useOnClickOutsideRef(() => setSelected(false));
-    const { darkmode } = useContext(DarkmodeContext);
+    const { darkMode } = useContext(DarkmodeContext);
 
     useEffect(() => {
       try {
@@ -221,9 +221,9 @@ const TreeObj = memo(
             }}
           >
             {isOpen ? (
-              <IoIosArrowDown color={darkmode ? "white" : "black"} />
+              <IoIosArrowDown color={darkMode ? "white" : "black"} />
             ) : (
-              <IoIosArrowForward color={darkmode ? "white" : "black"} />
+              <IoIosArrowForward color={darkMode ? "white" : "black"} />
             )}
           </span>
 
@@ -285,7 +285,7 @@ const TreeObj = memo(
             ) : (
               <>
                 <b
-                  className={darkmode ? "text-white" : "text-black"}
+                  className={darkMode ? "text-white" : "text-black"}
                   onClick={() =>
                     setSelectjs({
                       json: node[keys],
@@ -308,7 +308,7 @@ const TreeObj = memo(
                     <div className="flex gap-2 items-center">
                       <span>
                         <AiOutlineInfoCircle
-                          color={darkmode ? "white" : "black"}
+                          color={darkMode ? "white" : "black"}
                         />
                       </span>
                     </div>
@@ -336,7 +336,7 @@ const TreeObj = memo(
         {isOpen && (
           <div
             className={
-              darkmode
+              darkMode
                 ? `bg-[#494949] border-l-1  pt-2 border-slate-600/40  rounded-lg hover:${
                     dp === 0 && "bg-slate-600"
                   } transition-all duration-150 `
@@ -501,7 +501,7 @@ const TreeView = memo(
     const [options, setOptions] = useState(null);
 
     const [visible, setVisible] = useState(false);
-    const { darkmode } = useContext(DarkmodeContext);
+    const { darkMode } = useContext(DarkmodeContext);
 
     const setSelectjs = useCallback(
       (json) => {
@@ -536,7 +536,7 @@ const TreeView = memo(
             <div
               key={path + "tree"}
               className={
-                darkmode
+                darkMode
                   ? " bg-[#434343] border border-gray-500/40 rounded-md shadow-lg"
                   : "bg-slate-100 border border-slate-100 rounded-md shadow-lg"
               }
@@ -552,13 +552,13 @@ const TreeView = memo(
             >
               <div
                 className={
-                  darkmode
+                  darkMode
                     ? "tree shadow-xl  rounded-md border border-gray-400/30"
                     : "tree shadow-xl  rounded-md border border-slate-100"
                 }
                 style={{
                   color: "white",
-                  backgroundColor: darkmode ? "#595959" : "white",
+                  backgroundColor: darkMode ? "#595959" : "white",
                   display: "flex",
                   gap: "10px",
                   flexDirection: "column",
@@ -618,7 +618,7 @@ const TreeView = memo(
               {selectedjson && (
                 <div
                   className={
-                    darkmode
+                    darkMode
                       ? "tree shadow-xl  rounded-xl border border-gray-500/50 bg-[#595959]"
                       : "tree shadow-xl  rounded-xl border border-slate-100 bg-white]"
                   }

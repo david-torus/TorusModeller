@@ -25,7 +25,7 @@ export const RenderData = ({
   tenant,
   group,
   application,
-  darkmode,
+  darkMode,
 
   selectedproperty,
   helperjson,
@@ -37,7 +37,7 @@ export const RenderData = ({
       currentModel !== "entities" &&
       currentDrawing !== "SF" ? (
         <Sidebar
-          className={darkmode ? "bg-[#242424]" : "bg-[#fff]"}
+          className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
           position="right"
           visible={toggle}
           onHide={() => {
@@ -49,7 +49,7 @@ export const RenderData = ({
         </Sidebar>
       ) : currentDrawing === "DF" && currentModel === "entities" ? (
         <Dialog
-          className={darkmode ? "bg-[#242424]" : "bg-[#fff]"}
+          className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
           maximizable
           style={{ height: "100%", width: "70vw" }}
           visible={toggle}
@@ -57,23 +57,23 @@ export const RenderData = ({
             setToggle(false);
           }}
           headerStyle={{
-            backgroundColor: darkmode ? "#242424" : "#fff",
-            color: darkmode ? "white" : "black",
+            backgroundColor: darkMode ? "#242424" : "#fff",
+            color: darkMode ? "white" : "black",
           }}
-          contentStyle={{ backgroundColor: darkmode ? "#242424" : "#fff" }}
+          contentStyle={{ backgroundColor: darkMode ? "#242424" : "#fff" }}
         >
           <div
             className="transition-all w-full delay-100 flex flex-col justify-center 
           items-center gap-4 overflow-y-hidden h-full "
           >
             <div
-              className={` flex flex-row justify-around w-[315px] h-[40px] gap-[0px] text-base items-between rounded-md xl:py-[3px] py-[2px] ${darkmode ? "bg-[#363636]" : "bg-[#F1F3F9]"} `}
+              className={` flex flex-row justify-around w-[315px] h-[40px] gap-[0px] text-base items-between rounded-md xl:py-[3px] py-[2px] ${darkMode ? "bg-[#363636]" : "bg-[#F1F3F9]"} `}
             >
               <div
                 onClick={() => tabvisible(1)}
                 className={`flex flex-row gap-2 transition-all items-center text-center select-none  
                  xl:px-[25px] xl:py-[3px] px-[21px] py-[4px]  xl:text-md text-sm
-                  text-slate-600 rounded-md  cursor-pointer text-${darkmode ? "white" : "black"} 
+                  text-slate-600 rounded-md  cursor-pointer text-${darkMode ? "white" : "black"} 
                  
                 ${tabopen === 1 && `border border-slate-500/50 font-bold `}`}
               >
@@ -85,7 +85,7 @@ export const RenderData = ({
                 className={`flex flex-row xl:gap-2 transition-all gap-1 items-center text-center 
                 xl:text-md text-sm text-slate-600 select-none  
                  xl:px-[28px] xl:py-[3px] px-[21px] py-[4px] 
-                  cursor-pointer rounded-md text-${darkmode ? "white" : "black"}
+                  cursor-pointer rounded-md text-${darkMode ? "white" : "black"}
                   ${tabopen === 2 && `border border-slate-500/50  font-bold `} `}
               >
                 <VscSymbolMethod className="text-xl" />

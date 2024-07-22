@@ -82,7 +82,7 @@ export default function Navbar({
   setMainVersion,
 }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
-  const { darkMode } = useContext(DarkmodeContext);
+
   const [selectedVersion, setSelectedVersion] = useState(new Set());
 
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
@@ -127,7 +127,7 @@ export default function Navbar({
   const [selectedDeletingProjectItem, setSelectedDeletingProjectItem] =
     useState(null);
 
-  const { darkmode, toggleDarkmode } = useContext(DarkmodeContext);
+  const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
 
   const [peModal, setPeModal] = useState("");
   const [peurlopen, setPeurlopen] = useState(false);
@@ -1063,7 +1063,7 @@ export default function Navbar({
                           Array.from(selectedApplictionName)[0]) ||
                         "Projects"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={applicationList.length < 0 ? true : false}
                       DropdownMenuClassName={
                         applicationList.length > 6
@@ -1096,7 +1096,7 @@ export default function Navbar({
                           Array.from(selectededArtifacts)[0]) ||
                         "Artifacts"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={!selectedApplictionName ? true : false}
                       DropdownMenuClassName={
                         artifactsList && artifactsList.length > 6
@@ -1126,7 +1126,7 @@ export default function Navbar({
                         (selectedVerison && Array.from(selectedVerison)[0]) ||
                         "Version"
                       }
-                      darkmode={darkmode}
+                      darkMode={darkMode}
                       isDisabled={
                         selectededArtifacts &&
                         Array.from(selectededArtifacts)[0]

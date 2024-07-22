@@ -20,7 +20,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
 
   const modalRef = useOnClickOutsideRef(() => setShow(false));
 
-  const { darkmode } = useContext(DarkmodeContext);
+  const { darkMode } = useContext(DarkmodeContext);
   const { functionality, editedValues, setEditedValues } =
     useContext(BuilderContext);
 
@@ -64,7 +64,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
           <div className="flex gap-[1px] items-center">
             <b
               style={{
-                color: darkmode ? "#fff" : "#000",
+                color: darkMode ? "#fff" : "#000",
                 fontSize: "12px",
                 display: show ? "none " : "block",
                 userSelect: "none",
@@ -89,7 +89,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
               >
                 <div className="flex gap-2 items-center">
                   <span>
-                    <AiOutlineInfoCircle color={darkmode ? "#fff" : "#000"} />
+                    <AiOutlineInfoCircle color={darkMode ? "#fff" : "#000"} />
                   </span>
                 </div>
               </Tooltip>
@@ -124,7 +124,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
               endContent={
                 <div className="flex justify-center items-center w-5 ml-1">
                   <button
-                    className={` ${darkmode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full   p-[5px] hover:bg-blue-700/40 hover:text-white`}
+                    className={` ${darkMode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full   p-[5px] hover:bg-blue-700/40 hover:text-white`}
                     onClick={() => {
                       ToggleFlip("key");
                       handleDoubleClick("key");
@@ -132,12 +132,12 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
                   >
                     <FaCheck
                       className="text-[50%]"
-                      color={darkmode ? "white" : "black"}
+                      color={darkMode ? "white" : "black"}
                     />
                   </button>
 
                   <button
-                    className={`${darkmode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full p-[5px] ml-2  hover:bg-pink-700/40 hover:text-white`}
+                    className={`${darkMode ? "bg-[#656666]" : "bg-[#D9DEE8]"} rounded-full p-[5px] ml-2  hover:bg-pink-700/40 hover:text-white`}
                     onClick={() => {
                       ToggleFlip("key");
                       handleDoubleClick("key", false);
@@ -145,7 +145,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
                   >
                     <IoMdClose
                       className="text-[50%]"
-                      color={darkmode ? "white" : "black"}
+                      color={darkMode ? "white" : "black"}
                     />
                   </button>
                 </div>
@@ -158,7 +158,7 @@ export const InputEditor = memo(({ keys, nodes, path, keyJson }) => {
       <div className="flex h-[100%] pt-1 justify-between gap-1 ">
         <ReusableInput
           key={path + "Treevalue"}
-          darkmode={darkmode}
+          darkMode={darkMode}
           defaultValue={nodes[keys]}
           value={editedValues[path]}
           handleChange={(e) => {

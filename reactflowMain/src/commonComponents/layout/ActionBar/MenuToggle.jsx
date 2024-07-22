@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
 const Path = (props) => {
-  const { darkmode } = React.useContext(DarkmodeContext);
+  const { darkMode } = React.useContext(DarkmodeContext);
 
   return (
     <motion.path
       strokeWidth="3"
-      stroke={darkmode ? "#E0E0E0" : "#6B7280"}
+      stroke={darkMode ? "#E0E0E0" : "#6B7280"}
       strokeLinecap="round"
       {...props}
     />
