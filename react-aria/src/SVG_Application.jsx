@@ -1584,6 +1584,27 @@ const ArtifactDelete = ({ className }) => {
   );
 };
 
+const DownArrow = ({ fill = "black" }) => {
+  return (
+    <svg
+      width="12"
+      height="7"
+      viewBox="0 0 14 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 1L7 7L13 1"
+        stroke={fill}
+        strokeOpacity={fill == "black" ? "0.35" : "1"}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -1639,4 +1660,5 @@ export {
   Close,
   ArtifactEdit,
   ArtifactDelete,
+  DownArrow,
 };
