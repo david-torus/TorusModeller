@@ -456,7 +456,7 @@ export function TorusTable({
             allowsSorting: allowsSorting,
           },
           ...visibleColumns.map((key) => {
-            if (ket !== primaryColumn) {
+            if (key !== primaryColumn) {
               return {
                 id: key,
                 name: key,
