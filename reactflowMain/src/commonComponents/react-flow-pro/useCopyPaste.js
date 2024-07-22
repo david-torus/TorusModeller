@@ -1,10 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import {
-
   useKeyPress,
   useReactFlow,
   getConnectedEdges,
- 
   useStore,
 } from "reactflow";
 
@@ -51,47 +49,59 @@ export function useCopyPaste() {
     }
   }, [rfDomNode]);
 
-  const copy = useCallback(() => {
-    const selectedNodes = getNodes().filter((node) => node.selected);
-    const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
-      (edge) => {
-        const isExternalSource = selectedNodes.every(
-          (n) => n.id !== edge.source
-        );
-        const isExternalTarget = selectedNodes.every(
-          (n) => n.id !== edge.target
-        );
+  const copy = useCallback(
+    (id) => {
+      const selectedNodes = getNodes().filter(
+        (node) => node.selected || id === node.id
+      );
+      const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
+        (edge) => {
+          const isExternalSource = selectedNodes.every(
+            (n) => n.id !== edge.source
+          );
+          const isExternalTarget = selectedNodes.every(
+            (n) => n.id !== edge.target
+          );
 
-        return !(isExternalSource || isExternalTarget);
-      }
-    );
+          return !(isExternalSource || isExternalTarget);
+        }
+      );
 
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
-  }, [getNodes, getEdges]);
+      setBufferedNodes(selectedNodes);
+      setBufferedEdges(selectedEdges);
+    },
+    [getNodes, getEdges]
+  );
 
-  const cut = useCallback(() => {
-    const selectedNodes = getNodes().filter((node) => node.selected);
-    const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
-      (edge) => {
-        const isExternalSource = selectedNodes.every(
-          (n) => n.id !== edge.source
-        );
-        const isExternalTarget = selectedNodes.every(
-          (n) => n.id !== edge.target
-        );
+  const cut = useCallback(
+    (id) => {
+      const selectedNodes = getNodes().filter(
+        (node) => node.selected || id === node.id
+      );
+      const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
+        (edge) => {
+          const isExternalSource = selectedNodes.every(
+            (n) => n.id !== edge.source
+          );
+          const isExternalTarget = selectedNodes.every(
+            (n) => n.id !== edge.target
+          );
 
-        return !(isExternalSource || isExternalTarget);
-      }
-    );
+          return !(isExternalSource || isExternalTarget);
+        }
+      );
 
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
+      setBufferedNodes(selectedNodes);
+      setBufferedEdges(selectedEdges);
 
-    // A cut action needs to remove the copied nodes and edges from the graph.
-    setNodes((nodes) => nodes.filter((node) => !node.selected));
-    setEdges((edges) => edges.filter((edge) => !selectedEdges.includes(edge)));
-  }, [getNodes, setNodes, getEdges, setEdges]);
+      // A cut action needs to remove the copied nodes and edges from the graph.
+      setNodes((nodes) => nodes.filter((node) => !node.selected));
+      setEdges((edges) =>
+        edges.filter((edge) => !selectedEdges.includes(edge))
+      );
+    },
+    [getNodes, setNodes, getEdges, setEdges]
+  );
 
   const paste = useCallback(
     (
@@ -113,13 +123,15 @@ export function useCopyPaste() {
         return { ...node, id, position: { x, y } };
       });
 
-      const newEdges = bufferedEdges && bufferedEdges?.map((edge) => {
-        const id = `${edge.id}-${now}`;
-        const source = `${edge.source}-${now}`;
-        const target = `${edge.target}-${now}`;
+      const newEdges =
+        bufferedEdges &&
+        bufferedEdges?.map((edge) => {
+          const id = `${edge.id}-${now}`;
+          const source = `${edge.source}-${now}`;
+          const target = `${edge.target}-${now}`;
 
-        return { ...edge, id, source, target };
-      });
+          return { ...edge, id, source, target };
+        });
 
       setNodes((nodes) => [
         ...nodes?.map((node) => ({ ...node, selected: false })),

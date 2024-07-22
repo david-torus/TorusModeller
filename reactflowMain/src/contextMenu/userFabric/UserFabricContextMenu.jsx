@@ -1,8 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { useReactFlow } from "reactflow";
 import { Text } from "react-aria-components";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 import TorusButton from "../../torusComponents/TorusButton";
+import useCopyPaste from "../../commonComponents/react-flow-pro/useCopyPaste";
+import { DarkmodeContext } from "../../commonComponents/context/DarkmodeContext";
 export default function UserFabricContextMenu({
   id,
   top,
@@ -11,8 +13,12 @@ export default function UserFabricContextMenu({
   bottom,
   ...props
 }) {
-  const { getNode, setNodes, addNodes, setEdges } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, getNodes } = useReactFlow();
   const node = getNode(id);
+  const { darkMode } = useContext(DarkmodeContext);
+  const { cut, copy, paste, bufferedNodes } = useCopyPaste();
+  const canCopy = getNodes().some(({ selected }) => selected);
+  const canPaste = bufferedNodes.length > 0;
   const duplicateNode = useCallback(() => {
     const position = {
       x: node.position.x + 50,
@@ -50,6 +56,7 @@ export default function UserFabricContextMenu({
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
+              onPress={() => props?.onEdit(id)}
               Children={
                 <div>
                   <div className=" w-full  text-black dark:text-white h-full flex justify-center gap-2 items-center">
@@ -61,6 +68,8 @@ export default function UserFabricContextMenu({
             />
             <TorusButton
               key={"uf_cut"}
+              onPress={() => cut(id)}
+              isDisabled={!canCopy}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
@@ -75,6 +84,8 @@ export default function UserFabricContextMenu({
             />
             <TorusButton
               key={"uf_copy"}
+              onPress={() => copy(id)}
+              isDisabled={!canCopy}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }
@@ -89,6 +100,8 @@ export default function UserFabricContextMenu({
             />
             <TorusButton
               key={"uf_paste"}
+              onPress={() => paste(id)}
+              isDisabled={!canPaste}
               buttonClassName={
                 "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
               }

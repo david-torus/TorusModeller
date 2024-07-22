@@ -56,6 +56,7 @@ import EventsMain from "../../../VPT_UF/VPT_EVENTS/EventsMain";
 import _ from "lodash";
 import FabricSidebar from "../../../commonComponents/layout/SideBar/FabricSidebar";
 import NavBar from "../../../commonComponents/layout/ActionBar/Navbar copy";
+import { FabricsContexts } from "../../../Layout";
 
 //Node Types
 const nodeTypes = {
@@ -85,7 +86,7 @@ const nodeTypes = {
  *   - {string} currentFabric - The currentFabric value.
  * @returns {JSX.Element} The rendered App component.
  */
-const FlowWithProviderUF = ({
+const AppUF = ({
   nodes,
   edges,
   setEdges,
@@ -96,6 +97,7 @@ const FlowWithProviderUF = ({
   children,
   proOptions,
 }) => {
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
   const [helperLineHorizontal, setHelperLineHorizontal] = useState(undefined);
   const [helperLineVertical, setHelperLineVertical] = useState(undefined);
   const { getIntersectingNodes, flowToScreenPosition, getNode } =
@@ -118,7 +120,7 @@ const FlowWithProviderUF = ({
   const [mainVersion, setVersion] = useState([]);
   const [eventsArtifacts, setEventsArtifacts] = useState([]);
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
-  const ref = useRef(null);
+
   const [toggleReactflow, setToggleReactflow] = useState({
     rule: false,
     mapper: false,
@@ -209,29 +211,29 @@ const FlowWithProviderUF = ({
    * @param {Event} event - The event object.
    * @param {Object} node - The node object.
    */
-  const onNodeContextMenu = useCallback(
-    (event, node) => {
-      try {
-        event.preventDefault();
+  // const onNodeContextMenu = useCallback(
+  //   (event, node) => {
+  //     try {
+  //       event.preventDefault();
 
-        const pane = ref.current.getBoundingClientRect();
-        setMenu({
-          id: node.id,
-          top: event.clientY < pane.height - 200 && event.clientY - 80,
-          left: event.clientX < pane.width - 200 && event.clientX - 80,
-          right:
-            event.clientX >= pane.width - 200 &&
-            pane.width - event.clientX + 80,
-          bottom:
-            event.clientY >= pane.height - 200 &&
-            pane.height - event.clientY + 80,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [setMenu]
-  );
+  //       const pane = ref.current.getBoundingClientRect();
+  //       setMenu({
+  //         id: node.id,
+  //         top: event.clientY < pane.height - 200 && event.clientY - 80,
+  //         left: event.clientX < pane.width - 200 && event.clientX - 80,
+  //         right:
+  //           event.clientX >= pane.width - 200 &&
+  //           pane.width - event.clientX + 80,
+  //         bottom:
+  //           event.clientY >= pane.height - 200 &&
+  //           pane.height - event.clientY + 80,
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   },
+  //   [setMenu]
+  // );
 
   /**
    * Sets the sidebar data based on the provided node and id.
@@ -676,7 +678,7 @@ const FlowWithProviderUF = ({
     }
   };
 
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+  // const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
   /**
    * Toggles the state tracking and shows the builder.
@@ -987,7 +989,16 @@ const FlowWithProviderUF = ({
               onEdgeUpdate={onEdgeUpdate}
               connectionLineStyle={connectionLineStyle}
             >
-              {children}
+              {children &&
+                (typeof children == "function"
+                  ? children({
+                      setToggleReactflow,
+                      uniqueNames,
+                      changeProperty:updatenodeDetails,
+                      updatedNodeConfig,
+                      sideBarData: nodeData,
+                    })
+                  : children)}
               {/* {menu && (
                 <ContextMenu
                   setToogle={setSidebar}
@@ -1005,7 +1016,7 @@ const FlowWithProviderUF = ({
                 horizontal={helperLineHorizontal}
                 vertical={helperLineVertical}
               />
-              <NodeInfoSidebar
+              {/* <NodeInfoSidebar
                 setToggleReactflow={setToggleReactflow}
                 nodeConfig={nodeConfig}
                 updatedNodeConfig={updatedNodeConfig}
@@ -1023,7 +1034,7 @@ const FlowWithProviderUF = ({
                 sidejson={nodeConfig}
                 selectedNodeid={selectedNodeid}
                 setPropertywindow={setPropertywindow}
-              />
+              /> */}
 
               {/* 
               <Background
@@ -1085,4 +1096,4 @@ const FlowWithProviderUF = ({
  * @return {JSX.Element} The rendered React element.
  */
 
-export default FlowWithProviderUF;
+export default AppUF;

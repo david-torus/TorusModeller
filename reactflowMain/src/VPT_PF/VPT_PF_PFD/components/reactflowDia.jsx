@@ -13,6 +13,7 @@ import { Gorule } from "../../../commonComponents/tabs/Gorule";
 import { Mapper } from "../../../commonComponents/tabs/mapper";
 import MonacoEditor from "../../../commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import FabricSidebar from "../../../commonComponents/layout/SideBar/FabricSidebar";
+import { FabricsContexts } from "../../../Layout";
 
 const ReactFlowDia = ({
   undoRedo,
@@ -42,8 +43,6 @@ const ReactFlowDia = ({
   changeProperty,
   sideT,
   menu,
-  onNodeContextMenu,
-  onPaneClick,
   widths,
   deleteNode,
   setMenu,
@@ -71,6 +70,8 @@ const ReactFlowDia = ({
     mapper: false,
     code: false,
   });
+  const { ref, onNodeContextMenu, onPaneClick, nodePropertyData } =
+    useContext(FabricsContexts);
   const { getNode } = useReactFlow();
   return (
     <>
@@ -105,7 +106,7 @@ const ReactFlowDia = ({
       !toggleReactflow.mapper &&
       !toggleReactflow.code ? (
         <ReactFlow
-          ref={reactFlowWrapper}
+          ref={ref}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
@@ -127,7 +128,7 @@ const ReactFlowDia = ({
           onEdgeUpdateStart={onEdgeUpdateStart}
           onEdgeUpdateEnd={onEdgeUpdateEnd}
         >
-          <NodeInfoSidebar
+          {/* <NodeInfoSidebar
             upIdKey={upIdKey}
             setToggleReactflow={setToggleReactflow}
             defaults={defaults}
@@ -142,8 +143,17 @@ const ReactFlowDia = ({
             setSidebarData={setSidebarData}
             uniqueNames={uniqueNames}
             changeProperty={changeProperty}
-          />
-          {children}
+          /> */}
+          {children &&
+            (typeof children == "function"
+              ? children({
+                  setToggleReactflow,
+                  uniqueNames,
+                  changeProperty,
+                  updatedNodeConfig,
+                  sideBarData,
+                })
+              : children)}
           {/* {menu && (
             <ContextMenu
               customCodeKey={fabricsKey}
@@ -172,14 +182,14 @@ const ReactFlowDia = ({
         <Gorule
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
-          sideBarData={sideBarData}
+          sideBarData={nodePropertyData}
           nodeConfig={nodeConfig}
         />
       ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
         <Mapper
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
-          sideBarData={sideBarData}
+          sideBarData={nodePropertyData}
           nodeConfig={nodeConfig}
         />
       ) : toggleReactflow.code ? (
@@ -187,7 +197,7 @@ const ReactFlowDia = ({
           fabricsKey={fabricsKey}
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
-          sideBarData={sideBarData}
+          sideBarData={nodePropertyData}
           nodeConfig={nodeConfig}
         />
       ) : (
