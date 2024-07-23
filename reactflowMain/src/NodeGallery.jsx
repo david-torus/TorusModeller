@@ -95,7 +95,7 @@ export default function NodeGallery({
           "flex items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]"
         } `}
       >
-        <div className="felx-col flex w-[100%]">
+        <div className="felx-col flex w-[100%] justify-between">
           <div className="flex w-[70%] items-center justify-start">
             <Header
               className={`${
@@ -105,9 +105,11 @@ export default function NodeGallery({
               Node Gallery
             </Header>
           </div>
-          <div className="flex w-[25%] items-center justify-end">
+          <div
+            className={`flex ${!showFabricSideBar ? "w-[50%] pr-[15px] pt-[10px]" : ""}  items-center justify-end  `}
+          >
             <TorusButton
-              buttonClassName={`${
+              buttonClassName={`flex justify-center items-center px-3 ${!showFabricSideBar ? "border border-slate-300 border-l-transparent " : ""} ${
                 !showFabricSideBar ? "rotate-180 " : "rotate-0"
               } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white dark:bg-[#161616] `}
               width={showFabricSideBar ? "sm" : "none"}
@@ -128,7 +130,7 @@ export default function NodeGallery({
           <Loop color={color} selectedFabric={selectedFabric} />
         </div>
 
-        <div className="flex w-[100%] items-center justify-center xl:max-h-[7%] xl:min-h-[33.5%] 2xl:min-h-[14%] ">
+        <div className="flex w-[100%] items-center justify-center xl:max-h-[7%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
             <Text className="font-inter tracking-normal xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
@@ -137,7 +139,7 @@ export default function NodeGallery({
             <br />
             <p
               slot="description"
-              className=" font-inter   tracking-normal xl:text-xs xl:leading-[1.0rem] 3xl:pr-[20px] 3xl:text-xs  "
+              className=" font-inter   tracking-normal xl:text-xs xl:leading-[1.0rem] 2xl:pr-[18px] 2xl:text-sm 2xl:leading-[0.8rem] 3xl:pr-[20px] 3xl:text-sm 3xl:leading-[1.0rem] "
             >
               Enjoy unlimited space for fabrics, applets, extra security
               features & more.
@@ -156,7 +158,7 @@ export default function NodeGallery({
                 marginT={"mt-2"}
                 btncolor={"#0736C4"}
                 fontStyle={
-                  "font-sfpros 3xl:text-xs 3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
+                  "font-sfpros 3xl:text-xs 3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter px-1 py-2"
                 }
               />
             </div>
