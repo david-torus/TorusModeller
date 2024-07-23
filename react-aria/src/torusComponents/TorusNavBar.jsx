@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Breadcrumb, Breadcrumbs } from "react-aria-components";
 import TorusButton from "./TorusButton";
 import TorusAvatar from "./TorusAvatar";
-import { MdDataArray } from "react-icons/md";
+import { MdDataArray, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 import { TorusLogo } from "../SVG_Application";
 import { Link } from "react-router-dom";
 import App from "../App";
@@ -32,7 +32,7 @@ const menus = [
       {
         id: "21",
         title: "Bank",
-        link: "/table",
+        link: "/",
         sortOrder: "1",
         type: "item",
         items: [],
@@ -87,39 +87,7 @@ const menus = [
                   },
                 ],
               },
-              {
-                id: "34",
-                link: "www.google.com",
-                title: "Test",
-                sortOrder: "1",
-                type: "item",
-                items: [
-                  {
-                    id: "35",
-                    link: "www.google.com",
-                    title: "Testsadasd",
-                    sortOrder: "1",
-                    type: "item",
-                    items: [
-                      {
-                        id: "473",
-                        title: "Testdwre333",
-                        sortOrder: "1",
-
-                        items: [],
-                        keys: {
-                          uf: "ABC:CG:mvp:UF:test:v2",
-                          sf: "ABC:CG:mvp:SF:test:v2",
-                        },
-                      },
-                    ],
-                    keys: {
-                      uf: "ABC:CG:mvp:UF:test:v2",
-                      sf: "ABC:CG:mvp:SF:test:v2",
-                    },
-                  },
-                ],
-              },
+        
             ],
             keys: {},
           },
@@ -143,7 +111,6 @@ const menus = [
           df: "ABC:CG:mvp:DF:bankinghub:v2",
         },
       },
-
     ],
   },
   {
@@ -394,8 +361,12 @@ const Dropdown = ({ subitems, dropdown, depthLevel }) => {
   return (
     <ul
       className={` ${dropdownClass} ${
-        dropdown && subitems.length>0 ? "block" : "hidden"
-      } ${depthLevel > 1 ? " absolute  top-0 left-28 min-w-32 min-h-16  mr-24 " : "left-0 min-w-32"} absolute right-0  shadow-lg border  p-2 text-sm bg-white rounded-lg z-50 `}
+        dropdown && subitems.length > 0 ? "block" : "hidden"
+      } ${
+        depthLevel > 1
+          ? " absolute gap-10 top-0 left-[7rem] min-w-32 min-h-16 "
+          : "left-0 min-w-32"
+      } absolute right-0  shadow-lg border  p-2 text-sm bg-white rounded-lg z-50 `}
       aria-label="submenu"
     >
       {subitems.map((submenu, index) => (
@@ -439,10 +410,11 @@ const MenuItems = ({ items, depthLevel }) => {
     dropdown && setDropdown(false);
   };
 
-  const menuLinkClasses = "text-white hover:bg-gray-300 w-full px-2 py-2 rounded";
   return (
     <li
-      className="relative"
+      className={`${
+        depthLevel == 0 ? "text-white hover:text-gray-500" : "text-black w-full "
+      } relative`}
       ref={ref}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -453,16 +425,20 @@ const MenuItems = ({ items, depthLevel }) => {
           <button
             type="button"
             onClick={() => toggleDropdown()}
-            className={`${depthLevel>0 ?"text-white hover:bg-gray-300 w-full px-2 py-2 rounded" :"text-white hover:bg-[#F4F5FA] p-2 rounded" } focus:outline-none relative z-50`}
+            className={`${
+              depthLevel > 0
+                ? " hover:bg-gray-300 w-full px-2 py-2 rounded"
+                : "  p-2 "
+            }  focus:outline-none relative z-50`}
           >
-            <span className="  flex items-center gap-3">
+            <span>
               <Link to={items.link}>
-                <p
-                  className={`${depthLevel == 0 ? "text-white hover:text-black" : "text-black"}`}
-                >
+                <p className="flex items-center gap-2 ">
                   {items.title}{" "}
                   {items.items && items.items.length > 0 && depthLevel > 0 ? (
-                    <span className="arrow">▶</span>
+                    <span className="arrow">
+                      <MdOutlineKeyboardDoubleArrowRight />
+                    </span>
                   ) : (
                     ""
                   )}
@@ -478,7 +454,7 @@ const MenuItems = ({ items, depthLevel }) => {
         </div>
       ) : (
         <a href={items.link}>
-          <p className="text-white">{items.title} </p>
+          <p  className="text-white cursor-grab">{items.title} </p>
         </a>
       )}
     </li>
@@ -489,13 +465,13 @@ export default function TorusNavBar() {
   const depthLevel = 0;
 
   return (
-    <div className="bg-[#0736C4] p-4">
+    <div className="bg-[#070D1F] px-3 py-3 m-0 ">
       <nav className="flex flex-col  justify-between items-center lg:flex-row   w-full">
         <div className="flex space-x-4 items-center  ">
           <div className="">
             <TorusLogo />
           </div>
-          <div className=""></div>
+
         </div>
 
         <div className="flex space-x-20 ">
@@ -511,22 +487,21 @@ export default function TorusNavBar() {
         <div className="flex space-x-4 mt-4 lg:mt-0">
           <div>
             <TorusButton
-              btncolor=""
-              buttonClassName=" w-[80px] h-[30px] border border-[#0736C4] text-xs  rounded-md flex justify-center items-center"
+              btncolor="secondary"
+              buttonClassName=" w-[80px] h-[30px] border border-[#0736C4] text-xs  text-white rounded-md flex justify-center items-center"
               Children={"Save"}
-              fontStyle={"dark:text-white"}
+             
             />
           </div>
           <div className="text-white">
             <TorusButton
-              btncolor="secondary"
+              btncolor="#9259b8"
               buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
               Children={"Save as"}
             />
           </div>
         </div>
       </nav>
-    
     </div>
   );
 }

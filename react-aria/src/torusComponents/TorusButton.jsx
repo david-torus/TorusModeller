@@ -71,7 +71,7 @@ const TorusButton = ({
             ? "#F5A524"
             : btncolor === "warning"
             ? "#F5A524"
-            : "#ffffff"
+            : btncolor
         }`,
         border: borderColor ? borderColor : "0736C4",
       }}
