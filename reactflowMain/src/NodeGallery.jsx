@@ -106,12 +106,14 @@ export default function NodeGallery({
             </Header>
           </div>
           <div
-            className={`flex ${!showFabricSideBar ? "w-[50%] pr-[15px] pt-[10px]" : ""}  items-center justify-end  `}
+            className={`flex items-center justify-end ${
+              !showFabricSideBar ? "w-[100%]" : "w-[30%]"
+            }`}
           >
             <TorusButton
-              buttonClassName={`flex justify-center items-center px-3 ${!showFabricSideBar ? "border border-slate-300 border-l-transparent " : ""} ${
+              buttonClassName={`flex justify-center items-center  ${!showFabricSideBar ? "border border-slate-300 border-l-transparent " : ""} ${
                 !showFabricSideBar ? "rotate-180 " : "rotate-0"
-              } transition-transform ease-in-out duration-300 w-[12%] px-5 bg-white dark:bg-[#161616] `}
+              } transition-transform ease-in-out duration-300 w-[100%] bg-white dark:bg-[#161616] `}
               width={showFabricSideBar ? "sm" : "none"}
               onPress={handleSidebarToggle}
               Children={<Back />}
