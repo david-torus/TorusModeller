@@ -2,8 +2,7 @@ const Data = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        width="20"
-        height="20"
+        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -44,8 +43,7 @@ const Wire = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        width="20"
-        height="20"
+        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -83,8 +81,7 @@ const Connect = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        width="20"
-        height="20"
+        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -120,8 +117,7 @@ const Sheild = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        width="20"
-        height="20"
+        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -145,8 +141,7 @@ const Sheild = ({ strokeColor, width, height }) => {
 const FabricBar = ({ className, width, height }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -188,8 +183,7 @@ const FabricBar = ({ className, width, height }) => {
 const Faq = ({ className, width, height }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -216,8 +210,7 @@ const Faq = ({ className, width, height }) => {
 const Support = ({ className, width, height }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1005,11 +998,12 @@ const Redo = ({ className }) => {
 const Home = ({ strokeColor, width, height }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      // width="40"
+      // height="40"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
     >
       <g opacity="0.4">
         <path
@@ -1087,8 +1081,7 @@ const Line = ({ className }) => {
 const VerticalLine = ({ className }) => {
   return (
     <svg
-      width="1"
-      height="30"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[55px] 4xl:w-[55px]"
       viewBox="0 0 1 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1107,8 +1100,7 @@ const VerticalLine = ({ className }) => {
 const Debugger = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1184,8 +1176,7 @@ const Debugger = ({ className }) => {
 const Preview = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1207,8 +1198,7 @@ const Preview = ({ className }) => {
 const Shared = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -80,9 +80,9 @@ export default function SideBar() {
   return (
     <Panel
       position="top-left"
-      className="h-[95%] w-[5%] flex flex-col justify-between items-center py-2   bg-white dark:bg-[#161616] border  border-slate-300 dark:border-[#212121] rounded-lg  "
+      className="flex h-[95%] w-[5%] flex-col items-center justify-between rounded-lg   border border-slate-300 bg-white  py-2 dark:border-[#212121] dark:bg-[#161616]  "
     >
-      <div className="h-[30%] w-[100%] flex flex-col  items-center   ">
+      <div className="flex h-[30%] w-[100%] flex-col  items-center   ">
         <TorusTab
           defaultSelectedKey={selectedFabric}
           key="TorusTab"
@@ -144,11 +144,11 @@ export default function SideBar() {
         />
       </div>
 
-      <div className="rotate-90 p-2 py-5 h-[5%] flex items-center mt-[20px]">
+      <div className="flex h-[5%] rotate-90 items-center p-2 py-5 xl:mt-[20px] 2xl:mt-[50px] 3xl:mt-[85px] 4xl:mt-[90px] ">
         <VerticalLine className={"stroke-black dark:stroke-white"} />
       </div>
 
-      <div className="  h-[30%] w-[100%] flex flex-col items-center gap-5 cursor-pointer">
+      <div className="  flex h-[30%] w-[100%] cursor-pointer flex-col items-center gap-5">
         <FabricBar className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
 
         <Faq className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
@@ -156,25 +156,34 @@ export default function SideBar() {
         <Support className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
       </div>
 
-      <div className="flex flex-col h-[40%] justify-end  items-center gap-2">
+      <div className="flex h-[40%] flex-col items-center  justify-end gap-2">
         <div
           className="cursor-pointer"
           onClick={() => toggleDarkMode(!darkMode)}
         >
           {darkMode ? (
-            <BiSun color={"#A59E92"} />
+            <BiSun
+              color={"#A59E92"}
+              className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[35px] 3xl:h-[40px] 3xl:w-[40px] 4xl:h-[55px] 4xl:w-[55px]"
+            />
           ) : (
-            <BiMoon color={"#A59E92"} />
+            <BiMoon
+              color={"#A59E92"}
+              className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[35px] 3xl:h-[40px] 3xl:w-[40px] 4xl:h-[55px] 4xl:w-[55px]"
+            />
           )}
         </div>
         <div>
-          <NodeGallerIcon color={"#A59E92"} />
+          <NodeGallerIcon
+            color={"#A59E92"}
+            className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[35px] 3xl:h-[40px] 3xl:w-[40px] 4xl:h-[55px] 4xl:w-[55px]"
+          />
         </div>
 
-        <div>
+        <div className="xl:h-[35px] xl:w-[35px] 2xl:h-[40px] 2xl:w-[40px] 3xl:h-[50px] 3xl:w-[50px] 4xl:h-[55px] 4xl:w-[55px]">
           <TorusAvatar
             radius={"full"}
-            size={"lg"}
+            size={"full"}
             borderColor={"#A59E92"}
             src={
               "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
