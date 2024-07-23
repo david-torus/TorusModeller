@@ -1605,6 +1605,36 @@ const DownArrow = ({ fill = "black" }) => {
   );
 };
 
+const ArtifactLogo = ({ className }) => {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.33301 6.66667L7.99967 2L10.6663 6.66667H5.33301Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M6.66667 11.6666C6.66667 12.9553 5.622 14 4.33333 14C3.04467 14 2 12.9553 2 11.6666C2 10.378 3.04467 9.33331 4.33333 9.33331C5.622 9.33331 6.66667 10.378 6.66667 11.6666Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M9.33301 9.33331H13.9997V14H9.33301V9.33331Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 export {
   Data,
   Wire,
@@ -1661,4 +1691,5 @@ export {
   ArtifactEdit,
   ArtifactDelete,
   DownArrow,
+  ArtifactLogo,
 };

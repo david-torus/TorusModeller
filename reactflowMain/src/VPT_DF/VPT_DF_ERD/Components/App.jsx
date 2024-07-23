@@ -41,6 +41,7 @@ import { getLatestVersion } from "../../../commonComponents/api/fabricsApi";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext.js";
 
 import useUndoRedo from "../../../commonComponents/react-flow-pro/useUndoRedo";
+import { FabricsContexts } from "../../../Layout.jsx";
 
 //Node Dimensions
 const NODE_WIDTH = 172;
@@ -64,9 +65,9 @@ export default function AppDF({
   children,
 }) {
   const edgeUpdateSuccessful = useRef(true);
-
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
   const entityJson = {};
-  const reactflowwrapper = useRef(null);
+  // const ref = useRef(null);
   const [menu, setMenu] = useState(null);
   const [nodeConfig, setNodeConfig] = useState({});
 
@@ -313,33 +314,33 @@ export default function AppDF({
     [reactFlowInstance, setNodes, takeSnapshot]
   );
 
-  //This function is called when the user right clicks on the node.
-  const onNodeContextMenu = useCallback(
-    (event, node) => {
-      try {
-        event.preventDefault();
-        const pane = reactflowwrapper.current.getBoundingClientRect();
+  // //This function is called when the user right clicks on the node.
+  // const onNodeContextMenu = useCallback(
+  //   (event, node) => {
+  //     try {
+  //       event.preventDefault();
+  //       const pane = ref.current.getBoundingClientRect();
 
-        setMenu({
-          id: node.id,
-          top: event.clientY < pane.height - 200 && event.clientY - 80,
-          left: event.clientX < pane.width - 200 && event.clientX - 80,
-          right:
-            event.clientX >= pane.width - 200 &&
-            pane.width - event.clientX + 80,
-          bottom:
-            event.clientY >= pane.height - 200 &&
-            pane.height - event.clientY - 80,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [setMenu]
-  );
+  //       setMenu({
+  //         id: node.id,
+  //         top: event.clientY < pane.height - 200 && event.clientY - 80,
+  //         left: event.clientX < pane.width - 200 && event.clientX - 80,
+  //         right:
+  //           event.clientX >= pane.width - 200 &&
+  //           pane.width - event.clientX + 80,
+  //         bottom:
+  //           event.clientY >= pane.height - 200 &&
+  //           pane.height - event.clientY - 80,
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   },
+  //   [setMenu]
+  // );
 
   //Handles the click event on the pane.
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
+  // const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
   /**
    * Retrieves the default values for nodes from the server.
@@ -606,7 +607,6 @@ export default function AppDF({
         <Toast ref={toast} />
         <ReactFlow
           proOptions={proOptions}
-          ref={reactflowwrapper}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChange}
@@ -617,7 +617,7 @@ export default function AppDF({
           onPaneClick={onPaneClick}
           onNodeContextMenu={onNodeContextMenu}
           onInit={setreactflowinstance}
-          reactflowwrapper={reactflowwrapper}
+          ref={ref}
           onDrop={onDrop}
           edgeTypes={edgeTypes}
           onEdgeUpdate={onEdgeUpdate}
@@ -629,7 +629,16 @@ export default function AppDF({
             padding: 0.2,
           }}
         >
-          {children}
+          {children &&
+            (typeof children == "function"
+              ? children({
+                  setToggleReactflow:null,
+                  uniqueNames,
+                  changeProperty:updatenodeDetails,
+                  updatedNodeConfig,
+                  sideBarData:nodeData,
+                })
+              : children)}
 
           {/* {menu && (
             <ContextMenu
@@ -648,7 +657,7 @@ export default function AppDF({
             />
           )} */}
 
-          <NodeInfoSidebar
+          {/* <NodeInfoSidebar
             nodeConfig={nodeConfig}
             defaults={defaults}
             changeProperty={updatenodeDetails}
@@ -662,7 +671,7 @@ export default function AppDF({
             funcNodedata={setNodeData}
             sideBarToggle={sideBarToggle}
             setPropertywindow={setPropertywindow}
-          />
+          /> */}
 
           {/* <FabricsNavbar
             undoredo={{

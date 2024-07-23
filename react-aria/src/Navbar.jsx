@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
+  ArtifactLogo,
   Debugger,
   Preview,
   Shared,
@@ -7,7 +8,7 @@ import {
   VerticalLine,
 } from "./SVG_Application";
 import { DarkModeContext } from "./context/darkmodeContext";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusPopOver from "./torusComponents/TorusPopOver";
 import { CiSquarePlus } from "react-icons/ci";
@@ -15,21 +16,74 @@ import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
 import { FiEdit2 } from "react-icons/fi";
 import { BsTrash3 } from "react-icons/bs";
-import { Input } from "react-aria-components";
-
+import { Heading, Input } from "react-aria-components";
 import DropDown from "./NewDropdown";
 
 const versions = ["v1.25", "v1.26", "v1.27", "v1.28"];
 
-export default function Navbar(
-  {color}
-) {
+const artifactsList = [
+  {
+    project: "First Abu Dhabi Bank",
+    arifactList: [
+      {
+        artifact: "Bank Master",
+        version: ["1.0.0", "1.0.1"],
+      },
+      {
+        artifact: "Branch Master",
+        version: ["1.0.0", "1.0.1"],
+      },
+      {
+        artifact: "IPS",
+        version: ["1.0.0", "1.0.1"],
+      },
+    ],
+  },
+  {
+    project: "Equity Bank",
+    arifactList: [
+      {
+        artifact: "EFT - Debit",
+        version: ["1.0.0", "1.0.1"],
+      },
+      {
+        artifact: "EFT - Credit",
+        version: ["1.0.0", "1.0.1"],
+      },
+      {
+        artifact: "CCS",
+        version: ["1.0.0", "1.0.1"],
+      },
+    ],
+  },
+  {
+    project: "NSDL",
+    arifact: [],
+  },
+  {
+    project: "Finance House",
+    arifact: [],
+  },
+];
+
+export default function Navbar({ color }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
   const { darkMode } = useContext(DarkModeContext);
   const [inputchange, setInputchange] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [selectedVersion, setSelectedVersion] = useState(new Set());
   const [value, setValue] = useState(null);
+  const [expanded, setExpanded] = useState(false);
+  const [expanded2, setExpanded2] = useState(0);
+
+  const toggleExpansion = () => {
+    setExpanded(!expanded);
+  };
+
+  const toggleExpansion2 = (index) => {
+    setExpanded2(index);
+  };
+
   return (
     <div className="w-full h-full bg-white dark:bg-[#161616] dark:border-none border-b border-slate-300 flex items-center justify-center">
       <div className="w-[100%] h-[90%] flex flex-col items-center justify-center">
@@ -89,7 +143,76 @@ export default function Navbar(
                     </div>
                   </div>
                   <div className="w-[100%] h-[100%] flex flex-row ">
-                    <div className="w-1/3 border-r border-gray-300 "></div>
+                    <div className="w-1/3 h-full border-r border-gray-300 ">
+                      <div className="w-[150px] h-[267px] flex flex-col items-start justify-start p-3  overflow-y-auto scrollbar-none">
+                        <div className=" flex flex-row items-center gap-1">
+                          <IoIosArrowForward
+                            color={darkMode ? "white" : "black"}
+                            size={15}
+                            className={`transition-all ease-in-out cursor-pointer duration-200 delay-75 ${
+                              expanded ? "rotate-90" : ""
+                            }`}
+                            onClick={toggleExpansion}
+                          />
+                          <Heading className="text-black dark:text-white font-semibold text-xs select-none">
+                            CLient
+                          </Heading>
+                        </div>
+
+                        {expanded && (
+                          <div className="w-[100%]  flex flex-col gap-2 ml-[6px]  border-l p-1 mt-[10px]">
+                            {artifactsList.map((item, index) => {
+                              return Object.keys(item).map((ele) => {
+                                if (ele === "project") {
+                                  return (
+                                    <div className="w-[100%] flex flex-row items-center gap-1">
+                                      <IoIosArrowForward
+                                        color={darkMode ? "white" : "black"}
+                                        size={15}
+                                        className={`transition-all ease-in-out cursor-pointer p-[1px] duration-200 delay-75 ${
+                                          expanded2 === index ? "rotate-90" : ""
+                                        }`}
+                                        onClick={() => {
+                                          setExpanded2(index);
+                                        }}
+                                      />
+                                      <div className="w-[100%] text-black font-semibold text-xs">
+                                        {item[ele]}
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                                if (ele === "arifactList") {
+                                  return (
+                                    <>
+                                      {expanded2 === index && (
+                                        <div className="w-[100%]  flex flex-col gap-2 ml-[6px]  border-l p-1 mt-[10px]">
+                                          {item[ele].map((ele2) => {
+                                            if (typeof ele2 === "object") {
+                                              return Object.keys(ele2).map(
+                                                (ele3) => {
+                                                  if (ele3 === "artifact") {
+                                                    return (
+                                                      <div className="w-[100%] file:text-black  text-xs">
+                                                        {ele2[ele3]}
+                                                      </div>
+                                                    );
+                                                  }
+                                                }
+                                              );
+                                            }
+                                          })}
+                                        </div>
+                                      )}
+                                    </>
+                                  );
+                                }
+                              });
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                     <div className="w-2/3 ">
                       <div className="w-[95%] h-[95%]">
                         <div className="w-full h-full flex items-center justify-center ">
@@ -155,21 +278,41 @@ export default function Navbar(
                   </div>
 
                   <div className="w-[100%]  border-t border-gray-300 dark:border-[#212121] flex flex-row  ">
-                    <div className="w-1/3 flex justify-start  "></div>
-                    <div className="w-2/3 flex  p-2">
-                      <div className="w-[40%] flex justify-start ">
+                    <div className="w-full  flex  p-2">
+                      <div className="w-[60%] flex justify-start gap-2 ">
                         <TorusButton
-                          buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
-                          Children={"Make a copy"}
+                          btncolor={"secondary"}
+                          buttonClassName=" dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
+                          Children={
+                            <div className="w-[100%] h-full flex flex-row gap-1 items-center justify-center">
+                              <ArtifactLogo className="stroke-[#1C274C] dark:stroke-white" />
+                              <p className="text-[#1C274C] text-xs ">
+                                Make a Copy
+                              </p>
+                            </div>
+                          }
+                        />
+                        <TorusButton
+                          btncolor={"primary"}
+                          buttonClassName=" dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
+                          Children={
+                            <div className="w-[100%] h-full flex flex-row gap-1 items-center justify-center">
+                              <ArtifactLogo className="stroke-white " />
+                              <p className="text-white text-xs ">
+                                New Artifact
+                              </p>
+                            </div>
+                          }
                         />
                       </div>
-                      <div className="w-[60%] flex justify-end gap-4">
+                      <div className="w-[40%] flex justify-end gap-4 ">
                         <TorusButton
                           buttonClassName=" bg-transparent w-[40px] text-[#0736C4] text-xs dark:text-white flex justify-center items-center"
                           Children={"Save"}
                         />
                         <TorusButton
-                          buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                          btncolor={"primary"}
+                          buttonClassName=" w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
                           Children={"Save as"}
                         />
                       </div>
