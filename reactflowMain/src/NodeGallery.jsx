@@ -86,27 +86,27 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "md:w-4/12 lg:w-2/12  xl:w-[17.0%]  2xl:w-3/12 3xl:w-[12%] 4xl:w-4/12  h-[95%]  bg-white  border border-slate-300 dark:border-[#212121] dark:bg-[#161616] rounded-lg"
-        : "h-[6%] w-[5%] flex items-center justify-center"
+        ? "h-[95%] rounded-lg  border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12 xl:w-[14.0%]  3xl:w-[12%] 4xl:w-4/12"
+        : "flex h-[6%] w-[5%] items-center justify-center"
     }`}
     >
       <div
-        className={`w-full h-full  ${
+        className={`h-full w-full  ${
           showFabricSideBar &&
-          "xl:h-[9%] lg:h-[7%] 2xl:h-[7%] 3xl:h-[5%]   dark:text-white font-medium border-b border-slate-300  dark:border-[#212121] flex justify-between p-2   items-center"
+          "flex items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]"
         } `}
       >
-        <div className="w-[100%] flex felx-col">
-          <div className="w-[70%] flex justify-start items-center">
+        <div className="felx-col flex w-[100%]">
+          <div className="flex w-[70%] items-center justify-start">
             <Header
               className={`${
                 showFabricSideBar ? "opacity-100" : "hidden  opacity-0"
-              } font-inter font-semibold  tracking-normal 3xl:text-sm xl:text-sm  transition-opacity duration-1000 ease-in-out `}
+              } 3xl:text-md font-inter  font-semibold tracking-normal transition-opacity  duration-1000 ease-in-out xl:text-sm 3xl:text-xl`}
             >
               Node Gallery
             </Header>
           </div>
-          <div className="w-[25%] flex justify-end items-center">
+          <div className="flex w-[25%] items-center justify-end">
             <TorusButton
               buttonClassName={`${
                 !showFabricSideBar ? "rotate-180 " : "rotate-0"
@@ -121,30 +121,30 @@ export default function NodeGallery({
       <div
         className={` ${
           showFabricSideBar
-            ? "w-[100%] h-[91.5%] opacity-100"
+            ? "h-[91.5%] w-[100%] opacity-100"
             : "collapse opacity-0"
-        }  pb-2 flex flex-col gap-3 justify-between transition-opacity duration-700 ease-in-out`}
+        }  flex flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
-        <div className="flex flex-col items-start w-full xl:h-[75%] p-2 justify-between  scrollbar-hide overflow-y-scroll  ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[50%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           <Loop color={color} selectedFabric={selectedFabric} />
         </div>
 
-        <div className="w-[100%] flex justify-center items-center ">
-          <div className="w-[95%]  bg-[#F4F5FA] dark:bg-[#0F0F0F] p-3 rounded-lg dark:text-white   ">
-            <Text className="3xl:font-semibold 3xl:text-sm xl:font-semibold xl:text-sm font-inter tracking-normal">
+        <div className="flex w-[100%] items-center justify-center xl:max-h-[7%] xl:min-h-[33.5%] 2xl:min-h-[14%] ">
+          <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
+            <Text className="font-inter tracking-normal xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
             </Text>
 
             <br />
             <p
               slot="description"
-              className=" 3xl:text-xs 3xl:pr-[20px]  xl:text-xs xl:leading-[1.0rem] font-thin font-inter tracking-normal  "
+              className=" font-inter   tracking-normal xl:text-xs xl:leading-[1.0rem] 3xl:pr-[20px] 3xl:text-xs  "
             >
               Enjoy unlimited space for fabrics, applets, extra security
               features & more.
             </p>
 
-            <div className="w-[50%] flex justify-start items-center ">
+            <div className="flex w-[50%] items-center justify-start ">
               <TorusButton
                 buttonClassName={"text-white"}
                 Children="Upgrade"
@@ -179,12 +179,12 @@ const Loop = ({ color, selectedFabric }) => {
         EnvSideData[selectedFabric].map((item, index) => (
           <div
             key={index}
-            className="flex items-center hover:bg-[#F4F5FA] gap-1 dark:hover:bg-[#0F0F0F] p-2 rounded-lg dark:text-white w-full"
+            className="flex w-full items-center gap-1 rounded-lg p-2 hover:bg-[#F4F5FA] dark:text-white dark:hover:bg-[#0F0F0F]"
             draggable
             onDragStart={(event) => onDragStart(event, item.nodeType)}
           >
             <div
-              className={` bg-gray-100  dark:bg-[#0736C4]/15  dark:text-white xl:w-7 xl:h-7  flex items-center justify-center rounded-lg cursor-grab `}
+              className={` flex  cursor-grab  items-center justify-center rounded-lg  bg-gray-100 dark:bg-[#0736C4]/15 dark:text-white xl:h-7 xl:w-7 3xl:h-10 3xl:w-10`}
             >
               {React.createElement(item.icon, {
                 color: color ? color : "#0736C4",
@@ -192,7 +192,7 @@ const Loop = ({ color, selectedFabric }) => {
                 selectedFabric: selectedFabric,
               })}
             </div>
-            <span className="3xl:text-xs xl:text-sm font-normal tracking-normal font-inter cursor-grab">
+            <span className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
               {item.label}
             </span>
           </div>
