@@ -71,7 +71,6 @@ const data = [
 ];
 export default function NodeGallery({
   color,
-
   showFabricSideBar,
   handleSidebarToggle,
   children,
