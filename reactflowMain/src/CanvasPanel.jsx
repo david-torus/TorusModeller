@@ -11,12 +11,10 @@ import {
   ZoomIn,
   ZoomOut,
 } from "./SVG_Application";
-import useUndoRedo from "./commonComponents/react-flow-pro/useUndoRedo";
 
 export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
-  const { zoomIn, zoomOut, fitView, getZoom, zoomTo } = useReactFlow();
+  const { zoomIn, zoomOut, fitView } = useReactFlow();
   const { zoom } = useViewport();
-  // const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
   const zoomPercentage = (zoom * 100).toFixed(2);
 
   const handleZoom = (type) => {
@@ -49,40 +47,39 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
   return (
     <Panel
       position="bottom-right"
-      className="flex h-[6%] w-[25%] justify-end bg-transparent  "
+      className="flex h-[6%] w-[21%] justify-end bg-transparent  "
     >
       <div className="flex  h-full  w-[100%] items-center justify-between rounded-lg">
-        <div className="flex h-full w-[25%]  items-center justify-center rounded-lg border border-slate-300 bg-white dark:border-[#21212126]/15 dark:bg-[#161616]">
+        <div className="flex h-full w-[22%]  items-center justify-center rounded-lg border border-slate-300 bg-white dark:border-[#21212126]/15 dark:bg-[#161616]">
           <TorusButton
             key={"undo"}
-            buttonClassName={"w-1/2"}
+            buttonClassName={`w-1/2 ${!canUndo ? "cursor-pointer" : "cursor-not-allowed"}`}
             fontStyle={"flex items-center justify-center"}
             Children={
               <Undo
-                className={`stroke-[#1C274C] dark:stroke-white ${!canUndo ? "cursor-pointer" : "cursor-not-allowed"}`}
+                className={"stroke-[#1C274C] dark:stroke-white"}
               />
             }
-            onPress={() => (!canUndo ? undo() : alert("cant undo"))}
+            onPress={() => !canUndo && undo()}
           />
           <TorusButton
             key={"redo"}
-            buttonClassName={"w-1/2"}
+            buttonClassName={`w-1/2 ${!canRedo ? "cursor-pointer" : "cursor-not-allowed"}`}
             fontStyle={"flex items-center justify-center"}
             Children={
               <Redo
-                className={`stroke-[#1C274C] dark:stroke-white ${!canRedo ? "cursor-pointer" : "cursor-not-allowed"}`}
+                className={"stroke-[#1C274C] dark:stroke-white"}
               />
             }
-            onPress={() => (!canRedo ? redo() : alert("cant redo"))}
+            onPress={() => !canRedo && redo()}
           />
         </div>
-        <div className="  h-full w-[55%] items-center  rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
+        <div className="  h-full w-[72%] items-center  rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
           <div className="grid h-full w-full grid-cols-6 items-center justify-between gap-1">
             <TorusButton
               key={"FullScreen"}
               Children={
                 <div
-                  onClick={handleFullScreen}
                   className="flex items-center justify-center   p-1"
                 >
                   <FullScreen
@@ -90,7 +87,7 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
                   />
                 </div>
               }
-              onPress={() => alert("full screen")}
+              onPress={handleFullScreen}
             />
             <TorusButton
               key={"fitView"}
