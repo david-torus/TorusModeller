@@ -152,6 +152,7 @@ const ReactFlowDia = ({
                   changeProperty,
                   updatedNodeConfig,
                   sideBarData,
+                  ...undoRedo,
                 })
               : children)}
           {/* {menu && (

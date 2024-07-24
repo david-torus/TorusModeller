@@ -87,7 +87,7 @@ export default function AppDF({
     () => ({
       customTable: CustomTableNode,
     }),
-    []
+    [],
   );
 
   //This is for edge type using for node connection
@@ -95,7 +95,7 @@ export default function AppDF({
     () => ({
       "start-end": CustomEdge,
     }),
-    []
+    [],
   );
 
   //This function is used for delete node
@@ -111,7 +111,7 @@ export default function AppDF({
       setEdges((edges) => edges.filter((edge) => edge.source !== id));
       setMenu(null);
     },
-    [setNodes, setEdges, nodeConfig, setNodeConfig, takeSnapshot]
+    [setNodes, setEdges, nodeConfig, setNodeConfig, takeSnapshot],
   );
 
   //useEFfect for get data from navbar
@@ -144,7 +144,7 @@ export default function AppDF({
         console.error(error);
       }
     },
-    [setEdges, takeSnapshot]
+    [setEdges, takeSnapshot],
   );
 
   const onEdgeUpdateEnd = useCallback(
@@ -159,7 +159,7 @@ export default function AppDF({
         console.error(error);
       }
     },
-    [setEdges, takeSnapshot]
+    [setEdges, takeSnapshot],
   );
 
   //This function is used to connect nodes
@@ -182,7 +182,7 @@ export default function AppDF({
         console.error(error);
       }
     },
-    [setEdges, takeSnapshot]
+    [setEdges, takeSnapshot],
   );
 
   /**
@@ -283,7 +283,7 @@ export default function AppDF({
           "torus",
           "Fintech",
           "DF",
-          type.toLocaleLowerCase()
+          type.toLocaleLowerCase(),
         );
         if (response && response?.data?.nodes[0]?.data?.nodeProperty) {
           nodeProperty = response?.data?.nodes[0]?.data?.nodeProperty;
@@ -311,7 +311,7 @@ export default function AppDF({
         console.log(error);
       }
     },
-    [reactFlowInstance, setNodes, takeSnapshot]
+    [reactFlowInstance, setNodes, takeSnapshot],
   );
 
   // //This function is called when the user right clicks on the node.
@@ -597,7 +597,7 @@ export default function AppDF({
         console.error(error);
       }
     },
-    [setEdges, setNodeConfig, setNodes]
+    [setEdges, setNodeConfig, setNodes],
   );
 
   // Returns JSX
@@ -632,11 +632,15 @@ export default function AppDF({
           {children &&
             (typeof children == "function"
               ? children({
-                  setToggleReactflow:null,
+                  setToggleReactflow: null,
                   uniqueNames,
-                  changeProperty:updatenodeDetails,
+                  changeProperty: updatenodeDetails,
                   updatedNodeConfig,
-                  sideBarData:nodeData,
+                  sideBarData: nodeData,
+                  undo,
+                  redo,
+                  canUndo,
+                  canRedo,
                 })
               : children)}
 
