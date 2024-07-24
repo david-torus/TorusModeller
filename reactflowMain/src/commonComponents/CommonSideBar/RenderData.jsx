@@ -36,17 +36,19 @@ export const RenderData = ({
       currentModel &&
       currentModel !== "entities" &&
       currentDrawing !== "SF" ? (
-        <Sidebar
-          className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
-          position="right"
-          visible={toggle}
-          onHide={() => {
-            setToggle(false);
-          }}
-          style={{ height: "100%", width: "30vw" }}
-        >
-          {handleRender(currentModel + ".pw", json)}
-        </Sidebar>
+
+        handleRender(currentModel + ".pw", json)
+        // <Sidebar
+        //   className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
+        //   position="right"
+        //   visible={toggle}
+        //   onHide={() => {
+        //     setToggle(false);
+        //   }}
+        //   style={{ height: "100%", width: "30vw" }}
+        // >
+         
+        // </Sidebar>
       ) : currentDrawing === "DF" && currentModel === "entities" ? (
         <Dialog
           className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}

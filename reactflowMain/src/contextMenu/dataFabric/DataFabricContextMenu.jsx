@@ -155,6 +155,7 @@ export default function DataFabricContextMenu({
                 </div>
               }
             />
+
             <TorusButton
               key={"df_delete"}
               onPress={() => {
