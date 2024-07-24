@@ -2,7 +2,8 @@ const Data = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+        width="20"
+        height="20"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +44,8 @@ const Wire = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+        width="20"
+        height="20"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +83,8 @@ const Connect = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+        width="20"
+        height="20"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +120,8 @@ const Sheild = ({ strokeColor, width, height }) => {
   return (
     <div className="mt-[-4px]">
       <svg
-        className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+        width="20"
+        height="20"
         viewBox="0 0 32 32"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +145,8 @@ const Sheild = ({ strokeColor, width, height }) => {
 const FabricBar = ({ className, width, height }) => {
   return (
     <svg
-      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -183,7 +188,8 @@ const FabricBar = ({ className, width, height }) => {
 const Faq = ({ className, width, height }) => {
   return (
     <svg
-      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +216,8 @@ const Faq = ({ className, width, height }) => {
 const Support = ({ className, width, height }) => {
   return (
     <svg
-      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -817,8 +824,8 @@ const PropertyPencilGray = () => {
 const ZoomIn = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -841,8 +848,8 @@ const ZoomIn = ({ className }) => {
 const ZoomOut = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -865,8 +872,8 @@ const ZoomOut = ({ className }) => {
 const Help = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -894,8 +901,8 @@ const Help = ({ className }) => {
 const Fitview = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width="17"
+      height="17"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -919,8 +926,8 @@ const Fitview = ({ className }) => {
 const FullScreen = ({ className }) => {
   return (
     <svg
-      width="18"
-      height="18"
+      width="15"
+      height="15"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -998,12 +1005,11 @@ const Redo = ({ className }) => {
 const Home = ({ strokeColor, width, height }) => {
   return (
     <svg
-      // width="40"
-      // height="40"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
     >
       <g opacity="0.4">
         <path
@@ -1081,7 +1087,8 @@ const Line = ({ className }) => {
 const VerticalLine = ({ className }) => {
   return (
     <svg
-      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[55px] 4xl:w-[55px]"
+      width="1"
+      height="30"
       viewBox="0 0 1 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1520,6 +1527,114 @@ const Close = ({ className }) => {
   );
 };
 
+const ArtifactEdit = ({ className }) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_1613_12005)">
+        <path
+          d="M10.1909 2.10123L9.57307 2.71915L3.89222 8.39998C3.50745 8.78478 3.31506 8.97711 3.14961 9.18924C2.95443 9.43951 2.7871 9.71024 2.65057 9.99671C2.53483 10.2396 2.44879 10.4977 2.27671 11.0139L1.54755 13.2014L1.36931 13.7362C1.28463 13.9902 1.35074 14.2702 1.54009 14.4596C1.72945 14.649 2.00953 14.7151 2.26357 14.6304L2.79829 14.4522L4.98579 13.723C5.50202 13.5509 5.76014 13.4649 6.00299 13.3492C6.28947 13.2126 6.56022 13.0453 6.81047 12.8501C7.02261 12.6846 7.21494 12.4922 7.59974 12.1075L13.2805 6.42666L13.8985 5.80875C14.9223 4.78494 14.9223 3.12503 13.8985 2.10123C12.8747 1.07742 11.2147 1.07742 10.1909 2.10123Z"
+          className={className}
+        />
+        <path
+          d="M9.57333 2.71875C9.57333 2.71875 9.6506 4.03183 10.8092 5.19043C11.9678 6.34903 13.2809 6.42627 13.2809 6.42627M2.79859 14.4518L1.54785 13.201"
+          className={className}
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_1613_12005">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
+
+const ArtifactDelete = ({ className }) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M2.02211 5.92661C1.70175 3.79089 1.54157 2.72303 2.14 2.02814C2.73843 1.33325 3.81824 1.33325 5.97786 1.33325H10.0217C12.1813 1.33325 13.2611 1.33325 13.8596 2.02814C14.458 2.72303 14.2978 3.79089 13.9774 5.92661L13.1774 11.2599C12.9337 12.885 12.8118 13.6975 12.2492 14.1821C11.6866 14.6666 10.8649 14.6666 9.2217 14.6666H6.77784C5.13461 14.6666 4.31298 14.6666 3.75037 14.1821C3.18775 13.6975 3.06587 12.885 2.82211 11.2599L2.02211 5.92661Z"
+        className={className}
+      />
+      <path d="M14 4H2" stroke="#F44336" stroke-linecap="round" />
+      <path
+        opacity="0.5"
+        d="M5.33301 4L2.33301 7.33333L7.33301 12.6667M9.33301 4L2.66634 10.6667M13.333 4L4.66634 12.6667M8.66634 12.6667L13.6663 7.33333L10.6663 4M6.66634 4L13.333 10.6667M2.66634 4L11.333 12.6667"
+        className={className}
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12.6663 12.6667H3.33301"
+        className={className}
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};
+
+const DownArrow = ({ fill = "black" }) => {
+  return (
+    <svg
+      width="12"
+      height="7"
+      viewBox="0 0 14 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 1L7 7L13 1"
+        stroke={fill}
+        strokeOpacity={fill == "black" ? "0.35" : "1"}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};
+
+const ArtifactLogo = ({ className }) => {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.33301 6.66667L7.99967 2L10.6663 6.66667H5.33301Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M6.66667 11.6666C6.66667 12.9553 5.622 14 4.33333 14C3.04467 14 2 12.9553 2 11.6666C2 10.378 3.04467 9.33331 4.33333 9.33331C5.622 9.33331 6.66667 10.378 6.66667 11.6666Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M9.33301 9.33331H13.9997V14H9.33301V9.33331Z"
+        className={className}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
 export {
   Data,
   Wire,
@@ -1573,4 +1688,8 @@ export {
   UnTickSign,
   Search,
   Close,
+  ArtifactEdit,
+  ArtifactDelete,
+  DownArrow,
+  ArtifactLogo,
 };

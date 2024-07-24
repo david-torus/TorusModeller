@@ -59,7 +59,7 @@ export default function TorusDropDown({
 }) {
   return (
     <DialogTrigger>
-      <label>{label}</label>
+      {/* <label>{label}</label> */}
       <TorusButton
         Children={title}
         buttonClassName={merger(
@@ -104,9 +104,9 @@ export default function TorusDropDown({
               selectionMode={selectionMode}
               onSelectionChange={(keys) => {
                 setSelected(keys);
-                if (selectionMode === "single") {
-                  close();
-                }
+                // if (selectionMode === "single") {
+                //   close();
+                // }
               }}
               selectedKeys={selected}
               items={items}
