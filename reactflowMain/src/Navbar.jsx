@@ -46,6 +46,7 @@ import {
   getDefaultJson,
 } from "./commonComponents/api/DefaultsApi";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import { BsTrash3 } from "react-icons/bs";
 
 export default function Navbar({
   color,
