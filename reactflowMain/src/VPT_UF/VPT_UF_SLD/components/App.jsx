@@ -56,7 +56,7 @@ import EventsMain from "../../../VPT_UF/VPT_EVENTS/EventsMain";
 import _ from "lodash";
 import FabricSidebar from "../../../commonComponents/layout/SideBar/FabricSidebar";
 import NavBar from "../../../commonComponents/layout/ActionBar/Navbar copy";
-import { FabricsContexts } from "../../../Layout";
+import { TorusModellerContext } from "../../../Layout";
 
 //Node Types
 const nodeTypes = {
@@ -97,7 +97,7 @@ const AppUF = ({
   children,
   proOptions,
 }) => {
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
   const [helperLineHorizontal, setHelperLineHorizontal] = useState(undefined);
   const [helperLineVertical, setHelperLineVertical] = useState(undefined);
   const { getIntersectingNodes, flowToScreenPosition, getNode } =

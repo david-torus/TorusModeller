@@ -5,7 +5,7 @@ import TorusButton from "./torusComponents/TorusButton";
 // import "./index.css";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
-import { FabricsContexts } from "./Layout";
+import { TorusModellerContext } from "./Layout";
 const data = [
   {
     label: "User",
@@ -75,7 +75,7 @@ export default function NodeGallery({
   handleSidebarToggle,
   children,
 }) {
-  const { selectedFabric } = useContext(FabricsContexts);
+  const { selectedFabric } = useContext(TorusModellerContext);
   return (
     <Panel
       position="top-left"

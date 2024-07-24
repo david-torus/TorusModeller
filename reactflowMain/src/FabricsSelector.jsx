@@ -1,16 +1,7 @@
-import React, {
-  forwardRef,
-  memo,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import ReactFlow from "reactflow";
-import UFDMain from "./VPT_UF/VPT_UF_SLD/UFDMain";
-import FlowWithProviderUF from "./VPT_UF/VPT_UF_SLD/components/App";
+import React, { memo, useContext } from "react";
+
 import AppDF from "./VPT_DF/VPT_DF_ERD/Components/App";
-import { FabricsContexts } from "./Layout";
+import { TorusModellerContext } from "./Layout";
 import AppPF from "./VPT_PF/VPT_PF_PFD/components/App";
 import AppUF from "./VPT_UF/VPT_UF_SLD/components/App";
 
@@ -26,7 +17,7 @@ export const FabricsSelector = memo(
     children,
     NODE_TYPES,
   }) => {
-    const { selectedFabric } = useContext(FabricsContexts);
+    const { selectedFabric } = useContext(TorusModellerContext);
     const cycleFabric = () => {
       switch (selectedFabric) {
         case "Home":

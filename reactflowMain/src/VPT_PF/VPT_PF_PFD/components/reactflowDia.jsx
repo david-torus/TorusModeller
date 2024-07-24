@@ -13,7 +13,7 @@ import { Gorule } from "../../../commonComponents/tabs/Gorule";
 import { Mapper } from "../../../commonComponents/tabs/mapper";
 import MonacoEditor from "../../../commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import FabricSidebar from "../../../commonComponents/layout/SideBar/FabricSidebar";
-import { FabricsContexts } from "../../../Layout";
+import { TorusModellerContext } from "../../../Layout";
 
 const ReactFlowDia = ({
   undoRedo,
@@ -71,7 +71,7 @@ const ReactFlowDia = ({
     code: false,
   });
   const { ref, onNodeContextMenu, onPaneClick, nodePropertyData } =
-    useContext(FabricsContexts);
+    useContext(TorusModellerContext);
   const { getNode } = useReactFlow();
   return (
     <>

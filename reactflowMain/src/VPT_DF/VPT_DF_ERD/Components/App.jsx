@@ -41,7 +41,7 @@ import { getLatestVersion } from "../../../commonComponents/api/fabricsApi";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext.js";
 
 import useUndoRedo from "../../../commonComponents/react-flow-pro/useUndoRedo";
-import { FabricsContexts } from "../../../Layout.jsx";
+import { TorusModellerContext } from "../../../Layout.jsx";
 
 //Node Dimensions
 const NODE_WIDTH = 172;
@@ -65,7 +65,7 @@ export default function AppDF({
   children,
 }) {
   const edgeUpdateSuccessful = useRef(true);
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
   const entityJson = {};
   // const ref = useRef(null);
   const [menu, setMenu] = useState(null);
