@@ -1,7 +1,7 @@
 import { FaRegUser } from "react-icons/fa";
 
 export default function TorusAvatar({ color, src, borderColor, radius, size }) {
-  // Determine if src is an array and slice the first four items
+
   const isArray = Array.isArray(src);
   const displaySrc = isArray ? src.slice(0, 4) : [src];
   const remainingCount = isArray ? src.length - 4 : 0;
@@ -96,7 +96,7 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
             bg-[#0736C4] ${borderColor}
           `}
         >
-          <span className="text-xs font-medium text-white font-inter">
+          <span className="font-inter text-xs font-medium text-white">
             +{remainingCount}
           </span>
         </div>
