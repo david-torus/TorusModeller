@@ -705,8 +705,11 @@ export const RenderJson = memo(
     currentDrawing,
     setShowNodeProperty,
     setToggleReactflow,
+    json,
+    updatedNodeConfig,
+    nodedata
   }) => {
-    const [dupJson, setDupJson] = useState( structuredClone(js));
+    const [dupJson, setDupJson] = useState(null);
 
     const [convertedJson, setConvertedJson] = useState(null);
 
@@ -748,10 +751,25 @@ export const RenderJson = memo(
       const newjson = JSON.stringify(jss, null, 2);
 
       let newjs = unflatten(jss);
-      console.log(newjs, "new");
-
+      console.log(newjs,nodedata, "new");
+    
       setConvertedJson(newjs);
+      updatedNodeConfig(
+        nodedata?.id,
+        {
+          nodeId: nodedata?.id,
+          nodeName: nodedata?.data?.label,
+          nodeType: nodedata?.type,
+        },
+        {
+          ...newjs,
+        }
+      );
+
     };
+
+
+    
 
     const handlejs = (e, i, key, type, jskey) => {
       console.log(e, i, key, type, jskey, "rendertype");
@@ -786,16 +804,72 @@ export const RenderJson = memo(
       }
     };
 
-    console.log(convertedJson, "convertedJson");
-    console.log(dupJson, "renderjs");
+
+    function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
+      const copy = JSON.parse(JSON.stringify(obj));
+      for (let key in copy) {
+        if (copy.hasOwnProperty(key)) {
+          let newKey = prefix ? `${prefix}/${key}` : key;
+          if (
+            typeof copy[key] === "object" &&
+            copy[key] !== null &&
+            !Array.isArray(copy[key])
+          ) {
+            if (
+              !(copy[key].hasOwnProperty("type") && copy[key].type === "dropdown")
+            ) {
+              if (copy[key] === originalObj) {
+                return result; // Return early if the object being processed is the same as the original object
+              }
+              result[newKey] = copy[key];
+              denormalizeJson(copy[key], newKey, result, originalObj);
+              delete copy[key];
+            }
+          } else if (Array.isArray(copy[key]) && typeof copy[key][0] === "object") {
+            result[newKey] = copy[key];
+            copy[key].forEach((item, index) => {
+              if (typeof item === "object" && item !== null) {
+                const nestedKey = `${newKey}/${index}`;
+                denormalizeJson(item, nestedKey, result, originalObj);
+              } else {
+                result[newKey][index] = item;
+              }
+            });
+            delete copy[key];
+          } else {
+            if (!prefix) {
+              result[copy["label"]] = copy;
+            }
+          }
+        }
+      }
+      return result;
+    }
+
+const haandledenormalize = () => {
+  if(json){
+    const denormalized = denormalizeJson(json);
+    console.log(denormalized, 'denormalized')
+    setDupJson(structuredClone(denormalized))
+  }
+}
+
+    useEffect(() => {
+      haandledenormalize()
+    }, [json]);
+
+
+    
+    console.log(convertedJson,nodedata, "convertedJson");
+    console.log(json, nodedata, "rrenderjs");
 
     return (
       <div
-        className=" h-full"
-        style={{ display: showNodeProperty ? "block" : "none" }}
+        className="z-50"
+        // style={{ display: showNodeProperty ? "block" : "none" }}
       >
-        { (
-          <div className="h-full">
+        {dupJson &&Object.keys(dupJson).length > 0 && (
+          <div className="">
             { (
               <>
                 <RenderObject

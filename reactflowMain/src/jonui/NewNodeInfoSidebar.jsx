@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { NodeInfoSidebarTabs } from "../commonComponents/CommonSideBar/NodeInfoSidebarTabs";
 import { RenderData } from "../commonComponents/CommonSideBar/RenderData";
 import { RenderJson } from "./JsonUI";
+import SideBar from "../SideBar";
+import {
+  cardUIPolicy,
+  colorPolicy,
+  controlPolicy,
+} from "../commonComponents/utils/util";
+import Builder from "../VPT_DJUI/builder";
+import { AccordianWindow } from "../commonComponents/PropertyWIndow/AccordianWindow";
+import ListWindow from "../commonComponents/PropertyWIndow/ListWindow";
 
 const NewNodeInfoSidebar = ({
   showNodeProperty,
@@ -10,7 +19,8 @@ const NewNodeInfoSidebar = ({
   setShowNodeProperty,
   nodeInfoTabs,
   setToggleReactflow,
-  setDupJson,
+  setDenormalizedata,
+  updatedNodeConfig,
 }) => {
   const [activeTab, setActiveTab] = useState("");
   const [sendFabrics, setSendFabrics] = useState(null);
@@ -23,46 +33,9 @@ const NewNodeInfoSidebar = ({
   const [json, setJson] = useState({});
   const [currentModel, setCurrentModel] = useState(null);
   const [toggle, setToggle] = useState(false);
-  const[files , setFiles] = useState(null);
+  const [files, setFiles] = useState(null);
   const [helperjson, setHelperjson] = useState({});
   const [tabopen, seTabopen] = useState(1);
-
-  function denormalizeJson(obj, prefix = "", result = {}) {
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        let newKey = prefix ? `${prefix}/${key}` : key;
-        if (
-          typeof obj[key] === "object" &&
-          obj[key] !== null &&
-          !Array.isArray(obj[key])
-        ) {
-          if (
-            !(obj[key].hasOwnProperty("type") && obj[key].type === "dropdown")
-          ) {
-            result[newKey] = obj[key];
-            denormalizeJson(obj[key], newKey, result);
-            delete obj[key];
-          }
-        } else if (Array.isArray(obj[key]) && typeof obj[key][0] === "object") {
-          result[newKey] = obj[key];
-          obj[key].forEach((item, index) => {
-            if (typeof item === "object" && item !== null) {
-              const nestedKey = `${newKey}/${index}`;
-              denormalizeJson(item, nestedKey, result);
-            } else {
-              result[newKey][index] = item;
-            }
-          });
-          delete obj[key];
-        } else {
-          if (!prefix) {
-            result[obj["label"]] = obj;
-          }
-        }
-      }
-    }
-    return result;
-  }
 
 
   useEffect(() => {
@@ -76,13 +49,14 @@ const NewNodeInfoSidebar = ({
     } catch (error) {
       console.error(error);
     }
-  }, [
-    files,
+  }, [files,
+
     rendervalue,
-    sideBarData?.data?.label,
-    sideBarData?.id,
-    sideBarData?.type,
+    sideBarData,
   ]);
+
+
+
 
   useEffect(() => {
     try {
@@ -112,85 +86,28 @@ const NewNodeInfoSidebar = ({
     }
   };
 
-  const handleRender = (propw, js) => {
+  const updatejson = (value) => {
     try {
-      let pw = sideBarData?.data?.nodeProperty?.[propw];
-      let ConfigToRender;
-      if (pw) {
-        return null
-        // switch (pw) {
-        //   case "m1":
-        //     ConfigToRender = (
-        //       <Builder
-        //         isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-        //         defaultJSOn={js?.[currentModel] ?? {}}
-        //         controlPolicy={controlPolicy}
-        //         colorPolicy={colorPolicy}
-        //         updatedNodeConfig={updatejson}
-        //         uiPolicy={cardUIPolicy}
-        //         helperJson={
-        //           sideBarData?.data?.nodeProperty?.[currentModel + ".helper"] ??
-        //           {}
-        //         }
-        //       />
-        //     );
-        //     break;
-        //   case "m2":
-        //     ConfigToRender = (
-        //       <AccordianWindow
-        //         sideBarData={js?.[currentModel] ?? {}}
-        //         helperJson={
-        //           sideBarData?.data?.nodeProperty?.[currentModel + ".helper"] ??
-        //           {}
-        //         }
-        //         setSidebarData={updatejson}
-        //       />
-        //     );
-        //     break;
-        //   case "m3":
-        //     ConfigToRender = (
-        //       <ListWindow
-        //         sideBarData={js?.[currentModel] ?? {}}
-        //         helperJson={
-        //           sideBarData?.data?.nodeProperty?.[currentModel + ".helper"] ??
-        //           {}
-        //         }
-        //         setSidebarData={updatejson}
-        //       />
-        //     );
-        //     break;
-        //   case "m4":
-        //     ConfigToRender = (
-        //       <Builder
-        //         decider={decider}
-        //         setDecider={setDecider}
-        //         isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-        //         defaultJSOn={js?.[currentModel] ?? {}}
-        //         controlPolicy={controlPolicy}
-        //         colorPolicy={colorPolicy}
-        //         updatedNodeConfig={updatejson}
-        //         uiPolicy={cardUIPolicy}
-        //         helperJson={
-        //           sideBarData?.data?.nodeProperty?.[currentModel] ?? {}
-        //         }
-        //       />
-        //     );
-        //     break;
-        //   default:
-        //     ConfigToRender = null;
-        // }
-      } 
-      else {
-          console.log(js, "---->newjs")
-       const hj = denormalizeJson(js)
-       
-        console.log(hj , "newjs")
-      }
+      setJson((prev) => ({
+        ...prev,
+        [currentModel]: value,
+      }));
     
     } catch (error) {
       console.error(error);
     }
   };
+
+  const handleRender = (propw, js, side) => {
+    console.log(js,side, js[currentModel],"handle ")
+    return(
+      <div className="h-[100%]">
+      
+      <RenderJson json = {js} nodedata={side}  updatedNodeConfig={updatedNodeConfig} />
+      </div>
+    )
+  };
+
 
 
   const handleOpenModal = async (flowType, isDockey = false, flow) => {
@@ -199,53 +116,51 @@ const NewNodeInfoSidebar = ({
       setCurrentModel(flowType);
       if (currentDrawing === "DF") {
         if (flowType === "entities") {
-            return null
-        //   setJson((prev) => {
-        //     if (prev && !prev?.entities)
-        //       return {
-        //         ...prev,
-        //         [flowType]: {
-        //           attributes: sideBarData?.data?.nodeProperty?.[flowType]
-        //             ?.attributes ?? [
-        //             {
-        //               cname: "",
-        //               dataType: {
-        //                 selectedValue: "",
-        //                 type: "singleSelect",
-        //                 selectionList: [
-        //                   "Int",
-        //                   "String",
-        //                   "Float",
-        //                   "Boolean",
-        //                   "DateTime",
-        //                   "Json",
-        //                 ],
-        //               },
-        //               constraints: "",
-        //               length: "",
+          return null;
+          //   setJson((prev) => {
+          //     if (prev && !prev?.entities)
+          //       return {
+          //         ...prev,
+          //         [flowType]: {
+          //           attributes: sideBarData?.data?.nodeProperty?.[flowType]
+          //             ?.attributes ?? [
+          //             {
+          //               cname: "",
+          //               dataType: {
+          //                 selectedValue: "",
+          //                 type: "singleSelect",
+          //                 selectionList: [
+          //                   "Int",
+          //                   "String",
+          //                   "Float",
+          //                   "Boolean",
+          //                   "DateTime",
+          //                   "Json",
+          //                 ],
+          //               },
+          //               constraints: "",
+          //               length: "",
 
-        //               isRequired: {
-        //                 value: true,
-        //                 type: "checkbox",
-        //               },
-        //             },
-        //           ],
-        //           methods:
-        //             sideBarData?.data?.nodeProperty?.[flowType]?.methods ??
-        //             handleMethod(
-        //               sideBarData?.data?.nodeProperty?.[flowType]?.attributes ??
-        //                 [],
-        //               prev,
-        //             ),
-        //         },
-        //       };
-        //     else return prev;
-        //   });
+          //               isRequired: {
+          //                 value: true,
+          //                 type: "checkbox",
+          //               },
+          //             },
+          //           ],
+          //           methods:
+          //             sideBarData?.data?.nodeProperty?.[flowType]?.methods ??
+          //             handleMethod(
+          //               sideBarData?.data?.nodeProperty?.[flowType]?.attributes ??
+          //                 [],
+          //               prev,
+          //             ),
+          //         },
+          //       };
+          //     else return prev;
+          //   });
 
-        //   setToggle(!toggle);
-        } 
-        
-        else {
+          //   setToggle(!toggle);
+        } else {
           setToggle(!toggle);
           setJson((prev) => ({
             ...prev,
@@ -257,10 +172,7 @@ const NewNodeInfoSidebar = ({
               sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ?? {},
           }));
         }
-      } 
-      
-      
-      else {
+      } else {
         setToggle(!toggle);
         setJson((prev) => ({
           ...prev,
@@ -301,9 +213,12 @@ const NewNodeInfoSidebar = ({
       console.error(error);
     }
   };
+  console.log(sideBarData, "sidebardatatabaasa");
 
   return (
-    <>
+    <div className="flex flex-col top-0 mt-0 mb-0">
+      <div className="h-[10%]">
+
       <NodeInfoSidebarTabs
         nodeInfoTabs={nodeInfoTabs}
         currentDrawing={currentDrawing}
@@ -318,6 +233,8 @@ const NewNodeInfoSidebar = ({
         contextMenuVisible={contextMenuVisible}
         contextMenuPosition={contextMenuPosition}
       />
+      </div>
+      <div className="bg-red-400 ">
 
       <RenderData
         sideBarData={sideBarData}
@@ -342,7 +259,9 @@ const NewNodeInfoSidebar = ({
         // updatedNodeConfig={updatedNodeConfig}
         helperJson={helperjson}
       />
-    </>
+      </div>
+
+    </div>
   );
 };
 

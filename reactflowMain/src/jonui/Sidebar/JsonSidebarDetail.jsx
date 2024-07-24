@@ -351,13 +351,13 @@ export default function JsonSidebarDetail({
   };
 
   return (
-    <div className="relative flex max-h-[100%] w-[280px]   flex-col gap-3 font-semibold p-2  text-sm">
+    <div className="relative flex max-h-[100%] w-[220px] mt-3   flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <span className="flex justify-between">
-          <p className="p-2 text-black dark:text-white"> Properties</p>
+          <p className="p-2 mt-2  text-black dark:text-white"> Properties</p>
           <span
             onClick={() => OgJson()}
-            className="cursor-pointer rounded-lg px-3  py-2 bg-[#0736C4] w-[20%]  text-white mb-2 active:scale-95"
+            className="cursor-pointer rounded-lg px-1 mt-2 py-2 bg-[#0736C4] w-[20%]  text-white mb-2 active:scale-95"
           >
             save
           </span>

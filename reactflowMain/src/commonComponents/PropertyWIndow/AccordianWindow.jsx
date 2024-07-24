@@ -415,6 +415,8 @@ export const AccordianWindow = ({
     setKeyJson(structuredClone(helperJson));
   }, [sideBarData, helperJson]);
 
+  console.log(dupjson,sideBarData, "accwindow");
+
   const checkForNull = useCallback((jsonData) => {
     try {
       if (

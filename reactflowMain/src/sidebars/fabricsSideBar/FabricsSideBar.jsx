@@ -26,7 +26,7 @@ export default function FabricsSideBar({
   const [path, setPath] = useState(null);
   return (
     <div className="flex h-[100%]   w-full max-w-full flex-row overflow-hidden ">
-      <div className="max-w-[40%]   border-x border-slate-300 bg-white  dark:border-[#212121]">
+      <div className="max-w-[40%] h-[480px] relative   border-x border-slate-300 bg-white  dark:border-[#212121]">
        { <JsonSidebarIcon
           key={"iconBar"}
           showObj={showObj}
@@ -39,19 +39,8 @@ export default function FabricsSideBar({
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
       <div className="   max-w-full bg-white dark:bg-[#161616]">
-        <div className="h-[10%] sticky">  
-
-        <NewNodeInfoSidebar
-          showNodeProperty={showNodeProperty}
-          sideBarData={sideBarData}
-          currentDrawing={currentDrawing}
-          setShowNodeProperty={setShowNodeProperty}
-          nodeInfoTabs={nodeInfoTabs}
-          setToggleReactflow={setToggleReactflow}
-          setDupJson={setDupJson}
-        />
-        </div>
-        <div className="h-[90%]">
+   
+        <div className="h-[480px] relative   ">
 
        { <JsonSidebarDetail
           showObj={showObj}
