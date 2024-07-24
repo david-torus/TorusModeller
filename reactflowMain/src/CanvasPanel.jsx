@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Panel, useReactFlow, MiniMap } from "reactflow";
+import { Panel, useReactFlow, MiniMap, useViewport  } from "reactflow";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusInput from "./torusComponents/TorusInput";
 import {
@@ -15,6 +15,7 @@ import useUndoRedo from "./commonComponents/react-flow-pro/useUndoRedo";
 
 export default function CanvasPanel() {
   const { zoomIn, zoomOut, fitView, getZoom, zoomTo } = useReactFlow();
+  const { zoom } = useViewport();
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
   const zoomPercentage = (zoom * 100).toFixed(2);
 
@@ -89,7 +90,7 @@ export default function CanvasPanel() {
               onPress={() => handleZoom("Out")}
             />
             <span className="flex items-center justify-center   p-1 font-inter text-xs font-bold text-[#1C274C] dark:text-white">
-              100%
+            {Number(zoomPercentage)}%
             </span>
             <TorusButton
               key={"zoomIn"}
