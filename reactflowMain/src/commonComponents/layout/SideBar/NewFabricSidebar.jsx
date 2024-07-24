@@ -172,7 +172,6 @@ export default function NewFabricSidebar({
           <div>
             <NodeGallerIcon color={"#A59E92"} />
           </div>
-
           <div>
             <TorusAvatar
               radius={"full"}

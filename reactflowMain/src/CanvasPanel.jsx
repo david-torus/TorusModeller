@@ -27,10 +27,10 @@ export default function CanvasPanel() {
   return (
     <Panel
       position="bottom-right"
-      className="w-[26%] bg-transparent flex justify-end h-[6%]  "
+      className="flex h-[6%] w-[25%] justify-end bg-transparent  "
     >
-      <div className="w-[95%]  h-full  flex justify-between items-center rounded-lg">
-        <div className="w-[25%] h-full border  border-slate-300 flex items-center justify-center rounded-lg bg-white dark:bg-[#161616] dark:border-[#21212126]/15">
+      <div className="flex  h-full  w-[95%] items-center justify-between rounded-lg">
+        <div className="flex h-full w-[25%]  items-center justify-center rounded-lg border border-slate-300 bg-white dark:border-[#21212126]/15 dark:bg-[#161616]">
           <TorusButton
             key={"undo"}
             buttonClassName={"w-1/2"}
@@ -46,7 +46,7 @@ export default function CanvasPanel() {
             onPress={zoomTo}
           />
         </div>
-        <div className="w-[70%]  grid grid-cols-6 h-full border border-slate-300  items-center rounded-lg  bg-white dark:bg-[#161616] dark:border-[#21212126]/15 ">
+        <div className="grid  h-full w-[63%] grid-cols-6 items-center rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
           <TorusButton
             key={"FullScreen"}
             Children={
@@ -68,7 +68,7 @@ export default function CanvasPanel() {
             }
             onPress={() => handleZoom("Out")}
           />
-          <span className="font-bold text-sm font-inter text-[#1C274C] dark:text-white">
+          <span className="font-inter text-sm font-bold text-[#1C274C] dark:text-white">
             100%
           </span>
           <TorusButton

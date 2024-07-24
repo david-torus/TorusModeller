@@ -1107,8 +1107,7 @@ const VerticalLine = ({ className }) => {
 const Debugger = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1184,8 +1183,7 @@ const Debugger = ({ className }) => {
 const Preview = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -1207,8 +1205,7 @@ const Preview = ({ className }) => {
 const Shared = ({ className }) => {
   return (
     <svg
-      width="20"
-      height="20"
+      className="h-[20px] w-[20px] sm:h-[20px] sm:w-[20px] md:h-[20px] md:w-[20px] lg:h-[20px] lg:w-[20px] xl:h-[20px] xl:w-[20px] 2xl:h-[35px] 2xl:w-[32px] 3xl:h-[32px] 3xl:w-[35px] 4xl:h-[40px] 4xl:w-[40px]"
       viewBox="0 0 24 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

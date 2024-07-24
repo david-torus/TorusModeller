@@ -65,7 +65,7 @@ export default function Layout({ client }) {
     () => ({
       usernode: "s",
     }),
-    []
+    [],
   );
 
   const handleTabChange = (fabric) => {
@@ -83,7 +83,7 @@ export default function Layout({ client }) {
   };
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+    [setEdges],
   );
 
   const onDragOver = useCallback((event) => {
@@ -111,7 +111,7 @@ export default function Layout({ client }) {
 
       setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance, setNodes]
+    [reactFlowInstance, setNodes],
   );
 
   const onNodeContextMenu = useCallback(
@@ -131,7 +131,7 @@ export default function Layout({ client }) {
           event.clientY >= pane.height - 200 && pane.height - event.clientY,
       });
     },
-    [setMenu]
+    [setMenu],
   );
   console.log(showNodeProperty, "showNodeProperty");
   // Close the context menu if it's open whenever the window is clicked.
@@ -139,10 +139,10 @@ export default function Layout({ client }) {
 
   return (
     <div
-      className={`  w-full  h-full   flex flex-col   xl:max-3xl:bg-gray-600  lg:max-xl:gap-0 xl:max-3xl:gap-0 max-md:gap-3 
+      className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 
          `}
     >
-      <div className="w-full h-[8%] sticky top-0">
+      <div className="sticky top-0 h-[8%] w-full">
         <Navbar
           tKey={"FRK"}
           client={client}
@@ -171,8 +171,8 @@ export default function Layout({ client }) {
         />
       </div>
 
-      <div className={`h-[92%] w-full flex dark:bg-[#0F0F0F]   bg-[#F4F5FA] `}>
-        <div className="h-full flex w-[100%]">
+      <div className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}>
+        <div className="flex h-full w-[100%]">
           <FabricsContexts.Provider
             value={{
               selectedFabric,
@@ -211,7 +211,7 @@ export default function Layout({ client }) {
                     style={{ bottom: "8%" }}
                     maskColor="transparent"
                     // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                    className="border border-slate-300 rounded-lg w-[17%] h-[22%]  dark:bg-[#161616] dark:border-[#21212126]/15"
+                    className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
                   />
                   <CanvasPanel />
 
