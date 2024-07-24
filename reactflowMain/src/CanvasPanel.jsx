@@ -28,6 +28,24 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
     }
   };
 
+  const handleFullScreen = () => {
+    const elem = document.documentElement;
+    if (document.fullscreenEnabled) {
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch((err) => {
+          console.error(
+            "Error attempting to enable full-screen mode:",
+            err.message,
+          );
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    } else {
+      console.error("Fullscreen mode is not supported");
+    }
+  };
+
   return (
     <Panel
       position="bottom-right"
@@ -63,7 +81,10 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
             <TorusButton
               key={"FullScreen"}
               Children={
-                <div className="flex items-center justify-center   p-1">
+                <div
+                  onClick={handleFullScreen}
+                  className="flex items-center justify-center   p-1"
+                >
                   <FullScreen
                     className={"stroke-[#1C274C] dark:stroke-white"}
                   />
