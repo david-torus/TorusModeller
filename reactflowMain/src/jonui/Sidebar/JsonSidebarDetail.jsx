@@ -351,57 +351,28 @@ export default function JsonSidebarDetail({
   };
 
   return (
-    <div className="relative flex max-h-[100%] w-[240px]  scrollbar-none  overflow-y-scroll flex-col gap-3 font-semibold p-2  text-sm">
+    <div className="relative flex max-h-[100%] w-[280px]   flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <span className="flex justify-between">
           <p className="p-2 text-black dark:text-white"> Properties</p>
           <span
             onClick={() => OgJson()}
-            className="cursor-pointer rounded-lg  p-2  bg-[#0736C4] w-[20%]  text-white mb-2 active:scale-95"
+            className="cursor-pointer rounded-lg px-3  py-2 bg-[#0736C4] w-[20%]  text-white mb-2 active:scale-95"
           >
             save
           </span>
         </span>
 
-        <TorusTab
-          orientation="horizontal"
-          classNames={{
-            tabs: "cursor-pointer rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F] ",
-            tabList: "w-full h-[100%] flex justify-center items-center",
-            tab: ` p-2 h-full  w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none `,
-          }}
-          tabs={[
-            {
-              id: "Tabs",
-              content: <Pencil strokeColor={"#1C274C"} />,
-            },
-            {
-              id: "Tabbs",
-              content: <Pencil strokeColor={"#B2BABB "} />,
-            },
-            {
-              id: "Tabbbs",
-              content: <Flip strokeColor={"#B2BABB "} />,
-            },
-            {
-              id: "Tabbbbs",
-              content: <Scan strokeColor={"#B2BABB "} />,
-            },
-            {
-              id: "Tabbbbbs",
-              content: <Calendar strokeColor={"#B2BABB "} />,
-            },
-          ]}
-        />
+      
 
-        <span className="mt-3 font-normal m-2 w-[100%] text-black dark:text-white">
+        <span className="mt-1 font-normal m-2 w-[100%] text-black dark:text-white">
           Label :
           <span className="text-[#6600ff] dark:text-[#c4b707] m-2 font-poppins  ">
             {label}
           </span>
         </span>
       </span>
-      <div>
+      <div className="scrollbar-none  overflow-y-scroll">
         {showObj && (
           <div className="">
             {

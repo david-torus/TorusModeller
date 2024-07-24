@@ -27,7 +27,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState(null);
 
-  console.log(obj, "jk");
+
   const handleDropdownClick = (event) => {
     event.stopPropagation();
   };

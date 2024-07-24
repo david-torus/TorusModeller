@@ -25,14 +25,14 @@ export const NodeInfoSidebarTabs = ({
         variant="underlined"
         classNames={{
           tabList:
-            "gap-1 w-full relative rounded-none p-0  border-divider bg-transparent",
+            "gap-1 w-[280px]  rounded-none  border-divider bg-transparent",
           cursor: "w-full bg-transparent",
           base: "w-full h-full",
           tab: "max-w-fit px-0 h-12",
         }}
         defaultSelectedKey={""}
       >
-        {Object.entries(nodeInfoTabs[currentDrawing]).map(([key, value]) => {
+        {nodeInfoTabs[currentDrawing] && Object.entries(nodeInfoTabs[currentDrawing]).map(([key, value]) => {
           return (
             <Tab
               title={

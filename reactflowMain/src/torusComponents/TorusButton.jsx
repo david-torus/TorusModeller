@@ -69,33 +69,33 @@ const TorusButton = ({
       onPress={onPress}
     >
       {isIconOnly ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
+        <div className={`${contentClass} flex items-center justify-center`}>
           {Children}
         </div>
       ) : startContent ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
-          <div className="w-[100%] flex justify-evenly gap-1">
-            <div className="w-[20%] flex justify-center items-center">
+        <div className={`${contentClass} flex items-center justify-center`}>
+          <div className="flex w-[100%] justify-evenly gap-1">
+            <div className="flex w-[20%] items-center justify-center">
               {startContent}
             </div>
-            <div className={`${fontStyle} w-[80%] flex justify-center pr-1`}>
+            <div className={`${fontStyle} flex w-[80%] justify-center pr-1`}>
               {Children}
             </div>
           </div>
         </div>
       ) : endContent ? (
-        <div className={`${contentClass} flex justify-center items-center`}>
-          <div className="w-[100%] flex justify-evenly gap-1">
-            <div className={`${fontStyle} w-[80%] flex justify-start pr-1`}>
+        <div className={`${contentClass} flex items-center justify-center`}>
+          <div className="flex w-[100%] justify-evenly gap-1">
+            <div className={`${fontStyle} flex w-[80%] justify-start pr-1`}>
               {Children}
             </div>
-            <div className="w-[20%] flex justify-center items-center">
+            <div className="flex w-[20%] items-center justify-center">
               {endContent}
             </div>
           </div>
         </div>
       ) : (
-        <p className={`${fontStyle} ${contentClass}`}>{Children}</p>
+        <p className={`${fontStyle}`}>{Children}</p>
       )}
     </Button>
   );
