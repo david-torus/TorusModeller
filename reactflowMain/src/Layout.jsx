@@ -54,7 +54,7 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
-  const[nodeData , setNodeData] = useState(null);
+  const [nodeData, setNodeData] = useState(null);
   const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
@@ -145,8 +145,6 @@ export default function Layout({ client }) {
     [setMenu],
   );
 
-
-
   const updatedNodeConfig = (id, metadata, updatedData) => {
     try {
       setNodes((prev) => {
@@ -214,7 +212,6 @@ export default function Layout({ client }) {
     }
   };
 
-
   console.log(showNodeProperty, "showNodeProperty");
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
@@ -224,86 +221,95 @@ export default function Layout({ client }) {
       className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 
          `}
     >
-
       {!toggleReactflow.rule &&
       !toggleReactflow.mapper &&
       !toggleReactflow.code ? (
-        
         <>
-      <div className="sticky top-0 h-[8%] w-full">
-        <Navbar
-          tKey={"FRK"}
-          client={client}
-          project={""}
-          fabrics={selectedFabric}
-          sendDataToFabrics={(data) => {
-            setEdges(data?.nodeEdges ?? []);
-            setNodes(data?.nodes ?? []);
-          }}
-          getDataFromFabrics={() => ({
-            nodes: nodes,
-            edges: edges,
-          })}
-          // setdomain={setDomain}
-          // setartifact={setArtifact}
-          // sendartifact={sendartifact}
-          // setMainArtifacts={setMainArtifacts}
-          // mainArtifacts={mainArtifacts}
-          // setMainVersion={setVersion}
-          // mainVersion={mainVersion}
-          // undoredo={{ undo, redo, canUndo, canRedo }}
-          // setToggleReactflow={setToggleReactflow}
-          // selecetedWholeVersion={selecetedWholeVersion}
-          // setSelectedWholeVersion={setSelectedWholeVersion}
-          color={colors[selectedFabric]?.light}
-        />
-      </div>
+          <div className="sticky top-0 h-[8%] w-full">
+            <Navbar
+              tKey={"FRK"}
+              client={client}
+              project={""}
+              fabrics={selectedFabric}
+              sendDataToFabrics={(data) => {
+                setEdges(data?.nodeEdges ?? []);
+                setNodes(data?.nodes ?? []);
+              }}
+              getDataFromFabrics={() => ({
+                nodes: nodes,
+                edges: edges,
+              })}
+              // setdomain={setDomain}
+              // setartifact={setArtifact}
+              // sendartifact={sendartifact}
+              // setMainArtifacts={setMainArtifacts}
+              // mainArtifacts={mainArtifacts}
+              // setMainVersion={setVersion}
+              // mainVersion={mainVersion}
+              // undoredo={{ undo, redo, canUndo, canRedo }}
+              // setToggleReactflow={setToggleReactflow}
+              // selecetedWholeVersion={selecetedWholeVersion}
+              // setSelectedWholeVersion={setSelectedWholeVersion}
+              color={colors[selectedFabric]?.light}
+            />
+          </div>
 
-      <div className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}>
-        <div className="flex h-[100%] w-[100%]">
-          <FabricsContexts.Provider
-            value={{
-              selectedFabric,
-              handleTabChange,
-              ref,
-              onNodeContextMenu,
-              onPaneClick,
-              nodePropertyData,
-            }}
+          <div
+            className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}
           >
-            <FabricsSelector
-              fabric={selectedFabric}
-              nodes={nodes}
-              edges={edges}
-              setEdges={setEdges}
-              setNodes={setNodes}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onInit={setreactflowinstance}
-            >
-              {({
-                setToggleReactflow,
-                uniqueNames,
-                changeProperty,
-                updatedNodeConfig,
-              }) => (
-                <>
-                  <SideBar />
-                  <NodeGallery
-                    color={colors[selectedFabric]?.light}
-                    showFabricSideBar={showFabricSideBar}
-                    handleSidebarToggle={handleSidebarToggle}
-                  />
-                  <MiniMap
-                    position="bottom-right"
-                    style={{ bottom: "8%" }}
-                    maskColor="transparent"
-                    // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                    className="xl:h-[22%] xl:w-[15%] rounded-lg border border-slate-300  dark:border-[#21212126]/15 dark:bg-[#161616]"
-                  />
-                  <CanvasPanel />
+            <div className="flex h-[100%] w-[100%]">
+              <FabricsContexts.Provider
+                value={{
+                  selectedFabric,
+                  handleTabChange,
+                  ref,
+                  onNodeContextMenu,
+                  onPaneClick,
+                  nodePropertyData,
+                }}
+              >
+                <FabricsSelector
+                  fabric={selectedFabric}
+                  nodes={nodes}
+                  edges={edges}
+                  setEdges={setEdges}
+                  setNodes={setNodes}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
+                  onInit={setreactflowinstance}
+                >
+                  {({
+                    setToggleReactflow,
+                    uniqueNames,
+                    changeProperty,
+                    updatedNodeConfig,
+                    undo,
+                    redo,
+                    canUndo,
+                    canRedo,
+                  }) => (
+                    <>
+                      <SideBar />
+                      <NodeGallery
+                        color={colors[selectedFabric]?.light}
+                        showFabricSideBar={showFabricSideBar}
+                        handleSidebarToggle={handleSidebarToggle}
+                      />
+                      <MiniMap
+                        position="bottom-right"
+                        style={{ bottom: "8%" }}
+                        maskColor="transparent"
+                        // maskStrokeColor="rgba(22, 22, 22, 0.6)"
+                        className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                      />
+                      <CanvasPanel
+                        canRedo={canRedo}
+                        canUndo={canUndo}
+                        redo={redo}
+                        undo={undo}
+                      />
 
-                  {/* <NodeInfoSidebar
+                      {/* <NodeInfoSidebar
                     upIdKey={"FRK"}
                     setToggleReactflow={setToggleReactflow}
                     customCodeKey={"gg"}
@@ -316,53 +322,43 @@ export default function Layout({ client }) {
                     changeProperty={changeProperty}
                   /> */}
 
-                  {/* <MiniMap /> */}
-                  {menu && (
-                    <ContextMenuSelector
-                      onEdit={(id) => {
-                        setNodePropertyData(getNode(id));
-                        setShowNodeProperty(!showNodeProperty);
-                      }}
-                      fabric={selectedFabric}
-                      onClick={onPaneClick}
-                      {...menu}
-                    />
+                      {/* <MiniMap /> */}
+                      {menu && (
+                        <ContextMenuSelector
+                          onEdit={(id) => {
+                            setNodePropertyData(getNode(id));
+                            setShowNodeProperty(!showNodeProperty);
+                          }}
+                          fabric={selectedFabric}
+                          onClick={onPaneClick}
+                          {...menu}
+                        />
+                      )}
+                      <Background variant="dots" gap={12} size={1} />
+                    </>
                   )}
-                  <Background variant="dots" gap={12} size={1} />
-                </>
-              )}
-            </FabricsSelector>
-   
-       
+                </FabricsSelector>
+              </FabricsContexts.Provider>
+              <div className="h-[100%]">
+                <RenderJson
+                  showNodeProperty={showNodeProperty}
+                  setShowNodeProperty={setShowNodeProperty}
+                  sideBarData={getNode(nodePropertyData?.id)}
+                  currentDrawing={selectedFabric}
+                  upIdKey={"FRK"}
+                  setToggleReactflow={setToggleReactflow}
+                  customCodeKey={"gg"}
+                  updatedNodeConfig={updatedNodeConfig}
+                  // uniqueNames={uniqueNames}
+                  // changeProperty={changeProperty}
+                />
+              </div>
 
-       
-    
-          </FabricsContexts.Provider>
-          <div className="h-[100%]">
-
-          <RenderJson
-
-            showNodeProperty={showNodeProperty}
-            setShowNodeProperty={setShowNodeProperty}
-            sideBarData={getNode(nodePropertyData?.id)}
-            currentDrawing={selectedFabric}
-            upIdKey={"FRK"}
-            setToggleReactflow={setToggleReactflow}
-            customCodeKey={"gg"}
-            updatedNodeConfig={updatedNodeConfig}
-            // uniqueNames={uniqueNames}
-            // changeProperty={changeProperty}
-          />
+              {/* <RenderJson /> */}
+            </div>
           </div>
-
-          {/* <RenderJson /> */}
-        </div>
-        
-       
-      </div>
-        
         </>
-      ):  toggleReactflow.rule && !toggleReactflow.mapper ? (
+      ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
         <Gorule
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
@@ -386,10 +382,7 @@ export default function Layout({ client }) {
         />
       ) : (
         <>nothing</>
-      )
-      }
-
-   
+      )}
     </div>
   );
 }

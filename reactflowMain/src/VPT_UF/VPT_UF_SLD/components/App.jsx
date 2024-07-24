@@ -263,11 +263,11 @@ const AppUF = ({
       if (
         e.message.includes(
           "ResizeObserver loop completed with undelivered notifications" ||
-            "ResizeObserver loop limit exceeded"
+            "ResizeObserver loop limit exceeded",
         )
       ) {
         const resizeObserverErr = document.getElementById(
-          "webpack-dev-server-client-overlay"
+          "webpack-dev-server-client-overlay",
         );
         if (resizeObserverErr) {
           resizeObserverErr.style.display = "none";
@@ -328,7 +328,7 @@ const AppUF = ({
     (changes) => {
       setNodes((nodes) => customApplyNodeChanges(changes, nodes));
     },
-    [setNodes, customApplyNodeChanges]
+    [setNodes, customApplyNodeChanges],
   );
 
   /**
@@ -439,7 +439,7 @@ const AppUF = ({
           width: 40,
           height: 40,
         },
-        groupNode
+        groupNode,
       ) ?? { x: 0, y: 0 };
       newNode.parentNode = groupNode?.id;
 
@@ -467,7 +467,7 @@ const AppUF = ({
   const onNodeDragStop = useCallback(
     (_, node) => {
       const intersections = getIntersectingNodes(node).filter(
-        (n) => n.type === "group"
+        (n) => n.type === "group",
       );
       const groupNode = intersections[0];
       // when there is an intersection on drag stop, we want to attach the node to its new parent
@@ -512,7 +512,7 @@ const AppUF = ({
         setNodes(nextNodes);
       }
     },
-    [getIntersectingNodes, setNodes, store]
+    [getIntersectingNodes, setNodes, store],
   );
 
   /**
@@ -525,7 +525,7 @@ const AppUF = ({
   const onNodeDrag = useCallback(
     (_, node) => {
       const intersections = getIntersectingNodes(node).filter(
-        (n) => n.type === "group"
+        (n) => n.type === "group",
       );
       const groupClassName =
         intersections.length && node.parentNode !== intersections[0]?.id
@@ -562,7 +562,7 @@ const AppUF = ({
         );
       });
     },
-    [getIntersectingNodes, setNodes]
+    [getIntersectingNodes, setNodes],
   );
 
   /**
@@ -589,7 +589,7 @@ const AppUF = ({
                   type: MarkerType.ArrowClosed,
                 },
               },
-              eds
+              eds,
             );
           } else {
             return addEdge(eds);
@@ -598,7 +598,7 @@ const AppUF = ({
       }
       takeSnapshot();
     },
-    [setEdges, nodes, takeSnapshot]
+    [setEdges, nodes, takeSnapshot],
   );
 
   /**
@@ -613,7 +613,7 @@ const AppUF = ({
       takeSnapshot();
       setEdges((els) => updateEdge(oldEdge, newConnection, els));
     },
-    [takeSnapshot]
+    [takeSnapshot],
   );
 
   const connectionLineStyle = {
@@ -635,7 +635,7 @@ const AppUF = ({
         "torus",
         Array.from(senddomain)[0],
         "UF",
-        Array.from(sendartifact)[0]
+        Array.from(sendartifact)[0],
       );
 
       let pushData = {
@@ -808,7 +808,7 @@ const AppUF = ({
             }
             return node;
           }
-        })
+        }),
       );
 
       setEdges((edges) =>
@@ -816,11 +816,11 @@ const AppUF = ({
           if (edge.source !== id && edge.target !== id) {
             return edge;
           }
-        })
+        }),
       );
       setMenu(null);
     },
-    [nodes, nodeConfig, takeSnapshot]
+    [nodes, nodeConfig, takeSnapshot],
   );
 
   /**
@@ -867,7 +867,7 @@ const AppUF = ({
         console.error(error);
       }
     },
-    [nodes, edges, nodeConfig, getCases]
+    [nodes, edges, nodeConfig, getCases],
   );
 
   return (
@@ -994,9 +994,13 @@ const AppUF = ({
                   ? children({
                       setToggleReactflow,
                       uniqueNames,
-                      changeProperty:updatenodeDetails,
+                      changeProperty: updatenodeDetails,
                       updatedNodeConfig,
                       sideBarData: nodeData,
+                      undo,
+                      redo,
+                      canUndo,
+                      canRedo,
                     })
                   : children)}
               {/* {menu && (

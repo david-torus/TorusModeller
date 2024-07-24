@@ -13,10 +13,10 @@ import {
 } from "./SVG_Application";
 import useUndoRedo from "./commonComponents/react-flow-pro/useUndoRedo";
 
-export default function CanvasPanel() {
+export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
   const { zoomIn, zoomOut, fitView, getZoom, zoomTo } = useReactFlow();
   const { zoom } = useViewport();
-  const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+  // const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
   const zoomPercentage = (zoom * 100).toFixed(2);
 
   const handleZoom = (type) => {
