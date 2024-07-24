@@ -36,7 +36,7 @@ export default function TorusTab({
           gap: "0.5rem",
         }}
       >
-        {tabs.map((tab, index) => (
+        {tabs &&tabs.map((tab, index) => (
           <Tab
             className={merger(defaultTabsClassNames.tab, classNames?.tab)}
             key={ tab.id + index}

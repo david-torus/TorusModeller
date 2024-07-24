@@ -606,6 +606,10 @@ export default function NodeInfoSidebar({
     }
   };
 
+
+
+
+  
   const handleDebug = async () => {
     try {
       if (upIdKey) {
