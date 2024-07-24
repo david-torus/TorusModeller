@@ -11,9 +11,12 @@ import {
   ZoomIn,
   ZoomOut,
 } from "./SVG_Application";
+import useUndoRedo from "./commonComponents/react-flow-pro/useUndoRedo";
 
 export default function CanvasPanel() {
   const { zoomIn, zoomOut, fitView, getZoom, zoomTo } = useReactFlow();
+  const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
+  const zoomPercentage = (zoom * 100).toFixed(2);
 
   const handleZoom = (type) => {
     if (type === "In") {
@@ -35,15 +38,23 @@ export default function CanvasPanel() {
             key={"undo"}
             buttonClassName={"w-1/2"}
             fontStyle={"flex items-center justify-center"}
-            Children={<Undo className={"stroke-[#1C274C] dark:stroke-white"} />}
-            onPress={zoomTo}
+            Children={
+              <Undo
+                className={`stroke-[#1C274C] dark:stroke-white ${!canUndo ? "cursor-pointer" : "cursor-not-allowed"}`}
+              />
+            }
+            onPress={() => (!canUndo ? undo() : alert("cant undo"))}
           />
           <TorusButton
             key={"redo"}
             buttonClassName={"w-1/2"}
             fontStyle={"flex items-center justify-center"}
-            Children={<Redo className={"stroke-[#1C274C] dark:stroke-white"} />}
-            onPress={zoomTo}
+            Children={
+              <Redo
+                className={`stroke-[#1C274C] dark:stroke-white ${!canRedo ? "cursor-pointer" : "cursor-not-allowed"}`}
+              />
+            }
+            onPress={() => (!canRedo ? redo() : alert("cant redo"))}
           />
         </div>
         <div className="  h-full w-[55%] items-center  rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
@@ -57,7 +68,7 @@ export default function CanvasPanel() {
                   />
                 </div>
               }
-              onPress={fitView}
+              onPress={() => alert("full screen")}
             />
             <TorusButton
               key={"fitView"}
@@ -97,7 +108,7 @@ export default function CanvasPanel() {
                   <Help className={"stroke-[#1C274C] dark:stroke-white"} />
                 </div>
               }
-              onPress={() => handleZoom("Out")}
+              onPress={() => alert("help")}
             />
           </div>
         </div>
