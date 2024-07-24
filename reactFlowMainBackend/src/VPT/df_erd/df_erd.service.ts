@@ -333,9 +333,23 @@ export class DfErdService {
           if (artifacts.length == 7 && artifacts[4]) aritfact.add(artifacts[4]);
         }
       }
+      let response = [];
+
+      for (let artifact of Array.from(aritfact)) {
+        response.push({
+          artifact: artifact,
+          versionList: await this.getVersion(
+            tKey,
+            client,
+            fabrics,
+            project,
+            artifact,
+          ).then((res) => res.data),
+        });
+      }
 
       return {
-        data: Array.from(aritfact),
+        data: response,
         status: 200,
       };
     } catch (error) {
