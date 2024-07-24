@@ -299,7 +299,7 @@ export default function Layout({ client }) {
                     style={{ bottom: "8%" }}
                     maskColor="transparent"
                     // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                    className="h-[22%] w-[17%] rounded-lg border border-slate-300  dark:border-[#21212126]/15 dark:bg-[#161616]"
+                    className="xl:h-[22%] xl:w-[15%] rounded-lg border border-slate-300  dark:border-[#21212126]/15 dark:bg-[#161616]"
                   />
                   <CanvasPanel />
 

@@ -29,7 +29,7 @@ export default function CanvasPanel() {
       position="bottom-right"
       className="flex h-[6%] w-[25%] justify-end bg-transparent  "
     >
-      <div className="flex  h-full  w-[95%] items-center justify-between rounded-lg">
+      <div className="flex  h-full  w-[100%] items-center justify-between rounded-lg">
         <div className="flex h-full w-[25%]  items-center justify-center rounded-lg border border-slate-300 bg-white dark:border-[#21212126]/15 dark:bg-[#161616]">
           <TorusButton
             key={"undo"}
@@ -46,44 +46,60 @@ export default function CanvasPanel() {
             onPress={zoomTo}
           />
         </div>
-        <div className="grid  h-full w-[63%] grid-cols-6 items-center rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
-          <TorusButton
-            key={"FullScreen"}
-            Children={
-              <FullScreen className={"stroke-[#1C274C] dark:stroke-white"} />
-            }
-            onPress={fitView}
-          />
-          <TorusButton
-            key={"fitView"}
-            Children={
-              <Fitview className={"stroke-[#1C274C] dark:stroke-white"} />
-            }
-            onPress={fitView}
-          />
-          <TorusButton
-            key={"zoomOut"}
-            Children={
-              <ZoomOut className={"stroke-[#1C274C] dark:stroke-white"} />
-            }
-            onPress={() => handleZoom("Out")}
-          />
-          <span className="font-inter text-sm font-bold text-[#1C274C] dark:text-white">
-            100%
-          </span>
-          <TorusButton
-            key={"zoomIn"}
-            Children={
-              <ZoomIn className={"stroke-[#1C274C] dark:stroke-white"} />
-            }
-            onPress={() => handleZoom("In")}
-          />
+        <div className="  h-full w-[55%] items-center  rounded-lg  border border-slate-300  bg-white dark:border-[#21212126]/15 dark:bg-[#161616] ">
+          <div className="grid h-full w-full grid-cols-6 items-center justify-between gap-1">
+            <TorusButton
+              key={"FullScreen"}
+              Children={
+                <div className="flex items-center justify-center   p-1">
+                  <FullScreen
+                    className={"stroke-[#1C274C] dark:stroke-white"}
+                  />
+                </div>
+              }
+              onPress={fitView}
+            />
+            <TorusButton
+              key={"fitView"}
+              Children={
+                <div className="flex items-center justify-center   p-1">
+                  <Fitview className={"stroke-[#1C274C] dark:stroke-white"} />
+                </div>
+              }
+              onPress={fitView}
+            />
+            <TorusButton
+              key={"zoomOut"}
+              Children={
+                <div className="flex items-center justify-center   p-1">
+                  <ZoomOut className={"stroke-[#1C274C] dark:stroke-white"} />
+                </div>
+              }
+              onPress={() => handleZoom("Out")}
+            />
+            <span className="flex items-center justify-center   p-1 font-inter text-xs font-bold text-[#1C274C] dark:text-white">
+              100%
+            </span>
+            <TorusButton
+              key={"zoomIn"}
+              Children={
+                <div className="  flex items-center justify-center p-1">
+                  <ZoomIn className={"stroke-[#1C274C] dark:stroke-white"} />
+                </div>
+              }
+              onPress={() => handleZoom("In")}
+            />
 
-          <TorusButton
-            key={"help"}
-            Children={<Help className={"stroke-[#1C274C] dark:stroke-white"} />}
-            onPress={() => handleZoom("Out")}
-          />
+            <TorusButton
+              key={"help"}
+              Children={
+                <div className="  flex items-center justify-center p-1">
+                  <Help className={"stroke-[#1C274C] dark:stroke-white"} />
+                </div>
+              }
+              onPress={() => handleZoom("Out")}
+            />
+          </div>
         </div>
       </div>
     </Panel>
