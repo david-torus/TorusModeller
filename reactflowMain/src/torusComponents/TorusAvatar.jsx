@@ -1,13 +1,12 @@
 import { FaRegUser } from "react-icons/fa";
 
 export default function TorusAvatar({ color, src, borderColor, radius, size }) {
-
   const isArray = Array.isArray(src);
   const displaySrc = isArray ? src.slice(0, 4) : [src];
   const remainingCount = isArray ? src.length - 4 : 0;
 
   return (
-    <div className="flex items-center -space-x-3">
+    <div className="flex items-center  xl:-space-x-2 2xl:-space-x-3">
       {displaySrc.map((source, index) => (
         <div
           key={index}
@@ -30,7 +29,7 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
                 : size === "md"
                   ? "h-5 w-5"
                   : size === "lg"
-                    ? "h-8 w-8"
+                    ? "xs:h-[40px] xs:w-[40px]   xxs:h-[40px] xxs:w-[40px] h-8 w-8 sm:h-[40px] sm:w-[40px] md:h-[40px] md:w-[40px] lg:h-[40px] lg:w-[40px] xl:h-[30px] xl:w-[30px] 2xl:h-[35px] 2xl:w-[35px] "
                     : size === "full"
                       ? "h-full w-full"
                       : "h-5 w-5"
@@ -68,7 +67,7 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
       {remainingCount > 0 && (
         <div
           className={`
-            flex h-5 w-5
+            flex 
             items-center justify-center
             ${
               radius === "sm"
@@ -87,7 +86,7 @@ export default function TorusAvatar({ color, src, borderColor, radius, size }) {
                 : size === "md"
                   ? "h-5 w-5"
                   : size === "lg"
-                    ? "h-8 w-8"
+                    ? "h-8 w-8 xl:h-[30px] xl:w-[30px] 2xl:h-[35px] 2xl:w-[35px]"
                     : size === "full"
                       ? "h-full w-full"
                       : "h-5 w-5"
