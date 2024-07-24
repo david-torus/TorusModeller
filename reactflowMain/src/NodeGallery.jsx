@@ -85,22 +85,17 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "h-[95%] rounded-lg  border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12 xl:w-[14.0%]  3xl:w-[12%] 4xl:w-4/12"
-        : "flex h-[6%] w-[5%] items-center justify-center"
+        ? "h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12 xl:w-[14.0%]  3xl:w-[12%] 4xl:w-4/12"
+        : "hidden"
     }`}
     >
       <div
-        className={`h-full w-full  ${
-          showFabricSideBar &&
-          "flex items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]"
-        } `}
+        className={`flex h-full  w-full items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]`}
       >
         <div className="felx-col flex w-[100%] justify-between">
           <div className="flex w-[70%] items-center justify-start">
             <Header
-              className={`${
-                showFabricSideBar ? "opacity-100" : "hidden  opacity-0"
-              } 3xl:text-md font-inter  font-semibold tracking-normal transition-opacity  duration-1000 ease-in-out xl:text-sm 3xl:text-xl`}
+              className={`3xl:text-md font-inter  font-semibold tracking-normal transition-opacity  duration-1000 ease-in-out xl:text-sm 3xl:text-xl`}
             >
               Node Gallery
             </Header>
@@ -111,9 +106,7 @@ export default function NodeGallery({
             }`}
           >
             <TorusButton
-              buttonClassName={`flex justify-center items-center  ${!showFabricSideBar ? "border border-slate-300 border-l-transparent " : ""} ${
-                !showFabricSideBar ? "rotate-180 " : "rotate-0"
-              } transition-transform ease-in-out duration-300 w-[100%] bg-white dark:bg-[#161616] `}
+              buttonClassName={`flex justify-center items-center  border border-slate-300 border-l-transparent   transition-transform ease-in-out duration-300 w-[100%] bg-white dark:bg-[#161616] `}
               width={showFabricSideBar ? "sm" : "none"}
               onPress={handleSidebarToggle}
               Children={<Back />}
@@ -122,11 +115,7 @@ export default function NodeGallery({
         </div>
       </div>
       <div
-        className={` ${
-          showFabricSideBar
-            ? "h-[91.5%] w-[100%] opacity-100"
-            : "collapse opacity-0"
-        }  flex flex-col justify-between  transition-opacity duration-700 ease-in-out`}
+        className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
         <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[50%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           <Loop color={color} selectedFabric={selectedFabric} />

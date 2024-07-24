@@ -81,7 +81,10 @@ export default function Layout({ client }) {
 
   const handleTabChange = (fabric) => {
     console.log("clicked", fabric, recentClicked);
-    if (fabric == selectedFabric) return;
+    if (fabric == selectedFabric) {
+      setShowFabricSideBar(!showFabricSideBar);
+      return;
+    }
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
@@ -214,7 +217,7 @@ export default function Layout({ client }) {
     }
   };
 
-  console.log(nodes ,nodePropertyData, "nodePropertyData");
+  console.log(nodes, nodePropertyData, "nodePropertyData");
   console.log(showNodeProperty, "showNodeProperty");
   console.log(denormalizedata, "denormalizedata");
   // Close the context menu if it's open whenever the window is clicked.
@@ -294,51 +297,39 @@ export default function Layout({ client }) {
                   }) => (
                     <>
                       <SideBar />
-                      <NodeGallery
-                        color={colors[selectedFabric]?.light}
-                        showFabricSideBar={showFabricSideBar}
-                        handleSidebarToggle={handleSidebarToggle}
-                      />
-                      <MiniMap
-                        position="bottom-right"
-                        style={{ bottom: "8%" }}
-                        maskColor="transparent"
-                        // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                        className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                      />
-                      <CanvasPanel
-                        canRedo={canRedo}
-                        canUndo={canUndo}
-                        redo={redo}
-                        undo={undo}
-                      />
-
-                      {/* <NodeInfoSidebar
-                    upIdKey={"FRK"}
-                    setToggleReactflow={setToggleReactflow}
-                    customCodeKey={"gg"}
-                    updatedNodeConfig={updatedNodeConfig}
-                    currentDrawing={selectedFabric}
-                    visiblity={showNodeProperty}
-                    setVisiblity={() => setShowNodeProperty(!showNodeProperty)}
-                    sideBarData={getNode(nodePropertyData?.id)}
-                    uniqueNames={uniqueNames}
-                    changeProperty={changeProperty}
-                  /> */}
-
-                      {/* <MiniMap /> */}
-                      {menu && (
-                        <ContextMenuSelector
-                          onEdit={(id) => {
-                            setNodePropertyData(getNode(id));
-                            setShowNodeProperty(!showNodeProperty);
-                          }}
-                          fabric={selectedFabric}
-                          onClick={onPaneClick}
-                          {...menu}
-                        />
+                      {selectedFabric !== "Home" && selectedFabric !== "SF" && (
+                        <>
+                          <NodeGallery
+                            color={colors[selectedFabric]?.light}
+                            showFabricSideBar={showFabricSideBar}
+                            handleSidebarToggle={handleSidebarToggle}
+                          />
+                          <MiniMap
+                            position="bottom-right"
+                            style={{ bottom: "8%" }}
+                            maskColor="transparent"
+                            className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                          />
+                          <CanvasPanel
+                            canRedo={canRedo}
+                            canUndo={canUndo}
+                            redo={redo}
+                            undo={undo}
+                          />
+                          {menu && (
+                            <ContextMenuSelector
+                              onEdit={(id) => {
+                                setNodePropertyData(getNode(id));
+                                setShowNodeProperty(!showNodeProperty);
+                              }}
+                              fabric={selectedFabric}
+                              onClick={onPaneClick}
+                              {...menu}
+                            />
+                          )}
+                          <Background variant="dots" gap={12} size={1} />
+                        </>
                       )}
-                      <Background variant="dots" gap={12} size={1} />
                     </>
                   )}
                 </FabricsSelector>

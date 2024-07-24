@@ -31,23 +31,16 @@ export const FabricsSelector = memo(
       switch (selectedFabric) {
         case "Home":
           return (
-            <ReactFlow
-              nodeTypes={NODE_TYPES}
-              nodes={nodes}
-              edges={edges}
-              setEdges={setEdges}
-              setNodes={setNodes}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              children={children({
+            <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
+              Home Screen
+              {children({
                 setToggleReactflow: null,
                 uniqueNames: null,
                 changeProperty: null,
                 updatedNodeConfig: null,
                 sideBarData: null,
               })}
-              proOptions={proOptions}
-            />
+            </div>
           );
 
         case "DF":
@@ -92,17 +85,16 @@ export const FabricsSelector = memo(
           );
         case "SF":
           return (
-            <ReactFlow
-              nodeTypes={NODE_TYPES}
-              nodes={nodes}
-              edges={edges}
-              setEdges={setEdges}
-              setNodes={setNodes}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              children={children}
-              proOptions={proOptions}
-            />
+            <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
+              Not Implemented Yet
+              {children({
+                setToggleReactflow: null,
+                uniqueNames: null,
+                changeProperty: null,
+                updatedNodeConfig: null,
+                sideBarData: null,
+              })}
+            </div>
           );
         default:
           return "Not Selected";
@@ -110,5 +102,5 @@ export const FabricsSelector = memo(
     };
 
     return cycleFabric();
-  }
+  },
 );
