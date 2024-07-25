@@ -35,18 +35,19 @@ export const RenderData = ({
       {sideBarData &&
       currentModel &&
       currentModel !== "entities" &&
-      currentDrawing !== "SF" ? (
-        <Sidebar
-          className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
-          position="right"
-          visible={toggle}
-          onHide={() => {
-            setToggle(false);
-          }}
-          style={{ height: "100%", width: "30vw" }}
-        >
-          {handleRender(currentModel + ".pw", json)}
-        </Sidebar>
+      currentDrawing !== "SF" && toggle ? (
+         handleRender(currentModel + ".pw", json, sideBarData)
+        // <Sidebar
+        //   className={"bg-[#242424]" }
+        //   position="right"
+        //   visible={toggle}
+        //   onHide={() => {
+        //     setToggle(false);
+        //   }}
+        //   style={{ height: "100%", width: "30vw" }}
+        // >
+  
+        // </Sidebar>
       ) : currentDrawing === "DF" && currentModel === "entities" ? (
         <Dialog
           className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
@@ -63,17 +64,17 @@ export const RenderData = ({
           contentStyle={{ backgroundColor: darkMode ? "#242424" : "#fff" }}
         >
           <div
-            className="transition-all w-full delay-100 flex flex-col justify-center 
-          items-center gap-4 overflow-y-hidden h-full "
+            className="flex h-full w-full flex-col items-center justify-center 
+          gap-4 overflow-y-hidden transition-all delay-100 "
           >
             <div
-              className={` flex flex-row justify-around w-[315px] h-[40px] gap-[0px] text-base items-between rounded-md xl:py-[3px] py-[2px] ${darkMode ? "bg-[#363636]" : "bg-[#F1F3F9]"} `}
+              className={` items-between flex h-[40px] w-[315px] flex-row justify-around gap-[0px] rounded-md py-[2px] text-base xl:py-[3px] ${darkMode ? "bg-[#363636]" : "bg-[#F1F3F9]"} `}
             >
               <div
                 onClick={() => tabvisible(1)}
-                className={`flex flex-row gap-2 transition-all items-center text-center select-none  
-                 xl:px-[25px] xl:py-[3px] px-[21px] py-[4px]  xl:text-md text-sm
-                  text-slate-600 rounded-md  cursor-pointer text-${darkMode ? "white" : "black"} 
+                className={`xl:text-md flex cursor-pointer select-none flex-row items-center gap-2  
+                 rounded-md px-[21px] py-[4px] text-center  text-sm text-slate-600
+                  transition-all xl:px-[25px]  xl:py-[3px] text-${darkMode ? "white" : "black"} 
                  
                 ${tabopen === 1 && `border border-slate-500/50 font-bold `}`}
               >
@@ -82,17 +83,17 @@ export const RenderData = ({
               </div>
               <div
                 onClick={() => tabvisible(2)}
-                className={`flex flex-row xl:gap-2 transition-all gap-1 items-center text-center 
-                xl:text-md text-sm text-slate-600 select-none  
-                 xl:px-[28px] xl:py-[3px] px-[21px] py-[4px] 
-                  cursor-pointer rounded-md text-${darkMode ? "white" : "black"}
+                className={`xl:text-md flex cursor-pointer select-none flex-row items-center gap-1 
+                rounded-md px-[21px] py-[4px] text-center  
+                 text-sm text-slate-600 transition-all xl:gap-2 
+                  xl:px-[28px] xl:py-[3px] text-${darkMode ? "white" : "black"}
                   ${tabopen === 2 && `border border-slate-500/50  font-bold `} `}
               >
                 <VscSymbolMethod className="text-xl" />
                 Methods
               </div>
             </div>
-            <div className=" shadow-black/40 rounded-xl w-full h-[80%]">
+            <div className=" h-[80%] w-full rounded-xl shadow-black/40">
               <div
                 className={
                   " h-full w-full  " +

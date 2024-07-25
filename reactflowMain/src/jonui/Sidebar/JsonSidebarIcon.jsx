@@ -87,7 +87,7 @@ export const JsonSidebarIcon = memo(
 
     return (
       <>
-        <div className="max-w-full bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col p-4 gap-5">
+        <div className="max-w-full  bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col p-4 gap-5">
           {obj &&
             Object.keys(obj).map((ele, i) => {
               if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {

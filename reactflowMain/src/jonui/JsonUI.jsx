@@ -3,9 +3,25 @@ import FabricsSideBar from "../sidebars/fabricsSideBar/FabricsSideBar";
 import JsonSidebar from "./Sidebar/JsonSidebar";
 import _, { set } from "lodash";
 import { unflatten } from "flat";
+import {
+  CustomCode,
+  Documents,
+  ElementInfo,
+  Enities,
+  Enumeration,
+  Execution,
+  MapperIcon,
+  ProcessObject,
+  RulesIcon,
+  Security,
+  SourceIcon,
+  Validation,
+} from "../asset/SvgsApplication";
+import { NodeInfoSidebarTabs } from "../commonComponents/CommonSideBar/NodeInfoSidebarTabs";
+import { MdOutlineEventNote } from "react-icons/md";
+import NewNodeInfoSidebar from "./NewNodeInfoSidebar";
 
 const js = {
-
   orgGrp: [
     {
       grouplabel: "Organization Group1",
@@ -498,117 +514,381 @@ const js = {
     ],
 };
 
-const RenderObject = ({ obj, handlejs,OgJson }) => {
-  return <>{obj && <FabricsSideBar obj={obj} handlejs={handlejs} OgJson={OgJson} />}</>;
-};
-
-export const RenderJson = memo(() => {
-  const [dupJson, setDupJson] = useState(structuredClone(js));
-
-  const[convertedJson , setConvertedJson] = useState(null)
-
-  function convertJson(obj) {
-    const converted = {};
-    for (let key in obj) {
-      if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
-        converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
-      } else if (Array.isArray(obj[key])) {
-        converted[key.replace(/\//g, ".")] = obj[key];
-      } else {
-        converted[key.replace(/\//g, ".")] = obj[key];
-      }
-    }
-    console.log(converted, "ctct");
-  
-    return converted;
-  };
-
-
-
-
-
-
-
-function replaceKeys(obj) {
-  if (Array.isArray(obj)) {
-      return obj.map(item => replaceKeys(item));
-  } else if (typeof obj === 'object' && obj !== null) {
-      let newObj = {};
-      for (let key in obj) {
-          if (obj.hasOwnProperty(key)) {
-              let newKey = key.replace(/\//g, '.');
-              newObj[newKey] = replaceKeys(obj[key]);
-          }
-      }
-      return newObj;
-  } else {
-      return obj;
-  }
-}
-
-
-const OgJson = ()=>{
-  const jss = convertJson(dupJson);
-  const newjson = JSON.stringify(jss, null, 2);
-
-   let newjs = unflatten(jss);
-   console.log(newjs, "new");
-
-   setConvertedJson(newjs);
-
-}
-
-console.log(convertedJson, "convertedJson");
-
-  const handlejs = (e, i, key, type, jskey) => {
-    console.log(e, i, key, type, jskey, "rendertype");
-
-    if (type == "obj") {
-      setDupJson((prev) => {
-        return {
-          ...prev,
-          [i]: {
-            ...prev[i],
-            [key]: e,
-          },
-        };
-      });
-    }
-    if (type == "arr") {
-      if (i) {
-        const js = structuredClone(dupJson);
-        _.set(js, i, e);
-        setDupJson(js);
-        console.log(js, "arrjs");
-      }
-    }
-
-    if (type == "dropdown") {
-      if (i) {
-        const js = structuredClone(dupJson);
-        _.set(js, i, e);
-        setDupJson(js);
-        console.log(js, "arrjs");
-      }
-    }
-  };
-
-  console.log(dupJson, "renderjs");
-
+const RenderObject = ({
+  obj,
+  handlejs,
+  OgJson,
+  showNodeProperty,
+  sideBarData,
+  currentDrawing,
+  setShowNodeProperty,
+  setToggleReactflow,
+  nodeInfoTabs,
+  setDupJson,
+}) => {
   return (
     <>
-      {dupJson && Object.keys(dupJson).length > 0 && (
-        <>
-          <div className="   ">
-            {Object.keys(dupJson).length > 0 && (
-              <>
-              
-              <RenderObject obj={dupJson} handlejs={handlejs} OgJson={OgJson} />
-              </>
-            )}
-          </div>
-        </>
+      { (
+        <FabricsSideBar
+          obj={obj}
+          handlejs={handlejs}
+          OgJson={OgJson}
+          showNodeProperty={showNodeProperty}
+          sideBarData={sideBarData}
+          currentDrawing={currentDrawing}
+          setShowNodeProperty={setShowNodeProperty}
+          setToggleReactflow={setToggleReactflow}
+          nodeInfoTabs={nodeInfoTabs}
+          setDupJson={setDupJson}
+        />
       )}
     </>
   );
-});
+};
+
+export const nodeInfoTabs = {
+  PF: [
+    {
+      label: "Data",
+      icon: <SourceIcon />,
+      modelOpen: "data",
+    },
+    {
+      label: "Mapper",
+      icon: <MapperIcon />,
+      modelOpen: "mapper",
+    },
+    {
+      label: "Rule",
+      icon: <RulesIcon />,
+      modelOpen: "rule",
+    },
+    {
+      label: "CustomCode",
+      icon: <CustomCode />,
+      modelOpen: "customCode",
+    },
+    {
+      label: "Validation",
+      icon: <Validation />,
+      modelOpen: "validation",
+    },
+    {
+      label: "Security",
+      icon: <Security />,
+      modelOpen: "security",
+    },
+    {
+      label: "Execution",
+      icon: <Execution />,
+      modelOpen: "execution",
+    },
+    {
+      label: "Documents",
+      icon: <Documents />,
+      modelOpen: "data",
+    },
+  ],
+  UF: [
+    {
+      label: "ElementInfo",
+      icon: <ElementInfo />,
+      modelOpen: "elementInfo",
+    },
+    {
+      label: "Datasource",
+      icon: <SourceIcon />,
+      modelOpen: "config",
+    },
+    {
+      label: "Events",
+      icon: <MdOutlineEventNote />,
+      modelOpen: "events",
+    },
+
+    {
+      label: "CustomCode",
+      icon: <CustomCode />,
+      modelOpen: "customCode",
+    },
+    {
+      label: "Validation",
+      icon: <Validation />,
+      modelOpen: "validation",
+    },
+    {
+      label: "Security",
+      icon: <Security />,
+      modelOpen: "security",
+    },
+    {
+      label: "Execution",
+      icon: <Execution />,
+      modelOpen: "execution",
+    },
+    {
+      label: "Documents",
+      icon: <Documents />,
+      modelOpen: "documents",
+    },
+  ],
+  DF: [
+    {
+      label: "Entities",
+      icon: <Enities />,
+      modelOpen: "entities",
+    },
+    {
+      label: "DataSource",
+      icon: <SourceIcon />,
+      modelOpen: "config",
+    },
+    {
+      label: "Enum",
+      icon: <Enumeration />,
+      modelOpen: "mapper",
+    },
+    {
+      label: "ProcessObjects",
+      icon: <ProcessObject />,
+      modelOpen: "processObj",
+    },
+    {
+      label: "Validation",
+      icon: <Validation />,
+      modelOpen: "validation",
+    },
+    {
+      label: "Security",
+      icon: <Security />,
+      modelOpen: "security",
+    },
+    {
+      label: "Execution",
+      icon: <Execution />,
+      modelOpen: "execution",
+    },
+    {
+      label: "Documents",
+      icon: <Documents />,
+      modelOpen: "documents",
+    },
+  ],
+  SF: [
+    {
+      label: "PF",
+      icon: <Enities />,
+      modelOpen: "pf",
+    },
+    {
+      label: "DF",
+      icon: <SourceIcon />,
+      modelOpen: "df",
+    },
+    {
+      label: "UF",
+      icon: <Enumeration />,
+      modelOpen: "uf",
+    },
+    {
+      label: "Portel",
+      icon: <ProcessObject />,
+      modelOpen: "portel",
+    },
+  ],
+};
+
+export const RenderJson = memo(
+  ({
+    showNodeProperty,
+    sideBarData,
+    currentDrawing,
+    setShowNodeProperty,
+    setToggleReactflow,
+    json,
+    updatedNodeConfig,
+    nodedata
+  }) => {
+    const [dupJson, setDupJson] = useState(null);
+
+    const [convertedJson, setConvertedJson] = useState(null);
+
+    function convertJson(obj) {
+      const converted = {};
+      for (let key in obj) {
+        if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+          converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
+        } else if (Array.isArray(obj[key])) {
+          converted[key.replace(/\//g, ".")] = obj[key];
+        } else {
+          converted[key.replace(/\//g, ".")] = obj[key];
+        }
+      }
+      console.log(converted, "ctct");
+
+      return converted;
+    }
+
+    function replaceKeys(obj) {
+      if (Array.isArray(obj)) {
+        return obj.map((item) => replaceKeys(item));
+      } else if (typeof obj === "object" && obj !== null) {
+        let newObj = {};
+        for (let key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            let newKey = key.replace(/\//g, ".");
+            newObj[newKey] = replaceKeys(obj[key]);
+          }
+        }
+        return newObj;
+      } else {
+        return obj;
+      }
+    }
+
+    const OgJson = () => {
+      const jss = convertJson(dupJson);
+      const newjson = JSON.stringify(jss, null, 2);
+
+      let newjs = unflatten(jss);
+      console.log(newjs,nodedata, "new");
+    
+      setConvertedJson(newjs);
+      updatedNodeConfig(
+        nodedata?.id,
+        {
+          nodeId: nodedata?.id,
+          nodeName: nodedata?.data?.label,
+          nodeType: nodedata?.type,
+        },
+        {
+          ...newjs,
+        }
+      );
+
+    };
+
+
+    
+
+    const handlejs = (e, i, key, type, jskey) => {
+      console.log(e, i, key, type, jskey, "rendertype");
+
+      if (type == "obj") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [i]: {
+              ...prev[i],
+              [key]: e,
+            },
+          };
+        });
+      }
+      if (type == "arr") {
+        if (i) {
+          const js = structuredClone(dupJson);
+          _.set(js, i, e);
+          setDupJson(js);
+          console.log(js, "arrjs");
+        }
+      }
+
+      if (type == "dropdown") {
+        if (i) {
+          const js = structuredClone(dupJson);
+          _.set(js, i, e);
+          setDupJson(js);
+          console.log(js, "arrjs");
+        }
+      }
+    };
+
+
+    function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
+      const copy = JSON.parse(JSON.stringify(obj));
+      for (let key in copy) {
+        if (copy.hasOwnProperty(key)) {
+          let newKey = prefix ? `${prefix}/${key}` : key;
+          if (
+            typeof copy[key] === "object" &&
+            copy[key] !== null &&
+            !Array.isArray(copy[key])
+          ) {
+            if (
+              !(copy[key].hasOwnProperty("type") && copy[key].type === "dropdown")
+            ) {
+              if (copy[key] === originalObj) {
+                return result; // Return early if the object being processed is the same as the original object
+              }
+              result[newKey] = copy[key];
+              denormalizeJson(copy[key], newKey, result, originalObj);
+              delete copy[key];
+            }
+          } else if (Array.isArray(copy[key]) && typeof copy[key][0] === "object") {
+            result[newKey] = copy[key];
+            copy[key].forEach((item, index) => {
+              if (typeof item === "object" && item !== null) {
+                const nestedKey = `${newKey}/${index}`;
+                denormalizeJson(item, nestedKey, result, originalObj);
+              } else {
+                result[newKey][index] = item;
+              }
+            });
+            delete copy[key];
+          } else {
+            if (!prefix) {
+              result[copy["label"]] = copy;
+            }
+          }
+        }
+      }
+      return result;
+    }
+
+const haandledenormalize = () => {
+  if(json){
+    const denormalized = denormalizeJson(json);
+    console.log(denormalized, 'denormalized')
+    setDupJson(structuredClone(denormalized))
+  }
+}
+
+    useEffect(() => {
+      haandledenormalize()
+    }, [json]);
+
+
+    
+    console.log(convertedJson,nodedata, "convertedJson");
+    console.log(json, nodedata, "rrenderjs");
+
+    return (
+      <div
+        className="z-50"
+        // style={{ display: showNodeProperty ? "block" : "none" }}
+      >
+        {dupJson &&Object.keys(dupJson).length > 0 && (
+          <div className="">
+            { (
+              <>
+                <RenderObject
+                  obj={dupJson}
+                  handlejs={handlejs}
+                  OgJson={OgJson}
+                  showNodeProperty={showNodeProperty}
+                  sideBarData={sideBarData}
+                  currentDrawing={currentDrawing}
+                  setShowNodeProperty={setShowNodeProperty}
+                  setToggleReactflow={setToggleReactflow}
+                  nodeInfoTabs={nodeInfoTabs}
+                  setDupJson={setDupJson}
+                />
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  },
+);

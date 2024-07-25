@@ -12,7 +12,7 @@ import {
 } from "./SVG_Application";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusPopOver from "./commonComponents/torusComponents/TorusPopOver";
 import { BiZoomIn } from "react-icons/bi";
@@ -38,7 +38,7 @@ import {
 } from "./commonComponents/api/fabricsApi";
 
 import { toast } from "react-toastify";
-
+import { FiEdit2 } from "react-icons/fi";
 import {
   getDomainList,
   getVersionList,
@@ -46,6 +46,7 @@ import {
   getDefaultJson,
 } from "./commonComponents/api/DefaultsApi";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import { BsTrash3 } from "react-icons/bs";
 
 export default function Navbar({
   color,
@@ -76,7 +77,7 @@ export default function Navbar({
 
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
-  const [applicationList, setApplicationList] = useState([]);
+  const [projectList, setApplicationList] = useState([]);
   const [selectedApplictionName, setSelectedApplictionName] = useState(null);
 
   // const [selectededArtifacts, setSelectedArtifacts] = useState("");
@@ -103,7 +104,8 @@ export default function Navbar({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [openArtifactsModal, setOpenArtifactsModal] = useState(false);
   const [openProjectModal, setOpenProjectModal] = useState(false);
-
+  const [inputchange, setInputchange] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [selectedDeletingArtifactsItem, setSelectedDeletingArtifactsItem] =
     useState(null);
   const [selectedDeletingVersinItem, setSelectedDeletingVersionItem] =
@@ -296,7 +298,7 @@ export default function Navbar({
     try {
       let condicheck = true;
 
-      applicationList?.map((obj) => {
+      projectList?.map((obj) => {
         if (obj.trim().toLocaleLowerCase() === e.trim().toLocaleLowerCase()) {
           condicheck = false;
         }
@@ -370,11 +372,11 @@ export default function Navbar({
   const handleArtifactsChange = (e) => {
     try {
       setSelectedVerison(null);
-      if (Array.from(e)[0]) {
-        getVersion(Array.from(e)[0]);
-      } else {
-        setVersions([]);
-      }
+      // if (Array.from(e)[0]) {
+      //   getVersion(Array.from(e)[0]);
+      // } else {
+      //   setVersions([]);
+      // }
       sendDataToFabrics({});
       setSelectedArtifacts(e);
       setMainArtifacts && setMainArtifacts(Array.from(e)[0]);
@@ -519,7 +521,7 @@ export default function Navbar({
       });
     }
   };
-  console.log("applicationList", applicationList);
+  console.log("projectList", projectList);
 
   const handleIntialLoad = async (tKey, client, fabrics, applications) => {
     try {
@@ -611,7 +613,12 @@ export default function Navbar({
           setSelectedArtifacts(selectedArtifactss);
           setMainArtifacts &&
             setMainArtifacts(Array.from(selectedArtifactss)[0]);
-          setVersions(response.data);
+          handleIntialLoad(
+            tKey,
+            client,
+            fabrics,
+            Array.from(selectedApplictionNames)[0],
+          );
           setSelectedVerison(
             new Set([response.data[response.data.length - 1]]),
           );
@@ -977,8 +984,8 @@ export default function Navbar({
                       <IoCloseOutline />
                     </div>
                   </div>
-                  <div className="grid h-[95%] w-4/5 grid-cols-2 items-center justify-center gap-3 ">
-                    <TorusDropDown
+                  <div className=" flex h-[95%] w-full   items-center justify-center  ">
+                    {/* <TorusDropDown
                       title={
                         (selectedApplictionName &&
                           Array.from(selectedApplictionName)[0]) ||
@@ -992,8 +999,8 @@ export default function Navbar({
                       popOverProps={{ offset: 15 }}
                       selectionMode="single"
                       items={
-                        applicationList &&
-                        applicationList?.map((obj) => {
+                        projectList &&
+                        projectList?.map((obj) => {
                           return {
                             key: obj,
                             label: obj,
@@ -1007,7 +1014,26 @@ export default function Navbar({
                       radius={"xl"}
                       size={"lg"}
                       setSelected={handleApplicationName}
-                    />
+                    /> */}
+                    <div className=" flex h-full w-1/3 flex-col gap-1 border-r py-4">
+                      {projectList &&
+                        projectList?.map((project, index) => (
+                          <div
+                            onClick={() =>
+                              handleApplicationName(new Set([project]))
+                            }
+                            className="flex w-[100%] flex-row items-center gap-1"
+                          >
+                            <IoIosArrowForward
+                              size={15}
+                              className={`cursor-pointer p-[1px] text-black transition-all delay-75 duration-200 ease-in-out dark:text-white `}
+                            />
+                            <div className="w-full cursor-pointer text-xs font-semibold text-black">
+                              {project}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
                     {/* <TorusModularInput
                       isRequired={true}
                       isReadOnly={false}
@@ -1049,15 +1075,15 @@ export default function Navbar({
                         "Projects"
                       }
                       darkMode={darkMode}
-                      isDisabled={applicationList.length < 0 ? true : false}
+                      isDisabled={projectList.length < 0 ? true : false}
                       DropdownMenuClassName={
-                        applicationList.length > 6
+                        projectList.length > 6
                           ? "h-56 overflow-y-scroll"
                           : ""
                       }
                       items={
-                        applicationList &&
-                        applicationList?.map((obj) => {
+                        projectList &&
+                        projectList?.map((obj) => {
                           return {
                             key: obj,
                             label: obj,
@@ -1071,8 +1097,167 @@ export default function Navbar({
                         openmodal("project");
                       }}
                     /> */}
+                    <div className=" flex h-full w-2/3 flex-row items-center justify-center gap-1 px-1 py-1 ">
+                      {artifactsList && artifactsList.length > 0 ? (
+                        <>
+                          {artifactsList.map((obj, index) => {
+                            return (
+                              <>
+                                <div className="flex h-full w-[65%] flex-row p-2 ">
+                                  <>
+                                    {inputchange !== index ? (
+                                      <div
+                                        onClick={() =>
+                                          handleArtifactsChange(
+                                            new Set([obj?.artifact]),
+                                          )
+                                        }
+                                        className="flex h-[30px] w-full flex-row rounded-md bg-[#F4F5FA] dark:bg-[#0F0F0F]"
+                                      >
+                                        <div className="flex w-10/12 items-center justify-start p-2 text-sm ">
+                                          {obj?.artifact}
+                                        </div>
+                                        <div className="flex w-2/12 items-center justify-end gap-2 p-2">
+                                          <span
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              setInputchange(index)
+                                            }
+                                          >
+                                            <FiEdit2 color="black" size={13} />
+                                          </span>
+                                          <span
+                                            className="cursor-pointer"
+                                            onClick={() => setInputValue("")}
+                                          >
+                                            <BsTrash3 color="red" size={13} />
+                                          </span>
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <div className="w-full">
+                                        <Input
+                                          value={inputValue ?? obj}
+                                          placeholder="Enter text"
+                                          className={
+                                            "flex h-[30px] w-[100%] items-center justify-center rounded-md  bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                          }
+                                          onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                              setInputchange(null);
+                                            }
+                                          }}
+                                          onChange={(e) => {
+                                            setInputValue(e.target.value);
+                                          }}
+                                        />
+                                      </div>
+                                    )}
+                                  </>
+                                </div>
+                                <div className="h-full w-[25%] ">
+                                  <TorusDropDown
+                                    title={
+                                      (selectedVerison &&
+                                        Array.from(selectedVerison)[0]) ||
+                                      "Version"
+                                    }
+                                    selectionMode="single"
+                                    selected={selectedVerison}
+                                    setSelected={(e) => {
+                                      setSelectedArtifacts(
+                                        new Set([obj?.artifact]),
+                                      );
+                                      setSelectedVerison(e);
+                                    }}
+                                    // selectedKeys={selectedVersion}
+                                    // setSelectedKeys={setSelectedVerison}
+                                    items={
+                                      obj?.versionList &&
+                                      obj?.versionList?.map((item) => ({
+                                        label: item,
+                                        key: item,
+                                      }))
+                                    }
+                                    classNames={{
+                                      buttonClassName:
+                                        " rounded-lg w-[100%] text-xs h-[30px] font-medium mt-2 p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                                      popoverClassName: "w-[5%]",
+                                      listBoxClassName: "overflow-y-auto",
+                                      listBoxItemClassName:
+                                        "flex text-sm justify-between",
+                                    }}
+                                  />
+                                </div>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <div classNames="flex h-full w-full items-center justify-center">
+                          no artifacts
+                        </div>
+                      )}
+                    </div>
+                    {/* <div className="col-span-1 flex h-full flex-col gap-1 border-l px-2 py-3">
+                      {artifactsList &&
+                        artifactsList?.map((obj) => (
+                          <div
+                            onClick={() =>
+                              handleArtifactsChange(new Set([obj]))
+                            }
+                            className=" flex w-full flex-row items-center justify-center  "
+                          >
+                            <div className="w-[60%] text-xs  file:text-black">
+                              {obj}
+                            </div>
+                            <div className="w-[40%]">
+                              <ReusableDropDown
+                                key={"versionDropdown"}
+                                title={
+                                  (selectedVerison &&
+                                    Array.from(selectedVerison)[0]) ||
+                                  "Version"
+                                }
+                                darkMode={!darkMode}
+                                isDisabled={
+                                  selectededArtifacts &&
+                                  Array.from(selectededArtifacts)[0]
+                                    ? false
+                                    : true
+                                }
+                                DropdownMenuClassName={
+                                  versions && versions.length > 6
+                                    ? "h-30 overflow-y-scroll  "
+                                    : ""
+                                }
+                                items={
+                                  versions &&
+                                  versions?.map((obj) => {
+                                    return {
+                                      key: obj,
+                                      label: obj,
+                                    };
+                                  })
+                                }
+                                selectedKey={selectedVerison}
+                                handleSelectedKey={(key) => {
+                                  setSelectedVerison(key);
+                                  setMainVersion &&
+                                    setMainVersion(Array.from(key)[0]);
+                                }}
+                                handleDelete={(key) => {
+                                  setSelectedDeletingVersionItem(key);
 
-                    <ReusableDropDown
+                                  openmodal("version");
+                                }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                    </div> */}
+
+                    {/* <ReusableDropDown
                       key={"artifactsDropdown"}
                       title={
                         (selectededArtifacts &&
@@ -1140,11 +1325,20 @@ export default function Navbar({
 
                         openmodal("version");
                       }}
-                    />
+                    /> */}
                   </div>
                   <div className="flex w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
                     <div className="flex w-1/3 justify-start">
                       <TorusButton
+                        onClick={() => {
+                          saveProcessFlow(
+                            "create",
+                            selectedApplictionName,
+                            selectededArtifacts,
+                            selectedVerison,
+                            getDataFromFabrics(),
+                          );
+                        }}
                         buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
                         Children={"Make a copy"}
                       />

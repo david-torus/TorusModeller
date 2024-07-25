@@ -42,7 +42,7 @@ import CustomEdge from "./CustomEdge";
 import { getLatestVersion } from "../../../commonComponents/api/fabricsApi";
 import useUndoRedo from "../../../commonComponents/react-flow-pro/useUndoRedo";
 import { TfiControlShuffle } from "react-icons/tfi";
-import { FabricsContexts } from "../../../Layout";
+import { TorusModellerContext } from "../../../Layout";
 
 //Node types
 const NODE_TYPE = {
@@ -79,7 +79,7 @@ const AppPF = ({
   proOptions,
 }) => {
   const [defaults, setDefaults] = useState({});
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(FabricsContexts);
+  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 

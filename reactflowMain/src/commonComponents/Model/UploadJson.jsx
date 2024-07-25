@@ -21,8 +21,8 @@ export function Upload({ setFiles, id }) {
 
   return (
     <>
-      <label htmlFor={id} className="fileUploadLabel">
-        <MdDriveFolderUpload size={20} color={darkMode ? "white" : "black"} />
+      <label htmlFor={id} className="fileUploadLabel z-50">
+        <MdDriveFolderUpload size={20} color={"black"} />
       </label>
       <input
         style={{ display: "none" }}
