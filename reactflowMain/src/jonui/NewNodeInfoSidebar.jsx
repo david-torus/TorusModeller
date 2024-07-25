@@ -37,7 +37,6 @@ const NewNodeInfoSidebar = ({
   const [helperjson, setHelperjson] = useState({});
   const [tabopen, seTabopen] = useState(1);
 
-
   useEffect(() => {
     try {
       if (files) {
@@ -45,18 +44,12 @@ const NewNodeInfoSidebar = ({
           ...prev,
           [rendervalue]: JSON.parse(files),
         }));
+        setToggle(false)
       }
     } catch (error) {
       console.error(error);
     }
-  }, [files,
-
-    rendervalue,
-    sideBarData,
-  ]);
-
-
-
+  }, [files, rendervalue, sideBarData]);
 
   useEffect(() => {
     try {
@@ -92,23 +85,23 @@ const NewNodeInfoSidebar = ({
         ...prev,
         [currentModel]: value,
       }));
-    
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleRender = (propw, js, side) => {
-    console.log(js,side, js[currentModel],"handle ")
-    return(
-      <div className="h-[100%]">
-      
-      <RenderJson json = {js} nodedata={side}  updatedNodeConfig={updatedNodeConfig} />
+    console.log(js, side, js[currentModel], "handle ");
+    return (
+      <div className="h-full">
+        <RenderJson
+          json={js}
+          nodedata={side}
+          updatedNodeConfig={updatedNodeConfig}
+        />
       </div>
-    )
+    );
   };
-
-
 
   const handleOpenModal = async (flowType, isDockey = false, flow) => {
     console.log(flowType, isDockey, flow, "flow");
@@ -216,51 +209,51 @@ const NewNodeInfoSidebar = ({
   console.log(sideBarData, "sidebardatatabaasa");
 
   return (
-    <div className="flex flex-col top-0 mt-0 mb-0">
-      <div className="h-[10%]">
+    <div className="flex flex-col">
+      <div className="h-10 bg-[#FFFFFF]">
+        <NodeInfoSidebarTabs
+          nodeInfoTabs={nodeInfoTabs}
+          currentDrawing={currentDrawing}
+          activeTab={activeTab}
+          handleContextMenu={handleContextMenu}
+          setSendFabrics={setSendFabrics}
+          handleOpen={handleOpen}
+          handleOpenModal={handleOpenModal}
+          setToggleReactflow={setToggleReactflow}
+          setFiles={setFiles}
+          //   darkMode={darkMode}
+          contextMenuVisible={contextMenuVisible}
+          contextMenuPosition={contextMenuPosition}
+        />
 
-      <NodeInfoSidebarTabs
-        nodeInfoTabs={nodeInfoTabs}
-        currentDrawing={currentDrawing}
-        activeTab={activeTab}
-        handleContextMenu={handleContextMenu}
-        setSendFabrics={setSendFabrics}
-        handleOpen={handleOpen}
-        handleOpenModal={handleOpenModal}
-        setToggleReactflow={setToggleReactflow}
-        setFiles={setFiles}
-        //   darkMode={darkMode}
-        contextMenuVisible={contextMenuVisible}
-        contextMenuPosition={contextMenuPosition}
-      />
       </div>
-      <div className="bg-red-400 ">
-
-      <RenderData
-        sideBarData={sideBarData}
-        currentModel={currentModel}
-        currentDrawing={currentDrawing}
-        json={json}
-        setJson={setJson}
-        setToggle={setToggle}
-        toggle={toggle}
-        handleRender={handleRender}
-        tabvisible={tabvisible}
-        tabopen={tabopen}
-        // attributes={attributes}
-        // methods={methods}
-        // getNodeConfig={getNodeConfig}
-        sendFabrics={sendFabrics}
-        // tenant={tenant}
-        // group={group}
-        // application={application}
-        // selectedproperty={selectedproperty}
-        // darkMode={darkMode}
-        // updatedNodeConfig={updatedNodeConfig}
-        helperJson={helperjson}
-      />
+      
+     
+      <div className=" h-full bg-red-400 ">
+        <RenderData
+          sideBarData={sideBarData}
+          currentModel={currentModel}
+          currentDrawing={currentDrawing}
+          json={json}
+          setJson={setJson}
+          setToggle={setToggle}
+          toggle={toggle}
+          handleRender={handleRender}
+          tabvisible={tabvisible}
+          tabopen={tabopen}
+          // attributes={attributes}
+          // methods={methods}
+          // getNodeConfig={getNodeConfig}
+          sendFabrics={sendFabrics}
+          // tenant={tenant}
+          // group={group}
+          // application={application}
+          // selectedproperty={selectedproperty}
+          // darkMode={darkMode}
+          // updatedNodeConfig={updatedNodeConfig}
+          helperJson={helperjson}
+        />
       </div>
-
     </div>
   );
 };

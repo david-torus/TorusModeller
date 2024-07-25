@@ -168,6 +168,9 @@ export default function Layout({ client }) {
     }
   };
 
+  console.log(nodes, nodePropertyData, "nodePropertyData");
+  console.log(showNodeProperty, "showNodeProperty");
+  console.log(denormalizedata, "denormalizedata");
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -280,32 +283,36 @@ export default function Layout({ client }) {
                     </>
                   )}
                 </FabricsSelector>
-                <div className="h-[100%] ">
-                  <div className="sticky h-[7%]">
-                    {showNodeProperty && (
-                      <>
-                        <span
-                          className=" cursor-pointer"
-                          onClick={() => setShowNodeProperty(!showNodeProperty)}
-                        >
-                          x
-                        </span>
+            </TorusModellerContext.Provider>
 
-                        <NewNodeInfoSidebar
-                          showNodeProperty={showNodeProperty}
-                          sideBarData={nodePropertyData}
-                          updatedNodeConfig={updatedNodeConfig}
-                          currentDrawing={selectedFabric}
-                          setShowNodeProperty={setShowNodeProperty}
-                          nodeInfoTabs={nodeInfoTabs}
-                          setToggleReactflow={setToggleReactflow}
-                          setDenormalizedata={setDenormalizedata}
-                        />
-                      </>
-                    )}
-                  </div>
-                </div>
-              </TorusModellerContext.Provider>
+              <div className="h-full bg-[#FFFFFF] border ">
+                {showNodeProperty && (
+                  <>
+                    <>
+                      <div
+                        className=" w-[100%] flex justify-end top-0  cursor-pointer"
+                        onClick={() => setShowNodeProperty(!showNodeProperty)}
+                      >
+                        x
+                      </div>
+                    </>
+                    <>
+                      <NewNodeInfoSidebar
+                        showNodeProperty={showNodeProperty}
+                        sideBarData={nodePropertyData}
+                        updatedNodeConfig={updatedNodeConfig}
+                        currentDrawing={selectedFabric}
+                        setShowNodeProperty={setShowNodeProperty}
+                        nodeInfoTabs={nodeInfoTabs}
+                        setToggleReactflow={setToggleReactflow}
+                        setDenormalizedata={setDenormalizedata}
+                      />
+                    </>
+                  </>
+                )}
+              </div>
+
+              {/* <RenderJson /> */}
             </div>
           </div>
         </>

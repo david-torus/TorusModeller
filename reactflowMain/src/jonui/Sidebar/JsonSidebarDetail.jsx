@@ -367,13 +367,13 @@ export default function JsonSidebarDetail({
 
         <span className="mt-1 font-normal m-2 w-[100%] text-black dark:text-white">
           Label :
-          <span className="text-[#6600ff] dark:text-[#c4b707] m-2 font-poppins  ">
+          <span className="text-[#6600ff] dark:text-[#c4b707] m-2 font-poppins w-full  ">
             {label}
           </span>
         </span>
       </span>
       <div className="scrollbar-none  overflow-y-scroll">
-        {showObj && (
+        {(
           <div className="">
             {
               !Array.isArray(obj[showObj]) ? (
@@ -387,7 +387,7 @@ export default function JsonSidebarDetail({
                     return (
                       <p
                         style={{ display: ele === "label" ? "none" : "" }}
-                        className="bg-[#F4F5FA]  dark:bg-[#0F0F0F] rounded-lg p-2"
+                        className="bg-[#F4F5FA]  dark:bg-[#0F0F0F] rounded-lg "
                       >
                         <div className="w-[100%]">
                           <TorusInput
