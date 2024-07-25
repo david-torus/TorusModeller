@@ -91,8 +91,8 @@ export default function Navbar({
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectNameValidation, setNewProjectNameValidation] =
     useState(false);
-  const [projectCollectionName, setProjectCollectionName] = useState("");
-  const [artifactCollectionName, setArtifactCollectionName] = useState("");
+  const [projectCollectionName, setProjectCollectionName] = useState(null);
+  const [artifactCollectionName, setArtifactCollectionName] = useState(null);
   const [openDefaultTemplate, setOpenDefaultTemplate] = useState(false);
   const [selectedsource] = useState("torus");
   const [domainList, setDomainList] = useState([]);
@@ -978,14 +978,6 @@ export default function Navbar({
                             className={
                               "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300  bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
                             }
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                setInputchange(false);
-                              }
-                            }}
-                            onChange={(e) => {
-                              setInputValue(e.target.value);
-                            }}
                           />
                         </div>
                         <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
@@ -997,6 +989,8 @@ export default function Navbar({
                             className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] hover:border"
                             onClick={() => {
                               close();
+                              setProjectCollectionName(null);
+                              setArtifactCollectionName(null);
                             }}
                           >
                             <IoCloseOutline />
@@ -1111,6 +1105,7 @@ export default function Navbar({
                                     handleApplicationName(project);
                                     setSelectedProject(index);
                                     setProjectCollectionName(project);
+                                    setArtifactCollectionName(null);
                                   }}
                                   className={`${index == selectedProject ? "font-semibold text-black" : "font-normal text-black/35"} flex w-[100%] flex-row items-center gap-1`}
                                 >
