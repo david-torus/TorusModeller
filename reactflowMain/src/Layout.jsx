@@ -214,7 +214,7 @@ export default function Layout({ client }) {
     }
   };
 
-  console.log(nodes ,nodePropertyData, "nodePropertyData");
+  console.log(nodes, nodePropertyData, "nodePropertyData");
   console.log(showNodeProperty, "showNodeProperty");
   console.log(denormalizedata, "denormalizedata");
   // Close the context menu if it's open whenever the window is clicked.
@@ -343,17 +343,19 @@ export default function Layout({ client }) {
                   )}
                 </FabricsSelector>
               </FabricsContexts.Provider>
-              <div className="h-[100%] ">
-                <div className="sticky h-[7%]">
-                  {showNodeProperty && (
+
+              <div className="h-full bg-[#FFFFFF] border ">
+                {showNodeProperty && (
+                  <>
                     <>
-                      <span
-                        className="  top-0  cursor-pointer"
+                      <div
+                        className=" w-[100%] flex justify-end top-0  cursor-pointer"
                         onClick={() => setShowNodeProperty(!showNodeProperty)}
                       >
                         x
-                      </span>
-
+                      </div>
+                    </>
+                    <>
                       <NewNodeInfoSidebar
                         showNodeProperty={showNodeProperty}
                         sideBarData={nodePropertyData}
@@ -365,24 +367,8 @@ export default function Layout({ client }) {
                         setDenormalizedata={setDenormalizedata}
                       />
                     </>
-                  )}
-                </div>
-                <div className="h-[93%]">
-                  {/* <RenderJson
-                    showNodeProperty={showNodeProperty}
-                    setShowNodeProperty={setShowNodeProperty}
-                    sideBarData={nodePropertyData}
-                    currentDrawing={selectedFabric}
-                    upIdKey={"FRK"}
-                    setToggleReactflow={setToggleReactflow}
-                    customCodeKey={"gg"}
-                    updatedNodeConfig={updatedNodeConfig}
-                    setNodes = {setNodes}
-                    setNodePropertyData={setNodePropertyData}
-                    // uniqueNames={uniqueNames}
-                    // changeProperty={changeProperty}
-                  /> */}
-                </div>
+                  </>
+                )}
               </div>
 
               {/* <RenderJson /> */}

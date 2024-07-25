@@ -25,7 +25,7 @@ export const NodeInfoSidebarTabs = ({
         variant="underlined"
         classNames={{
           tabList:
-            "gap-1 w-[280px]  rounded-none border  border-divider bg-transparent",
+            "gap-1 w-[280px]  rounded-none bg-transparent",
           cursor: "w-full bg-transparent",
           base: "w-full",
           tab: "max-w-fit px-0 h-8",
