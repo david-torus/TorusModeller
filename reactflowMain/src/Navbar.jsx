@@ -63,12 +63,14 @@ export default function Navbar({
   setUpIdKey = null,
   setToggleReactflow,
   getDataFromFabrics,
+  selectededArtifacts,
+  setSelectedArtifacts,
+  selectedVerison,
+  setSelectedVerison,
+  selectedApplication,
+  setSelectedApplictionName,
   setFabricsKey = null,
 }) {
-  const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
-
-  const [selectedVersion, setSelectedVersion] = useState(new Set());
-
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
   const [openSaveAsArtifacts, setOpenSaveAsArtifacts] = useState(false);
@@ -77,13 +79,11 @@ export default function Navbar({
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
   const [projectList, setApplicationList] = useState([]);
-  const [selectedApplictionName, setSelectedApplictionName] = useState(null);
 
   // const [selectededArtifacts, setSelectedArtifacts] = useState("");
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [versions, setVersions] = useState([]);
-  const [selectedVerison, setSelectedVerison] = useState("");
 
   const [newArtifactsName, setNewArtifactsName] = useState("");
   const [newArtifactsNameValidation, setNewArtifactsNameValidation] =
@@ -347,11 +347,11 @@ export default function Navbar({
 
   const getVersion = async (artifact) => {
     try {
-      if (Array.from(artifact)[0]) {
+      if (artifact) {
         const version = await versionList(
           tKey,
           client,
-          Array.from(selectedApplictionName)[0],
+          selectedApplication,
           artifact,
           fabrics,
         );
@@ -380,7 +380,7 @@ export default function Navbar({
       // }
       sendDataToFabrics({});
       setSelectedArtifacts(e);
-      setMainArtifacts && setMainArtifacts(Array.from(e)[0]);
+      setMainArtifacts && setMainArtifacts(e);
     } catch (err) {
       toast.error("Cannot get artifacts details", {
         position: "bottom-right",
@@ -464,11 +464,9 @@ export default function Navbar({
       setSelectedApplictionName(e);
 
       if (e) {
-        handleIntialLoad(tKey, client, fabrics, Array.from(e)[0]).catch(
-          (err) => {
-            throw err;
-          },
-        );
+        handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
+          throw err;
+        });
       }
     } catch (err) {
       toast.error("Cannot set selected Application", {
@@ -588,15 +586,15 @@ export default function Navbar({
       const payload = {
         flow: { ...erDatas },
 
-        applicationName: Array.from(selectedApplictionNames)[0],
+        applicationName: selectedApplictionNames,
 
-        artifact: Array.from(selectedArtifactss)[0],
+        artifact: selectedArtifactss,
       };
 
       const response = await saveWorkFlow(
         payload,
         type,
-        Array.from(selectedVerisonss)[0],
+        selectedVerisonss,
         tKey,
         client,
         fabrics,
@@ -607,22 +605,14 @@ export default function Navbar({
             tKey,
             client,
             fabrics,
-            Array.from(selectedApplictionNames)[0] || selectedApplication,
+            selectedApplictionNames || selectedApplication,
           );
           setNewArtifactsName("");
           setSelectedApplictionName(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
-          setMainArtifacts &&
-            setMainArtifacts(Array.from(selectedArtifactss)[0]);
-          handleIntialLoad(
-            tKey,
-            client,
-            fabrics,
-            Array.from(selectedApplictionNames)[0],
-          );
-          setSelectedVerison(
-            new Set([response.data[response.data.length - 1]]),
-          );
+          setMainArtifacts && setMainArtifacts(selectedArtifactss);
+          handleIntialLoad(tKey, client, fabrics, selectedApplictionNames);
+          setSelectedVerison(response.data[response.data.length - 1]);
           setMainVersion &&
             setMainVersion(response.data[response.data.length - 1]);
           if (fabrics) {
@@ -657,11 +647,11 @@ export default function Navbar({
   const getProcessFlowApi = useCallback(
     async (event) => {
       try {
-        if (Array.from(selectedVerison)[0]) {
+        if (selectedVerison) {
           const response = await getJson(
-            Array.from(selectedApplictionName)[0],
-            Array.from(selectedVerison)[0],
-            Array.from(selectededArtifacts)[0],
+            selectedApplication,
+            selectedVerison,
+            selectededArtifacts,
             tKey,
             client,
             fabrics,
@@ -794,7 +784,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${Array.from(selectededArtifacts)[0]}&version=${e}`,
+        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${selectededArtifacts}&version=${e}`,
         {
           method: "DELETE",
         },
@@ -881,7 +871,7 @@ export default function Navbar({
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tKey}:${client}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`,
+          `${tKey}:${client}:${selectedApplication}:${fabrics}:${artifact}:${version}:`,
         );
       getProcessFlowApi(selectedVerison).catch((err) => {
         throw err;
@@ -892,7 +882,7 @@ export default function Navbar({
   }, [
     selectedVerison,
     selectededArtifacts,
-    selectedApplictionName,
+    selectedApplication,
     fabrics,
     client,
     setFabricsKey,
@@ -959,12 +949,11 @@ export default function Navbar({
               parentHeading={
                 <div className="flex w-[100%] flex-row items-center justify-center gap-2">
                   <div className="text-sm font-semibold text-black dark:text-white">
-                    {(selectededArtifacts &&
-                      Array.from(selectededArtifacts)[0]) ||
+                    {(selectededArtifacts && selectededArtifacts) ||
                       "Select Artifacts"}
                   </div>
                   <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
-                    {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+                    {(selectedVerison && selectedVerison) || "*"}
                   </div>
                   <div>
                     <IoIosArrowDown className="text-black dark:text-white" />
@@ -1113,7 +1102,7 @@ export default function Navbar({
                               projectList?.map((project, index) => (
                                 <div
                                   onClick={() => {
-                                    handleApplicationName(new Set([project]));
+                                    handleApplicationName(project);
                                     setSelectedProject(index);
                                     setProjectCollectionName(project);
                                     setArtifactCollectionName(null);
@@ -1230,7 +1219,7 @@ export default function Navbar({
                                             <div
                                               onClick={() =>
                                                 handleArtifactsChange(
-                                                  new Set([obj?.artifact]),
+                                                  obj?.artifact,
                                                 )
                                               }
                                               className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
@@ -1286,15 +1275,13 @@ export default function Navbar({
                                         <TorusDropDown
                                           title={
                                             (selectedVerison &&
-                                              Array.from(selectedVerison)[0]) ||
+                                              selectedVerison) ||
                                             "Version"
                                           }
                                           selectionMode="single"
-                                          selected={selectedVerison}
+                                          selected={new Set([selectedVerison])}
                                           setSelected={(e) => {
-                                            setSelectedArtifacts(
-                                              new Set([obj?.artifact]),
-                                            );
+                                            setSelectedArtifacts(obj?.artifact);
                                             setSelectedVerison(e);
                                             setArtifactCollectionName(
                                               obj?.artifact,
