@@ -19,6 +19,7 @@ import TorusAvatar from "./torusComponents/TorusAvatar";
 import { BiMoon, BiSun } from "react-icons/bi";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
 import { TorusModellerContext } from "./Layout";
+import { MdOutlineEmojiEvents } from "react-icons/md";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -90,7 +91,7 @@ export default function SideBar() {
           classNames={{
             tabs: "cursor-pointer ",
             tabList: "w-full h-[100%]  flex justify-center items-center",
-            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${colors[selectedFabric]?.dark}]`,
+            tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${colors[selectedFabric === "events" ? "UF" : selectedFabric]?.dark}]`,
           }}
           tabs={[
             {
@@ -110,11 +111,15 @@ export default function SideBar() {
               ),
             },
             {
-              id: "UF",
+              id: selectedFabric === "events" ? "events" : "UF",
               content: ({ isSelected }) => (
                 <Wire
                   strokeColor={
-                    !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                    !isSelected
+                      ? "#A59E92"
+                      : colors[
+                          selectedFabric === "events" ? "UF" : selectedFabric
+                        ]?.dark
                   }
                 />
               ),

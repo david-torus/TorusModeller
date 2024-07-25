@@ -5,6 +5,7 @@ import TorusButton from "./torusComponents/TorusButton";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
+import { EventScreen } from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
 
 export default function NodeGallery({
   color,
@@ -99,13 +100,15 @@ export default function NodeGallery({
 }
 
 const Loop = ({ color, selectedFabric }) => {
+  console.log(selectedFabric, "?NodeGallery");
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {EnvSideData[selectedFabric] &&
+      {selectedFabric !== "events " ? (
+        EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
             key={index}
@@ -126,7 +129,13 @@ const Loop = ({ color, selectedFabric }) => {
               {item.label}
             </span>
           </div>
-        ))}
+        ))
+      ) : (
+        <>
+          hello
+          <EventScreen />
+        </>
+      )}
     </>
   );
 };

@@ -29,7 +29,7 @@ export default function EventNavbar({
 }) {
   const { eventsNavBarData, setSelectedControlEvents } =
     useContext(TorusModellerContext);
-    console.log("eventsNavBarData", eventsNavBarData);
+  console.log("eventsNavBarData", eventsNavBarData);
   const [open, setOpen] = useState(false);
 
   const [versions, setVersions] = useState([]);
@@ -322,13 +322,13 @@ export default function EventNavbar({
 
       setSelectedComponentName(selectedComponentData?.component?.nodeName);
 
-      setData({
-        nodes: [],
+      // setData({
+      //   nodes: [],
 
-        nodeEdges: [],
+      //   nodeEdges: [],
 
-        nodeProperty: {},
-      });
+      //   nodeProperty: {},
+      // });
 
       setSelectedControl(null);
 
@@ -354,13 +354,13 @@ export default function EventNavbar({
         (control) => control.nodeId === Array.from(e)[0],
       );
 
-      setData({
-        nodes: [],
+      // setData({
+      //   nodes: [],
 
-        nodeEdges: [],
+      //   nodeEdges: [],
 
-        nodeProperty: {},
-      });
+      //   nodeProperty: {},
+      // });
 
       setSelectedControlName(selectedControlData?.nodeName);
 
@@ -399,10 +399,6 @@ export default function EventNavbar({
   return (
     <div
       style={{
-        top: 0,
-
-        position: "fixed",
-
         transitionDuration: "0.4s",
 
         zIndex: 100,
@@ -457,13 +453,13 @@ export default function EventNavbar({
               }`}
             >
               <ReusableDropDown
-                darkMode={darkMode}
+                darkMode={!darkMode}
                 key={"EcomponentDropdown"}
                 title={
                   selectedComponentName ? selectedComponentName : "Component"
                 }
                 buttonClassName={
-                  darkMode
+                  !darkMode
                     ? " flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-300  bg-[#323232] border rounded-md hover:animate-pulse hover:bg-[#424242] border-gray-600 text-white/70"
                     : "flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-600  bg-[#ffffff] border rounded-md hover:animate-pulse hover:bg-[#c7c6c6] border-gray-300 text-black/70"
                 }
@@ -473,12 +469,12 @@ export default function EventNavbar({
               />
 
               <ReusableDropDown
-                darkMode={darkMode}
+                darkMode={!darkMode}
                 key={"EcontrolDropdown"}
                 isDisabled={selectedComponentName ? false : true}
                 title={selectedControlName ? selectedControlName : "Control"}
                 buttonClassName={
-                  darkMode
+                  !darkMode
                     ? " flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-300  bg-[#323232] border rounded-md hover:animate-pulse hover:bg-[#424242] border-gray-600 text-white/70"
                     : "flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-600  bg-[#ffffff] border rounded-md hover:animate-pulse hover:bg-[#c7c6c6] border-gray-300 text-black/70"
                 }
@@ -516,7 +512,7 @@ export default function EventNavbar({
             </div>
           </div>
 
-          <div className="flex w-[65%] flex-row items-center pl-[25%]">
+          {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
             <Button
               size="xs"
               isIconOnly
@@ -720,7 +716,7 @@ export default function EventNavbar({
                 />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </motion.div>
     </div>

@@ -125,7 +125,7 @@ export default function Navbar({
     try {
       const res = await saveProcessFlow(
         "create",
-        selectedApplictionName,
+        selectedApplication,
         new Set([newArtifactsName.trim().toLocaleLowerCase()]),
         new Set("v1"),
         erDatas,
@@ -463,11 +463,9 @@ export default function Navbar({
       setSelectedVerison([]);
       setSelectedAppliction(e);
 
-      if (e) {
-        handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
-          throw err;
-        });
-      }
+      handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
+        throw err;
+      });
     } catch (err) {
       toast.error("Cannot set selected Application", {
         position: "bottom-right",
@@ -488,7 +486,7 @@ export default function Navbar({
           );
 
           if (response && response?.status === 200) {
-            setApplicationArtifactsName(response.data);
+            setSelectedAppliction(response.data);
           }
         } catch (error) {
           toast.error("Cannot get artifacts details", {
@@ -680,7 +678,7 @@ export default function Navbar({
     [
       fabrics,
       client,
-      selectedApplictionName,
+      selectedApplication,
       selectedArtifacts,
       selectedVerison,
       sendDataToFabrics,
@@ -896,8 +894,8 @@ export default function Navbar({
   //     setSelectedArtifacts("");
   //     setVersions([]);
   //     setSelectedVerison("");
-  //     if(selectedApplictionName){
-  //       handleIntialLoad(tKey, client, fabrics, Array.from(selectedApplictionName)[0]).catch((err) => {
+  //     if(selectedApplication){
+  //       handleIntialLoad(tKey, client, fabrics, Array.from(selectedApplication)[0]).catch((err) => {
   //         throw err;
   //       });
   //     }
@@ -908,12 +906,12 @@ export default function Navbar({
 
   // useEffect(() => {
   //   try {
-  //     if (selectedApplictionName) {
+  //     if (selectedApplication) {
   //       handleApplicationLoad(
   //         tKey,
   //         client,
   //         fabrics,
-  //         Array.from(selectedApplictionName)[0]
+  //         Array.from(selectedApplication)[0]
   //       ).catch((err) => {
   //         throw err;
   //       });
@@ -1000,8 +998,8 @@ export default function Navbar({
                       <div className=" flex h-[74%] w-full items-center  justify-center   ">
                         {/* <TorusDropDown
                       title={
-                        (selectedApplictionName &&
-                          Array.from(selectedApplictionName)[0]) ||
+                        (selectedApplication &&
+                          Array.from(selectedApplication)[0]) ||
                         "Projects"
                       }
                       classNames={{
@@ -1154,8 +1152,8 @@ export default function Navbar({
                         {/* <ReusableDropDown
                       key={"ApplicationDropdown"}
                       title={
-                        (selectedApplictionName &&
-                          Array.from(selectedApplictionName)[0]) ||
+                        (selectedApplication &&
+                          Array.from(selectedApplication)[0]) ||
                         "Projects"
                       }
                       darkMode={darkMode}
@@ -1174,7 +1172,7 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectedApplictionName}
+                      selectedKey={selectedApplication}
                       handleSelectedKey={handleApplicationName}
                       handleDelete={(key) => {
                         setSelectedDeletingProjectItem(key);
@@ -1282,7 +1280,9 @@ export default function Navbar({
                                           selected={new Set([selectedVerison])}
                                           setSelected={(e) => {
                                             setSelectedArtifacts(obj?.artifact);
-                                            setSelectedVerison(e);
+                                            setSelectedVerison(
+                                              Array.from(e)[0],
+                                            );
                                             setArtifactCollectionName(
                                               obj?.artifact,
                                             );
@@ -1382,7 +1382,7 @@ export default function Navbar({
                         "Artifacts"
                       }
                       darkMode={darkMode}
-                      isDisabled={!selectedApplictionName ? true : false}
+                      isDisabled={!selectedApplication ? true : false}
                       DropdownMenuClassName={
                         artifactsList && artifactsList.length > 6
                           ? "h-56 overflow-y-scroll"
@@ -1462,7 +1462,7 @@ export default function Navbar({
                         onClick={() => {
                           saveProcessFlow(
                             "create",
-                            selectedApplictionName,
+                            selectedApplication,
                             selectedArtifacts,
                             selectedVerison,
                             getDataFromFabrics(),
