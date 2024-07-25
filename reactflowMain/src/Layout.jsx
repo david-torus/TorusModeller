@@ -285,7 +285,7 @@ export default function Layout({ client }) {
                 </FabricsSelector>
             </TorusModellerContext.Provider>
 
-              <div className="h-full bg-[#FFFFFF] border ">
+              <div className="h-full  dark:bg-[#161616] bg-[#FFFFFF] dark:border-black border ">
                 {showNodeProperty && (
                   <>
                     <>

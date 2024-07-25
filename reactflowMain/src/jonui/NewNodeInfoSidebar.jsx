@@ -36,6 +36,8 @@ const NewNodeInfoSidebar = ({
   const [files, setFiles] = useState(null);
   const [helperjson, setHelperjson] = useState({});
   const [tabopen, seTabopen] = useState(1);
+  const [attributes] = useState([]);
+  const [methods] = useState([]);
 
   useEffect(() => {
     try {
@@ -44,12 +46,12 @@ const NewNodeInfoSidebar = ({
           ...prev,
           [rendervalue]: JSON.parse(files),
         }));
-        setToggle(false)
+        setToggle(false);
       }
     } catch (error) {
       console.error(error);
     }
-  }, [files, rendervalue, sideBarData]);
+  }, [files]);
 
   useEffect(() => {
     try {
@@ -76,6 +78,250 @@ const NewNodeInfoSidebar = ({
       setActiveTab(value);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const getNodeConfig = (jsons, toogle) => {
+    try {
+      if (toogle === "AT") {
+
+        setJson((prev) => {
+          if (prev?.entities)
+            return {
+              ...prev,
+              entities: {
+                ...prev.entities,
+                attributes: jsons,
+                methods: handleMethod(jsons, prev),
+              },
+            };
+          else
+            return {
+              ...prev,
+              entities: {
+                attributes: jsons,
+                methods: handleMethod(jsons, prev),
+              },
+            };
+        });
+
+        updatedNodeConfig(
+          sideBarData?.id,
+          {
+            nodeId: sideBarData?.id,
+            nodeName: sideBarData?.data?.label,
+            nodeType: sideBarData?.type,
+          },
+          {
+            ...json,
+          }
+        );
+      }
+
+
+      if (toogle === "MT") {
+
+        setJson((prev) => {
+          if (prev?.entities)
+            return {
+              ...prev,
+              entities: {
+                ...prev.entities,
+                methods: jsons,
+              },
+            };
+          else
+            return {
+              ...prev,
+              entities: {
+                methods: jsons,
+              },
+            };
+        });
+
+         return  updatedNodeConfig(
+          sideBarData?.id,
+          {
+            nodeId: sideBarData?.id,
+            nodeName: sideBarData?.data?.label,
+            nodeType: sideBarData?.type,
+          },
+          {
+            ...json,
+          }
+        );
+
+
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleMethod = (attri, json) => {
+    try {
+      let MT = [];
+      if (
+        attri.length > 0 &&
+        attri[0].hasOwnProperty("cname") &&
+        attri[0].cname !== ""
+      ) {
+        let cname = [];
+        attri &&
+          attri.map((item) => {
+            if (item.cname) cname.push(item.cname);
+            return item;
+          });
+
+        let getCname = [];
+
+        attri &&
+          attri.forEach((item) => {
+            if (
+              item?.constraints.includes("@unique") ||
+              item?.constraints.includes("@id")
+            ) {
+              if (item.cname) getCname.push(item.cname);
+            }
+          });
+
+        if (!json?.entities?.methods || json?.entities?.methods?.length === 0) {
+          MT.push(
+            {
+              isActive: {
+                value: true,
+                type: "checkbox",
+              },
+              methodName: "Get",
+
+              QueryParams: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...cname],
+              },
+              QueryConditions: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...getCname],
+              },
+            },
+            {
+              isActive: {
+                value: true,
+                type: "checkbox",
+              },
+              methodName: "GetALL",
+              QueryParams: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...cname],
+              },
+            },
+
+            {
+              isActive: {
+                value: true,
+                type: "checkbox",
+              },
+              methodName: "Post",
+              QueryParams: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...cname],
+              },
+            },
+            {
+              isActive: {
+                value: true,
+                type: "checkbox",
+              },
+              methodName: "Put",
+              QueryParams: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...cname],
+              },
+              QueryConditions: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...getCname],
+              },
+            },
+            {
+              isActive: {
+                value: true,
+                type: "checkbox",
+              },
+              methodName: "Delete",
+              QueryParams: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...cname],
+              },
+              QueryConditions: {
+                selectedValue: [],
+                type: "multipleSelect",
+                selectionList: [...getCname],
+              },
+            }
+          );
+        } else {
+          MT =
+            (json?.entities?.methods &&
+              json?.entities?.methods.map((item) => {
+                if (
+                  item.hasOwnProperty("QueryConditions") &&
+                  item.hasOwnProperty("QueryParams")
+                ) {
+                  return {
+                    ...item,
+                    QueryParams: {
+                      ...item.QueryParams,
+
+                      selectionList: [...cname],
+                    },
+                    QueryConditions: {
+                      ...item.QueryConditions,
+
+                      selectionList: [...getCname],
+                    },
+                  };
+                }
+                if (
+                  item.hasOwnProperty("QueryConditions") &&
+                  !item.hasOwnProperty("QueryParams")
+                ) {
+                  return {
+                    ...item,
+                    QueryConditions: {
+                      ...item.QueryConditions,
+
+                      selectionList: [...getCname],
+                    },
+                  };
+                }
+                if (
+                  !item.hasOwnProperty("QueryConditions") &&
+                  item.hasOwnProperty("QueryParams")
+                ) {
+                  return {
+                    ...item,
+                    QueryParams: {
+                      ...item.QueryParams,
+
+                      selectionList: [...cname],
+                    },
+                  };
+                }
+                return item;
+              })) ||
+            [];
+        }
+      }
+
+      return MT;
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -109,50 +355,49 @@ const NewNodeInfoSidebar = ({
       setCurrentModel(flowType);
       if (currentDrawing === "DF") {
         if (flowType === "entities") {
-          return null;
-          //   setJson((prev) => {
-          //     if (prev && !prev?.entities)
-          //       return {
-          //         ...prev,
-          //         [flowType]: {
-          //           attributes: sideBarData?.data?.nodeProperty?.[flowType]
-          //             ?.attributes ?? [
-          //             {
-          //               cname: "",
-          //               dataType: {
-          //                 selectedValue: "",
-          //                 type: "singleSelect",
-          //                 selectionList: [
-          //                   "Int",
-          //                   "String",
-          //                   "Float",
-          //                   "Boolean",
-          //                   "DateTime",
-          //                   "Json",
-          //                 ],
-          //               },
-          //               constraints: "",
-          //               length: "",
+          setJson((prev) => {
+            if (prev && !prev?.entities)
+              return {
+                ...prev,
+                [flowType]: {
+                  attributes: sideBarData?.data?.nodeProperty?.[flowType]
+                    ?.attributes ?? [
+                    {
+                      cname: "",
+                      dataType: {
+                        selectedValue: "",
+                        type: "singleSelect",
+                        selectionList: [
+                          "Int",
+                          "String",
+                          "Float",
+                          "Boolean",
+                          "DateTime",
+                          "Json",
+                        ],
+                      },
+                      constraints: "",
+                      length: "",
 
-          //               isRequired: {
-          //                 value: true,
-          //                 type: "checkbox",
-          //               },
-          //             },
-          //           ],
-          //           methods:
-          //             sideBarData?.data?.nodeProperty?.[flowType]?.methods ??
-          //             handleMethod(
-          //               sideBarData?.data?.nodeProperty?.[flowType]?.attributes ??
-          //                 [],
-          //               prev,
-          //             ),
-          //         },
-          //       };
-          //     else return prev;
-          //   });
+                      isRequired: {
+                        value: true,
+                        type: "checkbox",
+                      },
+                    },
+                  ],
+                  methods:
+                    sideBarData?.data?.nodeProperty?.[flowType]?.methods ??
+                    handleMethod(
+                      sideBarData?.data?.nodeProperty?.[flowType]?.attributes ??
+                        [],
+                      prev,
+                    ),
+                },
+              };
+            else return prev;
+          });
 
-          //   setToggle(!toggle);
+          setToggle(!toggle);
         } else {
           setToggle(!toggle);
           setJson((prev) => ({
@@ -210,7 +455,7 @@ const NewNodeInfoSidebar = ({
 
   return (
     <div className="flex flex-col">
-      <div className="h-10 bg-[#FFFFFF]">
+      <div className="h-10 bg-transparent">
         <NodeInfoSidebarTabs
           nodeInfoTabs={nodeInfoTabs}
           currentDrawing={currentDrawing}
@@ -225,10 +470,8 @@ const NewNodeInfoSidebar = ({
           contextMenuVisible={contextMenuVisible}
           contextMenuPosition={contextMenuPosition}
         />
-
       </div>
-      
-     
+
       <div className=" h-full bg-red-400 ">
         <RenderData
           sideBarData={sideBarData}
@@ -241,9 +484,9 @@ const NewNodeInfoSidebar = ({
           handleRender={handleRender}
           tabvisible={tabvisible}
           tabopen={tabopen}
-          // attributes={attributes}
-          // methods={methods}
-          // getNodeConfig={getNodeConfig}
+          attributes={attributes}
+          methods={methods}
+          getNodeConfig={getNodeConfig}
           sendFabrics={sendFabrics}
           // tenant={tenant}
           // group={group}
