@@ -2,13 +2,10 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import {
   Debugger,
-  Line,
   Preview,
-  Saved,
   Shared,
   TorusLogo,
   VerticalLine,
-  ZoomIn,
 } from "./SVG_Application";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
@@ -19,16 +16,8 @@ import { BiZoomIn } from "react-icons/bi";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
-
-import ReusableDropDown from "./commonComponents/reusableComponents/ReusableDropDown";
-import { IoIosCreate, IoMdAdd } from "react-icons/io";
-import {
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useDisclosure,
-} from "@nextui-org/react";
+import { MdEmojiEvents, MdOutlineEmojiEvents } from "react-icons/md";
+import { useDisclosure } from "@nextui-org/react";
 import {
   getJson,
   versionList,
@@ -49,22 +38,23 @@ import TorusAvatar from "./torusComponents/TorusAvatar";
 import { BsTrash3 } from "react-icons/bs";
 
 export default function Navbar({
-  color,
-  setFabricsKey = null,
-  setUpIdKey = null,
-  fabrics,
   tKey,
+  color,
+  fabrics,
   client,
   project,
   children,
   undoredo,
-  setartifact,
   setdomain,
-  getDataFromFabrics,
-  sendDataToFabrics,
-  setToggleReactflow,
-  setMainArtifacts,
+  setartifact,
   setMainVersion,
+  handleTabChange,
+  setMainArtifacts,
+  sendDataToFabrics,
+  setUpIdKey = null,
+  setToggleReactflow,
+  getDataFromFabrics,
+  setFabricsKey = null,
 }) {
   const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
 
@@ -1388,6 +1378,16 @@ export default function Navbar({
             </div>
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
+                <div
+                  onClick={() => {
+                    handleTabChange("events");
+                  }}
+                  className="flex w-[30%] items-center justify-center"
+                >
+                  <MdOutlineEmojiEvents
+                    className={"stroke-black dark:stroke-white"}
+                  />
+                </div>
                 <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>

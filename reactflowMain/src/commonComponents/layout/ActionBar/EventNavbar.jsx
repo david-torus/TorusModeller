@@ -2,10 +2,7 @@ import React, { useState, useContext, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { DarkmodeContext } from "../../context/DarkmodeContext";
 import { MdOutlineClose } from "react-icons/md";
-import {
-  Button,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button, useDisclosure } from "@nextui-org/react";
 import { MdOutlineSave, MdOutlineUploadFile } from "react-icons/md";
 import { Tooltip } from "@nextui-org/react";
 import {
@@ -18,19 +15,20 @@ import { DeleteModel } from "../../../commonComponents/Model/DeleteModel";
 import { IoSunny } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa";
 import ReusableDropDown from "../../reusableComponents/ReusableDropDown";
+import { TorusModellerContext } from "../../../Layout";
 export default function EventNavbar({
   setToggleReactflow,
-  tenant,
-  appGroup,
-  application,
+  tKey,
+  client,
+  project,
   fabrics,
   mainArtifacts,
   mainVersion,
   data,
   setData,
-  dataum,
-  setSelectedControlEvents,
 }) {
+  const { eventsNavBarData, setSelectedControlEvents } =
+    useContext(TorusModellerContext);
   const [open, setOpen] = useState(false);
 
   const [versions, setVersions] = useState([]);
@@ -41,7 +39,6 @@ export default function EventNavbar({
 
   const [selectedDeletingVersinItem, setSelectedDeletingVersionItem] =
     useState(null);
-
 
   const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
 
@@ -55,29 +52,29 @@ export default function EventNavbar({
 
   const getEventsfromVersion = useCallback(
     async (
-      tenant,
-      appGroup,
-      application,
+      tKey,
+      client,
+      project,
       fabrics,
       mainArtifacts,
       mainVersion,
       selectedComponentName,
       selectedControlName,
-      selectedVersion
+      selectedVersion,
     ) => {
       try {
         const res = await getEventsByVersion(
-          tenant,
-          appGroup,
-          application,
+          tKey,
+          client,
+          project,
           fabrics,
           mainArtifacts,
           mainVersion,
           selectedComponentName,
           selectedControlName,
-          selectedVersion
+          selectedVersion,
         );
-  
+
         if (res) setData(res.data);
       } catch (error) {
         toast.error("Cannot find Events by version", {
@@ -87,38 +84,37 @@ export default function EventNavbar({
         });
       }
     },
-    [darkMode,setData] 
+    [darkMode, setData],
   );
-  
 
   const getVersionList = useCallback(
     async (
-      tenant,
-      appGroup,
-      application,
+      tKey,
+      client,
+      project,
       fabrics,
       mainArtifacts,
       mainVersion,
       componentName,
-      controlName
+      controlName,
     ) => {
       try {
         const res = await getVersion(
-          tenant,
-          appGroup,
-          application,
+          tKey,
+          client,
+          project,
           fabrics,
           mainArtifacts,
           mainVersion,
           componentName,
           controlName,
-          "v1"
+          "v1",
         );
-  
+
         if (res) setVersions(res?.data);
       } catch (error) {
         console.error("Error in getVersionList:", error);
-  
+
         toast.error("Cannot find Events Version list", {
           position: "bottom-right",
           autoClose: 2000,
@@ -126,9 +122,9 @@ export default function EventNavbar({
         });
       }
     },
-    [darkMode] // Add any other dependencies needed inside useCallback
+    [darkMode], // Add any other dependencies needed inside useCallback
   );
-  
+
   const handleClick = () => {
     try {
       setToggleReactflow((prev) => ({
@@ -162,21 +158,21 @@ export default function EventNavbar({
     try {
       if (selectedComponentName && selectedControlName) {
         getVersionList(
-          tenant,
-          appGroup,
-          application,
+          tKey,
+          client,
+          project,
           fabrics,
           mainArtifacts,
           mainVersion,
           selectedComponentName,
-          selectedControlName
+          selectedControlName,
         );
       } else {
         return;
       }
     } catch (error) {
       console.error("Error in getVersionList:", error);
-  
+
       toast.error("Cannot find Events Version list", {
         position: "bottom-right",
         autoClose: 2000,
@@ -186,30 +182,29 @@ export default function EventNavbar({
   }, [
     selectedComponentName,
     selectedControlName,
-    appGroup,
-    application,
+    client,
+    project,
     darkMode,
     fabrics,
     mainArtifacts,
     mainVersion,
-    tenant,
+    tKey,
     getVersionList,
   ]);
-  
 
   useEffect(() => {
     try {
       if (selectedVersion) {
         getEventsfromVersion(
-          tenant,
-          appGroup,
-          application,
+          tKey,
+          client,
+          project,
           fabrics,
           mainArtifacts,
           mainVersion,
           selectedComponentName,
           selectedControlName,
-          selectedVersion
+          selectedVersion,
         ).then((res) => {
           toast.success(`Events fetched successfully from ${selectedVersion}`, {
             position: "bottom-right",
@@ -226,13 +221,13 @@ export default function EventNavbar({
         autoClose: 2000,
         theme: darkMode ? "dark" : "light",
       });
-  
+
       console.error("Error fetching events:", error);
     }
   }, [
     selectedVersion,
-    appGroup,
-    application,
+    client,
+    project,
     darkMode,
     fabrics,
     getEventsfromVersion,
@@ -240,20 +235,15 @@ export default function EventNavbar({
     mainVersion,
     selectedComponentName,
     selectedControlName,
-    tenant,
+    tKey,
   ]);
-  
-
- 
-
-  
 
   const saveEvents = async (
-    tenant,
+    tKey,
 
-    appGroup,
+    client,
 
-    application,
+    project,
 
     fabrics,
     mainArtifacts,
@@ -268,15 +258,15 @@ export default function EventNavbar({
 
     data,
 
-    type
+    type,
   ) => {
     try {
       const res = await handleEvents(
-        tenant,
+        tKey,
 
-        appGroup,
+        client,
 
-        application,
+        project,
 
         fabrics,
 
@@ -292,7 +282,7 @@ export default function EventNavbar({
 
         data,
 
-        type
+        type,
       );
 
       if (res && res.status === 200) {
@@ -325,8 +315,8 @@ export default function EventNavbar({
   const handleComponentChange = (e) => {
     try {
       setSelectedComponent(Array.from(e)[0]);
-      const selectedComponentData = dataum.find(
-        (component) => component.component.nodeId === Array.from(e)[0]
+      const selectedComponentData = eventsNavBarData.find(
+        (component) => component.component.nodeId === Array.from(e)[0],
       );
 
       setSelectedComponentName(selectedComponentData?.component?.nodeName);
@@ -355,12 +345,12 @@ export default function EventNavbar({
     try {
       setSelectedControl(Array.from(e)[0]);
 
-      const selectedComponentData = dataum.find(
-        (component) => component.component.nodeId === selectedComponent
+      const selectedComponentData = eventsNavBarData.find(
+        (component) => component.component.nodeId === selectedComponent,
       );
 
       const selectedControlData = selectedComponentData?.controls.find(
-        (control) => control.nodeId === Array.from(e)[0]
+        (control) => control.nodeId === Array.from(e)[0],
       );
 
       setData({
@@ -382,9 +372,9 @@ export default function EventNavbar({
   };
 
   const componentOptions =
-    dataum &&
-    dataum.length > 0 &&
-    dataum.map((component) => ({
+    eventsNavBarData &&
+    eventsNavBarData.length > 0 &&
+    eventsNavBarData.map((component) => ({
       label: component?.component?.nodeName,
       key: component?.component?.nodeId,
       value: component?.component?.nodeId,
@@ -392,7 +382,7 @@ export default function EventNavbar({
 
   const controlOptions =
     selectedComponent && selectedComponent
-      ? dataum
+      ? eventsNavBarData
 
           .find((component) => component.component.nodeId === selectedComponent)
 
@@ -436,20 +426,20 @@ export default function EventNavbar({
         }}
         className={`${
           darkMode
-            ? "bg-[#1E1E1E]/90 backdrop-blur-sm border-b border-gray-600  pl-1 pt-2 pr-2 pb-2 "
-            : "bg-[#F0F0F0] backdrop-blur-sm border-b border-gray-600 pl-1 pt-2 pr-2 pb-2 "
+            ? "border-b border-gray-600 bg-[#1E1E1E]/90 pb-2  pl-1 pr-2 pt-2 backdrop-blur-sm "
+            : "border-b border-gray-600 bg-[#F0F0F0] pb-2 pl-1 pr-2 pt-2 backdrop-blur-sm "
         } `}
         initial={false}
       >
         <div
-          className="flex flex-row items-center justify-around pl-1 pt-2 pr-2 pb-2 gap-[21.5%]"
+          className="flex flex-row items-center justify-around gap-[21.5%] pb-2 pl-1 pr-2 pt-2"
           style={{
             height: "inherit",
           }}
         >
-          <div className="w-[35%] flex flex-row items-center justify-around gap-1">
+          <div className="flex w-[35%] flex-row items-center justify-around gap-1">
             <p
-              className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  p-[3px]  rounded-md cursor-pointer active:opacity-50 transition-all `}
+              className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
               onClick={handleClick}
             >
               <MdOutlineClose
@@ -461,8 +451,8 @@ export default function EventNavbar({
             <div
               className={`${
                 darkMode
-                  ? "w-[80%] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30   bg-gray-50/10 rounded-md p-1   "
-                  : "w-[80%] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30  bg-gray-600/10 rounded-md p-1 "
+                  ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
+                  : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
               }`}
             >
               <ReusableDropDown
@@ -476,8 +466,6 @@ export default function EventNavbar({
                     ? " flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-300  bg-[#323232] border rounded-md hover:animate-pulse hover:bg-[#424242] border-gray-600 text-white/70"
                     : "flex flex-row w-[50%] h-8 justify-center  items-center hover:border-gray-600  bg-[#ffffff] border rounded-md hover:animate-pulse hover:bg-[#c7c6c6] border-gray-300 text-black/70"
                 }
-
-
                 selectedKey={selectedComponent}
                 handleSelectedKey={(e) => handleComponentChange(e)}
                 items={componentOptions}
@@ -501,14 +489,14 @@ export default function EventNavbar({
                   handleControlChange(e);
                   if (selectedComponentName && Array.from(e)[0]) {
                     getVersionList(
-                      tenant,
-                      appGroup,
-                      application,
+                      tKey,
+                      client,
+                      project,
                       fabrics,
                       mainArtifacts,
                       mainVersion,
                       selectedComponentName,
-                      Array.from(e)[0]
+                      Array.from(e)[0],
                     );
                   } else {
                     toast.error("Please Select Component and Control", {
@@ -527,12 +515,12 @@ export default function EventNavbar({
             </div>
           </div>
 
-          <div className="flex flex-row items-center w-[65%] pl-[25%]">
+          <div className="flex w-[65%] flex-row items-center pl-[25%]">
             <Button
               size="xs"
               isIconOnly
               variant="outline"
-              className=" flex flex-row w-[20%] justify-center gap-2 items-center p-2"
+              className=" flex w-[20%] flex-row items-center justify-center gap-2 p-2"
               onClick={() => toggleDarkMode(!darkMode)}
             >
               <Tooltip
@@ -546,20 +534,20 @@ export default function EventNavbar({
                 <span>
                   {darkMode ? (
                     <FaMoon
-                      className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
+                      className={` cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                         darkMode
-                          ? " hover:text-white hover:border-gray-200/80 "
-                          : " hover:text-gray-700 hover:border-gray-700"
+                          ? " hover:border-gray-200/80 hover:text-white "
+                          : " hover:border-gray-700 hover:text-gray-700"
                       }`}
                       size={25}
                       color={darkMode ? "#F4F4F5" : "#616A6B "}
                     />
                   ) : (
                     <IoSunny
-                      className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
+                      className={` cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                         darkMode
-                          ? " hover:text-white hover:border-gray-200/80 "
-                          : " hover:text-gray-700 hover:border-gray-700"
+                          ? " hover:border-gray-200/80 hover:text-white "
+                          : " hover:border-gray-700 hover:text-gray-700"
                       }`}
                       size={25}
                       color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -569,12 +557,12 @@ export default function EventNavbar({
               </Tooltip>
             </Button>
 
-            <div className="w-[80%] ml-[0%] p-[5px] h-12 mt-[-5px] scale-[0.9]">
+            <div className="ml-[0%] mt-[-5px] h-12 w-[80%] scale-[0.9] p-[5px]">
               <div
                 className={`${
                   darkMode
-                    ? "w-[140px] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30   bg-gray-50/10 rounded-md p-1   "
-                    : "w-[140px] flex flex-row justify-evenly h-11 items-center gap-1 border border-gray-600/30  bg-gray-600/10 rounded-md p-1 "
+                    ? "flex h-11 w-[140px] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
+                    : "flex h-11 w-[140px] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
                 }`}
               >
                 <ReusableDropDown
@@ -619,15 +607,15 @@ export default function EventNavbar({
                   isDisabled={!selectedVersion}
                   size="xs"
                   isIconOnly
-                  className=" flex flex-row w-[30%] ml-[-10px] justify-center items-center bg-transparent"
+                  className=" ml-[-10px] flex w-[30%] flex-row items-center justify-center bg-transparent"
                   variant="outline"
                   onClick={() =>
                     saveEvents(
-                      tenant,
+                      tKey,
 
-                      appGroup,
+                      client,
 
-                      application,
+                      project,
 
                       fabrics,
                       mainArtifacts,
@@ -642,7 +630,7 @@ export default function EventNavbar({
 
                       data,
 
-                      "update"
+                      "update",
                     )
                   }
                 >
@@ -655,10 +643,10 @@ export default function EventNavbar({
                     }`}
                   >
                     <MdOutlineUploadFile
-                      className={`border border-gray-600 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                      className={`cursor-pointer rounded border border-gray-600 p-[3px] transition-all active:opacity-50 ${
                         darkMode
-                          ? " hover:text-white hover:border-gray-300 "
-                          : " hover:text-gray-700 hover:border-gray-700 "
+                          ? " hover:border-gray-300 hover:text-white "
+                          : " hover:border-gray-700 hover:text-gray-700 "
                       }`}
                       size={25}
                       color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -677,15 +665,15 @@ export default function EventNavbar({
                   <Button
                     isIconOnly={true}
                     size="xs"
-                    className=" flex flex-row w-[30%] ml-[-15px] justify-center  items-center bg-transparent"
+                    className=" ml-[-15px] flex w-[30%] flex-row items-center  justify-center bg-transparent"
                     variant="outline"
                     onClick={() =>
                       saveEvents(
-                        tenant,
+                        tKey,
 
-                        appGroup,
+                        client,
 
-                        application,
+                        project,
 
                         fabrics,
                         mainArtifacts,
@@ -700,15 +688,15 @@ export default function EventNavbar({
 
                         data,
 
-                        "save"
+                        "save",
                       )
                     }
                   >
                     <MdOutlineSave
-                      className={` p-[3px] rounded cursor-pointer border-gray-600 active:opacity-50 transition-all border${
+                      className={` cursor-pointer rounded border-gray-600 p-[3px] transition-all active:opacity-50 border${
                         darkMode
-                          ? " hover:text-white hover:border-gray-300"
-                          : " hover:text-gray-700 hover:border-gray-700 "
+                          ? " hover:border-gray-300 hover:text-white"
+                          : " hover:border-gray-700 hover:text-gray-700 "
                       }`}
                       size={25}
                       color={darkMode ? "#F4F4F5" : "#616A6B "}
