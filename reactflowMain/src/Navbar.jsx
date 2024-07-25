@@ -3,7 +3,9 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import {
   ArtifactLogo,
   ArtifactOpen,
+  BreadcrumbHome,
   Debugger,
+  Home,
   Preview,
   Shared,
   TorusLogo,
@@ -40,6 +42,9 @@ import TorusAvatar from "./torusComponents/TorusAvatar";
 import { BsTrash3 } from "react-icons/bs";
 import { Input } from "react-aria-components";
 import EventNavbar from "./commonComponents/layout/ActionBar/EventNavbar";
+import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
+import { RiHome5Line } from "react-icons/ri";
+import TorusTab from "./torusComponents/TorusTab";
 
 export default function Navbar({
   tKey,
@@ -86,7 +91,8 @@ export default function Navbar({
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectNameValidation, setNewProjectNameValidation] =
     useState(false);
-
+  const [projectCollectionName, setProjectCollectionName] = useState("");
+  const [artifactCollectionName, setArtifactCollectionName] = useState("");
   const [openDefaultTemplate, setOpenDefaultTemplate] = useState(false);
   const [selectedsource] = useState("torus");
   const [domainList, setDomainList] = useState([]);
@@ -113,6 +119,7 @@ export default function Navbar({
   const [peurlopen, setPeurlopen] = useState(false);
   const [urlOpen, setUrlOpen] = useState(false);
   const [urls, setUrl] = useState("");
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -953,7 +960,7 @@ export default function Navbar({
                   </div>
                 </div>
               }
-              children={
+              children={({ close }) => (
                 <div className=" mt-[3%] flex h-[400px] w-[450px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]">
                   {fabrics !== "events" ? (
                     <>
@@ -985,7 +992,15 @@ export default function Navbar({
                           <div className="flex h-[27px] w-[27px] items-center justify-center rounded-md bg-[#0736C4] p-[5px]">
                             <ArtifactOpen />
                           </div>
-                          <IoCloseOutline />
+
+                          <span
+                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] hover:border"
+                            onClick={() => {
+                              close();
+                            }}
+                          >
+                            <IoCloseOutline />
+                          </span>
                         </div>
                       </div>
                       <div className=" flex h-[74%] w-full items-center  justify-center   ">
@@ -1020,14 +1035,82 @@ export default function Navbar({
                       setSelected={handleApplicationName}
                     /> */}
 
-                        <div className="flex h-full w-1/3 items-center justify-center gap-1 border-r">
-                          <div className="flex h-full w-[130px] flex-col  overflow-scroll bg-red-200">
+                        <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r">
+                          {/* <div className="flex h-[70px] w-[100%] flex-col  items-center   ">
+                            <TorusTab
+                              defaultSelectedKey={selectedClient}
+                              key="TorusTab"
+                              orientation="vertical"
+                              classNames={{
+                                tabs: "cursor-pointer border",
+                                tabList:
+                                  "w-full h-[100%] border  flex justify-center items-center",
+                                tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  `,
+                              }}
+                              tabs={[
+                                {
+                                  id: "My Artifacts",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                                {
+                                  id: "UF",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                                {
+                                  id: "PF",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                              ]}
+                              // onSelectionChange={handleTabChange}
+                            />
+                          </div> */}
+                          <div className="flex h-full w-[130px] flex-col  overflow-scroll ">
                             {projectList &&
                               projectList?.map((project, index) => (
                                 <div
                                   onClick={() => {
                                     handleApplicationName(project);
                                     setSelectedProject(index);
+                                    setProjectCollectionName(project);
                                   }}
                                   className={`${index == selectedProject ? "font-semibold text-black" : "font-normal text-black/35"} flex w-[100%] flex-row items-center gap-1`}
                                 >
@@ -1103,8 +1186,33 @@ export default function Navbar({
                         openmodal("project");
                       }}
                     /> */}
-                        <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 overflow-y-scroll scroll-smooth scrollbar-default ">
-                          <div className="flex h-[100%] w-full flex-col items-center justify-between ">
+                        <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
+                          <div className="flex h-[10%] w-[85%] items-center justify-start bg-white">
+                            <Breadcrumbs
+                              isDisabled
+                              className="flex flex-row gap-2 text-xs"
+                            >
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  <RiHome5Line size={15} />
+                                  {client}
+                                  <IoIosArrowForward />
+                                </Link>
+                              </Breadcrumb>
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  {projectCollectionName}
+                                  <IoIosArrowForward />
+                                </Link>
+                              </Breadcrumb>
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  {artifactCollectionName}
+                                </Link>
+                              </Breadcrumb>
+                            </Breadcrumbs>
+                          </div>
+                          <div className="flex h-[90%] w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default ">
                             {artifactsList && artifactsList.length > 0 ? (
                               <>
                                 {artifactsList.map((obj, index) => {
@@ -1121,7 +1229,7 @@ export default function Navbar({
                                               }
                                               className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
                                             >
-                                              <div className="flex w-10/12 items-center justify-start text-sm">
+                                              <div className="flex w-9/12 items-center justify-start truncate text-sm">
                                                 {obj?.artifact}
                                               </div>
                                               <div className="flex w-2/12 items-center justify-end gap-2">
@@ -1152,7 +1260,7 @@ export default function Navbar({
                                           ) : (
                                             <div className="w-full">
                                               <Input
-                                                value={inputValue ?? obj}
+                                                defaultValue={obj?.artifact}
                                                 placeholder="Enter text"
                                                 className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
                                                 onKeyDown={(e) => {
@@ -1180,6 +1288,9 @@ export default function Navbar({
                                           setSelected={(e) => {
                                             setSelectedArtifacts(obj?.artifact);
                                             setSelectedVerison(e);
+                                            setArtifactCollectionName(
+                                              obj?.artifact,
+                                            );
                                           }}
                                           items={
                                             obj?.versionList &&
@@ -1190,8 +1301,8 @@ export default function Navbar({
                                           }
                                           classNames={{
                                             buttonClassName:
-                                              "rounded-lg w-full text-xs h-[30px] font-medium mt-2 p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                                            popoverClassName: "w-full",
+                                              "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                                            popoverClassName: "w-[70px]",
                                             listBoxClassName: "overflow-y-auto",
                                             listBoxItemClassName:
                                               "flex text-sm justify-between",
@@ -1339,7 +1450,7 @@ export default function Navbar({
                     /> */}
                       </div>
                       <div className="flex h-[13%] w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
-                        <div className="flex w-1/3 justify-start">
+                        <div className="flex w-1/3 items-center justify-start">
                           <TorusButton
                             btncolor={"primary"}
                             buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
@@ -1367,7 +1478,7 @@ export default function Navbar({
                       /> */}
                         </div>
 
-                        <div className="flex w-2/3 justify-end gap-2">
+                        <div className="flex w-2/3 items-center justify-end gap-2">
                           <TorusButton
                             buttonClassName=" bg-[#4CAF50]/15 w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs dark:text-white flex justify-center items-center"
                             Children={"Update"}
@@ -1387,7 +1498,7 @@ export default function Navbar({
                     <EventNavbar />
                   )}
                 </div>
-              }
+              )}
             />
           </div>
 
