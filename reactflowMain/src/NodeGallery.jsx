@@ -11,6 +11,7 @@ export default function NodeGallery({
   showFabricSideBar,
   handleSidebarToggle,
   children,
+  showNodeProperty,
 }) {
   const { selectedFabric } = useContext(TorusModellerContext);
   return (
@@ -22,7 +23,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12 xl:w-[14.0%]  3xl:w-[12%] 4xl:w-4/12"
+        ? `h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[20.0%] " : "xl:w-[14.0%] "}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
     }`}
     >
