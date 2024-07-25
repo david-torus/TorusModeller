@@ -18,7 +18,7 @@ import TorusAvatar from "./torusComponents/TorusAvatar";
 
 import { BiMoon, BiSun } from "react-icons/bi";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
-import { FabricsContexts } from "./Layout";
+import { TorusModellerContext } from "./Layout";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -58,7 +58,7 @@ const focusBLcolor = {
 };
 
 export default function SideBar() {
-  const { selectedFabric, handleTabChange } = useContext(FabricsContexts);
+  const { selectedFabric, handleTabChange } = useContext(TorusModellerContext);
   const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
   const borderFn = () => {
     if (selectedFabric === "home") {

@@ -98,6 +98,7 @@ module.exports = {
         poppins: ["Poppins", "sans-serif"],
         plexsans: ["IBM Plex Sans", "sans-serif"],
         inter: ["Inter", "sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
       scrollbar: {
         none: "none",

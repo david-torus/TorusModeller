@@ -1,42 +1,28 @@
-import React, {
-  useCallback,
-  useContext,
-  useState,
-  useRef,
-  useMemo,
-  createContext,
-} from "react";
-import ReactFlow, {
-  ReactFlowProvider,
+import { useCallback, useState, useRef, useMemo, createContext } from "react";
+import {
   MiniMap,
-  Controls,
   Background,
   useNodesState,
   useEdgesState,
   addEdge,
-  Panel,
   useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
-
 import { FabricsSelector } from "./FabricsSelector";
 import { v4 as uuidv4 } from "uuid";
-
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
-
 import CanvasPanel from "./CanvasPanel";
-
-import { nodeInfoTabs, RenderJson } from "./jonui/JsonUI";
+import { nodeInfoTabs } from "./jonui/JsonUI";
 import Navbar from "./Navbar";
-
 import NodeGallery from "./NodeGallery";
 import SideBar from "./SideBar";
-import NodeInfoSidebar from "./commonComponents/CommonSideBar/NodeInfoSidebar";
 import { Gorule } from "./commonComponents/tabs/Gorule";
 import { Mapper } from "./commonComponents/tabs/mapper";
 import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
-export const FabricsContexts = createContext(null);
+
+export const TorusModellerContext = createContext(null);
+
 export default function Layout({ client }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -56,7 +42,7 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
-  const [nodeData, setNodeData] = useState(null);
+
   const colors = {
     hidden: { dark: "#008080", light: "#008080" },
     DF: {
@@ -72,16 +58,12 @@ export default function Layout({ client }) {
     SF: { dark: "#FFc723", light: "#FFBE00" },
   };
 
-  const NODE_TYPES = useMemo(
-    () => ({
-      usernode: "s",
-    }),
-    [],
-  );
-
   const handleTabChange = (fabric) => {
     console.log("clicked", fabric, recentClicked);
-    if (fabric == selectedFabric) return;
+    if (fabric == selectedFabric) {
+      setShowFabricSideBar(!showFabricSideBar);
+      return;
+    }
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
@@ -97,34 +79,6 @@ export default function Layout({ client }) {
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges],
-  );
-
-  const onDragOver = useCallback((event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
-
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-      const type = event.dataTransfer.getData("application/reactflow");
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
-      const position = screenToFlowPosition({
-        x: event.clientX,
-        y: event.clientY,
-      });
-      const newNode = {
-        id: uuidv4(),
-        type,
-        position,
-        data: { label: `${type} node` },
-      };
-
-      setNodes((nds) => nds.concat(newNode));
-    },
-    [reactFlowInstance, setNodes],
   );
 
   const onNodeContextMenu = useCallback(
@@ -222,8 +176,7 @@ export default function Layout({ client }) {
 
   return (
     <div
-      className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 
-         `}
+      className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
     >
       {!toggleReactflow.rule &&
       !toggleReactflow.mapper &&
@@ -262,7 +215,7 @@ export default function Layout({ client }) {
             className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}
           >
             <div className="flex h-[100%] w-[100%]">
-              <FabricsContexts.Provider
+              <TorusModellerContext.Provider
                 value={{
                   selectedFabric,
                   handleTabChange,
@@ -294,55 +247,43 @@ export default function Layout({ client }) {
                   }) => (
                     <>
                       <SideBar />
-                      <NodeGallery
-                        color={colors[selectedFabric]?.light}
-                        showFabricSideBar={showFabricSideBar}
-                        handleSidebarToggle={handleSidebarToggle}
-                      />
-                      <MiniMap
-                        position="bottom-right"
-                        style={{ bottom: "8%" }}
-                        maskColor="transparent"
-                        // maskStrokeColor="rgba(22, 22, 22, 0.6)"
-                        className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                      />
-                      <CanvasPanel
-                        canRedo={canRedo}
-                        canUndo={canUndo}
-                        redo={redo}
-                        undo={undo}
-                      />
-
-                      {/* <NodeInfoSidebar
-                    upIdKey={"FRK"}
-                    setToggleReactflow={setToggleReactflow}
-                    customCodeKey={"gg"}
-                    updatedNodeConfig={updatedNodeConfig}
-                    currentDrawing={selectedFabric}
-                    visiblity={showNodeProperty}
-                    setVisiblity={() => setShowNodeProperty(!showNodeProperty)}
-                    sideBarData={getNode(nodePropertyData?.id)}
-                    uniqueNames={uniqueNames}
-                    changeProperty={changeProperty}
-                  /> */}
-
-                      {/* <MiniMap /> */}
-                      {menu && (
-                        <ContextMenuSelector
-                          onEdit={(id) => {
-                            setNodePropertyData(getNode(id));
-                            setShowNodeProperty(!showNodeProperty);
-                          }}
-                          fabric={selectedFabric}
-                          onClick={onPaneClick}
-                          {...menu}
-                        />
+                      {selectedFabric !== "Home" && selectedFabric !== "SF" && (
+                        <>
+                          <NodeGallery
+                            color={colors[selectedFabric]?.light}
+                            showFabricSideBar={showFabricSideBar}
+                            handleSidebarToggle={handleSidebarToggle}
+                          />
+                          <MiniMap
+                            position="bottom-right"
+                            style={{ bottom: "8%" }}
+                            maskColor="transparent"
+                            className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                          />
+                          <CanvasPanel
+                            canRedo={canRedo}
+                            canUndo={canUndo}
+                            redo={redo}
+                            undo={undo}
+                          />
+                          {menu && (
+                            <ContextMenuSelector
+                              onEdit={(id) => {
+                                setNodePropertyData(getNode(id));
+                                setShowNodeProperty(!showNodeProperty);
+                              }}
+                              fabric={selectedFabric}
+                              onClick={onPaneClick}
+                              {...menu}
+                            />
+                          )}
+                          <Background variant="dots" gap={12} size={1} />
+                        </>
                       )}
-                      <Background variant="dots" gap={12} size={1} />
                     </>
                   )}
                 </FabricsSelector>
-              </FabricsContexts.Provider>
+            </TorusModellerContext.Provider>
 
               <div className="h-full bg-[#FFFFFF] border ">
                 {showNodeProperty && (
@@ -380,22 +321,18 @@ export default function Layout({ client }) {
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
-          // nodeConfig={nodeConfig}
         />
       ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
         <Mapper
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
-          // nodeConfig={nodeConfig}
         />
       ) : toggleReactflow.code ? (
         <MonacoEditor
-          // fabricsKey={fabricsKey}
           setToggleReactflow={setToggleReactflow}
           updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
-          // nodeConfig={nodeConfig}
         />
       ) : (
         <>nothing</>
