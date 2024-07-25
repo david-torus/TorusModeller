@@ -139,10 +139,23 @@ export default function SignIn() {
         title: "Toast Title",
         text: `Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
       ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
-      et simul causae vocibus vix. Et eos dicit labore, nam ne facer iracundia persequeris. 
-      Ut mentitum feugiat eum. Et pro copiosae senserit. Quis nullam labitur ea per, 
-      nec diam luptatum voluptaria ex.Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
-      ut deleniti aliquando abhorreant cum.
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae 
   `,
         closeButton: false,
       }

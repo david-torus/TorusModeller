@@ -1,79 +1,18 @@
-import React, { useContext, useState } from "react";
-import { Header, Section, Text } from "react-aria-components";
-import { Back, User } from "./SVG_Application";
+import React, { useContext } from "react";
+import { Header, Text } from "react-aria-components";
+import { Back } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
-// import "./index.css";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
-const data = [
-  {
-    label: "User",
-    icon: User,
-  },
+import { EventScreen } from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
 
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-];
 export default function NodeGallery({
   color,
   showFabricSideBar,
   handleSidebarToggle,
   children,
+  showNodeProperty,
 }) {
   const { selectedFabric } = useContext(TorusModellerContext);
   return (
@@ -85,7 +24,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? "h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12 xl:w-[14.0%]  3xl:w-[12%] 4xl:w-4/12"
+        ? `h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[20.0%] " : "xl:w-[14.0%] "}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
     }`}
     >
@@ -161,13 +100,15 @@ export default function NodeGallery({
 }
 
 const Loop = ({ color, selectedFabric }) => {
+  console.log(selectedFabric, "?NodeGallery");
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {EnvSideData[selectedFabric] &&
+      {selectedFabric !== "events " ? (
+        EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
             key={index}
@@ -188,7 +129,13 @@ const Loop = ({ color, selectedFabric }) => {
               {item.label}
             </span>
           </div>
-        ))}
+        ))
+      ) : (
+        <>
+          hello
+          <EventScreen />
+        </>
+      )}
     </>
   );
 };

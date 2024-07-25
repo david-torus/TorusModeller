@@ -29,15 +29,20 @@ export default function TorusTab({
         aria-label={ariaLabel}
         className={`flex ${orientation === "vertical" ? "flex-col" : "flex-row"} items-start justify-between xl:gap-1 2xl:gap-1.5 3xl:gap-2 4xl:gap-3`}
       >
-        {tabs &&tabs.map((tab, index) => (
-          <Tab
-            className={merger(defaultTabsClassNames.tab, classNames?.tab)}
-            key={tab.id + index}
-            id={tab.id}
-          >
-            {tab.content}
-          </Tab>
-        ))}
+        {tabs &&
+          tabs.map((tab, index) => (
+            <>
+              {tab && (
+                <Tab
+                  className={merger(defaultTabsClassNames.tab, classNames?.tab)}
+                  key={tab.id + index}
+                  id={tab.id}
+                >
+                  {tab.content}
+                </Tab>
+              )}
+            </>
+          ))}
       </TabList>
       {panels &&
         panels.map((panel, index) => (

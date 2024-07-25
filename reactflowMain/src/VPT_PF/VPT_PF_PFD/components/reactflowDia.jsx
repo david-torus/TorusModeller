@@ -172,12 +172,12 @@ const ReactFlowDia = ({
               setDefaults={setDefaults}
             />
           )} */}
-          <Background
+          {/* <Background
             variant="dots"
             color={darkMode ? "#ccc" : "black"}
             gap={25}
             size={1}
-          />
+          /> */}
         </ReactFlow>
       ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
         <Gorule

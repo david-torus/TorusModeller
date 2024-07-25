@@ -1,4 +1,3 @@
-
 export const getVersion = async (
   tenant,
   appGroup,
@@ -8,7 +7,7 @@ export const getVersion = async (
   version,
   componentName,
   controlName,
-  ccwVersion
+  ccwVersion,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events/version`;
 
@@ -18,7 +17,7 @@ export const getVersion = async (
 
       {
         method: "GET",
-      }
+      },
     );
 
     if (!response.ok) {
@@ -41,7 +40,7 @@ export const getEventsByVersion = async (
   mainVersion,
   componentName,
   controlName,
-  ccwversion
+  ccwversion,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events/`;
   try {
@@ -50,7 +49,7 @@ export const getEventsByVersion = async (
 
       {
         method: "GET",
-      }
+      },
     );
 
     if (!response.ok) {
@@ -63,8 +62,24 @@ export const getEventsByVersion = async (
     console.error("Error fetching events:", error);
   }
 };
-
-
+export const getInitialEvents = async (
+  tKey,
+  client,
+  project,
+  fabrics,
+  mainArtifacts,
+  mainVersion,
+) => {
+  const BASE_URL = `${process.env.REACT_APP_API_URL}events/initiate/`;
+  try {
+    const response = await fetch(
+      `${BASE_URL}?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}`,
+    ).then((res) => res.json());
+    return response;
+  } catch (error) {
+    console.error("Error fetching events:", error);
+  }
+};
 
 export const handleEvents = async (
   tenant,
@@ -86,7 +101,7 @@ export const handleEvents = async (
 
   data,
 
-  type
+  type,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events`;
 

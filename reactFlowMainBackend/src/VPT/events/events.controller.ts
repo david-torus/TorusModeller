@@ -27,6 +27,19 @@ export class EventsController {
       query.ccwVersion,
     );
   }
+  @Get('initiate')
+  getIniateEventsData(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return this.eventsService.getIniateEventsData(
+      query.tKey,
+      query.client,
+      query.project,
+      query.fabrics,
+      query.artifact,
+      query.version,
+    );
+  }
 
   @Get('version')
   getVersion(@Query(new ValidationPipe({ transform: true })) query: any) {

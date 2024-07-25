@@ -4,22 +4,29 @@ import { ReactFlowProvider } from "reactflow";
 import { EventDashBoard } from "../components/DashBoard";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { TorusModellerContext } from "../../../Layout";
 
 export const eventSourceNodesJsonContext = createContext([]);
 
 export default function EventDisplay({
-  datas,
-  sendData,
-  controlJson,
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+  onNodesChange,
+  onEdgesChange,
+  children,
+
   currentDrawing,
   selectedControlEvents,
 }) {
+  const { controlJson } = useContext(TorusModellerContext);
   const { darkMode } = useContext(DarkmodeContext);
 
   return (
     <eventSourceNodesJsonContext.Provider value={controlJson}>
       <div
-        className={`w-full h-full flex items-center mt-[0px] ${darkMode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
+        className={`mt-[0px] flex h-full w-full items-center ${darkMode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
       >
         {selectedControlEvents && (
           <AnimatePresence mode="sync">
@@ -37,18 +44,20 @@ export default function EventDisplay({
 
         <div
           className={
-            " h-full border-r border-gray-600 transition-all duration-75 ease-in-out delay-75 " +
+            " h-full border-r border-gray-600 transition-all delay-75 duration-75 ease-in-out " +
             (selectedControlEvents ? "w-[85%]" : "w-full")
           }
         >
-          <div className="w-full h-full flex justify-center items-center">
-            <ReactFlowProvider>
-              <EventDashBoard
-                data={datas}
-                sendData={sendData}
-                currentDrawing={currentDrawing}
-              />
-            </ReactFlowProvider>
+          <div className="flex h-full w-full items-center justify-center">
+            <EventDashBoard
+              nodes={nodes}
+              edges={edges}
+              setEdges={setEdges}
+              setNodes={setNodes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              children={children}
+            />
           </div>
         </div>
       </div>
@@ -63,11 +72,13 @@ export default function EventDisplay({
  * @param {Object} json - The JSON data containing the event information.
  * @return {JSX.Element} The rendered event screen.
  */
-const EventScreen = ({ json }) => {
+export const EventScreen = ({ json }) => {
+  const { selectedControlEvents } = useContext(TorusModellerContext);
+  console.log("event screen json", selectedControlEvents);
   const onDragStart = (event, eventName, parentNode) => {
     event.dataTransfer.setData(
       "application/parentNode",
-      JSON.stringify(parentNode)
+      JSON.stringify(parentNode),
     );
     event.dataTransfer.setData("application/eventName", eventName);
     event.dataTransfer.effectAllowed = "move";
@@ -77,18 +88,20 @@ const EventScreen = ({ json }) => {
 
   return (
     <>
-      {json && (
+      {
         <>
-          <span className={`${darkMode ? "text-white" : "text-black"} `}>
-            {json?.nodeName || json?.nodeType}
+          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
+            {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
           </span>
-          {json?.events &&
-            json?.events.length > 0 &&
-            json?.events.map((item) => {
+          {selectedControlEvents?.events &&
+            selectedControlEvents?.events.length > 0 &&
+            selectedControlEvents?.events.map((item) => {
               return (
                 <div
-                  className="text-left text-sm flex cursor-grab justify-start pl-[10px] flex-row mt-2 gap-2"
-                  onDragStart={(event) => onDragStart(event, item.name, json)}
+                  className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
+                  onDragStart={(event) =>
+                    onDragStart(event, item.name, selectedControlEvents)
+                  }
                   draggable
                 >
                   <span className={`${darkMode ? "text-white" : "text-black"}`}>
@@ -98,7 +111,7 @@ const EventScreen = ({ json }) => {
               );
             })}
         </>
-      )}
+      }
     </>
   );
 };

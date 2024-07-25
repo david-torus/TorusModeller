@@ -1,14 +1,15 @@
 /*eslint-disable*/
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import {
+  ArtifactLogo,
+  ArtifactOpen,
+  BreadcrumbHome,
   Debugger,
-  Line,
+  Home,
   Preview,
-  Saved,
   Shared,
   TorusLogo,
   VerticalLine,
-  ZoomIn,
 } from "./SVG_Application";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
@@ -19,16 +20,8 @@ import { BiZoomIn } from "react-icons/bi";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSearch } from "react-icons/ci";
 import { IoCloseOutline } from "react-icons/io5";
-
-import ReusableDropDown from "./commonComponents/reusableComponents/ReusableDropDown";
-import { IoIosCreate, IoMdAdd } from "react-icons/io";
-import {
-  Button,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useDisclosure,
-} from "@nextui-org/react";
+import { MdEmojiEvents, MdOutlineEmojiEvents } from "react-icons/md";
+import { useDisclosure } from "@nextui-org/react";
 import {
   getJson,
   versionList,
@@ -47,44 +40,50 @@ import {
 } from "./commonComponents/api/DefaultsApi";
 import TorusAvatar from "./torusComponents/TorusAvatar";
 import { BsTrash3 } from "react-icons/bs";
+import { Input } from "react-aria-components";
+import EventNavbar from "./commonComponents/layout/ActionBar/EventNavbar";
+import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
+import { RiHome5Line } from "react-icons/ri";
+import TorusTab from "./torusComponents/TorusTab";
 
 export default function Navbar({
-  color,
-  setFabricsKey = null,
-  setUpIdKey = null,
-  fabrics,
   tKey,
+  color,
+  fabrics,
   client,
   project,
   children,
   undoredo,
-  setartifact,
   setdomain,
-  getDataFromFabrics,
-  sendDataToFabrics,
-  setToggleReactflow,
-  setMainArtifacts,
+  setartifact,
   setMainVersion,
+  handleTabChange,
+  setMainArtifacts,
+  sendDataToFabrics,
+  setUpIdKey = null,
+  setToggleReactflow,
+  getDataFromFabrics,
+  selectedArtifacts,
+  setSelectedArtifacts,
+  selectedVerison,
+  setSelectedVerison,
+  selectedApplication,
+  setSelectedAppliction,
+  setFabricsKey = null,
 }) {
-  const [selectededArtifacts, setSelectedArtifacts] = useState(new Set());
-
-  const [selectedVersion, setSelectedVersion] = useState(new Set());
-
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
   const [openSaveAsArtifacts, setOpenSaveAsArtifacts] = useState(false);
   const [open, setOpen] = useState(true);
-
+  const [selectedArtifactText, setSelectedArtifactText] = useState(false);
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
   const [projectList, setApplicationList] = useState([]);
-  const [selectedApplictionName, setSelectedApplictionName] = useState(null);
 
-  // const [selectededArtifacts, setSelectedArtifacts] = useState("");
-  const [selectedApplication, setSelectedApplication] = useState(null);
-  const [selectedArtifactsname, setSelectedArtifactsname] = useState("");
+  // const [selectedArtifacts, setSelectedArtifacts] = useState("");
+
+  const [selectedProject, setSelectedProject] = useState(null);
   const [versions, setVersions] = useState([]);
-  const [selectedVerison, setSelectedVerison] = useState("");
 
   const [newArtifactsName, setNewArtifactsName] = useState("");
   const [newArtifactsNameValidation, setNewArtifactsNameValidation] =
@@ -92,7 +91,8 @@ export default function Navbar({
   const [newProjectName, setNewProjectName] = useState("");
   const [newProjectNameValidation, setNewProjectNameValidation] =
     useState(false);
-
+  const [projectCollectionName, setProjectCollectionName] = useState(null);
+  const [artifactCollectionName, setArtifactCollectionName] = useState(null);
   const [openDefaultTemplate, setOpenDefaultTemplate] = useState(false);
   const [selectedsource] = useState("torus");
   const [domainList, setDomainList] = useState([]);
@@ -119,12 +119,13 @@ export default function Navbar({
   const [peurlopen, setPeurlopen] = useState(false);
   const [urlOpen, setUrlOpen] = useState(false);
   const [urls, setUrl] = useState("");
+  const [selectedClient, setSelectedClient] = useState(null);
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
       const res = await saveProcessFlow(
         "create",
-        selectedApplictionName,
+        selectedApplication,
         new Set([newArtifactsName.trim().toLocaleLowerCase()]),
         new Set("v1"),
         erDatas,
@@ -152,7 +153,7 @@ export default function Navbar({
         const res = await saveProcessFlow(
           "create",
           selectedApplication,
-          selectedArtifactsname,
+          selectedArtifacts,
           new Set("v1"),
           erDatas,
         );
@@ -195,7 +196,7 @@ export default function Navbar({
   const handleProcessEngine = async () => {
     try {
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
       await fetch(`${process.env.REACT_APP_API_URL}pe`, {
         method: "POST",
         headers: {
@@ -245,7 +246,7 @@ export default function Navbar({
   const handleDebug = async () => {
     try {
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
 
       await fetch(`${process.env.REACT_APP_API_URL}pe/debugExecution`, {
         method: "POST",
@@ -346,11 +347,11 @@ export default function Navbar({
 
   const getVersion = async (artifact) => {
     try {
-      if (Array.from(artifact)[0]) {
+      if (artifact) {
         const version = await versionList(
           tKey,
           client,
-          Array.from(selectedApplictionName)[0],
+          selectedApplication,
           artifact,
           fabrics,
         );
@@ -379,7 +380,7 @@ export default function Navbar({
       // }
       sendDataToFabrics({});
       setSelectedArtifacts(e);
-      setMainArtifacts && setMainArtifacts(Array.from(e)[0]);
+      setMainArtifacts && setMainArtifacts(e);
     } catch (err) {
       toast.error("Cannot get artifacts details", {
         position: "bottom-right",
@@ -460,15 +461,11 @@ export default function Navbar({
     try {
       setSelectedArtifacts([]);
       setSelectedVerison([]);
-      setSelectedApplictionName(e);
+      setSelectedAppliction(e);
 
-      if (e) {
-        handleIntialLoad(tKey, client, fabrics, Array.from(e)[0]).catch(
-          (err) => {
-            throw err;
-          },
-        );
-      }
+      handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
+        throw err;
+      });
     } catch (err) {
       toast.error("Cannot set selected Application", {
         position: "bottom-right",
@@ -489,7 +486,7 @@ export default function Navbar({
           );
 
           if (response && response?.status === 200) {
-            setApplicationArtifactsName(response.data);
+            setSelectedAppliction(response.data);
           }
         } catch (error) {
           toast.error("Cannot get artifacts details", {
@@ -587,15 +584,15 @@ export default function Navbar({
       const payload = {
         flow: { ...erDatas },
 
-        applicationName: Array.from(selectedApplictionNames)[0],
+        applicationName: selectedApplictionNames,
 
-        artifact: Array.from(selectedArtifactss)[0],
+        artifact: selectedArtifactss,
       };
 
       const response = await saveWorkFlow(
         payload,
         type,
-        Array.from(selectedVerisonss)[0],
+        selectedVerisonss,
         tKey,
         client,
         fabrics,
@@ -606,22 +603,14 @@ export default function Navbar({
             tKey,
             client,
             fabrics,
-            Array.from(selectedApplictionNames)[0] || selectedApplication,
+            selectedApplictionNames || selectedApplication,
           );
           setNewArtifactsName("");
-          setSelectedApplictionName(selectedApplictionNames);
+          setSelectedAppliction(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
-          setMainArtifacts &&
-            setMainArtifacts(Array.from(selectedArtifactss)[0]);
-          handleIntialLoad(
-            tKey,
-            client,
-            fabrics,
-            Array.from(selectedApplictionNames)[0],
-          );
-          setSelectedVerison(
-            new Set([response.data[response.data.length - 1]]),
-          );
+          setMainArtifacts && setMainArtifacts(selectedArtifactss);
+          handleIntialLoad(tKey, client, fabrics, selectedApplictionNames);
+          setSelectedVerison(response.data[response.data.length - 1]);
           setMainVersion &&
             setMainVersion(response.data[response.data.length - 1]);
           if (fabrics) {
@@ -633,7 +622,7 @@ export default function Navbar({
         }
       } else if (response && response.status === 201) {
         if (type === "update") {
-          setSelectedApplictionName(selectedApplictionNames);
+          setSelectedAppliction(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
           if (fabrics) {
             toast.info(`${fabrics} Fabrics updated successfully`, {
@@ -656,11 +645,11 @@ export default function Navbar({
   const getProcessFlowApi = useCallback(
     async (event) => {
       try {
-        if (Array.from(selectedVerison)[0]) {
+        if (selectedVerison) {
           const response = await getJson(
-            Array.from(selectedApplictionName)[0],
-            Array.from(selectedVerison)[0],
-            Array.from(selectededArtifacts)[0],
+            selectedApplication,
+            selectedVerison,
+            selectedArtifacts,
             tKey,
             client,
             fabrics,
@@ -689,8 +678,8 @@ export default function Navbar({
     [
       fabrics,
       client,
-      selectedApplictionName,
-      selectededArtifacts,
+      selectedApplication,
+      selectedArtifacts,
       selectedVerison,
       sendDataToFabrics,
       tKey,
@@ -734,7 +723,7 @@ export default function Navbar({
 
       if (response && response.status === 200) {
         setApplicationList(response.data);
-        setSelectedApplictionName("");
+        setSelectedAppliction("");
         setSelectedArtifacts("");
         setVersions([]);
 
@@ -793,7 +782,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${Array.from(selectededArtifacts)[0]}&version=${e}`,
+        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${selectedArtifacts}&version=${e}`,
         {
           method: "DELETE",
         },
@@ -876,11 +865,11 @@ export default function Navbar({
     try {
       if (!selectedVerison) return;
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tKey}:${client}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`,
+          `${tKey}:${client}:${selectedApplication}:${fabrics}:${artifact}:${version}:`,
         );
       getProcessFlowApi(selectedVerison).catch((err) => {
         throw err;
@@ -890,8 +879,8 @@ export default function Navbar({
     }
   }, [
     selectedVerison,
-    selectededArtifacts,
-    selectedApplictionName,
+    selectedArtifacts,
+    selectedApplication,
     fabrics,
     client,
     setFabricsKey,
@@ -900,13 +889,13 @@ export default function Navbar({
 
   // useEffect(() => {
   //   try {
-  //     setSelectedApplictionName(new Set([application]));
+  //     setSelectedAppliction(new Set([application]));
   //     setArtifactsList([]);
   //     setSelectedArtifacts("");
   //     setVersions([]);
   //     setSelectedVerison("");
-  //     if(selectedApplictionName){
-  //       handleIntialLoad(tKey, client, fabrics, Array.from(selectedApplictionName)[0]).catch((err) => {
+  //     if(selectedApplication){
+  //       handleIntialLoad(tKey, client, fabrics, Array.from(selectedApplication)[0]).catch((err) => {
   //         throw err;
   //       });
   //     }
@@ -917,12 +906,12 @@ export default function Navbar({
 
   // useEffect(() => {
   //   try {
-  //     if (selectedApplictionName) {
+  //     if (selectedApplication) {
   //       handleApplicationLoad(
   //         tKey,
   //         client,
   //         fabrics,
-  //         Array.from(selectedApplictionName)[0]
+  //         Array.from(selectedApplication)[0]
   //       ).catch((err) => {
   //         throw err;
   //       });
@@ -958,37 +947,59 @@ export default function Navbar({
               parentHeading={
                 <div className="flex w-[100%] flex-row items-center justify-center gap-2">
                   <div className="text-sm font-semibold text-black dark:text-white">
-                    {(selectededArtifacts &&
-                      Array.from(selectededArtifacts)[0]) ||
+                    {(selectedArtifacts && selectedArtifacts) ||
                       "Select Artifacts"}
                   </div>
                   <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
-                    {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
+                    {(selectedVerison && selectedVerison) || "*"}
                   </div>
                   <div>
                     <IoIosArrowDown className="text-black dark:text-white" />
                   </div>
                 </div>
               }
-              children={
-                <div className="mt-[4%] flex h-[365px] w-[330px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616]">
-                  <div className="flex w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
-                    <div className="flex w-1/3 justify-start">
-                      <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
-                        Artifact
-                      </p>
-                    </div>
-                    <div className="flex w-2/3 justify-end gap-2">
-                      <CiSquarePlus />
-                      <CiSearch />
-                      <IoCloseOutline />
-                    </div>
-                  </div>
-                  <div className=" flex h-[95%] w-full   items-center justify-center  ">
-                    {/* <TorusDropDown
+              children={({ close }) => (
+                <div className=" mt-[3%] flex h-[400px] w-[450px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]">
+                  {fabrics !== "events" ? (
+                    <>
+                      <div className="flex h-[13%] w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
+                        <div className="flex w-full items-center justify-start">
+                          <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
+                            Library
+                          </p>
+                        </div>
+                        <div className="flex w-full items-center justify-center gap-2">
+                          <Input
+                            startcontent={<CiSearch />}
+                            value={inputValue}
+                            placeholder="Search"
+                            className={
+                              "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300  bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                            }
+                          />
+                        </div>
+                        <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
+                          <div className="flex h-[27px] w-[27px] items-center justify-center rounded-md bg-[#0736C4] p-[5px]">
+                            <ArtifactOpen />
+                          </div>
+
+                          <span
+                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] hover:border"
+                            onClick={() => {
+                              close();
+                              setProjectCollectionName(null);
+                              setArtifactCollectionName(null);
+                            }}
+                          >
+                            <IoCloseOutline />
+                          </span>
+                        </div>
+                      </div>
+                      <div className=" flex h-[74%] w-full items-center  justify-center   ">
+                        {/* <TorusDropDown
                       title={
-                        (selectedApplictionName &&
-                          Array.from(selectedApplictionName)[0]) ||
+                        (selectedApplication &&
+                          Array.from(selectedApplication)[0]) ||
                         "Projects"
                       }
                       classNames={{
@@ -1015,26 +1026,97 @@ export default function Navbar({
                       size={"lg"}
                       setSelected={handleApplicationName}
                     /> */}
-                    <div className=" flex h-full w-1/3 flex-col gap-1 border-r py-4">
-                      {projectList &&
-                        projectList?.map((project, index) => (
-                          <div
-                            onClick={() =>
-                              handleApplicationName(new Set([project]))
-                            }
-                            className="flex w-[100%] flex-row items-center gap-1"
-                          >
-                            <IoIosArrowForward
-                              size={15}
-                              className={`cursor-pointer p-[1px] text-black transition-all delay-75 duration-200 ease-in-out dark:text-white `}
+
+                        <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r">
+                          {/* <div className="flex h-[70px] w-[100%] flex-col  items-center   ">
+                            <TorusTab
+                              defaultSelectedKey={selectedClient}
+                              key="TorusTab"
+                              orientation="vertical"
+                              classNames={{
+                                tabs: "cursor-pointer border",
+                                tabList:
+                                  "w-full h-[100%] border  flex justify-center items-center",
+                                tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  `,
+                              }}
+                              tabs={[
+                                {
+                                  id: "My Artifacts",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                                {
+                                  id: "UF",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                                {
+                                  id: "PF",
+                                  content: ({ isSelected }) => (
+                                    <TorusButton
+                                      btncolor={"primary"}
+                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
+                                      Children={
+                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                          <p className="text-xs text-black dark:text-white">
+                                            New Artifact
+                                          </p>
+                                        </div>
+                                      }
+                                    />
+                                  ),
+                                },
+                              ]}
+                              // onSelectionChange={handleTabChange}
                             />
-                            <div className="w-full cursor-pointer text-xs font-semibold text-black">
-                              {project}
-                            </div>
+                          </div> */}
+                          <div className="flex h-full w-[130px] flex-col  overflow-scroll ">
+                            {projectList &&
+                              projectList?.map((project, index) => (
+                                <div
+                                  onClick={() => {
+                                    handleApplicationName(project);
+                                    setSelectedProject(index);
+                                    setProjectCollectionName(project);
+                                    setArtifactCollectionName(null);
+                                  }}
+                                  className={`${index == selectedProject ? "font-semibold text-black" : "font-normal text-black/35"} flex w-[100%] flex-row items-center gap-1`}
+                                >
+                                  <div
+                                    className={`w-full cursor-pointer text-sm  `}
+                                  >
+                                    {project}
+                                  </div>
+                                </div>
+                              ))}
                           </div>
-                        ))}
-                    </div>
-                    {/* <TorusModularInput
+                        </div>
+                        {/* <TorusModularInput
                       isRequired={true}
                       isReadOnly={false}
                       placeholder="Artifact"
@@ -1067,11 +1149,11 @@ export default function Navbar({
                       className="w-[90%] h-[40px]  border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg"
                     /> */}
 
-                    {/* <ReusableDropDown
+                        {/* <ReusableDropDown
                       key={"ApplicationDropdown"}
                       title={
-                        (selectedApplictionName &&
-                          Array.from(selectedApplictionName)[0]) ||
+                        (selectedApplication &&
+                          Array.from(selectedApplication)[0]) ||
                         "Projects"
                       }
                       darkMode={darkMode}
@@ -1090,116 +1172,151 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectedApplictionName}
+                      selectedKey={selectedApplication}
                       handleSelectedKey={handleApplicationName}
                       handleDelete={(key) => {
                         setSelectedDeletingProjectItem(key);
                         openmodal("project");
                       }}
                     /> */}
-                    <div className=" flex h-full w-2/3 flex-row items-center justify-center gap-1 px-1 py-1 ">
-                      {artifactsList && artifactsList.length > 0 ? (
-                        <>
-                          {artifactsList.map((obj, index) => {
-                            return (
+                        <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
+                          <div className="flex h-[10%] w-[85%] items-center justify-start bg-white">
+                            <Breadcrumbs
+                              isDisabled
+                              className="flex flex-row gap-2 text-xs"
+                            >
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  <RiHome5Line size={15} />
+                                  {client}
+                                  <IoIosArrowForward />
+                                </Link>
+                              </Breadcrumb>
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  {projectCollectionName}
+                                  <IoIosArrowForward />
+                                </Link>
+                              </Breadcrumb>
+                              <Breadcrumb>
+                                <Link className="flex flex-row items-center justify-center gap-1">
+                                  {artifactCollectionName}
+                                </Link>
+                              </Breadcrumb>
+                            </Breadcrumbs>
+                          </div>
+                          <div className="flex h-[90%] w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default ">
+                            {artifactsList && artifactsList.length > 0 ? (
                               <>
-                                <div className="flex h-full w-[65%] flex-row p-2 ">
-                                  <>
-                                    {inputchange !== index ? (
-                                      <div
-                                        onClick={() =>
-                                          handleArtifactsChange(
-                                            new Set([obj?.artifact]),
-                                          )
-                                        }
-                                        className="flex h-[30px] w-full flex-row rounded-md bg-[#F4F5FA] dark:bg-[#0F0F0F]"
-                                      >
-                                        <div className="flex w-10/12 items-center justify-start p-2 text-sm ">
-                                          {obj?.artifact}
-                                        </div>
-                                        <div className="flex w-2/12 items-center justify-end gap-2 p-2">
-                                          <span
-                                            className="cursor-pointer"
-                                            onClick={() =>
-                                              setInputchange(index)
-                                            }
-                                          >
-                                            <FiEdit2 color="black" size={13} />
-                                          </span>
-                                          <span
-                                            className="cursor-pointer"
-                                            onClick={() => setInputValue("")}
-                                          >
-                                            <BsTrash3 color="red" size={13} />
-                                          </span>
-                                        </div>
+                                {artifactsList.map((obj, index) => {
+                                  return (
+                                    <div className="flex h-[30%] w-full items-center justify-center">
+                                      <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
+                                        <>
+                                          {inputchange !== index ? (
+                                            <div
+                                              onClick={() =>
+                                                handleArtifactsChange(
+                                                  obj?.artifact,
+                                                )
+                                              }
+                                              className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
+                                            >
+                                              <div className="flex w-9/12 items-center justify-start truncate text-sm">
+                                                {obj?.artifact}
+                                              </div>
+                                              <div className="flex w-2/12 items-center justify-end gap-2">
+                                                <span
+                                                  className="cursor-pointer"
+                                                  onClick={() =>
+                                                    setInputchange(index)
+                                                  }
+                                                >
+                                                  <FiEdit2
+                                                    color="black"
+                                                    size={13}
+                                                  />
+                                                </span>
+                                                <span
+                                                  className="cursor-pointer"
+                                                  onClick={() =>
+                                                    setInputValue("")
+                                                  }
+                                                >
+                                                  <BsTrash3
+                                                    color="red"
+                                                    size={13}
+                                                  />
+                                                </span>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            <div className="w-full">
+                                              <Input
+                                                defaultValue={obj?.artifact}
+                                                placeholder="Enter text"
+                                                className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                                onKeyDown={(e) => {
+                                                  if (e.key === "Enter") {
+                                                    setInputchange(null);
+                                                  }
+                                                }}
+                                                onChange={(e) => {
+                                                  setInputValue(e.target.value);
+                                                }}
+                                              />
+                                            </div>
+                                          )}
+                                        </>
                                       </div>
-                                    ) : (
-                                      <div className="w-full">
-                                        <Input
-                                          value={inputValue ?? obj}
-                                          placeholder="Enter text"
-                                          className={
-                                            "flex h-[30px] w-[100%] items-center justify-center rounded-md  bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                      <div className="flex h-full w-[25%] items-center justify-center">
+                                        <TorusDropDown
+                                          title={
+                                            (selectedVerison &&
+                                              selectedVerison) ||
+                                            "Version"
                                           }
-                                          onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                              setInputchange(null);
-                                            }
+                                          selectionMode="single"
+                                          selected={new Set([selectedVerison])}
+                                          setSelected={(e) => {
+                                            setSelectedArtifacts(obj?.artifact);
+                                            setSelectedVerison(
+                                              Array.from(e)[0],
+                                            );
+                                            setArtifactCollectionName(
+                                              obj?.artifact,
+                                            );
                                           }}
-                                          onChange={(e) => {
-                                            setInputValue(e.target.value);
+                                          items={
+                                            obj?.versionList &&
+                                            obj?.versionList?.map((item) => ({
+                                              label: item,
+                                              key: item,
+                                            }))
+                                          }
+                                          classNames={{
+                                            buttonClassName:
+                                              "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                                            popoverClassName: "w-[70px]",
+                                            listBoxClassName: "overflow-y-auto",
+                                            listBoxItemClassName:
+                                              "flex text-sm justify-between",
                                           }}
                                         />
                                       </div>
-                                    )}
-                                  </>
-                                </div>
-                                <div className="h-full w-[25%] ">
-                                  <TorusDropDown
-                                    title={
-                                      (selectedVerison &&
-                                        Array.from(selectedVerison)[0]) ||
-                                      "Version"
-                                    }
-                                    selectionMode="single"
-                                    selected={selectedVerison}
-                                    setSelected={(e) => {
-                                      setSelectedArtifacts(
-                                        new Set([obj?.artifact]),
-                                      );
-                                      setSelectedVerison(e);
-                                    }}
-                                    // selectedKeys={selectedVersion}
-                                    // setSelectedKeys={setSelectedVerison}
-                                    items={
-                                      obj?.versionList &&
-                                      obj?.versionList?.map((item) => ({
-                                        label: item,
-                                        key: item,
-                                      }))
-                                    }
-                                    classNames={{
-                                      buttonClassName:
-                                        " rounded-lg w-[100%] text-xs h-[30px] font-medium mt-2 p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                                      popoverClassName: "w-[5%]",
-                                      listBoxClassName: "overflow-y-auto",
-                                      listBoxItemClassName:
-                                        "flex text-sm justify-between",
-                                    }}
-                                  />
-                                </div>
+                                    </div>
+                                  );
+                                })}
                               </>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        <div classNames="flex h-full w-full items-center justify-center">
-                          no artifacts
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center">
+                                no artifacts
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    {/* <div className="col-span-1 flex h-full flex-col gap-1 border-l px-2 py-3">
+
+                        {/* <div className="col-span-1 flex h-full flex-col gap-1 border-l px-2 py-3">
                       {artifactsList &&
                         artifactsList?.map((obj) => (
                           <div
@@ -1221,8 +1338,8 @@ export default function Navbar({
                                 }
                                 darkMode={!darkMode}
                                 isDisabled={
-                                  selectededArtifacts &&
-                                  Array.from(selectededArtifacts)[0]
+                                  selectedArtifacts &&
+                                  Array.from(selectedArtifacts)[0]
                                     ? false
                                     : true
                                 }
@@ -1257,15 +1374,15 @@ export default function Navbar({
                         ))}
                     </div> */}
 
-                    {/* <ReusableDropDown
+                        {/* <ReusableDropDown
                       key={"artifactsDropdown"}
                       title={
-                        (selectededArtifacts &&
-                          Array.from(selectededArtifacts)[0]) ||
+                        (selectedArtifacts &&
+                          Array.from(selectedArtifacts)[0]) ||
                         "Artifacts"
                       }
                       darkMode={darkMode}
-                      isDisabled={!selectedApplictionName ? true : false}
+                      isDisabled={!selectedApplication ? true : false}
                       DropdownMenuClassName={
                         artifactsList && artifactsList.length > 6
                           ? "h-56 overflow-y-scroll"
@@ -1280,7 +1397,7 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectededArtifacts}
+                      selectedKey={selectedArtifacts}
                       handleSelectedKey={handleArtifactsChange}
                       handleDelete={(key) => {
                         setSelectedDeletingArtifactsItem(key);
@@ -1296,8 +1413,8 @@ export default function Navbar({
                       }
                       darkMode={darkMode}
                       isDisabled={
-                        selectededArtifacts &&
-                        Array.from(selectededArtifacts)[0]
+                        selectedArtifacts &&
+                        Array.from(selectedArtifacts)[0]
                           ? false
                           : true
                       }
@@ -1326,37 +1443,57 @@ export default function Navbar({
                         openmodal("version");
                       }}
                     /> */}
-                  </div>
-                  <div className="flex w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
-                    <div className="flex w-1/3 justify-start">
-                      <TorusButton
+                      </div>
+                      <div className="flex h-[13%] w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
+                        <div className="flex w-1/3 items-center justify-start">
+                          <TorusButton
+                            btncolor={"primary"}
+                            buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
+                            Children={
+                              <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                <p className="text-xs text-black dark:text-white">
+                                  New Artifact
+                                </p>
+                              </div>
+                            }
+                          />
+                          {/* <TorusButton
                         onClick={() => {
                           saveProcessFlow(
                             "create",
-                            selectedApplictionName,
-                            selectededArtifacts,
+                            selectedApplication,
+                            selectedArtifacts,
                             selectedVerison,
                             getDataFromFabrics(),
                           );
                         }}
                         buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
                         Children={"Make a copy"}
-                      />
-                    </div>
+                      /> */}
+                        </div>
 
-                    <div className="flex w-2/3 justify-end gap-4">
-                      <TorusButton
-                        buttonClassName=" bg-transparent w-[40px] text-[#0736C4] text-xs dark:text-white flex justify-center items-center"
-                        Children={"Save"}
-                      />
-                      <TorusButton
-                        buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
-                        Children={"Save as"}
-                      />
-                    </div>
-                  </div>
+                        <div className="flex w-2/3 items-center justify-end gap-2">
+                          <TorusButton
+                            buttonClassName=" bg-[#4CAF50]/15 w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs dark:text-white flex justify-center items-center"
+                            Children={"Update"}
+                          />
+                          <TorusButton
+                            buttonClassName=" bg-[#0736C4]/15 w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs dark:text-white flex justify-center items-center"
+                            Children={"Save"}
+                          />
+                          <TorusButton
+                            buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                            Children={"Save as"}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <EventNavbar />
+                  )}
                 </div>
-              }
+              )}
             />
           </div>
 
@@ -1388,6 +1525,19 @@ export default function Navbar({
             </div>
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
+                <TorusButton
+                  isDisabled={!selectedVerison}
+                  onPress={() => {
+                    handleTabChange("events");
+                  }}
+                  className="flex w-[30%] items-center justify-center"
+                  isIconOnly={true}
+                  Children={
+                    <MdOutlineEmojiEvents
+                      className={"stroke-black dark:stroke-white"}
+                    />
+                  }
+                />
                 <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>

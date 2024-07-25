@@ -1011,19 +1011,43 @@ const Home = ({ strokeColor, width, height }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g opacity="0.4">
-        <path
-          d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
-          stroke={strokeColor}
-          stroke-width="1.5"
-        />
-        <path
-          d="M12 15V18"
-          stroke={strokeColor}
-          stroke-width="1.5"
-          stroke-linecap="round"
-        />
-      </g>
+      =
+      <path
+        d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
+        stroke={strokeColor}
+        stroke-width="1.5"
+      />
+      <path
+        d="M12 15V18"
+        stroke={strokeColor}
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
+    </svg>
+  );
+};
+
+const BreadcrumbHome = ({ strokeColor, width, height }) => {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      =
+      <path
+        d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
+        stroke={strokeColor}
+        stroke-width="1.5"
+      />
+      <path
+        d="M12 15V18"
+        stroke={strokeColor}
+        stroke-width="1.5"
+        stroke-linecap="round"
+      />
     </svg>
   );
 };
@@ -1632,6 +1656,37 @@ const ArtifactLogo = ({ className }) => {
     </svg>
   );
 };
+
+const ArtifactOpen = ({ className }) => {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clip-path="url(#clip0_2071_10379)">
+        <path
+          d="M8.66699 7.33333L14.667 1.33333M14.667 1.33333H11.1045M14.667 1.33333V4.89583"
+          stroke="white"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M14.6663 8C14.6663 11.1427 14.6663 12.7141 13.69 13.6903C12.7137 14.6667 11.1423 14.6667 7.99967 14.6667C4.85697 14.6667 3.28563 14.6667 2.30932 13.6903C1.33301 12.7141 1.33301 11.1427 1.33301 8C1.33301 4.8573 1.33301 3.28595 2.30932 2.30965C3.28563 1.33333 4.85697 1.33333 7.99967 1.33333"
+          stroke="white"
+          stroke-linecap="round"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_2071_10379">
+          <rect width="16" height="16" fill="white" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+};
 export {
   Data,
   Wire,
@@ -1689,4 +1744,6 @@ export {
   ArtifactDelete,
   DownArrow,
   ArtifactLogo,
+  ArtifactOpen,
+  BreadcrumbHome,
 };

@@ -138,8 +138,6 @@ export class UfSldService {
     } catch (error) {
       throw error;
     }
-
- 
   }
 
   async deleteApplication(
@@ -236,9 +234,7 @@ export class UfSldService {
         applications[tKey][client][project] &&
         typeof applications === 'object'
       ) {
-        const fabricsList = Object.keys(
-          applications[tKey][client][project],
-        );
+        const fabricsList = Object.keys(applications[tKey][client][project]);
 
         if (fabricsList) {
           for (let fabrics of fabricsList) {
@@ -273,9 +269,23 @@ export class UfSldService {
           if (artifacts.length == 7 && artifacts[4]) aritfact.add(artifacts[4]);
         }
       }
+      let response = [];
+
+      for (let artifact of Array.from(aritfact)) {
+        response.push({
+          artifact: artifact,
+          versionList: await this.getVersion(
+            tKey,
+            client,
+            fabrics,
+            project,
+            artifact,
+          ).then((res) => res.data),
+        });
+      }
 
       return {
-        data: Array.from(aritfact),
+        data: response,
         status: 200,
       };
     } catch (error) {
@@ -283,13 +293,7 @@ export class UfSldService {
     }
   }
 
-  async getVersion(
-    tKey,
-    client,
-    fabrics,
-    project,
-    artifact,
-  ): Promise<any> {
+  async getVersion(tKey, client, fabrics, project, artifact): Promise<any> {
     try {
       const keys = await this.redisService.getKeys(
         `${tKey}:${client}:${project}:${fabrics}:${artifact}`,
@@ -351,7 +355,7 @@ export class UfSldService {
 
       result = {
         nodes: flowNodes,
-        nodeProperty:flowNodes.reduce((acc, node) => {
+        nodeProperty: flowNodes.reduce((acc, node) => {
           if (Object.keys(node.data.nodeProperty).length > 0) {
             acc[node.id] = node.data.nodeProperty;
           }
