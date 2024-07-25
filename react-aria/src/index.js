@@ -10,6 +10,7 @@ import Sample from "./Sample";
 import { TorusDatePicker } from "./torusComponents/TorusDate&TimePickers";
 import Formpage from "./Formpage";
 import TorusNavBar from "./torusComponents/TorusNavBar";
+import TestingToaster from "./torusComponents/TorusToaster/TestingToaster";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -19,13 +20,18 @@ root.render(
       <Router>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/date" element={<TorusDatePicker label={"time"} slot={"start"} openBtn ={true} />} />
+          <Route
+            path="/date"
+            element={
+              <TorusDatePicker label={"time"} slot={"start"} openBtn={true} />
+            }
+          />
           <Route path="/json" element={<RenderJson />} />
           <Route path="/table" element={<Sample />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/form" element={<Formpage />} />
-          <Route path='/nav' element={<TorusNavBar />} />
-
+          <Route path="/nav" element={<TorusNavBar />} />
+          <Route path="/Toast" element={<TestingToaster />} />
         </Routes>
       </Router>
     </DarkmodeProvider>

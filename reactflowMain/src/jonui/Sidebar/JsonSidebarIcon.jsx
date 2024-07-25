@@ -49,12 +49,13 @@ const RenderJsonArraySidebarIcon = memo(
       <>
         <div
           className={
-            "w-[100%] flex  items-center gap-[0.2rem] cursor-pointer" +
+            "w-[100%]  flex z-50 items-center gap-4 cursor-pointer" +
             (activeTab == fg
               ? "text-xs  cursor-pointer text-[#6600ff]"
               : " text-black cursor-pointer")
           }
         >
+         
           <TorusToolTip
             hoverContent={
               shuffledIcons.length > 0 &&
@@ -67,7 +68,7 @@ const RenderJsonArraySidebarIcon = memo(
               )
             }
             tooltipFor="arr"
-            tooltipContent={obj[0].grouplabel}
+            tooltipContent={obj.map((ele) => ele.label ? ele.label : fg)}
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
@@ -87,15 +88,15 @@ export const JsonSidebarIcon = memo(
 
     return (
       <>
-        <div className="max-w-full  bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col p-4 gap-5">
+        <div className="max-w-full relative bg-white dark:bg-[#161616]   h-full overflow-y-scroll scrollbar-none flex flex-col mb-5 p-4 gap-5">
           {obj &&
             Object.keys(obj).map((ele, i) => {
               if (typeof obj[ele] == "object" && !Array.isArray(obj[ele])) {
                 return (
-                  <div key={i + ele}>
+                  <div key={i + ele} className="">
                     <span
                       className={
-                        " flex items-center text-xs cursor-pointer gap-4" +
+                        " flex items-center z-50 text-xs cursor-pointer gap-4" +
                         (activeTab === ele
                           ? " cursor-pointer  text-xs text-[#0073e6]"
                           : "text-black cursor-pointer")

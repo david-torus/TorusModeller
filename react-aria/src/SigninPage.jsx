@@ -1,4 +1,4 @@
-import { Input, Label, TextField } from "react-aria-components";
+import { Input, Label, TextField, Button } from "react-aria-components";
 import TorusCheckBox from "./torusComponents/TorusCheckBox";
 import TorusTimePicker, {
   TorusDatePicker,
@@ -17,6 +17,7 @@ import TorusDropDown from "./torusComponents/TorusDropDown.tsx";
 import { BsClockHistory } from "react-icons/bs";
 import TorusSelector from "./torusComponents/TorusSelector";
 import TorusSwitch from "./torusComponents/TorusSwitch";
+import { toast, ToastContainer } from "react-toastify";
 import {
   FaSearch,
   FaSearchLocation,
@@ -36,6 +37,7 @@ import TorusModularTextArea from "./torusComponents/TorusModularTextArea.tsx";
 import PortalDropdown from "./torusComponents/PortalDropdown.jsx";
 import TorusModularDatePicker from "./torusComponents/TorusDatePicker/TorusModularDatePicker.tsx";
 import TorusModularTimePicker from "./torusComponents/TorusModularTimePicker/TorusModularTimePicker.tsx";
+import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -52,6 +54,9 @@ export default function SignIn() {
   const [inputValue, setInputValue] = useState("");
   const [textArea, setTextArea] = useState("");
   const [textValue, setTextValue] = useState("");
+  const [wordLength, setWordLength] = useState(null);
+
+  console.log(wordLength, "wordLength");
 
   const handleInputChange = (value) => {
     setInputValue(value);
@@ -93,12 +98,101 @@ export default function SignIn() {
 
   console.log(date, "date");
 
-  const outPutFn = () => {
-    console.log(finalValues);
+  const outPutFn1 = () => {
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "warning",
+        position: "bottom-right",
+        autoClose: 50000,
+        hideProgressBar: true,
+        title: "Toast Title",
+        text: `Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei,
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique,
+      et simul causae vocibus vix. Et eos dicit labore, nam ne facer iracundia persequeris.
+      Ut mentitum feugiat eum. Et pro copiosae senserit. Quis nullam labitur ea per,
+      nec diam luptatum voluptaria ex.Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei,
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique,
+      et simul causae vocibus vix. Et eos dicit labore, nam ne facer iracundia persequeris.
+      Ut mentitum feugiat eum. Et pro copiosae senserit. Quis nullam labitur ea per,
+      nec diam luptatum voluptaria ex.
+      Et pro copiosae senserit. Quis nullam labitur ea per,
+      nec diam luptatum voluptaria ex.Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei,
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique,
+      et simul causae vocibus vix. Et eos dicit labore, nam ne facer iracundia persequeris.
+      Ut mentitum feugiat eum. Et pro copiosae senserit. Quis nullam labitur ea per,
+      nec diam luptatum voluptaria ex luptatum voluptaria ex luptatum voluptaria ex.`,
+
+        closeButton: false,
+      }
+    );
   };
 
+  const outPutFn2 = () => {
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "error",
+        position: "bottom-right",
+        autoClose: 50000,
+        hideProgressBar: true,
+        title: "Toast Title",
+        text: `Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum. Id sea eirmod eruditi, usu in elitr reprimique, 
+      et simul causae vocibus vix. Et eos dicit labore, nam ne facer iracundia persequeris. 
+      Ut mentitum feugiat eum. Et pro copiosae senserit. Quis nullam labitur ea per, 
+      nec diam luptatum voluptaria ex.Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti aliquando abhorreant cum.
+  `,
+        closeButton: false,
+      }
+    );
+  };
+
+  const outPutFn3 = () => {
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "info",
+        position: "bottom-right",
+        autoClose: 50000,
+        hideProgressBar: true,
+        title: "Toast Title",
+        text: `Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti  Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti  Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+      ut deleniti`,
+        closeButton: false,
+      }
+    );
+  };
+
+  const outPutFn4 = () => {
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "success",
+        position: "bottom-right",
+        autoClose: 50000,
+        hideProgressBar: true,
+        title: "Toast Title",
+        text: `Lorem ipsum dolor sit amet, ius fabulas splendide interesset ei, 
+  `,
+        closeButton: false,
+      }
+    );
+  };
   return (
     <div className="w-full  flex-col h-screen bg-gradient-to-tr from-fuchsia-500 to-teal-300 flex justify-center items-center">
+      <ToastContainer
+        newestOnTop
+        icon={false}
+        pauseOnHover={false}
+        hideProgressBar={true}
+        className={`flex justify-end items-center min-w-[80%] max-w-[85%]`}
+      />
       <h1 className="text-3xl font-bold text-center">Sign In Page</h1>
       <div className="w-[30%] flex flex-col items-center justify-start bg-slate-200 rounded-xl shadow-xl py-3 overflow-y-scroll scrollbar-hide">
         <div className="w-[80%]  flex flex-col justify-center items">
@@ -405,19 +499,11 @@ export default function SignIn() {
             </div>
           </div>
 
-          <div className="w-[100%] flex justify-center items-center">
-            <TorusButton
-              Children="Submit"
-              onPress={outPutFn}
-              width={"full"}
-              // btncolor={"#D54CEE"}
-              outlineColor="torus-hover:ring-fuchsia-500/50"
-              radius={"lg"}
-              pressFunc={outPutFn}
-              color={"#000000"}
-              gap={"py-4"}
-              marginT="mt-3"
-            />
+          <div className="w-[100%] flex justify-between items-center">
+            <Button onPress={() => outPutFn1()}>Warning</Button>
+            <Button onPress={() => outPutFn4()}>sucess</Button>
+            <Button onPress={() => outPutFn3()}>Info</Button>
+            <Button onPress={() => outPutFn2()}>error</Button>
           </div>
         </div>
       </div>
