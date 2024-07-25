@@ -40,7 +40,7 @@ const TorusToast = ({ closeToast, toastProps, setWordLength }) => {
           ? "30rem "
           : length > 180 && length <= 210
           ? "45rem "
-          : "8rem ";
+          : "50rem ";
     }
   }
 

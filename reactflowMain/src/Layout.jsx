@@ -248,11 +248,12 @@ export default function Layout({ client }) {
                     <>
                       <SideBar />
                       {selectedFabric !== "Home" && selectedFabric !== "SF" && (
-                        <>
+                        <div>
                           <NodeGallery
                             color={colors[selectedFabric]?.light}
                             showFabricSideBar={showFabricSideBar}
                             handleSidebarToggle={handleSidebarToggle}
+                            showNodeProperty={showNodeProperty}
                           />
                           <MiniMap
                             position="bottom-right"
@@ -278,39 +279,34 @@ export default function Layout({ client }) {
                             />
                           )}
                           <Background variant="dots" gap={12} size={1} />
-                        </>
+                        </div>
                       )}
                     </>
                   )}
                 </FabricsSelector>
-            </TorusModellerContext.Provider>
+              </TorusModellerContext.Provider>
 
-              <div className="h-full bg-[#FFFFFF] border ">
-                {showNodeProperty && (
-                  <>
-                    <>
-                      <div
-                        className=" w-[100%] flex justify-end top-0  cursor-pointer"
-                        onClick={() => setShowNodeProperty(!showNodeProperty)}
-                      >
-                        x
-                      </div>
-                    </>
-                    <>
-                      <NewNodeInfoSidebar
-                        showNodeProperty={showNodeProperty}
-                        sideBarData={nodePropertyData}
-                        updatedNodeConfig={updatedNodeConfig}
-                        currentDrawing={selectedFabric}
-                        setShowNodeProperty={setShowNodeProperty}
-                        nodeInfoTabs={nodeInfoTabs}
-                        setToggleReactflow={setToggleReactflow}
-                        setDenormalizedata={setDenormalizedata}
-                      />
-                    </>
-                  </>
-                )}
-              </div>
+              {showNodeProperty && (
+                <div className="h-full border bg-[#FFFFFF]  ">
+                  <div
+                    className=" top-0 flex w-[100%] cursor-pointer  justify-end"
+                    onClick={() => setShowNodeProperty(!showNodeProperty)}
+                  >
+                    x
+                  </div>
+
+                  <NewNodeInfoSidebar
+                    showNodeProperty={showNodeProperty}
+                    sideBarData={nodePropertyData}
+                    updatedNodeConfig={updatedNodeConfig}
+                    currentDrawing={selectedFabric}
+                    setShowNodeProperty={setShowNodeProperty}
+                    nodeInfoTabs={nodeInfoTabs}
+                    setToggleReactflow={setToggleReactflow}
+                    setDenormalizedata={setDenormalizedata}
+                  />
+                </div>
+              )}
 
               {/* <RenderJson /> */}
             </div>
