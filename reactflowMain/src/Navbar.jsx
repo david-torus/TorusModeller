@@ -63,12 +63,12 @@ export default function Navbar({
   setUpIdKey = null,
   setToggleReactflow,
   getDataFromFabrics,
-  selectededArtifacts,
+  selectedArtifacts,
   setSelectedArtifacts,
   selectedVerison,
   setSelectedVerison,
   selectedApplication,
-  setSelectedApplictionName,
+  setSelectedAppliction,
   setFabricsKey = null,
 }) {
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
@@ -80,8 +80,8 @@ export default function Navbar({
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
   const [projectList, setApplicationList] = useState([]);
 
-  // const [selectededArtifacts, setSelectedArtifacts] = useState("");
-  const [selectedApplication, setSelectedApplication] = useState(null);
+  // const [selectedArtifacts, setSelectedArtifacts] = useState("");
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [versions, setVersions] = useState([]);
 
@@ -153,7 +153,7 @@ export default function Navbar({
         const res = await saveProcessFlow(
           "create",
           selectedApplication,
-          selectedArtifactsname,
+          selectedArtifacts,
           new Set("v1"),
           erDatas,
         );
@@ -196,7 +196,7 @@ export default function Navbar({
   const handleProcessEngine = async () => {
     try {
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
       await fetch(`${process.env.REACT_APP_API_URL}pe`, {
         method: "POST",
         headers: {
@@ -246,7 +246,7 @@ export default function Navbar({
   const handleDebug = async () => {
     try {
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
 
       await fetch(`${process.env.REACT_APP_API_URL}pe/debugExecution`, {
         method: "POST",
@@ -461,7 +461,7 @@ export default function Navbar({
     try {
       setSelectedArtifacts([]);
       setSelectedVerison([]);
-      setSelectedApplictionName(e);
+      setSelectedAppliction(e);
 
       if (e) {
         handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
@@ -608,7 +608,7 @@ export default function Navbar({
             selectedApplictionNames || selectedApplication,
           );
           setNewArtifactsName("");
-          setSelectedApplictionName(selectedApplictionNames);
+          setSelectedAppliction(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
           setMainArtifacts && setMainArtifacts(selectedArtifactss);
           handleIntialLoad(tKey, client, fabrics, selectedApplictionNames);
@@ -624,7 +624,7 @@ export default function Navbar({
         }
       } else if (response && response.status === 201) {
         if (type === "update") {
-          setSelectedApplictionName(selectedApplictionNames);
+          setSelectedAppliction(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
           if (fabrics) {
             toast.info(`${fabrics} Fabrics updated successfully`, {
@@ -651,7 +651,7 @@ export default function Navbar({
           const response = await getJson(
             selectedApplication,
             selectedVerison,
-            selectededArtifacts,
+            selectedArtifacts,
             tKey,
             client,
             fabrics,
@@ -681,7 +681,7 @@ export default function Navbar({
       fabrics,
       client,
       selectedApplictionName,
-      selectededArtifacts,
+      selectedArtifacts,
       selectedVerison,
       sendDataToFabrics,
       tKey,
@@ -725,7 +725,7 @@ export default function Navbar({
 
       if (response && response.status === 200) {
         setApplicationList(response.data);
-        setSelectedApplictionName("");
+        setSelectedAppliction("");
         setSelectedArtifacts("");
         setVersions([]);
 
@@ -784,7 +784,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${selectededArtifacts}&version=${e}`,
+        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${selectedArtifacts}&version=${e}`,
         {
           method: "DELETE",
         },
@@ -867,7 +867,7 @@ export default function Navbar({
     try {
       if (!selectedVerison) return;
       const version = [...selectedVerison][0];
-      const artifact = [...selectededArtifacts][0];
+      const artifact = [...selectedArtifacts][0];
 
       if (setFabricsKey)
         setFabricsKey(
@@ -881,7 +881,7 @@ export default function Navbar({
     }
   }, [
     selectedVerison,
-    selectededArtifacts,
+    selectedArtifacts,
     selectedApplication,
     fabrics,
     client,
@@ -891,7 +891,7 @@ export default function Navbar({
 
   // useEffect(() => {
   //   try {
-  //     setSelectedApplictionName(new Set([application]));
+  //     setSelectedAppliction(new Set([application]));
   //     setArtifactsList([]);
   //     setSelectedArtifacts("");
   //     setVersions([]);
@@ -949,7 +949,7 @@ export default function Navbar({
               parentHeading={
                 <div className="flex w-[100%] flex-row items-center justify-center gap-2">
                   <div className="text-sm font-semibold text-black dark:text-white">
-                    {(selectededArtifacts && selectededArtifacts) ||
+                    {(selectedArtifacts && selectedArtifacts) ||
                       "Select Artifacts"}
                   </div>
                   <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
@@ -1343,8 +1343,8 @@ export default function Navbar({
                                 }
                                 darkMode={!darkMode}
                                 isDisabled={
-                                  selectededArtifacts &&
-                                  Array.from(selectededArtifacts)[0]
+                                  selectedArtifacts &&
+                                  Array.from(selectedArtifacts)[0]
                                     ? false
                                     : true
                                 }
@@ -1382,8 +1382,8 @@ export default function Navbar({
                         {/* <ReusableDropDown
                       key={"artifactsDropdown"}
                       title={
-                        (selectededArtifacts &&
-                          Array.from(selectededArtifacts)[0]) ||
+                        (selectedArtifacts &&
+                          Array.from(selectedArtifacts)[0]) ||
                         "Artifacts"
                       }
                       darkMode={darkMode}
@@ -1402,7 +1402,7 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectededArtifacts}
+                      selectedKey={selectedArtifacts}
                       handleSelectedKey={handleArtifactsChange}
                       handleDelete={(key) => {
                         setSelectedDeletingArtifactsItem(key);
@@ -1418,8 +1418,8 @@ export default function Navbar({
                       }
                       darkMode={darkMode}
                       isDisabled={
-                        selectededArtifacts &&
-                        Array.from(selectededArtifacts)[0]
+                        selectedArtifacts &&
+                        Array.from(selectedArtifacts)[0]
                           ? false
                           : true
                       }
@@ -1468,7 +1468,7 @@ export default function Navbar({
                           saveProcessFlow(
                             "create",
                             selectedApplictionName,
-                            selectededArtifacts,
+                            selectedArtifacts,
                             selectedVerison,
                             getDataFromFabrics(),
                           );
