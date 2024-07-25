@@ -64,7 +64,9 @@ export default function Layout({ client }) {
   };
 
   const eventsNavBarData = useMemo(() => {
-    return gettingValues(prevNodesEdges?.nodes);
+    if (gettingValues(prevNodesEdges?.nodes))
+      return gettingValues(prevNodesEdges?.nodes);
+    else return [];
   }, [prevNodesEdges]);
 
   const handleTabChange = (fabric) => {
@@ -181,60 +183,60 @@ export default function Layout({ client }) {
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
   return (
-    <div
-      className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
+    <TorusModellerContext.Provider
+      value={{
+        ref,
+        onPaneClick,
+        selectedFabric,
+        handleTabChange,
+        eventsNavBarData,
+        nodePropertyData,
+        onNodeContextMenu,
+        selectedControlEvents,
+        setSelectedControlEvents,
+      }}
     >
-      {!toggleReactflow.rule &&
-      !toggleReactflow.mapper &&
-      !toggleReactflow.code ? (
-        <>
-          <div className="sticky top-0 h-[8%] w-full">
-            <Navbar
-              tKey={"FRK"}
-              client={client}
-              project={""}
-              fabrics={selectedFabric}
-              handleTabChange={handleTabChange}
-              color={colors[selectedFabric]?.light}
-              sendDataToFabrics={(data) => {
-                setEdges(data?.nodeEdges ?? []);
-                setNodes(data?.nodes ?? []);
-              }}
-              getDataFromFabrics={() => ({
-                nodes: nodes,
-                edges: edges,
-              })}
-              // setdomain={setDomain}
-              // setartifact={setArtifact}
-              // mainVersion={mainVersion}
-              // setMainVersion={setVersion}
-              // sendartifact={sendartifact}
-              // mainArtifacts={mainArtifacts}
-              // setMainArtifacts={setMainArtifacts}
-              // setToggleReactflow={setToggleReactflow}
-              // undoredo={{ undo, redo, canUndo, canRedo }}
-              // selecetedWholeVersion={selecetedWholeVersion}
-              // setSelectedWholeVersion={setSelectedWholeVersion}
-            />
-          </div>
-
-          <div
-            className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}
-          >
-            <div className="flex h-[100%] w-[100%]">
-              <TorusModellerContext.Provider
-                value={{
-                  ref,
-                  onPaneClick,
-                  selectedFabric,
-                  handleTabChange,
-                  eventsNavBarData,
-                  nodePropertyData,
-                  onNodeContextMenu,
-                  selectedControlEvents,
-                  setSelectedControlEvents,
+      <div
+        className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
+      >
+        {!toggleReactflow.rule &&
+        !toggleReactflow.mapper &&
+        !toggleReactflow.code ? (
+          <>
+            <div className="sticky top-0 h-[8%] w-full">
+              <Navbar
+                tKey={"FRK"}
+                client={client}
+                project={""}
+                fabrics={selectedFabric}
+                handleTabChange={handleTabChange}
+                color={colors[selectedFabric]?.light}
+                sendDataToFabrics={(data) => {
+                  setEdges(data?.nodeEdges ?? []);
+                  setNodes(data?.nodes ?? []);
                 }}
-              >
+                getDataFromFabrics={() => ({
+                  nodes: nodes,
+                  edges: edges,
+                })}
+                // setdomain={setDomain}
+                // setartifact={setArtifact}
+                // mainVersion={mainVersion}
+                // setMainVersion={setVersion}
+                // sendartifact={sendartifact}
+                // mainArtifacts={mainArtifacts}
+                // setMainArtifacts={setMainArtifacts}
+                // setToggleReactflow={setToggleReactflow}
+                // undoredo={{ undo, redo, canUndo, canRedo }}
+                // selecetedWholeVersion={selecetedWholeVersion}
+                // setSelectedWholeVersion={setSelectedWholeVersion}
+              />
+            </div>
+
+            <div
+              className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}
+            >
+              <div className="flex h-[100%] w-[100%]">
                 <FabricsSelector
                   nodes={nodes}
                   edges={edges}
@@ -294,60 +296,60 @@ export default function Layout({ client }) {
                     </>
                   )}
                 </FabricsSelector>
-              </TorusModellerContext.Provider>
 
-              <div className="h-full border bg-[#FFFFFF] ">
-                {showNodeProperty && (
-                  <>
+                <div className="h-full border bg-[#FFFFFF] ">
+                  {showNodeProperty && (
                     <>
-                      <div
-                        className=" top-0 flex w-[100%] cursor-pointer  justify-end"
-                        onClick={() => setShowNodeProperty(!showNodeProperty)}
-                      >
-                        x
-                      </div>
+                      <>
+                        <div
+                          className=" top-0 flex w-[100%] cursor-pointer  justify-end"
+                          onClick={() => setShowNodeProperty(!showNodeProperty)}
+                        >
+                          x
+                        </div>
+                      </>
+                      <>
+                        <NewNodeInfoSidebar
+                          nodeInfoTabs={nodeInfoTabs}
+                          sideBarData={nodePropertyData}
+                          currentDrawing={selectedFabric}
+                          showNodeProperty={showNodeProperty}
+                          updatedNodeConfig={updatedNodeConfig}
+                          setToggleReactflow={setToggleReactflow}
+                          setDenormalizedata={setDenormalizedata}
+                          setShowNodeProperty={setShowNodeProperty}
+                        />
+                      </>
                     </>
-                    <>
-                      <NewNodeInfoSidebar
-                        nodeInfoTabs={nodeInfoTabs}
-                        sideBarData={nodePropertyData}
-                        currentDrawing={selectedFabric}
-                        showNodeProperty={showNodeProperty}
-                        updatedNodeConfig={updatedNodeConfig}
-                        setToggleReactflow={setToggleReactflow}
-                        setDenormalizedata={setDenormalizedata}
-                        setShowNodeProperty={setShowNodeProperty}
-                      />
-                    </>
-                  </>
-                )}
+                  )}
+                </div>
+
+                {/* <RenderJson /> */}
               </div>
-
-              {/* <RenderJson /> */}
             </div>
-          </div>
-        </>
-      ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
-        <Gorule
-          sideBarData={nodePropertyData}
-          updatedNodeConfig={updatedNodeConfig}
-          setToggleReactflow={setToggleReactflow}
-        />
-      ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
-        <Mapper
-          sideBarData={nodePropertyData}
-          updatedNodeConfig={updatedNodeConfig}
-          setToggleReactflow={setToggleReactflow}
-        />
-      ) : toggleReactflow.code ? (
-        <MonacoEditor
-          sideBarData={nodePropertyData}
-          updatedNodeConfig={updatedNodeConfig}
-          setToggleReactflow={setToggleReactflow}
-        />
-      ) : (
-        <>nothing</>
-      )}
-    </div>
+          </>
+        ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
+          <Gorule
+            sideBarData={nodePropertyData}
+            updatedNodeConfig={updatedNodeConfig}
+            setToggleReactflow={setToggleReactflow}
+          />
+        ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
+          <Mapper
+            sideBarData={nodePropertyData}
+            updatedNodeConfig={updatedNodeConfig}
+            setToggleReactflow={setToggleReactflow}
+          />
+        ) : toggleReactflow.code ? (
+          <MonacoEditor
+            sideBarData={nodePropertyData}
+            updatedNodeConfig={updatedNodeConfig}
+            setToggleReactflow={setToggleReactflow}
+          />
+        ) : (
+          <>nothing</>
+        )}
+      </div>
+    </TorusModellerContext.Provider>
   );
 }
