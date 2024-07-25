@@ -48,7 +48,7 @@ export default function EventsMain({
   return (
     <div className="h-[100%] overflow-hidden">
       <div className="h-[8%]">
-        <EventNavbar
+        {/* <EventNavbar
           data={getdata}
           setData={setData}
           setToggleReactflow={setToggleReactflow}
@@ -62,7 +62,7 @@ export default function EventsMain({
           setSelectedControlEvents={setSelectedControlEvents}
           selecetedWholeVersion={selecetedWholeVersion}
           setSelectedWholeVersion={setSelectedWholeVersion}
-        />
+        /> */}
       </div>
       <div className="h-[92%]">
         <EventDisplay

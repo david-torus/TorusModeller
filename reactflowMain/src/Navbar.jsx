@@ -1432,16 +1432,19 @@ export default function Navbar({
             </div>
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
-                <div
-                  onClick={() => {
+                <TorusButton
+                  isDisabled={!selectedVerison}
+                  onPress={() => {
                     handleTabChange("events");
                   }}
                   className="flex w-[30%] items-center justify-center"
-                >
-                  <MdOutlineEmojiEvents
-                    className={"stroke-black dark:stroke-white"}
-                  />
-                </div>
+                  isIconOnly={true}
+                  Children={
+                    <MdOutlineEmojiEvents
+                      className={"stroke-black dark:stroke-white"}
+                    />
+                  }
+                />
                 <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>

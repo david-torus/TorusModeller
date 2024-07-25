@@ -32,6 +32,7 @@ import ContextMenu from "./ContextMenu/ContextMenu";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { MinimapComponent } from "./ContextMenu/Minimap/Minimap";
+import { TorusModellerContext } from "../../../Layout";
 
 const proOptions = { account: "paid-pro", hideAttribution: true };
 
@@ -48,16 +49,24 @@ const defaultEdgeOptions = { style: { stroke: "#ff66aa", strokeWidth: 3 } };
  * @param {Function} props.sendData - The function to send data.
  * @return {JSX.Element} The rendered event dashboard component.
  */
-export function EventDashBoard({ data, currentDrawing, sendData }) {
+export function EventDashBoard({
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+  onNodesChange,
+  onEdgesChange,
+  currentDrawing = "UF",
+}) {
   const { getNode } = useReactFlow();
   const { screenToFlowPosition } = useReactFlow();
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { ref, onNodeContextMenu, onPaneClick } =
+    useContext(TorusModellerContext);
   const [nodeConfig, setNodeConfig] = useState([]);
   // const [strength, setStrength] = useState(-1000);
   // const [distance, setDistance] = useState(750);
   const [menu, setMenu] = useState(null);
-  const ref = useRef(null);
+
   const [uniqueNames, setUniqueNames] = useState([]);
   const [nodeData, setNodeData] = useState(null);
   const [mainSequence, setMainSequence] = useState(0);
@@ -72,45 +81,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
       handlerNode: HandlerNode,
       responseNode: ResponseNode,
     }),
-    []
-  );
-
-  const onPaneClick = useCallback(
-    (evt) => {
-      setMenu(null);
-    },
-    [setMenu]
-  );
-
-  /**
-   * Handles the context menu event on a node.
-   *
-   * @param {Event} event - The context menu event.
-   * @param {Object} node - The node that was right-clicked.
-   * @return {void}
-   */
-  const onNodeContextMenu = useCallback(
-    (event, node) => {
-      try {
-        event.preventDefault();
-
-        const pane = ref.current.getBoundingClientRect();
-        setMenu({
-          id: node.id,
-          top: event.clientY < pane.height - 200 && event.clientY - 80,
-          left: event.clientX < pane.width - 200 && event.clientX - 150,
-          right:
-            event.clientX >= pane.width - 200 &&
-            pane.width - event.clientX + 150,
-          bottom:
-            event.clientY >= pane.height - 200 &&
-            pane.height - event.clientY + 80,
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [setMenu]
+    [],
   );
 
   /**
@@ -141,7 +112,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
         console.error(error);
       }
     },
-    [getNode]
+    [getNode],
   );
 
   /**
@@ -218,7 +189,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
       }
     },
 
-    [setNodes, setEdges, validateChildern]
+    [setNodes, setEdges, validateChildern],
   );
 
   /**
@@ -236,46 +207,15 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
               ...params,
               type: "straight",
             },
-            eds
-          )
+            eds,
+          ),
         );
       } catch (error) {
         console.error(error);
       }
     },
-    [setEdges]
+    [setEdges],
   );
-
-  useEffect(() => {
-    try {
-      if ((data && data?.nodes && data.nodeEdges) || data.nodeProperty) {
-        setNodes(data.nodes);
-        setEdges(data.nodeEdges);
-        setNodeConfig(data.nodeProperty);
-      }
-
-      if (!data || !data?.nodes || data?.nodes.length === 0) {
-        setNodes(() => []);
-        setEdges(() => []);
-        setNodeConfig({});
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [data, setEdges, setNodes]);
-
-  useEffect(() => {
-    try {
-      if (
-        (nodes && edges && nodes?.length > 0 && edges.length > 0) ||
-        nodeConfig
-      ) {
-        sendData({ nodes: nodes, nodeEdges: edges, nodeProperty: {} });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [nodes, edges, nodeConfig, sendData]);
 
   useEffect(() => {
     try {
@@ -317,10 +257,10 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
 
         const eventName = event.dataTransfer.getData("application/eventName");
         const parentNode = JSON.parse(
-          event.dataTransfer.getData("application/parentNode")
+          event.dataTransfer.getData("application/parentNode"),
         );
         let parentGroupNode = event.dataTransfer.getData(
-          "application/parentGroupNode"
+          "application/parentGroupNode",
         );
 
         if (parentGroupNode) parentGroupNode = JSON.parse(parentGroupNode);
@@ -427,9 +367,9 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                 getNode(
                   parentGroup.data.children[
                     parentGroup.data.children.length - 1
-                  ]
+                  ],
                 ).data.sequence.split(".")[1],
-                10
+                10,
               );
 
               let newChildId = `${parentGroup.data.sequence}.${lastSequence + 1}.1`;
@@ -593,7 +533,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
       setEdges,
       setNodes,
       screenToFlowPosition,
-    ]
+    ],
   );
 
   /**
@@ -755,7 +695,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
       >
         <Accordion
           variant="shadow"
-          className="flex flex-col gap-1 w-full max-w-[200px] max-h-[300px]"
+          className="flex max-h-[300px] w-full max-w-[200px] flex-col gap-1"
           itemClasses={{
             base: "py-0 w-[75%] h-[500px] bg-transparent border-0",
             title: darkMode
@@ -818,10 +758,10 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
               trigger:
                 "px-1 py-0 data-[hover=true]:bg-default-200 bg-transparent rounded-lg h-14 flex items-center",
             }}
-            className="p-2 bg-transparent border-0"
+            className="border-0 bg-transparent p-2"
           >
-            <div className="flex flex-col justify-center items-center gap-2 w-[200px] ml-[-10px]">
-              <div className="p-2 ml-[-20px]">
+            <div className="ml-[-10px] flex w-[200px] flex-col items-center justify-center gap-2">
+              <div className="ml-[-20px] p-2">
                 <Slider
                   size="sm"
                   // onChange={(e) => setStrength(e)}
@@ -872,14 +812,14 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   renderThumb={(props) => (
                     <div
                       {...props}
-                      className={`group p-[6px]  top-1/2 ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
+                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
                     >
-                      <span className="transition-transform bg-gradient-to-br shadow-small from-secondary-100 to-secondary-500 rounded-full w-3 h-4 block group-data-[dragging=true]:scale-100" />
+                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
                     </div>
                   )}
                 />
               </div>
-              <div className="p-2 ml-[-20px]">
+              <div className="ml-[-20px] p-2">
                 <Slider
                   radius="full"
                   size="sm"
@@ -930,9 +870,9 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
                   renderThumb={(props) => (
                     <div
                       {...props}
-                      className={`group p-[6px]  top-1/2 ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  shadow-medium rounded-full cursor-grab data-[dragging=true]:cursor-grabbing`}
+                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
                     >
-                      <span className="transition-transform bg-gradient-to-br shadow-small from-secondary-100 to-secondary-500 rounded-full w-3 h-4 block group-data-[dragging=true]:scale-100" />
+                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
                     </div>
                   )}
                 />
@@ -944,7 +884,7 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
 
       {!miniMapOpn && (
         <Button
-          className="w-1 p-1 absolute right-3 bottom-3 z-50 bg-[#333334]  rounded-md "
+          className="absolute bottom-3 right-3 z-50 w-1 rounded-md bg-[#333334]  p-1 "
           onPress={() => setMinimapOpn(true)}
           isIconOnly
         >
@@ -956,8 +896,8 @@ export function EventDashBoard({ data, currentDrawing, sendData }) {
         <Button
           className={
             darkMode
-              ? "bg-[#333334] w-[5px] rounded-full absolute right-0 bottom-[180px] z-50 cursor-pointer"
-              : "bg-[#E4E3E3] w-[5px] rounded-full absolute right-0 bottom-[180px] z-50 cursor-pointer"
+              ? "absolute bottom-[180px] right-0 z-50 w-[5px] cursor-pointer rounded-full bg-[#333334]"
+              : "absolute bottom-[180px] right-0 z-50 w-[5px] cursor-pointer rounded-full bg-[#E4E3E3]"
           }
           onClick={() => setMinimapOpn(false)}
           isIconOnly

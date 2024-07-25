@@ -29,6 +29,7 @@ export default function EventNavbar({
 }) {
   const { eventsNavBarData, setSelectedControlEvents } =
     useContext(TorusModellerContext);
+    console.log("eventsNavBarData", eventsNavBarData);
   const [open, setOpen] = useState(false);
 
   const [versions, setVersions] = useState([]);

@@ -8,8 +8,12 @@ import { AnimatePresence, motion } from "framer-motion";
 export const eventSourceNodesJsonContext = createContext([]);
 
 export default function EventDisplay({
-  datas,
-  sendData,
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+  onNodesChange,
+  onEdgesChange,
   controlJson,
   currentDrawing,
   selectedControlEvents,
@@ -19,7 +23,7 @@ export default function EventDisplay({
   return (
     <eventSourceNodesJsonContext.Provider value={controlJson}>
       <div
-        className={`w-full h-full flex items-center mt-[0px] ${darkMode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
+        className={`mt-[0px] flex h-full w-full items-center ${darkMode ? "bg-[#1D1D1D]" : "bg-[#f0f0f0]"}`}
       >
         {selectedControlEvents && (
           <AnimatePresence mode="sync">
@@ -37,18 +41,19 @@ export default function EventDisplay({
 
         <div
           className={
-            " h-full border-r border-gray-600 transition-all duration-75 ease-in-out delay-75 " +
+            " h-full border-r border-gray-600 transition-all delay-75 duration-75 ease-in-out " +
             (selectedControlEvents ? "w-[85%]" : "w-full")
           }
         >
-          <div className="w-full h-full flex justify-center items-center">
-            <ReactFlowProvider>
-              <EventDashBoard
-                data={datas}
-                sendData={sendData}
-                currentDrawing={currentDrawing}
-              />
-            </ReactFlowProvider>
+          <div className="flex h-full w-full items-center justify-center">
+            <EventDashBoard
+              nodes={nodes}
+              edges={edges}
+              setEdges={setEdges}
+              setNodes={setNodes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+            />
           </div>
         </div>
       </div>
@@ -67,7 +72,7 @@ const EventScreen = ({ json }) => {
   const onDragStart = (event, eventName, parentNode) => {
     event.dataTransfer.setData(
       "application/parentNode",
-      JSON.stringify(parentNode)
+      JSON.stringify(parentNode),
     );
     event.dataTransfer.setData("application/eventName", eventName);
     event.dataTransfer.effectAllowed = "move";
@@ -87,7 +92,7 @@ const EventScreen = ({ json }) => {
             json?.events.map((item) => {
               return (
                 <div
-                  className="text-left text-sm flex cursor-grab justify-start pl-[10px] flex-row mt-2 gap-2"
+                  className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
                   onDragStart={(event) => onDragStart(event, item.name, json)}
                   draggable
                 >
