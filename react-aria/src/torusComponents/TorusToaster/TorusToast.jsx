@@ -73,7 +73,7 @@ const TorusToast = ({ closeToast, toastProps, setWordLength }) => {
       </div>
       <div>
         {length <= 30 ? (
-          <p className="text-white text-xs font-roboto leading-3">
+          <p className="text-white text-sm font-normal font-roboto leading-3">
             {toastProps.text}
           </p>
         ) : length > 30 && length <= 50 ? (
