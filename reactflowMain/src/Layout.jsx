@@ -1,15 +1,14 @@
-import { useCallback, useState, useRef, useMemo, createContext } from "react";
+import { useCallback, useState, useRef, createContext, useMemo } from "react";
 import {
   MiniMap,
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
   useReactFlow,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { FabricsSelector } from "./FabricsSelector";
-import { v4 as uuidv4 } from "uuid";
+
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import CanvasPanel from "./CanvasPanel";
 import { nodeInfoTabs } from "./jonui/JsonUI";
@@ -20,6 +19,7 @@ import { Gorule } from "./commonComponents/tabs/Gorule";
 import { Mapper } from "./commonComponents/tabs/mapper";
 import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
+import { gettingValues } from "./VPT_UF/VPT_EVENTS/utils/utils";
 
 export const TorusModellerContext = createContext(null);
 
@@ -32,6 +32,11 @@ export default function Layout({ client }) {
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
   const [reactFlowInstance, setreactflowinstance] = useState(null);
   const [menu, setMenu] = useState(null);
+  const [prevNodesEdges, setPrevNodesEdges] = useState({
+    nodes: [],
+    edges: [],
+  });
+  const [selectedControlEvents, setSelectedControlEvents] = useState(null);
   const [recentClicked, setrecentClicked] = useState(false);
   const ref = useRef(null);
   const [nodePropertyData, setNodePropertyData] = useState({});
@@ -58,6 +63,10 @@ export default function Layout({ client }) {
     SF: { dark: "#FFc723", light: "#FFBE00" },
   };
 
+  const eventsNavBarData = useMemo(() => {
+    return gettingValues(prevNodesEdges?.nodes);
+  }, [prevNodesEdges]);
+
   const handleTabChange = (fabric) => {
     console.log("clicked", fabric, recentClicked);
     if (fabric == selectedFabric) {
@@ -67,19 +76,19 @@ export default function Layout({ client }) {
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
+    setPrevNodesEdges({
+      nodes: nodes,
+      edges: edges,
+    });
     setNodes([]);
     setEdges([]);
+
     setShowNodeProperty(false);
   };
 
   const handleSidebarToggle = () => {
     setShowFabricSideBar(!showFabricSideBar);
   };
-
-  const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges],
-  );
 
   const onNodeContextMenu = useCallback(
     (event, node) => {
@@ -168,9 +177,6 @@ export default function Layout({ client }) {
     }
   };
 
-  console.log(nodes, nodePropertyData, "nodePropertyData");
-  console.log(showNodeProperty, "showNodeProperty");
-  console.log(denormalizedata, "denormalizedata");
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -188,6 +194,8 @@ export default function Layout({ client }) {
               client={client}
               project={""}
               fabrics={selectedFabric}
+              handleTabChange={handleTabChange}
+              color={colors[selectedFabric]?.light}
               sendDataToFabrics={(data) => {
                 setEdges(data?.nodeEdges ?? []);
                 setNodes(data?.nodes ?? []);
@@ -198,16 +206,15 @@ export default function Layout({ client }) {
               })}
               // setdomain={setDomain}
               // setartifact={setArtifact}
-              // sendartifact={sendartifact}
-              // setMainArtifacts={setMainArtifacts}
-              // mainArtifacts={mainArtifacts}
-              // setMainVersion={setVersion}
               // mainVersion={mainVersion}
-              // undoredo={{ undo, redo, canUndo, canRedo }}
+              // setMainVersion={setVersion}
+              // sendartifact={sendartifact}
+              // mainArtifacts={mainArtifacts}
+              // setMainArtifacts={setMainArtifacts}
               // setToggleReactflow={setToggleReactflow}
+              // undoredo={{ undo, redo, canUndo, canRedo }}
               // selecetedWholeVersion={selecetedWholeVersion}
               // setSelectedWholeVersion={setSelectedWholeVersion}
-              color={colors[selectedFabric]?.light}
             />
           </div>
 
@@ -217,41 +224,45 @@ export default function Layout({ client }) {
             <div className="flex h-[100%] w-[100%]">
               <TorusModellerContext.Provider
                 value={{
+                  ref,
+                  onPaneClick,
                   selectedFabric,
                   handleTabChange,
-                  ref,
-                  onNodeContextMenu,
-                  onPaneClick,
+                  eventsNavBarData,
                   nodePropertyData,
+                  onNodeContextMenu,
+                  selectedControlEvents,
+                  setSelectedControlEvents,
                 }}
               >
                 <FabricsSelector
-                  fabric={selectedFabric}
                   nodes={nodes}
                   edges={edges}
                   setEdges={setEdges}
                   setNodes={setNodes}
+                  fabric={selectedFabric}
                   onNodesChange={onNodesChange}
                   onEdgesChange={onEdgesChange}
                   onInit={setreactflowinstance}
+                  prevNodesEdges={prevNodesEdges}
                 >
                   {({
-                    setToggleReactflow,
+                    redo,
+                    undo,
+                    canUndo,
+                    canRedo,
                     uniqueNames,
                     changeProperty,
                     updatedNodeConfig,
-                    undo,
-                    redo,
-                    canUndo,
-                    canRedo,
+                    setToggleReactflow,
                   }) => (
                     <>
                       <SideBar />
                       {selectedFabric !== "Home" && selectedFabric !== "SF" && (
                         <div>
                           <NodeGallery
-                            color={colors[selectedFabric]?.light}
                             showFabricSideBar={showFabricSideBar}
+                            color={colors[selectedFabric]?.light}
                             handleSidebarToggle={handleSidebarToggle}
                             showNodeProperty={showNodeProperty}
                           />
@@ -262,19 +273,19 @@ export default function Layout({ client }) {
                             className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
                           />
                           <CanvasPanel
-                            canRedo={canRedo}
-                            canUndo={canUndo}
-                            redo={redo}
                             undo={undo}
+                            redo={redo}
+                            canUndo={canUndo}
+                            canRedo={canRedo}
                           />
                           {menu && (
                             <ContextMenuSelector
+                              onClick={onPaneClick}
+                              fabric={selectedFabric}
                               onEdit={(id) => {
                                 setNodePropertyData(getNode(id));
                                 setShowNodeProperty(!showNodeProperty);
                               }}
-                              fabric={selectedFabric}
-                              onClick={onPaneClick}
                               {...menu}
                             />
                           )}
@@ -314,21 +325,21 @@ export default function Layout({ client }) {
         </>
       ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
         <Gorule
-          setToggleReactflow={setToggleReactflow}
-          updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
+          updatedNodeConfig={updatedNodeConfig}
+          setToggleReactflow={setToggleReactflow}
         />
       ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
         <Mapper
-          setToggleReactflow={setToggleReactflow}
-          updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
+          updatedNodeConfig={updatedNodeConfig}
+          setToggleReactflow={setToggleReactflow}
         />
       ) : toggleReactflow.code ? (
         <MonacoEditor
-          setToggleReactflow={setToggleReactflow}
-          updatedNodeConfig={updatedNodeConfig}
           sideBarData={nodePropertyData}
+          updatedNodeConfig={updatedNodeConfig}
+          setToggleReactflow={setToggleReactflow}
         />
       ) : (
         <>nothing</>

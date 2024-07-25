@@ -4,6 +4,7 @@ import AppDF from "./VPT_DF/VPT_DF_ERD/Components/App";
 import { TorusModellerContext } from "./Layout";
 import AppPF from "./VPT_PF/VPT_PF_PFD/components/App";
 import AppUF from "./VPT_UF/VPT_UF_SLD/components/App";
+import EventsMain from "./VPT_UF/VPT_EVENTS/EventsMain";
 
 const proOptions = { hideAttribution: true };
 export const FabricsSelector = memo(
@@ -12,10 +13,11 @@ export const FabricsSelector = memo(
     edges,
     setEdges,
     setNodes,
-    onNodesChange,
-    onEdgesChange,
     children,
-    NODE_TYPES,
+
+    onEdgesChange,
+    onNodesChange,
+    prevNodesEdges,
   }) => {
     const { selectedFabric } = useContext(TorusModellerContext);
     const cycleFabric = () => {
@@ -63,7 +65,6 @@ export const FabricsSelector = memo(
         case "PF":
           return (
             <AppPF
-              nodeTypes={NODE_TYPES}
               nodes={nodes}
               edges={edges}
               setEdges={setEdges}
@@ -87,8 +88,14 @@ export const FabricsSelector = memo(
               })}
             </div>
           );
+        case "events":
+          return <EventsMain nodes={prevNodesEdges?.nodes} />;
         default:
-          return "Not Selected";
+          return (
+            <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
+              No Tab Selected
+            </div>
+          );
       }
     };
 

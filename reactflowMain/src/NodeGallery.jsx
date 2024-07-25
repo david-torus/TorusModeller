@@ -1,74 +1,11 @@
-import React, { useContext, useState } from "react";
-import { Header, Section, Text } from "react-aria-components";
-import { Back, User } from "./SVG_Application";
+import React, { useContext } from "react";
+import { Header, Text } from "react-aria-components";
+import { Back } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
-// import "./index.css";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
-const data = [
-  {
-    label: "User",
-    icon: User,
-  },
 
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-  {
-    label: "User",
-    icon: User,
-  },
-];
 export default function NodeGallery({
   color,
   showFabricSideBar,
