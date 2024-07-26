@@ -210,7 +210,7 @@ const NewNodeInfoSidebar = ({
 
   return (
     <div className="flex flex-col">
-      <div className="h-10 bg-[#FFFFFF]">
+      <div className="h-10 bg-transparent">
         <NodeInfoSidebarTabs
           nodeInfoTabs={nodeInfoTabs}
           currentDrawing={currentDrawing}

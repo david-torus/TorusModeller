@@ -12,8 +12,8 @@ module.exports = {
       padding: "2rem",
       screens: {
         "2xl": "1400px",
-        'custom': {'min': '1366px', 'max': '1439px'},
-        'w-1366': '1366px',
+        custom: { min: "1366px", max: "1439px" },
+        "w-1366": "1366px",
       },
     },
     darkMode: "class",
@@ -25,6 +25,8 @@ module.exports = {
         buttonHoverAnimation: "buttonHoverAnimation 0.5s ease-in-out ",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        fadeIn: 'fadeIn 0.5s ease-in-out',
+        fadeOut: 'fadeOut 0.5s ease-in-out',
       },
       keyframes: {
         torusPopOverOpen: {
@@ -88,6 +90,14 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeOut: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        }
       },
       screens: {
         sm: "640px",
@@ -120,5 +130,9 @@ module.exports = {
     extends: {},
   },
 
-  plugins: [require("tailwindcss-animate"), nextui(),require("tailwindcss-react-aria-components")({ prefix: "torus" })],
+  plugins: [
+    require("tailwindcss-animate"),
+    nextui(),
+    require("tailwindcss-react-aria-components")({ prefix: "torus" }),
+  ],
 };
