@@ -214,6 +214,12 @@ export default function Layout({ client }) {
         eventsNavBarData,
         nodePropertyData,
         onNodeContextMenu,
+        selectedArtifact,
+        setSelectedArtifact,
+        selectedProject,
+        setSelectedProject,
+        selectedVersion,
+        setSelectedVersion,
         selectedControlEvents,
         setSelectedControlEvents,
       }}
@@ -356,7 +362,6 @@ export default function Layout({ client }) {
               {showNodeProperty && (
                 <div
                   className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} `}
-                  
                 >
                   <div
                     className={`h-full transform border bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
