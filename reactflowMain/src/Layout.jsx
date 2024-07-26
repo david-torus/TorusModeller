@@ -326,33 +326,33 @@ export default function Layout({ client }) {
                   )}
                 </FabricsSelector>
 
-              <div className="h-full  ">
-                {showNodeProperty && (
-                  <div className="h-full   ">
-                    <div
-                      className=" top-0 flex w-[100%] cursor-pointer  dark:text-white justify-end"
-                      onClick={() => setShowNodeProperty(!showNodeProperty)}
-                    >
-                      x
+                <div className="h-full  ">
+                  {showNodeProperty && (
+                    <div className="h-full   ">
+                      <div
+                        className=" top-0 flex w-[100%] cursor-pointer  justify-end dark:text-white"
+                        onClick={() => setShowNodeProperty(!showNodeProperty)}
+                      >
+                        x
+                      </div>
+
+                      <NewNodeInfoSidebar
+                        showNodeProperty={showNodeProperty}
+                        sideBarData={nodePropertyData}
+                        updatedNodeConfig={updatedNodeConfig}
+                        currentDrawing={selectedFabric}
+                        setShowNodeProperty={setShowNodeProperty}
+                        nodeInfoTabs={nodeInfoTabs}
+                        setToggleReactflow={setToggleReactflow}
+                        setDenormalizedata={setDenormalizedata}
+                      />
                     </div>
+                  )}
 
-                    <NewNodeInfoSidebar
-                      showNodeProperty={showNodeProperty}
-                      sideBarData={nodePropertyData}
-                      updatedNodeConfig={updatedNodeConfig}
-                      currentDrawing={selectedFabric}
-                      setShowNodeProperty={setShowNodeProperty}
-                      nodeInfoTabs={nodeInfoTabs}
-                      setToggleReactflow={setToggleReactflow}
-                      setDenormalizedata={setDenormalizedata}
-                    />
-                  </div>
-                )}
-
-                {/* <RenderJson /> */}
+                  {/* <RenderJson /> */}
+                </div>
               </div>
             </div>
-          </div>
           </>
         ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
           <Gorule

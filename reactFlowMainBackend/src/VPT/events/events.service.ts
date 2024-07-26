@@ -7,41 +7,44 @@ export class EventsService {
   async getIniateEventsData(tKey, client, project, fabrics, artifact, version) {
     try {
       let res = {};
-      const node = await this.redisService.getJsonData(
-        tKey +
-          ':' +
-          client +
-          ':' +
-          project +
-          ':' +
-          fabrics +
-          ':' +
-          artifact +
-          ':' +
-          version +
-          ':' +
-         
-          'nodes',
-      );
-      if (node) {
-        let navBarData = this.gettingValues(node) ?? [];
-        let controlJson = this.transformNodesToProps(node) ?? {};
-        res = {
-          status: 200,
-          data: {
-            navBarData: navBarData,
-            controlJson: controlJson,
-          },
-        };
-      } else {
-        res = {
-          status: 200,
-          data: {
-            navBarData: [],
-            controlJson: {},
-          },
-        };
-      }
+      await this.redisService
+        .getJsonData(
+          tKey +
+            ':' +
+            client +
+            ':' +
+            project +
+            ':' +
+            fabrics +
+            ':' +
+            artifact +
+            ':' +
+            version +
+            ':nodes',
+        )
+        .then((data) => {
+          let node = JSON.parse(data);
+          console.log(node, 'node');
+          if (node) {
+            let navBarData = this.gettingValues(node) ?? [];
+            let controlJson = this.transformNodesToProps(node) ?? {};
+            res = {
+              status: 200,
+              data: {
+                navBarData: navBarData,
+                controlJson: controlJson,
+              },
+            };
+          } else {
+            res = {
+              status: 200,
+              data: {
+                navBarData: [],
+                controlJson: {},
+              },
+            };
+          }
+        });
       return res;
     } catch (error) {
       console.error(error);
@@ -549,6 +552,7 @@ export class EventsService {
   }
   gettingValues(value) {
     try {
+      console.log('value', value);
       let components = [];
       let controls = [];
       var result = [];

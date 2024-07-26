@@ -99,15 +99,15 @@ export default function NodeGallery({
   );
 }
 
-const Loop = ({ color, selectedFabric }) => {
-  console.log(selectedFabric, "?NodeGallery");
+const Loop = ({ color }) => {
+  const { selectedFabric } = useContext(TorusModellerContext);
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {selectedFabric !== "events " ? (
+      {selectedFabric !== "events" ? (
         EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
@@ -132,7 +132,6 @@ const Loop = ({ color, selectedFabric }) => {
         ))
       ) : (
         <>
-          hello
           <EventScreen />
         </>
       )}
