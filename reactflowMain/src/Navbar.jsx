@@ -1477,6 +1477,15 @@ export default function Navbar({
                         <div className="flex w-2/3 items-center justify-end gap-2">
                           <TorusButton
                             buttonClassName=" bg-[#4CAF50]/15 w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs dark:text-white flex justify-center items-center"
+                            onPress={() =>
+                              saveProcessFlow(
+                                "update",
+                                selectedApplication,
+                                selectedArtifacts,
+                                selectedVerison,
+                                getDataFromFabrics(),
+                              )
+                            }
                             Children={"Update"}
                           />
                           <TorusButton
