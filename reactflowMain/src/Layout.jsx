@@ -251,7 +251,7 @@ export default function Layout({ client }) {
                 setSelectedVerison={setSelectedVersion}
                 getDataFromFabrics={() => ({
                   nodes: nodes,
-                  edges: edges,
+                  nodeEdges: edges,
                 })}
                 // setdomain={setDomain}
                 // setartifact={setArtifact}

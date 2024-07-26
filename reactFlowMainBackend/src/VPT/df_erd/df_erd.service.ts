@@ -497,7 +497,7 @@ export class DfErdService {
     try {
       const processFlow = () => {
         const resultObj = { ...nodeConfig };
-        if (edges.length == 0 || nodes.length > 0) {
+        if (!edges || edges?.length == 0 || nodes.length > 0) {
           nodes.map((node) => {
             if (!resultObj[node.id])
               resultObj[node.id] = {
@@ -522,7 +522,7 @@ export class DfErdService {
             }
           });
         }
-        if (edges.length > 0) {
+        if (edges && edges.length > 0) {
           edges.forEach((edge) => {
             const { source, target, sourceHandle, targetHandle } = edge;
             const sourceNode = nodes.find((node) => node.id === source);
