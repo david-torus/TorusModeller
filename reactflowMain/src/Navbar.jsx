@@ -976,10 +976,12 @@ export default function Navbar({
                 </div>
               }
               children={({ close }) => (
-                <div className=" mt-[3%] flex h-[400px] w-[450px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]">
+                <div
+                  className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
+                >
                   {selectedFabric !== "events" ? (
                     <>
-                      <div className="flex h-[13%] w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
+                      <div className="flex h-[13%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
                         <div className="flex w-full items-center justify-start">
                           <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
                             Library
@@ -1525,7 +1527,7 @@ export default function Navbar({
                     </>
                   ) : (
                     <>
-                      <div className="flex h-[13%] w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
+                      <div className="flex h-[12%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
                         <div className="flex w-full items-center justify-start">
                           <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
                             Events

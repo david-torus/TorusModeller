@@ -415,35 +415,22 @@ export default function EventNavbar({
   );
 
   return (
-    <div
-      onClick={() => {
-        if (!open) setOpen(true);
-      }}
-      initial={false}
-    >
-      <div
-        className="flex flex-row items-center justify-around gap-[21.5%] pb-2 pl-1 pr-2 pt-2"
-        style={{
-          height: "inherit",
-        }}
-      >
-        <div className="flex w-[35%] flex-row items-center justify-around gap-1">
-          <p
-            className={`  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
-            onClick={handleClick}
-          ></p>
-
-          <div className="flex flex-col gap-4">
-            {componentOptions &&
-              componentOptions.length > 0 &&
-              componentOptions.map((obj, index) => {
-                console.log(obj, "itemisinl;oop");
-                return (
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="flex flex-col items-center  bg-white dark:border-[#212121] dark:bg-[#161616] xl:h-[320px] xl:w-[350px] 2xl:h-[580px] 2xl:w-[700px]">
+        <div className="flex flex-col gap-2">
+          {componentOptions &&
+            componentOptions.length > 0 &&
+            componentOptions.map((obj, index) => {
+              console.log(obj, "itemisinl;oop");
+              return (
+                <div className="flex h-full w-full flex-row items-center justify-center gap-2 ">
                   <div
                     key={index}
-                    className="flex h-[30px] w-[200px] cursor-pointer items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
+                    className="flex h-[30px] w-[170px] cursor-pointer items-center justify-between rounded-md bg-[#F4F5FA] p-2 text-sm dark:bg-[#0F0F0F]"
                   >
                     {obj.label}
+                  </div>
+                  <div>
                     <TorusDropDown
                       title={
                         selectedControlName &&
@@ -493,16 +480,18 @@ export default function EventNavbar({
                       }}
                       classNames={{
                         buttonClassName:
-                          "rounded-lg w-[100px] text-xs h-[30px] font-medium   bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                        popoverClassName: "w-[70px]",
-                        listBoxClassName: "overflow-y-auto",
-                        listBoxItemClassName: "flex text-sm justify-between",
+                          "rounded-md h-[30px] w-[170px] text-sm font-medium   bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                        popoverClassName: "w-[170px] text-md",
+                        listBoxClassName:
+                          "overflow-y-auto bg-white border border-[#F2F4F7] dark:bg-[#0F0F0F] ",
+                        listBoxItemClassName: "flex  justify-between text-md",
                       }}
                     />
                   </div>
-                );
-              })}
-            {/* <TorusDropDown
+                </div>
+              );
+            })}
+          {/* <TorusDropDown
               title={
                 selectedComponentName ? selectedComponentName : "Component"
               }
@@ -519,7 +508,7 @@ export default function EventNavbar({
               }}
             /> */}
 
-            {/* <ReusableDropDown
+          {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcomponentDropdown"}
                 title={
@@ -534,7 +523,7 @@ export default function EventNavbar({
                 handleSelectedKey={(e) => handleComponentChange(e)}
                 items={componentOptions}
               /> */}
-            {/* <ReusableDropDown
+          {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcontrolDropdown"}
                 isDisabled={selectedComponentName ? false : true}
@@ -575,7 +564,6 @@ export default function EventNavbar({
                 }}
                 items={controlOptions}
               /> */}
-          </div>
         </div>
 
         {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
