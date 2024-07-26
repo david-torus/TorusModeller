@@ -17,6 +17,8 @@ import { FaMoon } from "react-icons/fa";
 import ReusableDropDown from "../../reusableComponents/ReusableDropDown";
 import { TorusModellerContext } from "../../../Layout";
 export default function EventNavbar({
+  sendDataToFabrics,
+  getDataFromFabrics,
   setToggleReactflow,
   tKey,
   client,
@@ -24,12 +26,17 @@ export default function EventNavbar({
   fabrics,
   mainArtifacts,
   mainVersion,
-  data,
-  setData,
 }) {
-  const { eventsNavBarData, setSelectedControlEvents } =
-    useContext(TorusModellerContext);
-  console.log("eventsNavBarData", eventsNavBarData);
+  const {
+    selectedControlEvents,
+    eventsNavBarData,
+    setSelectedControlEvents,
+    setSelectedComponentName,
+    selectedComponentName,
+    setSelectedControlName,
+    selectedControlName,
+  } = useContext(TorusModellerContext);
+  console.log("eventsNavBarData", selectedControlEvents);
   const [open, setOpen] = useState(false);
 
   const [versions, setVersions] = useState([]);
@@ -45,11 +52,7 @@ export default function EventNavbar({
 
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  const [selectedComponentName, setSelectedComponentName] = useState(null);
-
   const [selectedControl, setSelectedControl] = useState(null);
-
-  const [selectedControlName, setSelectedControlName] = useState(null);
 
   const getEventsfromVersion = useCallback(
     async (
@@ -76,7 +79,7 @@ export default function EventNavbar({
           selectedVersion,
         );
 
-        if (res) setData(res.data);
+        if (res) sendDataToFabrics(res.data);
       } catch (error) {
         toast.error("Cannot find Events by version", {
           position: "bottom-right",
@@ -85,7 +88,7 @@ export default function EventNavbar({
         });
       }
     },
-    [darkMode, setData],
+    [darkMode, sendDataToFabrics],
   );
 
   const getVersionList = useCallback(
@@ -322,13 +325,13 @@ export default function EventNavbar({
 
       setSelectedComponentName(selectedComponentData?.component?.nodeName);
 
-      // setData({
-      //   nodes: [],
+      sendDataToFabrics({
+        nodes: [],
 
-      //   nodeEdges: [],
+        nodeEdges: [],
 
-      //   nodeProperty: {},
-      // });
+        nodeProperty: {},
+      });
 
       setSelectedControl(null);
 
@@ -354,14 +357,14 @@ export default function EventNavbar({
         (control) => control.nodeId === Array.from(e)[0],
       );
 
-      // setData({
-      //   nodes: [],
+      sendDataToFabrics({
+        nodes: [],
 
-      //   nodeEdges: [],
+        nodeEdges: [],
 
-      //   nodeProperty: {},
-      // });
-
+        nodeProperty: {},
+      });
+      console.log(selectedControlData, "selectedControlData");
       setSelectedControlName(selectedControlData?.nodeName);
 
       setSelectedVersion(null);

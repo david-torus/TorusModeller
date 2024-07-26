@@ -5,7 +5,7 @@ import TorusButton from "./torusComponents/TorusButton";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
-import { EventScreen } from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
+import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
 
 export default function NodeGallery({
   color,
@@ -13,6 +13,7 @@ export default function NodeGallery({
   handleSidebarToggle,
   children,
   showNodeProperty,
+  selectedControlEvents,
 }) {
   const { selectedFabric } = useContext(TorusModellerContext);
   return (
@@ -57,7 +58,11 @@ export default function NodeGallery({
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
         <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[50%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
-          <Loop color={color} selectedFabric={selectedFabric} />
+          <Loop
+            color={color}
+            selectedFabric={selectedFabric}
+            selectedControlEvents={selectedControlEvents}
+          />
         </div>
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
@@ -99,7 +104,7 @@ export default function NodeGallery({
   );
 }
 
-const Loop = ({ color }) => {
+const Loop = ({ color, selectedControlEvents }) => {
   const { selectedFabric } = useContext(TorusModellerContext);
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -132,7 +137,50 @@ const Loop = ({ color }) => {
         ))
       ) : (
         <>
-          <EventScreen />
+          <EventScreen selectedControlEvents={selectedControlEvents} />
+        </>
+      )}
+    </>
+  );
+};
+export const EventScreen = ({ selectedControlEvents }) => {
+  // const { selectedControlEvents } = useContext(TorusModellerContext);
+  console.log("event screen json", selectedControlEvents);
+  const onDragStart = (event, eventName, parentNode) => {
+    event.dataTransfer.setData(
+      "application/parentNode",
+      JSON.stringify(parentNode),
+    );
+    event.dataTransfer.setData("application/eventName", eventName);
+    event.dataTransfer.effectAllowed = "move";
+  };
+
+  const { darkMode } = useContext(DarkmodeContext);
+
+  return (
+    <>
+      {selectedControlEvents && (
+        <>
+          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
+            {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
+          </span>
+          {selectedControlEvents?.events &&
+            selectedControlEvents?.events.length > 0 &&
+            selectedControlEvents?.events.map((item) => {
+              return (
+                <div
+                  className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
+                  onDragStart={(event) =>
+                    onDragStart(event, item.name, selectedControlEvents)
+                  }
+                  draggable
+                >
+                  <span className={`text-black dark:text-white`}>
+                    {item.name}
+                  </span>
+                </div>
+              );
+            })}
         </>
       )}
     </>

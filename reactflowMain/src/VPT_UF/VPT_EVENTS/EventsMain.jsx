@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import EventDisplay from "./components/EventDisplay";
+import {EventDisplay} from "./components/EventDisplay";
 
 import EventNavbar from "../../commonComponents/layout/ActionBar/EventNavbar";
 import { gettingValues, transformNodesToProps } from "./utils/utils";
