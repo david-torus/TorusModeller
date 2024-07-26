@@ -319,9 +319,9 @@ export default function EventNavbar({
 
   const handleComponentChange = (e) => {
     try {
-      setSelectedComponent(Array.from(e)[0]);
+      setSelectedComponent(e);
       const selectedComponentData = eventsNavBarData.find(
-        (component) => component.component.nodeId === Array.from(e)[0],
+        (component) => component.component.nodeId === e,
       );
 
       setSelectedComponentName(selectedComponentData?.component?.nodeName);
@@ -415,23 +415,31 @@ export default function EventNavbar({
       >
         <div className="flex w-[35%] flex-row items-center justify-around gap-1">
           <p
-            className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
+            className={`  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
             onClick={handleClick}
           ></p>
 
           <div
             className={`${
               darkMode
-                ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
-                : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
+                ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border      "
+                : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   "
             }`}
           >
             {componentOptions &&
               componentOptions.length > 0 &&
               componentOptions.map((obj, index) => {
-                return <div>{}</div>;
+                return (
+                  <div
+                    key={index}
+                    className="flex h-[30px] w-[100px] cursor-pointer items-center justify-center rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
+                    onClick={() => handleComponentChange(obj.key)}
+                  >
+                    {obj.label}
+                  </div>
+                );
               })}
-            <TorusDropDown
+            {/* <TorusDropDown
               title={
                 selectedComponentName ? selectedComponentName : "Component"
               }
@@ -446,7 +454,7 @@ export default function EventNavbar({
                 listBoxClassName: "overflow-y-auto",
                 listBoxItemClassName: "flex text-sm justify-between",
               }}
-            />
+            /> */}
 
             <TorusDropDown
               title={selectedControlName ? selectedControlName : "Control"}
