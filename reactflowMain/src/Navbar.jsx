@@ -1533,7 +1533,7 @@ export default function Navbar({
                         </div>
                         <span
                           className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
-                          onClick={close()}
+                          onClick={() => close()}
                         >
                           <IoCloseOutline />
                         </span>
