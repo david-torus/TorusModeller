@@ -581,10 +581,11 @@ export default function Navbar({
     erDatas,
   ) => {
     try {
+      console.log("saveProcessFlow", erDatas);
       const payload = {
         flow: { ...erDatas },
 
-        applicationName: selectedApplictionNames,
+        project: selectedApplictionNames,
 
         artifact: selectedArtifactss,
       };
@@ -984,7 +985,7 @@ export default function Navbar({
                           </div>
 
                           <span
-                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] hover:border"
+                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
                             onClick={() => {
                               close();
                               setProjectCollectionName(null);
@@ -1105,7 +1106,7 @@ export default function Navbar({
                                     setProjectCollectionName(project);
                                     setArtifactCollectionName(null);
                                   }}
-                                  className={`${index == selectedProject ? "font-semibold text-black" : "font-normal text-black/35"} flex w-[100%] flex-row items-center gap-1`}
+                                  className={`${index == selectedProject ? "font-semibold text-black dark:text-white" : "font-normal text-black/35 dark:text-white/35"} flex w-[100%] flex-row items-center gap-1`}
                                 >
                                   <div
                                     className={`w-full cursor-pointer text-sm  `}
@@ -1180,13 +1181,13 @@ export default function Navbar({
                       }}
                     /> */}
                         <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
-                          <div className="flex h-[10%] w-[85%] items-center justify-start bg-white">
+                          <div className="flex h-[10%] w-[85%] items-center justify-start bg-white dark:bg-[#161616]">
                             <Breadcrumbs
                               isDisabled
                               className="flex flex-row gap-2 text-xs"
                             >
                               <Breadcrumb>
-                                <Link className="flex flex-row items-center justify-center gap-1">
+                                <Link className="flex flex-row items-center justify-center gap-1 text-black dark:text-white">
                                   <RiHome5Line size={15} />
                                   {client}
                                   <IoIosArrowForward />
@@ -1480,6 +1481,15 @@ export default function Navbar({
                           />
                           <TorusButton
                             buttonClassName=" bg-[#0736C4]/15 w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs dark:text-white flex justify-center items-center"
+                            onPress={() =>
+                              saveProcessFlow(
+                                "create",
+                                selectedApplication,
+                                selectedArtifacts,
+                                selectedVerison,
+                                getDataFromFabrics(),
+                              )
+                            }
                             Children={"Save"}
                           />
                           <TorusButton
