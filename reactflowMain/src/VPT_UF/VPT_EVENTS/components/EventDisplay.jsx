@@ -88,7 +88,7 @@ export const EventScreen = ({ json }) => {
 
   return (
     <>
-      {
+      {selectedControlEvents && (
         <>
           <span className={`${!darkMode ? "text-white" : "text-black"} `}>
             {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
@@ -104,14 +104,14 @@ export const EventScreen = ({ json }) => {
                   }
                   draggable
                 >
-                  <span className={`${darkMode ? "text-white" : "text-black"}`}>
+                  <span className={`text-black dark:text-white`}>
                     {item.name}
                   </span>
                 </div>
               );
             })}
         </>
-      }
+      )}
     </>
   );
 };
