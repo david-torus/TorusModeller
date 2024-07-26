@@ -34,6 +34,7 @@ import {
 } from "../../../../commonComponents/utils/util";
 import ReusableDropDown from "../../../../commonComponents/reusableComponents/ReusableDropDown";
 import ReusableInput from "../../../../commonComponents/reusableComponents/ReusableInput";
+import { TorusModellerContext } from "../../../../Layout";
 export default function ContextMenu({
   id,
   top,
@@ -51,9 +52,8 @@ export default function ContextMenu({
   menu,
   ...props
 }) {
-  const eventJson = useContext(eventSourceNodesJsonContext);
-  const { getNode, setNodes, setEdges, getNodes, getEdges } =
-    useReactFlow();
+  const { controlJson: eventJson } = useContext(TorusModellerContext);
+  const { getNode, setNodes, setEdges, getNodes, getEdges } = useReactFlow();
   const [editedHeader, setEditedHeader] = useState("");
   const [toogleInputNameEdit, setToogleInputNameEdit] = useState(false);
   const [isOpen, onOpenChange] = useState(false);
@@ -83,8 +83,6 @@ export default function ContextMenu({
   const [json, setJson] = useState({});
 
   const [opensideTab, setOpensideTab] = useState(false);
-
-  
 
   const node = getNode(id);
   const nodes = getNodes();
@@ -129,13 +127,20 @@ export default function ContextMenu({
           },
           {
             ...JSON.parse(files),
-          }
+          },
         );
       }
     } catch (error) {
       console.error(error);
     }
-  }, [files,node.id, node.data.label, node.type, rendervalue, updatedNodeConfig]);
+  }, [
+    files,
+    node.id,
+    node.data.label,
+    node.type,
+    rendervalue,
+    updatedNodeConfig,
+  ]);
 
   useEffect(() => {
     const handleOutsideClick = () => {
@@ -185,7 +190,6 @@ export default function ContextMenu({
    */
   const handleOpenModal = async (flowType, isDockey = false, flow) => {
     try {
-      
       setCurrentModel(flowType);
       if (currentDrawing !== "DF") {
         if (nodeData) {
@@ -240,7 +244,7 @@ export default function ContextMenu({
       if (model) {
         ConfigToRender = (
           <Builder
-          key={model}
+            key={model}
             isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
             defaultJSOn={js}
             controlPolicy={controlPolicy}
@@ -249,7 +253,6 @@ export default function ContextMenu({
             uiPolicy={cardUIPolicy}
             showError={showError}
             helperJson={{}}
-
           />
         );
       } else {
@@ -271,7 +274,6 @@ export default function ContextMenu({
       console.error("Something went wrong on handle render");
     }
   };
-
 
   //function used to
   const risenode = useCallback(
@@ -542,14 +544,14 @@ export default function ContextMenu({
             }
             return initialId;
           }, 0);
-        
+
           const newChildId = maxChildId + 1;
           const childId = `${node.id}.${newChildId}`;
           const seq = childId.split(".").splice(1).join(".");
-        
+
           let handlerNode;
           let handlerEdge;
-        
+
           if (resdata === "fail") {
             const failNode = {
               id: `${node.id}.${newChildId}`,
@@ -566,14 +568,14 @@ export default function ContextMenu({
                 children: [],
               },
             };
-        
+
             const failEdge = {
               id: `${node.id}->${failNode.id}`,
               source: node.id,
               type: "straight",
               target: failNode.id,
             };
-        
+
             handlerNode = {
               id: `${failNode.id}.1`,
               type: "handlerNode",
@@ -590,7 +592,7 @@ export default function ContextMenu({
               },
               className: styles.node,
             };
-        
+
             cuurrentNode = {
               ...cuurrentNode,
               data: {
@@ -598,16 +600,16 @@ export default function ContextMenu({
                 children: [...cuurrentNode.data.children, failNode.id],
               },
             };
-        
+
             handlerEdge = {
               id: `${failNode.id}->${failNode.id}.${newChildId}`,
               source: failNode.id,
               type: "straight",
               target: handlerNode.id,
             };
-        
+
             failNode.data.children = [handlerNode.id];
-        
+
             setNodes((nds) => [
               ...nds.filter((n) => n.id !== node.id),
               cuurrentNode,
@@ -631,7 +633,7 @@ export default function ContextMenu({
                 sequence: `${seq}`,
               },
             };
-        
+
             handlerNode = {
               id: `${successNode.id}.1`,
               type: "handlerNode",
@@ -648,7 +650,7 @@ export default function ContextMenu({
               },
               className: styles.node,
             };
-        
+
             cuurrentNode = {
               ...cuurrentNode,
               data: {
@@ -656,23 +658,23 @@ export default function ContextMenu({
                 children: [...cuurrentNode.data.children, successNode.id],
               },
             };
-        
+
             const handlerEdge = {
               id: `${successNode.id}->${successNode.id}.${newChildId}`,
               source: successNode.id,
               type: "straight",
               target: handlerNode.id,
             };
-        
+
             const successEdge = {
               id: `${node.id}->${successNode.id}`,
               source: node.id,
               type: "straight",
               target: successNode.id,
             };
-        
+
             successNode.data.children = [handlerNode.id];
-        
+
             setNodes((nds) => [
               ...nds.filter((n) => n.id !== node.id),
               cuurrentNode,
@@ -697,7 +699,7 @@ export default function ContextMenu({
               },
               className: styles.node,
             };
-        
+
             cuurrentNode = {
               ...cuurrentNode,
               data: {
@@ -705,14 +707,14 @@ export default function ContextMenu({
                 children: [...cuurrentNode.data.children, handlerNode.id],
               },
             };
-        
+
             const handlerEdge = {
               id: `${node.id}->${node.id}.${newChildId}`,
               source: node.id,
               type: "straight",
               target: `${node.id}.${newChildId}`,
             };
-        
+
             setNodes((nds) => [
               ...nds.filter((n) => n.id !== node.id),
               cuurrentNode,
@@ -720,15 +722,17 @@ export default function ContextMenu({
             ]);
             setEdges((eds) => [...eds, handlerEdge]);
           } else {
-            setNodes((nds) => [...nds.filter((n) => n.id !== node.id), cuurrentNode]);
+            setNodes((nds) => [
+              ...nds.filter((n) => n.id !== node.id),
+              cuurrentNode,
+            ]);
           }
         }
-        
       } catch (error) {
         console.error(error);
       }
     },
-    [node, setNodes, setEdges,getNode,getNodes,nodes]
+    [node, setNodes, setEdges, getNode, getNodes, nodes],
   );
 
   const filterNodes = (nodes, parentId, id) => {
@@ -749,11 +753,11 @@ export default function ContextMenu({
             node.data &&
             (node.data.parent === nodeId || node.data.parentId === nodeId)
               ? index
-              : -1
+              : -1,
           )
           .filter((index) => index !== -1);
         stack.push(
-          ...childrenIndexes.map((childIndex) => nodes[childIndex].id)
+          ...childrenIndexes.map((childIndex) => nodes[childIndex].id),
         );
 
         const nodeIndex = nodes.findIndex((node) => node.id === nodeId);
@@ -802,7 +806,7 @@ export default function ContextMenu({
                 data: {
                   ...node.data,
                   children: node.data.children.filter(
-                    (childId) => childId !== prefix
+                    (childId) => childId !== prefix,
                   ),
                 },
               };
@@ -833,12 +837,12 @@ export default function ContextMenu({
       console.error(error);
     }
   };
-  
+
   useEffect(() => {
     const flatenEventJson = () => {
       try {
         let flatenJson = [];
-  
+
         const flaten = (obj) => {
           let data = {};
           Object.keys(obj).forEach((key) => {
@@ -865,21 +869,20 @@ export default function ContextMenu({
               }
             }
           });
-  
+
           if (Object.keys(data).length) flatenJson.push(data);
         };
-  
+
         flaten(eventJson);
-  
+
         setDropdownData(flatenJson);
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     flatenEventJson();
   }, [eventJson]);
-  
 
   const handleSelectedListener = (e, resdata) => {
     try {
@@ -932,7 +935,7 @@ export default function ContextMenu({
         };
 
         let handlerNode = {
-          id: `${responseNode.id + ".1"}` ,
+          id: `${responseNode.id + ".1"}`,
           type: "handlerNode",
           position: {
             x: responseNode.position.x + Math.random() * (150 - 100) + 100,
@@ -1220,17 +1223,17 @@ export default function ContextMenu({
         {...props}
         className={`${
           node?.data?.label
-            ? `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute rounded-md `
-            : `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} p-[8px] gap-[8px] z-[1000] w-[190px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} flex flex-col items-center justify-center  absolute  rounded-md `
+            ? `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} z-[1000] w-[190px] gap-[8px] p-[8px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} absolute flex flex-col items-center  justify-center rounded-md `
+            : `${darkMode ? "bg-[#363636] " : "bg-[#ffffff]"} z-[1000] w-[190px] gap-[8px] p-[8px] shadow-md ${node?.type === "controlNode" || node?.type === "componentNode" ? "h-[140px]" : node?.type === "groupNode" ? "h-[200px]" : "h-[290px]"} absolute flex flex-col items-center  justify-center  rounded-md `
         }`}
       >
         <div
-          className={`flex justify-between gap-3 w-full  
-          ${darkMode ? "bg-[#363636] py-1 px-1 rounded-md border border-[#979BA1]" : "bg-[#ffffff] border border-[#15181a]  py-1 px-1 rounded-md"}`}
+          className={`flex w-full justify-between gap-3  
+          ${darkMode ? "rounded-md border border-[#979BA1] bg-[#363636] px-1 py-1" : "rounded-md border border-[#15181a]  bg-[#ffffff] px-1 py-1"}`}
         >
           {" "}
           {!toogleInputNameEdit ? (
-            <div className="flex justify-center items-center min-w-max-[80%]">
+            <div className="min-w-max-[80%] flex items-center justify-center">
               {node?.type === "controlNode" ? (
                 <p
                   onClick={() => {
@@ -1238,8 +1241,8 @@ export default function ContextMenu({
                   }}
                   className={
                     darkMode
-                      ? "w-full text-white font-semibold text-medium cursor-pointer"
-                      : "w-full text-black font-semibold text-medium cursor-pointer"
+                      ? "w-full cursor-pointer text-medium font-semibold text-white"
+                      : "w-full cursor-pointer text-medium font-semibold text-black"
                   }
                 >
                   {node?.data.nodeName}
@@ -1251,8 +1254,8 @@ export default function ContextMenu({
                   }}
                   className={
                     darkMode
-                      ? "w-full text-white font-semibold text-medium cursor-pointer"
-                      : "w-full text-black font-semibold text-medium cursor-pointer"
+                      ? "w-full cursor-pointer text-medium font-semibold text-white"
+                      : "w-full cursor-pointer text-medium font-semibold text-black"
                   }
                 >
                   {node?.data.label}
@@ -1283,7 +1286,7 @@ export default function ContextMenu({
         </div>
 
         {(node?.type === "handlerNode" || node?.type === "eventNode") && (
-          <div className="flex items-center justify-center w-[100%]">
+          <div className="flex w-[100%] items-center justify-center">
             <ReusableDropDown
               darkMode={darkMode}
               key={node.id + node.type}
@@ -1313,13 +1316,13 @@ export default function ContextMenu({
         )}
 
         {node?.type !== "groupNode" && node?.type !== "controlNode" && (
-          <div className="flex justify-center flex-col w-[100%] pl-3">
+          <div className="flex w-[100%] flex-col justify-center pl-3">
             <button
               onClick={() => {
                 risenode(
                   "rise",
                   node.type,
-                  selectedResponseData ? selectedResponseData : ""
+                  selectedResponseData ? selectedResponseData : "",
                 );
 
                 setToogle(node, id);
@@ -1330,15 +1333,15 @@ export default function ContextMenu({
               }}
               className={
                 darkMode
-                  ? "w-full rounded-md bg-transparent text-white text-sm mt-1"
-                  : "w-full rounded-md bg-transparent text-black text-sm mt-1"
+                  ? "mt-1 w-full rounded-md bg-transparent text-sm text-white"
+                  : "mt-1 w-full rounded-md bg-transparent text-sm text-black"
               }
             >
-              <div className=" flex w-full justify-between gap-5 item-center">
-                <div className="w-[25%] flex justify-center items-center">
+              <div className=" item-center flex w-full justify-between gap-5">
+                <div className="flex w-[25%] items-center justify-center">
                   <RiseIcon />
                 </div>
-                <div className="w-[75%] flex justify-start items-center text-sm">
+                <div className="flex w-[75%] items-center justify-start text-sm">
                   Rise
                 </div>
               </div>
@@ -1349,21 +1352,21 @@ export default function ContextMenu({
                   risenode(
                     "riseListen",
                     node.type,
-                    selectedResponseData ? selectedResponseData : ""
+                    selectedResponseData ? selectedResponseData : "",
                   );
                   setToogle(node, id);
                 }}
                 className={
                   darkMode
-                    ? "w-full rounded-md bg-transparent text-white text-sm mt-1"
-                    : "w-full rounded-md bg-transparent text-black text-sm mt-1"
+                    ? "mt-1 w-full rounded-md bg-transparent text-sm text-white"
+                    : "mt-1 w-full rounded-md bg-transparent text-sm text-black"
                 }
               >
-                <div className=" flex w-full justify-between gap-5 item-center">
-                  <div className="w-[25%] flex justify-center items-center">
+                <div className=" item-center flex w-full justify-between gap-5">
+                  <div className="flex w-[25%] items-center justify-center">
                     <RaiseAndListenIcon />
                   </div>
-                  <div className="w-[75%] flex justify-start items-center text-sm">
+                  <div className="flex w-[75%] items-center justify-start text-sm">
                     Rise & Listen
                   </div>
                 </div>
@@ -1380,15 +1383,15 @@ export default function ContextMenu({
               }}
               className={
                 darkMode
-                  ? "w-full rounded-md bg-transparent text-white mt-1 text-sm"
-                  : "w-full rounded-md bg-transparent text-black mt-1 text-sm"
+                  ? "mt-1 w-full rounded-md bg-transparent text-sm text-white"
+                  : "mt-1 w-full rounded-md bg-transparent text-sm text-black"
               }
             >
-              <div className="flex w-full justify-between gap-5 item-center ">
-                <div className="w-[25%] flex justify-center items-center">
+              <div className="item-center flex w-full justify-between gap-5 ">
+                <div className="flex w-[25%] items-center justify-center">
                   <SelfIcon />
                 </div>
-                <div className="w-[75%] flex justify-start items-center text-sm">
+                <div className="flex w-[75%] items-center justify-start text-sm">
                   Self
                 </div>
               </div>
@@ -1405,8 +1408,8 @@ export default function ContextMenu({
           }}
           className={
             darkMode
-              ? "w-full bg-transparent text-slate-50 font-bold rounded-md py-1"
-              : "w-full bg-transparent text-slate-950 font-bold rounded-md py-1"
+              ? "w-full rounded-md bg-transparent py-1 font-bold text-slate-50"
+              : "w-full rounded-md bg-transparent py-1 font-bold text-slate-950"
           }
         >
           Edit Node
@@ -1416,8 +1419,8 @@ export default function ContextMenu({
         <button
           className={
             darkMode
-              ? "w-full bg-transparent  text-slate-50 font-bold rounded-md py-1"
-              : "w-full bg-transparent  text-slate-950 font-bold rounded-md py-1"
+              ? "w-full rounded-md  bg-transparent py-1 font-bold text-slate-50"
+              : "w-full rounded-md  bg-transparent py-1 font-bold text-slate-950"
           }
           onClick={() => {
             deleteNodesAndEdges(nodes, edges, node.id);
@@ -1439,8 +1442,8 @@ export default function ContextMenu({
           contentStyle={{ width: "400px", minHeight: "400px" }}
           contentClassName="w-[50px] h-[50px] "
         >
-          <div className="flex items-center justify-center mt-[11px]">
-            <div className="w-[400px] h-[400px] flex flex-col items-center justify-center overflow-y-scroll">
+          <div className="mt-[11px] flex items-center justify-center">
+            <div className="flex h-[400px] w-[400px] flex-col items-center justify-center overflow-y-scroll">
               {eventJson &&
                 DropdownData &&
                 DropdownData.length &&
@@ -1454,7 +1457,7 @@ export default function ContextMenu({
                         <>
                           {key === "nodeType" && item[key] !== "group" && (
                             <div
-                              className=" text-lg items-start cursor-pointer select-none"
+                              className=" cursor-pointer select-none items-start text-lg"
                               onClick={() => {
                                 // setClickedJson(item);
                                 // setShowEvents(true);
@@ -1465,16 +1468,16 @@ export default function ContextMenu({
                           )}
 
                           {key === "nodeType" && item[key] === "group" && (
-                            <div className=" text-lg    items-start  cursor-pointer select-none mb-[20px]">
+                            <div className=" mb-[20px]    cursor-pointer  select-none items-start text-lg">
                               <div
-                                className=" text-lg  transition-all-ease-in duration-500
-                flex   rounded-2xl"
+                                className=" transition-all-ease-in  flex rounded-2xl
+                text-lg   duration-500"
                                 onClick={() => {
                                   if (clickedGroup.includes(item.nodeId)) {
                                     setClickedGroup(
                                       clickedGroup.filter(
-                                        (group) => group !== item.nodeId
-                                      )
+                                        (group) => group !== item.nodeId,
+                                      ),
                                     );
                                   } else {
                                     setClickedGroup([
@@ -1494,9 +1497,9 @@ export default function ContextMenu({
                                   />
                                 </span>
 
-                                <span className="ml-[4px] text-md">
+                                <span className="text-md ml-[4px]">
                                   {key} : {item[key]}
-                                  <span className="text-[#FF66AA] font-bold text-sm whitespace-nowrap">
+                                  <span className="whitespace-nowrap text-sm font-bold text-[#FF66AA]">
                                     {`{${item["children"].length}}`}
                                   </span>
                                 </span>
@@ -1510,14 +1513,14 @@ export default function ContextMenu({
                                 onOpenChange(false);
                                 handleSelectedListener(
                                   item.nodeId,
-                                  selectedResponseData
+                                  selectedResponseData,
                                 );
                                 onOpenChange(false);
                                 setTimeout(() => {
                                   setMenu(null);
                                 }, 500);
                               }}
-                              className="w-full cursor-pointer overflow-ellipsis flex items-start text-lg justify-center"
+                              className="flex w-full cursor-pointer items-start justify-center overflow-ellipsis text-lg"
                             >
                               {key} : {item[key]}
                             </div>
@@ -1527,7 +1530,7 @@ export default function ContextMenu({
                             {clickedGroup.includes(item.nodeId) &&
                               key === "children" && (
                                 <motion.div
-                                  className="border border-gray-400 rounded-md  w-[210px] p-[20px]  "
+                                  className="w-[210px] rounded-md border  border-gray-400 p-[20px]  "
                                   initial={{ height: 0, opacity: 0 }}
                                   exit={{ height: 0, opacity: 0 }}
                                   animate={{ height: "auto", opacity: 1 }}
@@ -1537,10 +1540,10 @@ export default function ContextMenu({
                                     item[key]?.map((key1) => {
                                       return Object.keys(key1).map((key2) => {
                                         return (
-                                          <div className="text-lg flex flex-row gird grid-row-2 gap-5">
+                                          <div className="gird grid-row-2 flex flex-row gap-5 text-lg">
                                             {key2 === "nodeType" && (
                                               <div
-                                                className=" text-lg gap-5 cursor-pointer select-none"
+                                                className=" cursor-pointer select-none gap-5 text-lg"
                                                 onClick={() => {
                                                   // setClickedJson(key1);
                                                   // setShowEvents(true);
@@ -1561,7 +1564,7 @@ export default function ContextMenu({
                                                 onClick={() => {
                                                   handleSelectedListener(
                                                     key1.nodeId,
-                                                    selectedResponseData
+                                                    selectedResponseData,
                                                   );
                                                   onOpenChange(false);
                                                   setTimeout(() => {
@@ -1598,7 +1601,7 @@ export default function ContextMenu({
           position="right"
           className={darkMode ? "bg-[#333334]" : "bg-[#f0f0f0]"}
         >
-          <div className=" flex flex-col justify-start items-start w-[100%]">
+          <div className=" flex w-[100%] flex-col items-start justify-start">
             {node && node?.type === "handlerNode" && (
               <div>
                 {nodeInfo && (
@@ -1624,9 +1627,9 @@ export default function ContextMenu({
                                   title={
                                     <Tooltip content={value.label}>
                                       <span
-                                        className={` rounded-md w-[35px] h-[35px] hover:bg-blue-500 hover:shadow-lg 
+                                        className={` h-[35px] w-[35px] rounded-md hover:bg-blue-500 hover:shadow-lg 
 																			${activeTab === value.label ? "bg-[#009BC9] text-slate-800/65" : " bg-slate-600 text-slate-50"} 
-																			flex items-center justify-center cursor-pointer px-[3px] shadow-md`}
+																			flex cursor-pointer items-center justify-center px-[3px] shadow-md`}
                                         onContextMenu={(e) =>
                                           handleContextMenu(e, value.modelOpen)
                                         }
@@ -1636,7 +1639,7 @@ export default function ContextMenu({
                                             handleOpenModal(
                                               value.modelOpen,
                                               false,
-                                              "Params"
+                                              "Params",
                                             );
                                           }
                                           if (
@@ -1646,7 +1649,7 @@ export default function ContextMenu({
                                             handleOpenModal(
                                               value.modelOpen,
                                               false,
-                                              "STS"
+                                              "STS",
                                             );
                                           }
                                           if (
@@ -1656,7 +1659,7 @@ export default function ContextMenu({
                                             handleOpenModal(
                                               value.modelOpen,
                                               false,
-                                              "STT"
+                                              "STT",
                                             );
                                           }
                                         }}
@@ -1668,11 +1671,7 @@ export default function ContextMenu({
                                 >
                                   <div className="App">
                                     <div
-                                      className={
-                                        `fixed  rounded-md bg-[#242424]`
-                                      }
-                                        
-                                      
+                                      className={`fixed  rounded-md bg-[#242424]`}
                                       style={{
                                         zIndex: 9999,
                                         display: contextMenuVisible
@@ -1683,13 +1682,16 @@ export default function ContextMenu({
                                       }}
                                     >
                                       <div className=" px-3 py-3">
-                                        <Upload  id={value.label} setFiles={setFiles} />
+                                        <Upload
+                                          id={value.label}
+                                          setFiles={setFiles}
+                                        />
                                       </div>
                                     </div>
                                   </div>
                                 </Tab>
                               );
-                            }
+                            },
                           );
                         }
                         return null;
@@ -1701,12 +1703,12 @@ export default function ContextMenu({
 
             <div>
               <div
-                className={`${darkMode ? "text-white text-sm font-semibold mb-3 cursor-pointer" : "text-black text-sm font-semibold mb-3 cursor-pointer"}  `}
+                className={`${darkMode ? "mb-3 cursor-pointer text-sm font-semibold text-white" : "mb-3 cursor-pointer text-sm font-semibold text-black"}  `}
               >
                 nodeID :
               </div>
               <div
-                className={`${darkMode ? "text-white text-xs font-medium whitespace-nowrap" : "text-black text-xs font-medium whitespace-nowrap  "}`}
+                className={`${darkMode ? "whitespace-nowrap text-xs font-medium text-white" : "whitespace-nowrap text-xs font-medium text-black  "}`}
               >
                 {node?.id}
               </div>
@@ -1718,20 +1720,20 @@ export default function ContextMenu({
                 Object.entries(node)?.map(([key, value]) => (
                   <React.Fragment>
                     {key === "type" && (
-                      <div className="mt-2 px-2 pr-3 w-[100%] py-2 flex justify-between">
-                        <div className="w-[50%] flex justify-start">
+                      <div className="mt-2 flex w-[100%] justify-between px-2 py-2 pr-3">
+                        <div className="flex w-[50%] justify-start">
                           <div
                             className={
                               darkMode
-                                ? "text-white font-semibold "
-                                : "text-black font-semibold"
+                                ? "font-semibold text-white "
+                                : "font-semibold text-black"
                             }
                           >
                             {key}
                           </div>{" "}
                         </div>
                         :
-                        <div className="w-[50%] flex justify-start">
+                        <div className="flex w-[50%] justify-start">
                           <div
                             className={darkMode ? "text-white" : "text-black"}
                           >
@@ -1747,20 +1749,20 @@ export default function ContextMenu({
                       Object.entries(value)?.map(([key, value]) => (
                         <>
                           {key === "sequence" && (
-                            <div className="mt-2 px-2 pr-3 w-[100%] py-2 flex justify-between">
-                              <div className="w-[50%] flex justify-start">
+                            <div className="mt-2 flex w-[100%] justify-between px-2 py-2 pr-3">
+                              <div className="flex w-[50%] justify-start">
                                 <div
                                   className={
                                     darkMode
-                                      ? "text-white font-semibold "
-                                      : "text-black font-semibold"
+                                      ? "font-semibold text-white "
+                                      : "font-semibold text-black"
                                   }
                                 >
                                   {key}
                                 </div>{" "}
                               </div>
                               :
-                              <div className="w-[50%] flex justify-start">
+                              <div className="flex w-[50%] justify-start">
                                 <div
                                   className={
                                     darkMode ? "text-white" : "text-black"
@@ -1772,7 +1774,7 @@ export default function ContextMenu({
                             </div>
                           )}
                           {key === "label" && (
-                            <div className="mt-2 px-2 w-[100%] py-2">
+                            <div className="mt-2 w-[100%] px-2 py-2">
                               <ReusableInput
                                 key={key + "contextmenu"}
                                 handleChange={(e) =>
@@ -1809,7 +1811,7 @@ export default function ContextMenu({
                 },
                 {
                   ...json,
-                }
+                },
               );
               setOpensideTab(false);
             }

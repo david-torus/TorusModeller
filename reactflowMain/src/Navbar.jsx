@@ -45,32 +45,31 @@ import EventNavbar from "./commonComponents/layout/ActionBar/EventNavbar";
 import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
 import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
+import { TorusModellerContext } from "./Layout";
 
 export default function Navbar({
   tKey,
   color,
-  fabrics,
-  client,
   project,
-  children,
-  undoredo,
   setdomain,
   setartifact,
-  setMainVersion,
   handleTabChange,
-  setMainArtifacts,
   sendDataToFabrics,
   setUpIdKey = null,
   setToggleReactflow,
   getDataFromFabrics,
-  selectedArtifacts,
-  setSelectedArtifacts,
-  selectedVerison,
-  setSelectedVerison,
-  selectedApplication,
-  setSelectedAppliction,
   setFabricsKey = null,
 }) {
+  const {
+    client,
+    selectedFabric,
+    selectedArtifact,
+    setSelectedArtifact,
+    selectedVersion,
+    setSelectedVersion,
+    selectedProject,
+    setSelectedProject,
+  } = useContext(TorusModellerContext);
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
   const [openSaveAsArtifacts, setOpenSaveAsArtifacts] = useState(false);
@@ -80,9 +79,8 @@ export default function Navbar({
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
   const [projectList, setApplicationList] = useState([]);
 
-  // const [selectedArtifacts, setSelectedArtifacts] = useState("");
+  // const [selectedArtifact, setSelectedArtifact] = useState("");
 
-  const [selectedProject, setSelectedProject] = useState(null);
   const [versions, setVersions] = useState([]);
 
   const [newArtifactsName, setNewArtifactsName] = useState("");
@@ -125,7 +123,7 @@ export default function Navbar({
     try {
       const res = await saveProcessFlow(
         "create",
-        selectedApplication,
+        selectedProject,
         new Set([newArtifactsName.trim().toLocaleLowerCase()]),
         new Set("v1"),
         erDatas,
@@ -152,8 +150,8 @@ export default function Navbar({
       if (type === "saveAs") {
         const res = await saveProcessFlow(
           "create",
-          selectedApplication,
-          selectedArtifacts,
+          selectedProject,
+          selectedArtifact,
           new Set("v1"),
           erDatas,
         );
@@ -195,8 +193,8 @@ export default function Navbar({
   };
   const handleProcessEngine = async () => {
     try {
-      const version = [...selectedVerison][0];
-      const artifact = [...selectedArtifacts][0];
+      const version = [...selectedVersion][0];
+      const artifact = [...selectedArtifact][0];
       await fetch(`${process.env.REACT_APP_API_URL}pe`, {
         method: "POST",
         headers: {
@@ -204,7 +202,7 @@ export default function Navbar({
           role: "Admin",
         },
         body: JSON.stringify({
-          key: `${tKey}:${client}:${project}:${fabrics}:${artifact}:${version}:`,
+          key: `${tKey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
         }),
       })
         .then((response) => response.json())
@@ -245,8 +243,8 @@ export default function Navbar({
   };
   const handleDebug = async () => {
     try {
-      const version = [...selectedVerison][0];
-      const artifact = [...selectedArtifacts][0];
+      const version = [...selectedVersion][0];
+      const artifact = [...selectedArtifact][0];
 
       await fetch(`${process.env.REACT_APP_API_URL}pe/debugExecution`, {
         method: "POST",
@@ -255,7 +253,7 @@ export default function Navbar({
           role: "Admin",
         },
         body: JSON.stringify({
-          key: `${tKey}:${client}:${project}:${fabrics}:${artifact}:${version}:`,
+          key: `${tKey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
         }),
       })
         .then((response) => response.json())
@@ -351,9 +349,9 @@ export default function Navbar({
         const version = await versionList(
           tKey,
           client,
-          selectedApplication,
+          selectedProject,
           artifact,
-          fabrics,
+          selectedFabric,
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
@@ -372,15 +370,14 @@ export default function Navbar({
 
   const handleArtifactsChange = (e) => {
     try {
-      setSelectedVerison(null);
+      setSelectedVersion(null);
       // if (Array.from(e)[0]) {
       //   getVersion(Array.from(e)[0]);
       // } else {
       //   setVersions([]);
       // }
       sendDataToFabrics({});
-      setSelectedArtifacts(e);
-      setMainArtifacts && setMainArtifacts(e);
+      setSelectedArtifact(e);
     } catch (err) {
       toast.error("Cannot get artifacts details", {
         position: "bottom-right",
@@ -445,7 +442,7 @@ export default function Navbar({
         Array.from(selectedDefaultArtifacts)[0],
         selectedsource,
         Array.from(selectedDomainLIst)[0],
-        fabrics,
+        selectedFabric,
       );
 
       if (responses) sendDataToFabrics(responses.data);
@@ -459,11 +456,11 @@ export default function Navbar({
 
   const handleApplicationName = async (e) => {
     try {
-      setSelectedArtifacts([]);
-      setSelectedVerison([]);
-      setSelectedAppliction(e);
+      setSelectedArtifact([]);
+      setSelectedVersion([]);
+      setSelectedProject(e);
 
-      handleIntialLoad(tKey, client, fabrics, e).catch((err) => {
+      handleIntialLoad(tKey, client, selectedFabric, e).catch((err) => {
         throw err;
       });
     } catch (err) {
@@ -482,11 +479,11 @@ export default function Navbar({
             tKey,
             client,
             Array.from(e)[0],
-            fabrics,
+            selectedFabric,
           );
 
           if (response && response?.status === 200) {
-            setSelectedAppliction(response.data);
+            setSelectedProject(response.data);
           }
         } catch (error) {
           toast.error("Cannot get artifacts details", {
@@ -503,10 +500,10 @@ export default function Navbar({
     }
   };
 
-  const handleGetApplications = async (tKey, client, fabrics) => {
+  const handleGetApplications = async (tKey, client, selectedFabric) => {
     try {
-      console.log("handleGetApplications", tKey, client, fabrics);
-      const response = await applicationLists(tKey, client, fabrics);
+      console.log("handleGetApplications", tKey, client, selectedFabric);
+      const response = await applicationLists(tKey, client, selectedFabric);
 
       if (response && response.status === 200) {
         setApplicationList(response.data);
@@ -520,10 +517,20 @@ export default function Navbar({
   };
   console.log("projectList", projectList);
 
-  const handleIntialLoad = async (tKey, client, fabrics, applications) => {
+  const handleIntialLoad = async (
+    tKey,
+    client,
+    selectedFabric,
+    applications,
+  ) => {
     try {
       console.log("handleIntialLoad", applications);
-      const response = await artifactList(tKey, client, applications, fabrics);
+      const response = await artifactList(
+        tKey,
+        client,
+        applications,
+        selectedFabric,
+      );
       if (response && response?.status === 200) {
         setArtifactsList(response.data);
       }
@@ -538,16 +545,16 @@ export default function Navbar({
   // const handleApplicationLoad = async (
   //   tKey,
   //   client,
-  //   fabrics,
-  //   selectedApplication
+  //   selectedFabric,
+  //   selectedProject
   // ) => {
   //   try {
-  //     console.log("handleApplicationLoad", selectedApplication )
+  //     console.log("handleApplicationLoad", selectedProject )
   //     const response = await artifactList(
   //       tKey,
   //       client,
-  //       selectedApplication,
-  //       fabrics
+  //       selectedProject,
+  //       selectedFabric
   //     );
 
   //     if (response && response?.status === 200) {
@@ -596,26 +603,30 @@ export default function Navbar({
         selectedVerisonss,
         tKey,
         client,
-        fabrics,
+        selectedFabric,
       );
       if (response && response.status === 200) {
         if (type === "create") {
           await handleIntialLoad(
             tKey,
             client,
-            fabrics,
-            selectedApplictionNames || selectedApplication,
+            selectedFabric,
+            selectedApplictionNames || selectedProject,
           );
           setNewArtifactsName("");
-          setSelectedAppliction(selectedApplictionNames);
-          setSelectedArtifacts(selectedArtifactss);
-          setMainArtifacts && setMainArtifacts(selectedArtifactss);
-          handleIntialLoad(tKey, client, fabrics, selectedApplictionNames);
-          setSelectedVerison(response.data[response.data.length - 1]);
-          setMainVersion &&
-            setMainVersion(response.data[response.data.length - 1]);
-          if (fabrics) {
-            toast.success(`${fabrics} Fabrics saved successfully`, {
+          setSelectedProject(selectedApplictionNames);
+          setSelectedArtifact(selectedArtifactss);
+
+          handleIntialLoad(
+            tKey,
+            client,
+            selectedFabric,
+            selectedApplictionNames,
+          );
+          setSelectedVersion(response.data[response.data.length - 1]);
+
+          if (selectedFabric) {
+            toast.success(`${selectedFabric} Fabrics saved successfully`, {
               position: "bottom-right",
               autoClose: 2000,
             });
@@ -623,10 +634,10 @@ export default function Navbar({
         }
       } else if (response && response.status === 201) {
         if (type === "update") {
-          setSelectedAppliction(selectedApplictionNames);
-          setSelectedArtifacts(selectedArtifactss);
-          if (fabrics) {
-            toast.info(`${fabrics} Fabrics updated successfully`, {
+          setSelectedProject(selectedApplictionNames);
+          setSelectedArtifact(selectedArtifactss);
+          if (selectedFabric) {
+            toast.info(`${selectedFabric} Fabrics updated successfully`, {
               position: "bottom-right",
               autoClose: 2000,
             });
@@ -646,14 +657,14 @@ export default function Navbar({
   const getProcessFlowApi = useCallback(
     async (event) => {
       try {
-        if (selectedVerison) {
+        if (selectedVersion) {
           const response = await getJson(
-            selectedApplication,
-            selectedVerison,
-            selectedArtifacts,
+            selectedProject,
+            selectedVersion,
+            selectedArtifact,
             tKey,
             client,
-            fabrics,
+            selectedFabric,
           );
 
           if (response && typeof response === "object" && response) {
@@ -677,11 +688,11 @@ export default function Navbar({
       }
     },
     [
-      fabrics,
+      selectedFabric,
       client,
-      selectedApplication,
-      selectedArtifacts,
-      selectedVerison,
+      selectedProject,
+      selectedArtifact,
+      selectedVersion,
       sendDataToFabrics,
       tKey,
     ],
@@ -724,8 +735,8 @@ export default function Navbar({
 
       if (response && response.status === 200) {
         setApplicationList(response.data);
-        setSelectedAppliction("");
-        setSelectedArtifacts("");
+        setSelectedProject("");
+        setSelectedArtifact("");
         setVersions([]);
 
         sendDataToFabrics({
@@ -750,7 +761,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${e}`,
+        `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${e}`,
         {
           method: "DELETE",
         },
@@ -758,7 +769,7 @@ export default function Navbar({
 
       if (response && response.status === 200) {
         setArtifactsList(response.data);
-        setSelectedArtifacts("");
+        setSelectedArtifact("");
         setVersions([]);
 
         sendDataToFabrics({
@@ -783,7 +794,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&fabrics=${fabrics}&artifact=${selectedArtifacts}&version=${e}`,
+        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${selectedArtifact}&version=${e}`,
         {
           method: "DELETE",
         },
@@ -791,7 +802,7 @@ export default function Navbar({
 
       if (response && response.status === 200) {
         setVersions(response?.data);
-        setSelectedVerison("");
+        setSelectedVersion("");
         sendDataToFabrics({
           nodes: [],
           nodeEdges: [],
@@ -829,7 +840,7 @@ export default function Navbar({
         getartifactList(
           selectedsource,
           Array.from(selectedDomainLIst)[0],
-          fabrics,
+          selectedFabric,
         )
           .then((artifacts) => {
             if (artifacts) setDefaultArtifactList(artifacts.data);
@@ -849,7 +860,7 @@ export default function Navbar({
         getVersionList(
           selectedsource,
           Array.from(selectedDomainLIst)[0],
-          fabrics,
+          selectedFabric,
           Array.from(selectedDefaultArtifacts)[0],
         )
           .then((res) => {
@@ -860,29 +871,34 @@ export default function Navbar({
           });
       }
     } catch (error) {}
-  }, [selectedsource, selectedDomainLIst, selectedDefaultArtifacts, fabrics]);
+  }, [
+    selectedsource,
+    selectedDomainLIst,
+    selectedDefaultArtifacts,
+    selectedFabric,
+  ]);
 
   useEffect(() => {
     try {
-      if (!selectedVerison) return;
-      const version = [...selectedVerison][0];
-      const artifact = [...selectedArtifacts][0];
+      if (!selectedVersion) return;
+      const version = [...selectedVersion][0];
+      const artifact = [...selectedArtifact][0];
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tKey}:${client}:${selectedApplication}:${fabrics}:${artifact}:${version}:`,
+          `${tKey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
         );
-      getProcessFlowApi(selectedVerison).catch((err) => {
+      getProcessFlowApi(selectedVersion).catch((err) => {
         throw err;
       });
     } catch (error) {
       console.error(error);
     }
   }, [
-    selectedVerison,
-    selectedArtifacts,
-    selectedApplication,
-    fabrics,
+    selectedVersion,
+    selectedArtifact,
+    selectedProject,
+    selectedFabric,
     client,
     setFabricsKey,
     tKey,
@@ -890,29 +906,29 @@ export default function Navbar({
 
   // useEffect(() => {
   //   try {
-  //     setSelectedAppliction(new Set([application]));
+  //     setSelectedProject(new Set([application]));
   //     setArtifactsList([]);
-  //     setSelectedArtifacts("");
+  //     setSelectedArtifact("");
   //     setVersions([]);
-  //     setSelectedVerison("");
-  //     if(selectedApplication){
-  //       handleIntialLoad(tKey, client, fabrics, Array.from(selectedApplication)[0]).catch((err) => {
+  //     setSelectedVersion("");
+  //     if(selectedProject){
+  //       handleIntialLoad(tKey, client, selectedFabric, Array.from(selectedProject)[0]).catch((err) => {
   //         throw err;
   //       });
   //     }
   //   } catch (error) {
   //     console.error(error);
   //   }
-  // }, [fabrics, application, client, tKey]);
+  // }, [selectedFabric, application, client, tKey]);
 
   // useEffect(() => {
   //   try {
-  //     if (selectedApplication) {
+  //     if (selectedProject) {
   //       handleApplicationLoad(
   //         tKey,
   //         client,
-  //         fabrics,
-  //         Array.from(selectedApplication)[0]
+  //         selectedFabric,
+  //         Array.from(selectedProject)[0]
   //       ).catch((err) => {
   //         throw err;
   //       });
@@ -920,17 +936,17 @@ export default function Navbar({
   //   } catch (error) {
   //     console.error(error);
   //   }
-  // }, [selectedApplication, fabrics, client, tKey]);
+  // }, [selectedProject, selectedFabric, client, tKey]);
 
   useEffect(() => {
     try {
-      handleGetApplications(tKey, client, fabrics).catch((err) => {
+      handleGetApplications(tKey, client, selectedFabric).catch((err) => {
         throw err;
       });
     } catch (error) {
       console.error(error);
     }
-  }, [fabrics, client, tKey]);
+  }, [selectedFabric, client, tKey]);
 
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
@@ -948,11 +964,11 @@ export default function Navbar({
               parentHeading={
                 <div className="flex w-[100%] flex-row items-center justify-center gap-2">
                   <div className="text-sm font-semibold text-black dark:text-white">
-                    {(selectedArtifacts && selectedArtifacts) ||
+                    {(selectedArtifact && selectedArtifact) ||
                       "Select Artifacts"}
                   </div>
                   <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
-                    {(selectedVerison && selectedVerison) || "*"}
+                    {(selectedVersion && selectedVersion) || "*"}
                   </div>
                   <div>
                     <IoIosArrowDown className="text-black dark:text-white" />
@@ -961,7 +977,7 @@ export default function Navbar({
               }
               children={({ close }) => (
                 <div className=" mt-[3%] flex h-[400px] w-[450px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]">
-                  {fabrics !== "events" ? (
+                  {selectedFabric !== "events" ? (
                     <>
                       <div className="flex h-[13%] w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
                         <div className="flex w-full items-center justify-start">
@@ -999,8 +1015,8 @@ export default function Navbar({
                       <div className=" flex h-[74%] w-full items-center  justify-center   ">
                         {/* <TorusDropDown
                       title={
-                        (selectedApplication &&
-                          Array.from(selectedApplication)[0]) ||
+                        (selectedProject &&
+                          Array.from(selectedProject)[0]) ||
                         "Projects"
                       }
                       classNames={{
@@ -1102,11 +1118,11 @@ export default function Navbar({
                                 <div
                                   onClick={() => {
                                     handleApplicationName(project);
-                                    setSelectedProject(index);
+
                                     setProjectCollectionName(project);
                                     setArtifactCollectionName(null);
                                   }}
-                                  className={`${index == selectedProject ? "font-semibold text-black dark:text-white" : "font-normal text-black/35 dark:text-white/35"} flex w-[100%] flex-row items-center gap-1`}
+                                  className={`${project == selectedProject ? "font-semibold text-black dark:text-white" : "font-normal text-black/35 dark:text-white/35"} flex w-[100%] flex-row items-center gap-1`}
                                 >
                                   <div
                                     className={`w-full cursor-pointer text-sm  `}
@@ -1153,8 +1169,8 @@ export default function Navbar({
                         {/* <ReusableDropDown
                       key={"ApplicationDropdown"}
                       title={
-                        (selectedApplication &&
-                          Array.from(selectedApplication)[0]) ||
+                        (selectedProject &&
+                          Array.from(selectedProject)[0]) ||
                         "Projects"
                       }
                       darkMode={darkMode}
@@ -1173,7 +1189,7 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectedApplication}
+                      selectedKey={selectedProject}
                       handleSelectedKey={handleApplicationName}
                       handleDelete={(key) => {
                         setSelectedDeletingProjectItem(key);
@@ -1273,15 +1289,15 @@ export default function Navbar({
                                       <div className="flex h-full w-[25%] items-center justify-center">
                                         <TorusDropDown
                                           title={
-                                            (selectedVerison &&
-                                              selectedVerison) ||
+                                            (selectedVersion &&
+                                              selectedVersion) ||
                                             "Version"
                                           }
                                           selectionMode="single"
-                                          selected={new Set([selectedVerison])}
+                                          selected={new Set([selectedVersion])}
                                           setSelected={(e) => {
-                                            setSelectedArtifacts(obj?.artifact);
-                                            setSelectedVerison(
+                                            setSelectedArtifact(obj?.artifact);
+                                            setSelectedVersion(
                                               Array.from(e)[0],
                                             );
                                             setArtifactCollectionName(
@@ -1333,14 +1349,14 @@ export default function Navbar({
                               <ReusableDropDown
                                 key={"versionDropdown"}
                                 title={
-                                  (selectedVerison &&
-                                    Array.from(selectedVerison)[0]) ||
+                                  (selectedVersion &&
+                                    Array.from(selectedVersion)[0]) ||
                                   "Version"
                                 }
                                 darkMode={!darkMode}
                                 isDisabled={
-                                  selectedArtifacts &&
-                                  Array.from(selectedArtifacts)[0]
+                                  selectedArtifact &&
+                                  Array.from(selectedArtifact)[0]
                                     ? false
                                     : true
                                 }
@@ -1358,11 +1374,10 @@ export default function Navbar({
                                     };
                                   })
                                 }
-                                selectedKey={selectedVerison}
+                                selectedKey={selectedVersion}
                                 handleSelectedKey={(key) => {
-                                  setSelectedVerison(key);
-                                  setMainVersion &&
-                                    setMainVersion(Array.from(key)[0]);
+                                  setSelectedVersion(key);
+                               
                                 }}
                                 handleDelete={(key) => {
                                   setSelectedDeletingVersionItem(key);
@@ -1378,12 +1393,12 @@ export default function Navbar({
                         {/* <ReusableDropDown
                       key={"artifactsDropdown"}
                       title={
-                        (selectedArtifacts &&
-                          Array.from(selectedArtifacts)[0]) ||
+                        (selectedArtifact &&
+                          Array.from(selectedArtifact)[0]) ||
                         "Artifacts"
                       }
                       darkMode={darkMode}
-                      isDisabled={!selectedApplication ? true : false}
+                      isDisabled={!selectedProject ? true : false}
                       DropdownMenuClassName={
                         artifactsList && artifactsList.length > 6
                           ? "h-56 overflow-y-scroll"
@@ -1398,7 +1413,7 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectedArtifacts}
+                      selectedKey={selectedArtifact}
                       handleSelectedKey={handleArtifactsChange}
                       handleDelete={(key) => {
                         setSelectedDeletingArtifactsItem(key);
@@ -1409,13 +1424,13 @@ export default function Navbar({
                     <ReusableDropDown
                       key={"versionDropdown"}
                       title={
-                        (selectedVerison && Array.from(selectedVerison)[0]) ||
+                        (selectedVersion && Array.from(selectedVersion)[0]) ||
                         "Version"
                       }
                       darkMode={darkMode}
                       isDisabled={
-                        selectedArtifacts &&
-                        Array.from(selectedArtifacts)[0]
+                        selectedArtifact &&
+                        Array.from(selectedArtifact)[0]
                           ? false
                           : true
                       }
@@ -1433,10 +1448,10 @@ export default function Navbar({
                           };
                         })
                       }
-                      selectedKey={selectedVerison}
+                      selectedKey={selectedVersion}
                       handleSelectedKey={(key) => {
-                        setSelectedVerison(key);
-                        setMainVersion && setMainVersion(Array.from(key)[0]);
+                        setSelectedVersion(key);
+                     
                       }}
                       handleDelete={(key) => {
                         setSelectedDeletingVersionItem(key);
@@ -1463,9 +1478,9 @@ export default function Navbar({
                         onClick={() => {
                           saveProcessFlow(
                             "create",
-                            selectedApplication,
-                            selectedArtifacts,
-                            selectedVerison,
+                            selectedProject,
+                            selectedArtifact,
+                            selectedVersion,
                             getDataFromFabrics(),
                           );
                         }}
@@ -1480,9 +1495,9 @@ export default function Navbar({
                             onPress={() =>
                               saveProcessFlow(
                                 "update",
-                                selectedApplication,
-                                selectedArtifacts,
-                                selectedVerison,
+                                selectedProject,
+                                selectedArtifact,
+                                selectedVersion,
                                 getDataFromFabrics(),
                               )
                             }
@@ -1493,9 +1508,9 @@ export default function Navbar({
                             onPress={() =>
                               saveProcessFlow(
                                 "create",
-                                selectedApplication,
-                                selectedArtifacts,
-                                selectedVerison,
+                                selectedProject,
+                                selectedArtifact,
+                                selectedVersion,
                                 getDataFromFabrics(),
                               )
                             }
@@ -1524,7 +1539,10 @@ export default function Navbar({
                         </span>
                       </div>
                       <div className="flex h-[87%] w-[100%]">
-                        <EventNavbar />
+                        <EventNavbar
+                          getDataFromFabrics={getDataFromFabrics}
+                          sendDataToFabrics={sendDataToFabrics}
+                        />
                       </div>
                     </>
                   )}
@@ -1534,35 +1552,10 @@ export default function Navbar({
           </div>
 
           <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
-            <div className=" col-span-3 flex items-center justify-center rounded-md">
-              <TorusAvatar
-                radius={"full"}
-                size={"lg"}
-                borderColor={"#A59E92"}
-                src={[
-                  " https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80",
-                  " https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80",
-                  " https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80",
-                  ,
-                  " https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-                  "https://images.unsplash.com/photo-1541101767792-f9b2b1c4f127?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&&auto=format&fit=facearea&facepad=3&w=300&h=300&q=80",
-                ]}
-              />
-            </div>
-            <div className=" col-span-1 flex items-center justify-center">
-              <VerticalLine className={"stroke-black dark:stroke-white"} />
-            </div>
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
                 <TorusButton
-                  isDisabled={!selectedVerison}
+                  isDisabled={!selectedVersion}
                   onPress={() => {
                     handleTabChange("events");
                   }}

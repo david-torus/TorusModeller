@@ -5,10 +5,11 @@ import { EventDashBoard } from "../components/DashBoard";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { TorusModellerContext } from "../../../Layout";
+import { EventScreen } from "../../../NodeGallery";
 
 export const eventSourceNodesJsonContext = createContext([]);
 
-export default function EventDisplay({
+export function EventDisplay({
   nodes,
   edges,
   setEdges,
@@ -72,46 +73,4 @@ export default function EventDisplay({
  * @param {Object} json - The JSON data containing the event information.
  * @return {JSX.Element} The rendered event screen.
  */
-export const EventScreen = ({ json }) => {
-  const { selectedControlEvents } = useContext(TorusModellerContext);
-  console.log("event screen json", selectedControlEvents);
-  const onDragStart = (event, eventName, parentNode) => {
-    event.dataTransfer.setData(
-      "application/parentNode",
-      JSON.stringify(parentNode),
-    );
-    event.dataTransfer.setData("application/eventName", eventName);
-    event.dataTransfer.effectAllowed = "move";
-  };
 
-  const { darkMode } = useContext(DarkmodeContext);
-
-  return (
-    <>
-      {selectedControlEvents && (
-        <>
-          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
-            {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
-          </span>
-          {selectedControlEvents?.events &&
-            selectedControlEvents?.events.length > 0 &&
-            selectedControlEvents?.events.map((item) => {
-              return (
-                <div
-                  className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
-                  onDragStart={(event) =>
-                    onDragStart(event, item.name, selectedControlEvents)
-                  }
-                  draggable
-                >
-                  <span className={`text-black dark:text-white`}>
-                    {item.name}
-                  </span>
-                </div>
-              );
-            })}
-        </>
-      )}
-    </>
-  );
-};
