@@ -1509,7 +1509,24 @@ export default function Navbar({
                       </div>
                     </>
                   ) : (
-                    <EventNavbar />
+                    <>
+                      <div className="flex h-[13%] w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
+                        <div className="flex w-full items-center justify-start">
+                          <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
+                            Events
+                          </p>
+                        </div>
+                        <span
+                          className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
+                          onClick={close()}
+                        >
+                          <IoCloseOutline />
+                        </span>
+                      </div>
+                      <div className="flex h-[87%] w-[100%]">
+                        <EventNavbar />
+                      </div>
+                    </>
                   )}
                 </div>
               )}

@@ -16,6 +16,7 @@ import { IoSunny } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa";
 import ReusableDropDown from "../../reusableComponents/ReusableDropDown";
 import { TorusModellerContext } from "../../../Layout";
+import TorusDropDown from "../../torusComponents/TorusDropDown";
 export default function EventNavbar({
   setToggleReactflow,
   tKey,
@@ -398,61 +399,92 @@ export default function EventNavbar({
 
   return (
     <div
-      style={{
-        transitionDuration: "0.4s",
-
-        zIndex: 100,
-
-        width: "100%",
-
-        height: "8%",
+      onClick={() => {
+        if (!open) setOpen(true);
       }}
+      initial={false}
     >
-      <motion.div
-        onClick={() => {
-          if (!open) setOpen(true);
-        }}
+      <div
+        className="flex flex-row items-center justify-around gap-[21.5%] pb-2 pl-1 pr-2 pt-2"
         style={{
-          width: "100%",
-
-          height: "100%",
-
-          cursor: "pointer",
-
-          transitionDuration: "0.4s",
+          height: "inherit",
         }}
-        className={`${
-          darkMode
-            ? "border-b border-gray-600 bg-[#1E1E1E]/90 pb-2  pl-1 pr-2 pt-2 backdrop-blur-sm "
-            : "border-b border-gray-600 bg-[#F0F0F0] pb-2 pl-1 pr-2 pt-2 backdrop-blur-sm "
-        } `}
-        initial={false}
       >
-        <div
-          className="flex flex-row items-center justify-around gap-[21.5%] pb-2 pl-1 pr-2 pt-2"
-          style={{
-            height: "inherit",
-          }}
-        >
-          <div className="flex w-[35%] flex-row items-center justify-around gap-1">
-            <p
-              className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
-              onClick={handleClick}
-            >
-              <MdOutlineClose
-                color={darkMode ? "#F4F4F5" : "#1D1D1D"}
-                size={20}
-              />
-            </p>
+        <div className="flex w-[35%] flex-row items-center justify-around gap-1">
+          <p
+            className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
+            onClick={handleClick}
+          ></p>
 
-            <div
-              className={`${
-                darkMode
-                  ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
-                  : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
-              }`}
-            >
-              <ReusableDropDown
+          <div
+            className={`${
+              darkMode
+                ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
+                : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
+            }`}
+          >
+            {componentOptions &&
+              componentOptions.length > 0 &&
+              componentOptions.map((obj, index) => {
+                return <div>{}</div>;
+              })}
+            <TorusDropDown
+              title={
+                selectedComponentName ? selectedComponentName : "Component"
+              }
+              items={componentOptions}
+              key={"EcomponentDropdown"}
+              selected={selectedComponent}
+              setSelected={(e) => handleComponentChange(e)}
+              classNames={{
+                buttonClassName:
+                  "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                popoverClassName: "w-[70px]",
+                listBoxClassName: "overflow-y-auto",
+                listBoxItemClassName: "flex text-sm justify-between",
+              }}
+            />
+
+            <TorusDropDown
+              title={selectedControlName ? selectedControlName : "Control"}
+              isDisabled={selectedComponentName ? false : true}
+              key={"EcomponentDropdown"}
+              selected={selectedControl}
+              items={controlOptions}
+              setSelected={(e) => {
+                handleControlChange(e);
+                if (selectedComponentName && Array.from(e)[0]) {
+                  getVersionList(
+                    tKey,
+                    client,
+                    project,
+                    fabrics,
+                    mainArtifacts,
+                    mainVersion,
+                    selectedComponentName,
+                    Array.from(e)[0],
+                  );
+                } else {
+                  toast.error("Please Select Component and Control", {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    theme: darkMode ? "dark" : "light",
+                  });
+                }
+              }}
+              classNames={{
+                buttonClassName:
+                  "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                popoverClassName: "w-[70px]",
+                listBoxClassName: "overflow-y-auto",
+                listBoxItemClassName: "flex text-sm justify-between",
+              }}
+            />
+            {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcomponentDropdown"}
                 title={
@@ -466,9 +498,8 @@ export default function EventNavbar({
                 selectedKey={selectedComponent}
                 handleSelectedKey={(e) => handleComponentChange(e)}
                 items={componentOptions}
-              />
-
-              <ReusableDropDown
+              /> */}
+            {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcontrolDropdown"}
                 isDisabled={selectedComponentName ? false : true}
@@ -508,11 +539,11 @@ export default function EventNavbar({
                   }
                 }}
                 items={controlOptions}
-              />
-            </div>
+              /> */}
           </div>
+        </div>
 
-          {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
+        {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
             <Button
               size="xs"
               isIconOnly
@@ -717,8 +748,7 @@ export default function EventNavbar({
               </div>
             </div>
           </div> */}
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
