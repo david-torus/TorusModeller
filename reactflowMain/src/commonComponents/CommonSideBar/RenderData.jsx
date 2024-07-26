@@ -48,7 +48,7 @@ export const RenderData = ({
         // >
   
         // </Sidebar>
-      ) : currentDrawing === "DF" && currentModel === "entities" ? (
+      ) : currentDrawing === "DF" && currentModel === "entities"  && toggle ? (
         <Dialog
           className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
           maximizable

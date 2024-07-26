@@ -24,7 +24,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? `h-[95%] rounded-lg   border  border-slate-300 bg-white dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[20.0%] " : "xl:w-[14.0%] "}  3xl:w-[12%] 4xl:w-4/12`
+        ? `h-[95%] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[15.0%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
     }`}
     >
@@ -60,7 +60,7 @@ export default function NodeGallery({
           <Loop color={color} selectedFabric={selectedFabric} />
         </div>
 
-        <div className="flex w-[100%] items-center justify-center xl:max-h-[7%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
+        <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
             <Text className="font-inter tracking-normal xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
@@ -79,7 +79,7 @@ export default function NodeGallery({
               <TorusButton
                 buttonClassName={"text-white"}
                 Children="Upgrade"
-                width={"md"}
+                width={"sm"}
                 bgColor={"bg-[#0736C4]"}
                 outlineColor="torus-hover:ring-[#0736C4]"
                 radius="full"
@@ -99,15 +99,15 @@ export default function NodeGallery({
   );
 }
 
-const Loop = ({ color, selectedFabric }) => {
-  console.log(selectedFabric, "?NodeGallery");
+const Loop = ({ color }) => {
+  const { selectedFabric } = useContext(TorusModellerContext);
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {selectedFabric !== "events " ? (
+      {selectedFabric !== "events" ? (
         EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
@@ -132,7 +132,6 @@ const Loop = ({ color, selectedFabric }) => {
         ))
       ) : (
         <>
-          hello
           <EventScreen />
         </>
       )}
