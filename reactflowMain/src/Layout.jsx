@@ -264,94 +264,123 @@ export default function Layout({ client }) {
             <div
               className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#161616] `}
             >
-              <div className="flex h-[100%] w-[100%]">
-                <FabricsSelector
-                  nodes={nodes}
-                  edges={edges}
-                  setEdges={setEdges}
-                  setNodes={setNodes}
-                  fabric={selectedFabric}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onInit={setreactflowinstance}
-                  prevNodesEdges={prevNodesEdges}
+              <div
+                className={`flex h-[100%]  ${showNodeProperty ? "w-[79%]" : "w-[100%]"}`}
+              >
+                <TorusModellerContext.Provider
+                  value={{
+                    selectedFabric,
+                    handleTabChange,
+                    ref,
+                    onNodeContextMenu,
+                    onPaneClick,
+                    nodePropertyData,
+                  }}
                 >
-                  {({
-                    redo,
-                    undo,
-                    canUndo,
-                    canRedo,
-                    uniqueNames,
-                    changeProperty,
-                    updatedNodeConfig,
-                    setToggleReactflow,
-                  }) => (
-                    <>
-                      <SideBar />
-                      {selectedFabric !== "Home" && selectedFabric !== "SF" && (
-                        <div>
-                          <NodeGallery
-                            showFabricSideBar={showFabricSideBar}
-                            color={colors[selectedFabric]?.light}
-                            handleSidebarToggle={handleSidebarToggle}
-                            showNodeProperty={showNodeProperty}
-                          />
-                          <MiniMap
-                            position="bottom-right"
-                            style={{ bottom: "8%" }}
-                            maskColor="transparent"
-                            className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                          />
-                          <CanvasPanel
-                            undo={undo}
-                            redo={redo}
-                            canUndo={canUndo}
-                            canRedo={canRedo}
-                          />
-                          {menu && (
-                            <ContextMenuSelector
-                              onClick={onPaneClick}
-                              fabric={selectedFabric}
-                              onEdit={(id) => {
-                                setNodePropertyData(getNode(id));
-                                setShowNodeProperty(!showNodeProperty);
-                              }}
-                              {...menu}
-                            />
+                  <FabricsSelector
+                    nodes={nodes}
+                    edges={edges}
+                    setEdges={setEdges}
+                    setNodes={setNodes}
+                    fabric={selectedFabric}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onInit={setreactflowinstance}
+                    prevNodesEdges={prevNodesEdges}
+                  >
+                    {({
+                      redo,
+                      undo,
+                      canUndo,
+                      canRedo,
+                      uniqueNames,
+                      changeProperty,
+                      updatedNodeConfig,
+                      setToggleReactflow,
+                    }) => (
+                      <>
+                        <SideBar showNodeProperty={showNodeProperty} />
+                        {selectedFabric !== "Home" &&
+                          selectedFabric !== "SF" && (
+                            <>
+                              <NodeGallery
+                                showFabricSideBar={showFabricSideBar}
+                                color={colors[selectedFabric]?.light}
+                                handleSidebarToggle={handleSidebarToggle}
+                                showNodeProperty={showNodeProperty}
+                              />
+
+                              {!showNodeProperty && (
+                                <div
+                                  className={`transition-transform duration-500 ease-in-out ${
+                                    !showNodeProperty
+                                      ? "animate-fadeIn"
+                                      : "animate-fadeOut"
+                                  }`}
+                                >
+                                  <MiniMap
+                                    position="bottom-right"
+                                    style={{ bottom: "8%" }}
+                                    maskColor="transparent"
+                                    className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                                  />
+                                  <CanvasPanel
+                                    undo={undo}
+                                    redo={redo}
+                                    canUndo={canUndo}
+                                    canRedo={canRedo}
+                                  />
+                                </div>
+                              )}
+
+                              {menu && (
+                                <ContextMenuSelector
+                                  onClick={onPaneClick}
+                                  fabric={selectedFabric}
+                                  onEdit={(id) => {
+                                    setNodePropertyData(getNode(id));
+                                    setShowNodeProperty(!showNodeProperty);
+                                  }}
+                                  {...menu}
+                                />
+                              )}
+                              <Background variant="dots" gap={12} size={1} />
+                            </>
                           )}
-                          <Background variant="dots" gap={12} size={1} />
-                        </div>
-                      )}
-                    </>
-                  )}
-                </FabricsSelector>
-
-                <div className="h-full  ">
-                  {showNodeProperty && (
-                    <div className="h-full   ">
-                      <div
-                        className=" top-0 flex w-[100%] cursor-pointer  justify-end dark:text-white"
-                        onClick={() => setShowNodeProperty(!showNodeProperty)}
-                      >
-                        x
-                      </div>
-
-                      <NewNodeInfoSidebar
-                        showNodeProperty={showNodeProperty}
-                        sideBarData={nodePropertyData}
-                        updatedNodeConfig={updatedNodeConfig}
-                        currentDrawing={selectedFabric}
-                        setShowNodeProperty={setShowNodeProperty}
-                        nodeInfoTabs={nodeInfoTabs}
-                        setToggleReactflow={setToggleReactflow}
-                        setDenormalizedata={setDenormalizedata}
-                      />
-                    </div>
-                  )}
-
-                  {/* <RenderJson /> */}
-                </div>
+                      </>
+                    )}
+                  </FabricsSelector>
+                </TorusModellerContext.Provider>
               </div>
+
+              {showNodeProperty && (
+                <div
+                  className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} `}
+                  
+                >
+                  <div
+                    className={`h-full transform border bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
+                  >
+                    <div
+                      className="top-0 flex w-[100%] cursor-pointer justify-end"
+                      onClick={() => setShowNodeProperty(!showNodeProperty)}
+                    >
+                      x
+                    </div>
+
+                    <NewNodeInfoSidebar
+                      showNodeProperty={showNodeProperty}
+                      sideBarData={nodePropertyData}
+                      updatedNodeConfig={updatedNodeConfig}
+                      currentDrawing={selectedFabric}
+                      setShowNodeProperty={setShowNodeProperty}
+                      nodeInfoTabs={nodeInfoTabs}
+                      setToggleReactflow={setToggleReactflow}
+                      setDenormalizedata={setDenormalizedata}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </>
         ) : toggleReactflow.rule && !toggleReactflow.mapper ? (

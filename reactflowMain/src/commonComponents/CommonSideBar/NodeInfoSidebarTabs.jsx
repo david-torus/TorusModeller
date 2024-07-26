@@ -24,7 +24,7 @@ export const NodeInfoSidebarTabs = ({
         classNames={{
           tabList: "gap-1 w-[280px]  rounded-none bg-transparent",
           cursor: "w-full bg-transparent",
-          base: "w-full",
+          base: "w-full relative",
           tab: "max-w-fit px-0 h-8",
         }}
         defaultSelectedKey={""}
@@ -93,13 +93,15 @@ export const NodeInfoSidebarTabs = ({
               >
                 <div className="App">
                   <div
-                    className={
-                      "fixed  rounded-md " +
-                      (darkMode ? "bg-[#242424]" : "bg-white")
-                    }
                     style={{
                       zIndex: 9999,
-                      display: contextMenuVisible ? "block" : "none",
+                      backgroundColor: "#F4F5FA",
+                      width: "3rem",
+                      height: "3rem",
+                      display: contextMenuVisible ? "flex" : "none",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "0.25rem",
                       top: contextMenuPosition.y,
                       left: contextMenuPosition.x,
                     }}
