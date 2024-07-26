@@ -4,6 +4,7 @@ import { ReactFlowProvider } from "reactflow";
 import { EventDashBoard } from "../components/DashBoard";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { TorusModellerContext } from "../../../Layout";
 
 export const eventSourceNodesJsonContext = createContext([]);
 
@@ -14,10 +15,12 @@ export default function EventDisplay({
   setNodes,
   onNodesChange,
   onEdgesChange,
-  controlJson,
+  children,
+
   currentDrawing,
   selectedControlEvents,
 }) {
+  const { controlJson } = useContext(TorusModellerContext);
   const { darkMode } = useContext(DarkmodeContext);
 
   return (
@@ -53,6 +56,7 @@ export default function EventDisplay({
               setNodes={setNodes}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
+              children={children}
             />
           </div>
         </div>
@@ -68,7 +72,9 @@ export default function EventDisplay({
  * @param {Object} json - The JSON data containing the event information.
  * @return {JSX.Element} The rendered event screen.
  */
-const EventScreen = ({ json }) => {
+export const EventScreen = ({ json }) => {
+  const { selectedControlEvents } = useContext(TorusModellerContext);
+  console.log("event screen json", selectedControlEvents);
   const onDragStart = (event, eventName, parentNode) => {
     event.dataTransfer.setData(
       "application/parentNode",
@@ -82,18 +88,20 @@ const EventScreen = ({ json }) => {
 
   return (
     <>
-      {json && (
+      {
         <>
-          <span className={`${darkMode ? "text-white" : "text-black"} `}>
-            {json?.nodeName || json?.nodeType}
+          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
+            {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
           </span>
-          {json?.events &&
-            json?.events.length > 0 &&
-            json?.events.map((item) => {
+          {selectedControlEvents?.events &&
+            selectedControlEvents?.events.length > 0 &&
+            selectedControlEvents?.events.map((item) => {
               return (
                 <div
                   className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
-                  onDragStart={(event) => onDragStart(event, item.name, json)}
+                  onDragStart={(event) =>
+                    onDragStart(event, item.name, selectedControlEvents)
+                  }
                   draggable
                 >
                   <span className={`${darkMode ? "text-white" : "text-black"}`}>
@@ -103,7 +111,7 @@ const EventScreen = ({ json }) => {
               );
             })}
         </>
-      )}
+      }
     </>
   );
 };

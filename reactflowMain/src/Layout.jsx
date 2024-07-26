@@ -19,7 +19,11 @@ import { Gorule } from "./commonComponents/tabs/Gorule";
 import { Mapper } from "./commonComponents/tabs/mapper";
 import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
-import { gettingValues } from "./VPT_UF/VPT_EVENTS/utils/utils";
+import {
+  gettingValues,
+  transformNodesToProps,
+} from "./VPT_UF/VPT_EVENTS/utils/utils";
+import { getInitialEvents } from "./commonComponents/api/eventsApi";
 
 export const TorusModellerContext = createContext(null);
 
@@ -27,6 +31,11 @@ export default function Layout({ client }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
+  const [selectedtKey, setSelectedtKey] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const [selectedArtifact, setSelectedArtifact] = useState(null);
+  const [selectedVersion, setSelectedVersion] = useState(null);
   const [showNodeProperty, setShowNodeProperty] = useState(false);
   const { screenToFlowPosition } = useReactFlow();
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
@@ -42,6 +51,8 @@ export default function Layout({ client }) {
   const [nodePropertyData, setNodePropertyData] = useState({});
   const [denormalizedata, setDenormalizedata] = useState(null);
   const { getNode } = useReactFlow();
+  const [eventsNavBarData, setEventsNavBarData] = useState([]);
+  const [controlJson, setControlJson] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState({
     rule: false,
     mapper: false,
@@ -63,12 +74,6 @@ export default function Layout({ client }) {
     SF: { dark: "#FFc723", light: "#FFBE00" },
   };
 
-  const eventsNavBarData = useMemo(() => {
-    if (gettingValues(prevNodesEdges?.nodes))
-      return gettingValues(prevNodesEdges?.nodes);
-    else return [];
-  }, [prevNodesEdges]);
-
   const handleTabChange = (fabric) => {
     console.log("clicked", fabric, recentClicked);
     if (fabric == selectedFabric) {
@@ -78,6 +83,22 @@ export default function Layout({ client }) {
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
+    if (fabric == "events") {
+      if (selectedVersion && typeof selectedVersion == "string")
+        getInitialEvents(
+          "FRK",
+          client,
+          selectedProject,
+          "UF",
+          selectedArtifact,
+          selectedVersion,
+        ).then((res) => {
+          if (res?.status == 200) {
+            setEventsNavBarData(res?.data?.navBarData ?? []);
+            setControlJson(res?.data?.controlJson ?? {});
+          }
+        });
+    }
     setPrevNodesEdges({
       nodes: nodes,
       edges: edges,
@@ -186,6 +207,7 @@ export default function Layout({ client }) {
     <TorusModellerContext.Provider
       value={{
         ref,
+        controlJson,
         onPaneClick,
         selectedFabric,
         handleTabChange,
@@ -215,6 +237,12 @@ export default function Layout({ client }) {
                   setEdges(data?.nodeEdges ?? []);
                   setNodes(data?.nodes ?? []);
                 }}
+                selectedArtifacts={selectedArtifact}
+                setSelectedArtifacts={setSelectedArtifact}
+                selectedApplication={selectedProject}
+                setSelectedAppliction={setSelectedProject}
+                selectedVerison={selectedVersion}
+                setSelectedVerison={setSelectedVersion}
                 getDataFromFabrics={() => ({
                   nodes: nodes,
                   edges: edges,
@@ -234,7 +262,7 @@ export default function Layout({ client }) {
             </div>
 
             <div
-              className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#0F0F0F] `}
+              className={`flex h-[92%] w-full bg-[#F4F5FA]   dark:bg-[#161616] `}
             >
               <div
                 className={`flex h-[100%]  ${showNodeProperty ? "w-[79%]" : "w-[100%]"}`}

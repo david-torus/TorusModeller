@@ -5,6 +5,7 @@ import TorusButton from "./torusComponents/TorusButton";
 import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
+import { EventScreen } from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
 
 export default function NodeGallery({
   color,
@@ -59,7 +60,7 @@ export default function NodeGallery({
           <Loop color={color} selectedFabric={selectedFabric} />
         </div>
 
-        <div className="flex w-[100%] items-center justify-center xl:max-h-[7%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
+        <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
             <Text className="font-inter tracking-normal xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
@@ -78,7 +79,7 @@ export default function NodeGallery({
               <TorusButton
                 buttonClassName={"text-white"}
                 Children="Upgrade"
-                width={"md"}
+                width={"sm"}
                 bgColor={"bg-[#0736C4]"}
                 outlineColor="torus-hover:ring-[#0736C4]"
                 radius="full"
@@ -99,13 +100,15 @@ export default function NodeGallery({
 }
 
 const Loop = ({ color, selectedFabric }) => {
+  console.log(selectedFabric, "?NodeGallery");
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {EnvSideData[selectedFabric] &&
+      {selectedFabric !== "events " ? (
+        EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
             key={index}
@@ -126,7 +129,13 @@ const Loop = ({ color, selectedFabric }) => {
               {item.label}
             </span>
           </div>
-        ))}
+        ))
+      ) : (
+        <>
+          hello
+          <EventScreen />
+        </>
+      )}
     </>
   );
 };

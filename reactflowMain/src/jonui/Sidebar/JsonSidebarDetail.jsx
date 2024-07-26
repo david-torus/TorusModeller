@@ -351,7 +351,7 @@ export default function JsonSidebarDetail({
   };
 
   return (
-    <div className="relative flex max-h-[100%] w-[220px] mt-3   flex-col gap-3 font-semibold p-2  text-sm">
+    <div className="relative flex max-h-[100%] w-[240px] mt-3   flex-col gap-3 font-semibold p-2  text-sm">
       <span className="flex flex-col ">
         <span className="flex justify-between">
           <p className="p-2 mt-2  text-black dark:text-white"> Properties</p>
@@ -387,7 +387,7 @@ export default function JsonSidebarDetail({
                     return (
                       <p
                         style={{ display: ele === "label" ? "none" : "" }}
-                        className="bg-[#F4F5FA]  dark:bg-[#0F0F0F] rounded-lg "
+                        className="bg-[#F4F5FA] px-2  dark:bg-[#0F0F0F] rounded-lg "
                       >
                         <div className="w-[100%]">
                           <TorusInput

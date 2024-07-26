@@ -56,6 +56,7 @@ export function EventDashBoard({
   setNodes,
   onNodesChange,
   onEdgesChange,
+  children,
   currentDrawing = "UF",
 }) {
   const { getNode } = useReactFlow();
@@ -689,7 +690,11 @@ export function EventDashBoard({
       onPaneClick={onPaneClick}
       onNodeContextMenu={onNodeContextMenu}
     >
-      <Panel
+      {children &&
+        (typeof children === "function"
+          ? children({ setSidebar, updatenodeDetails, updatedNodeConfig })
+          : children)}
+      {/* <Panel
         position="top-right"
         className={darkMode ? "bg-[#323232]" : "bg-[#eeeeee]"}
       >
@@ -945,7 +950,7 @@ export function EventDashBoard({
           nodeConfig={nodeConfig}
           nodeData={nodeData}
         />
-      )}
+      )} */}
     </ReactFlow>
   );
 }

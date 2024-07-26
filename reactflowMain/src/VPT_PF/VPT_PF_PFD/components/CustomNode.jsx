@@ -35,7 +35,7 @@ export function ApiNode({ data, isConnectable, selected }) {
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
         border: "1px solid" + (data.nodeColor || "#ccc"),
-        backgroundColor: darkMode ? "transparent" : "#F0EEED",
+        backgroundColor: !darkMode ? "#161616" : "transparent",
       }}
     >
       <span
@@ -109,7 +109,7 @@ export function DecisionNode({ data, isConnectable, selected }) {
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
         border: "1px solid" + (data.nodeColor || "#ccc"),
-        backgroundColor: darkMode ? "transparent" : "#F0EEED",
+        backgroundColor: !darkMode ? "#161616" : "transparent",
       }}
     >
       {
@@ -211,7 +211,7 @@ export function EndNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: `1px solid #FFA09A`,
-          backgroundColor: darkMode ? "transparent" : "#F0EEED",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -261,7 +261,7 @@ export function StartNode({ data, isConnectable, selected }) {
       <div
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
-          backgroundColor: darkMode ? "transparent" : "#F0EEED",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
 
           border: `1px solid #83E283`,
         }}
@@ -303,7 +303,7 @@ export function DefaultNode({ data, isConnectable, selected }) {
     <div
       className={`custom-node  ${selected && " ring-2"} `}
       style={{
-        backgroundColor: darkMode ? "transparent" : "#F0EEED",
+        backgroundColor: !darkMode ? "#161616" : "transparent",
       }}
     >
       <Handle
@@ -377,7 +377,7 @@ export function DatabaseNode({ data, isConnectable, selected }) {
         className="custom-node "
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F0EEED",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         <span
@@ -450,7 +450,7 @@ export function KafkaNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F0EEED",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -523,7 +523,7 @@ export function PostgresNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           boxShadow: `  0 0 1px 1px ${data.nodeColor || "#ccc"}`,
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -596,7 +596,7 @@ export function DockerNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -669,7 +669,7 @@ export function InputNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -742,7 +742,7 @@ export function OutputNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -820,7 +820,7 @@ export function CustomCode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {
@@ -894,7 +894,7 @@ export function HumanTaskNode({ data, isConnectable, selected }) {
         className={`custom-node  ${selected && " ring-2"} `}
         style={{
           border: "1px solid" + (data.nodeColor || "#ccc"),
-          backgroundColor: darkMode ? "transparent" : "#F1EFEF",
+          backgroundColor: !darkMode ? "#161616" : "transparent",
         }}
       >
         {

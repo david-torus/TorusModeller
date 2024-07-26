@@ -865,7 +865,7 @@ const haandledenormalize = () => {
 
     return (
       <div
-        className="absolute  "
+        className="  "
         // style={{ display: showNodeProperty ? "block" : "none" }}
       >
         {dupJson &&Object.keys(dupJson).length > 0 && (

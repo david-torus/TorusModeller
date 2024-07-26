@@ -22,7 +22,7 @@ export const NodeInfoSidebarTabs = ({
         color={darkMode ? "transparent" : "transparent"}
         variant="underlined"
         classNames={{
-          tabList: "gap-[0.25rem] w-[280px]  rounded-none bg-transparent",
+          tabList: "gap-1 w-[280px]  rounded-none bg-transparent",
           cursor: "w-full bg-transparent",
           base: "w-full relative",
           tab: "max-w-fit px-0 h-8",
@@ -34,15 +34,15 @@ export const NodeInfoSidebarTabs = ({
             return (
               <Tab
                 title={
-                  <Tooltip content={value.label}>
+                  <Tooltip content={value.label} color={ "secondary" }>
                     <span
                       className={
                         darkMode
-                          ? `h-[30px] w-[30px] rounded-md hover:bg-blue-500 hover:shadow-lg 
-                                              ${activeTab === value.label ? "bg-[#009BC9] text-slate-800/65" : " bg-slate-600 text-slate-50"}  
+                          ? `h-[35px] w-[35px] rounded-md hover:bg-blue-500 hover:shadow-lg 
+                                              ${activeTab === value.label ? "bg-[#009BC9] text-slate-100" : ""}  
                                               flex cursor-pointer items-center justify-center px-[3px] shadow-md`
-                          : `h-[30px] w-[30px] rounded-md hover:bg-blue-500 hover:shadow-lg 
-                                              ${activeTab === value.label ? "bg-[#009BC9] text-slate-800/65 " : " bg-slate-300 text-slate-800"}  
+                          : `h-[35px] w-[35px] rounded-md hover:bg-blue-500 hover:shadow-lg 
+                                              ${activeTab === value.label ? "bg-[#009BC9] " : "bg-slate-800/50"}  
                                                flex cursor-pointer items-center justify-center px-[3px] shadow-md`
                       }
                       onContextMenu={(e) =>
