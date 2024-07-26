@@ -1,4 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion } from "framer-motion";
 import { DarkmodeContext } from "../../context/DarkmodeContext";
 import { MdOutlineClose } from "react-icons/md";
@@ -346,12 +352,13 @@ export default function EventNavbar({
     }
   };
 
-  const handleControlChange = (e) => {
+  const handleControlChange = (e, commonComponentId, componentName) => {
     try {
       setSelectedControl(Array.from(e)[0]);
-
+      setSelectedComponent(commonComponentId);
+      setSelectedComponentName(componentName);
       const selectedComponentData = eventsNavBarData.find(
-        (component) => component.component.nodeId === selectedComponent,
+        (component) => component.component.nodeId === commonComponentId,
       );
 
       const selectedControlData = selectedComponentData?.controls.find(
@@ -365,7 +372,7 @@ export default function EventNavbar({
 
         nodeProperty: {},
       });
-      console.log(selectedControlData, "selectedControlData");
+
       setSelectedControlName(selectedControlData?.nodeName);
 
       setSelectedVersion(null);
@@ -376,29 +383,36 @@ export default function EventNavbar({
     }
   };
 
-  const componentOptions =
-    eventsNavBarData &&
-    eventsNavBarData.length > 0 &&
-    eventsNavBarData.map((component) => ({
-      label: component?.component?.nodeName,
-      key: component?.component?.nodeId,
-      value: component?.component?.nodeId,
-    }));
-
-  const controlOptions =
-    selectedComponent && selectedComponent
-      ? eventsNavBarData
-
-          .find((component) => component.component.nodeId === selectedComponent)
-
-          .controls?.map((control) => ({
-            label: control?.nodeName,
-            key: control?.nodeId,
-            value: control?.nodeId,
-
-            events: control?.events,
-          }))
+  const componentOptions = useMemo(() => {
+    return eventsNavBarData && eventsNavBarData.length > 0
+      ? eventsNavBarData.map((component) => ({
+          label: component?.component?.nodeName,
+          key: component?.component?.nodeId,
+          value: component?.component?.nodeId,
+          controls: component?.controls,
+        }))
       : [];
+  }, [eventsNavBarData]);
+
+  const controlOptions = useMemo(
+    (selectedComponent) => {
+      if (!selectedComponent) return [];
+      return eventsNavBarData && eventsNavBarData.length > 0
+        ? eventsNavBarData
+            .find(
+              (component) => component.component.nodeId === selectedComponent,
+            )
+            ?.controls?.map((control) => ({
+              label: control?.nodeName,
+              key: control?.nodeId,
+              value: control?.nodeId,
+
+              events: control?.events,
+            }))
+        : [];
+    },
+    [eventsNavBarData],
+  );
 
   return (
     <div
@@ -419,23 +433,72 @@ export default function EventNavbar({
             onClick={handleClick}
           ></p>
 
-          <div
-            className={`${
-              darkMode
-                ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border      "
-                : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   "
-            }`}
-          >
+          <div className="flex flex-col gap-4">
             {componentOptions &&
               componentOptions.length > 0 &&
               componentOptions.map((obj, index) => {
+                console.log(obj, "itemisinl;oop");
                 return (
                   <div
                     key={index}
-                    className="flex h-[30px] w-[100px] cursor-pointer items-center justify-center rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
-                    onClick={() => handleComponentChange(obj.key)}
+                    className="flex h-[30px] w-[200px] cursor-pointer items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
                   >
                     {obj.label}
+                    <TorusDropDown
+                      title={
+                        selectedControlName &&
+                        selectedComponentName === obj?.label
+                          ? selectedControlName
+                          : "Control"
+                      }
+                      key={obj?.key}
+                      selected={
+                        selectedComponentName === obj?.label
+                          ? new Set([selectedControl])
+                          : new Set([""])
+                      }
+                      selectionMode="single"
+                      items={obj?.controls?.map((control) => ({
+                        label: control?.nodeName,
+                        key: control?.nodeId,
+                        value: control?.nodeId,
+
+                        events: control?.events,
+                      }))}
+                      setSelected={(e) => {
+                        handleControlChange(e, obj?.key, obj?.label);
+
+                        // if (obj.key && Array.from(e)[0]) {
+                        //   getVersionList(
+                        //     tKey,
+                        //     client,
+                        //     project,
+                        //     fabrics,
+                        //     mainArtifacts,
+                        //     mainVersion,
+                        //     obj.key,
+                        //     Array.from(e)[0],
+                        //   );
+                        // } else {
+                        //   toast.error("Please Select Component and Control", {
+                        //     position: "bottom-right",
+                        //     autoClose: 2000,
+                        //     hideProgressBar: false,
+                        //     closeOnClick: true,
+                        //     pauseOnHover: true,
+                        //     progress: undefined,
+                        //     theme: darkMode ? "dark" : "light",
+                        //   });
+                        // }
+                      }}
+                      classNames={{
+                        buttonClassName:
+                          "rounded-lg w-[100px] text-xs h-[30px] font-medium   bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                        popoverClassName: "w-[70px]",
+                        listBoxClassName: "overflow-y-auto",
+                        listBoxItemClassName: "flex text-sm justify-between",
+                      }}
+                    />
                   </div>
                 );
               })}
@@ -456,45 +519,6 @@ export default function EventNavbar({
               }}
             /> */}
 
-            <TorusDropDown
-              title={selectedControlName ? selectedControlName : "Control"}
-              isDisabled={selectedComponentName ? false : true}
-              key={"EcomponentDropdown"}
-              selected={selectedControl}
-              items={controlOptions}
-              setSelected={(e) => {
-                handleControlChange(e);
-                if (selectedComponentName && Array.from(e)[0]) {
-                  getVersionList(
-                    tKey,
-                    client,
-                    project,
-                    fabrics,
-                    mainArtifacts,
-                    mainVersion,
-                    selectedComponentName,
-                    Array.from(e)[0],
-                  );
-                } else {
-                  toast.error("Please Select Component and Control", {
-                    position: "bottom-right",
-                    autoClose: 2000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    progress: undefined,
-                    theme: darkMode ? "dark" : "light",
-                  });
-                }
-              }}
-              classNames={{
-                buttonClassName:
-                  "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                popoverClassName: "w-[70px]",
-                listBoxClassName: "overflow-y-auto",
-                listBoxItemClassName: "flex text-sm justify-between",
-              }}
-            />
             {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcomponentDropdown"}
