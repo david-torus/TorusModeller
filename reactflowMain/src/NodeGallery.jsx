@@ -6,6 +6,7 @@ import { Panel } from "reactflow";
 import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
+import { MdOutlineEmojiEvents } from "react-icons/md";
 
 export default function NodeGallery({
   color,
@@ -57,7 +58,7 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[50%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           <Loop
             color={color}
             selectedFabric={selectedFabric}
@@ -169,15 +170,20 @@ export const EventScreen = ({ selectedControlEvents }) => {
             selectedControlEvents?.events.map((item) => {
               return (
                 <div
-                  className="mt-2 flex cursor-grab flex-row justify-start gap-2 pl-[10px] text-left text-sm"
+                  className=" flex cursor-grab flex-row items-center justify-start   text-left text-sm"
                   onDragStart={(event) =>
                     onDragStart(event, item.name, selectedControlEvents)
                   }
                   draggable
                 >
-                  <span className={`text-black dark:text-white`}>
-                    {item.name}
-                  </span>
+                  <div className="flex flex-row items-center gap-2">
+                    <span className=" flex h-[30px] w-[30px] items-center justify-center rounded-md bg-[#0736C4]/15 ">
+                      <MdOutlineEmojiEvents color="#0736C4" size={18} />
+                    </span>
+                    <span className={`text-black dark:text-white`}>
+                      {item.name}
+                    </span>
+                  </div>
                 </div>
               );
             })}
