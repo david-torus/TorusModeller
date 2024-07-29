@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Input, Tab, Tabs } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import FactsComponent from "./Components/FactsComponent";
 import DecisionsComponent from "./Components/DecisionsComponent";
 import ValidationsComponent from "./Components/ValidationsComponent";
 import GenerateComponent from "./Components/GenerateComponent";
+import DecisionView from "./Components/decisionView";
+import { JsonUiEditorContext } from "./Layout";
 
 export default function Editor() {
   const mainHeadings = ["Facts", "Decisions", "Validations", "Generate"];
+  const [showDecision, setDecision] = useState(false);
+
+  const [selectedDecison, setSelectedDecison] = useState(null);
 
   return (
     <div className="w-full h-[100%] p-2">
@@ -39,8 +44,18 @@ export default function Editor() {
               )}
 
               {heading === "Decisions" && (
-                <div className="w-full flex justify-center p-2 ">
-                  <DecisionsComponent />
+                <div className="w-full h-full flex justify-center p-2 ">
+                  {showDecision ? (
+                    <DecisionsComponent
+                      selectedDecison={selectedDecison}
+                      setDecision={setDecision}
+                    />
+                  ) : (
+                    <DecisionView
+                      setSelectedDecison={setSelectedDecison}
+                      setDecision={setDecision}
+                    />
+                  )}
                 </div>
               )}
 
