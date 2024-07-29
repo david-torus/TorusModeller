@@ -1687,6 +1687,79 @@ const ArtifactOpen = ({ className }) => {
     </svg>
   );
 };
+
+const ToastClose = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="24" height="24" rx="12" fill="white" fill-opacity="0.35" />
+      <path
+        d="M16.6673 8.27334L15.7273 7.33334L12.0007 11.06L8.27398 7.33334L7.33398 8.27334L11.0607 12L7.33398 15.7267L8.27398 16.6667L12.0007 12.94L15.7273 16.6667L16.6673 15.7267L12.9407 12L16.6673 8.27334Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+const ToastSucess = () => {
+  return (
+    <svg
+      width="28"
+      height="28"
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="28" height="28" rx="14" fill="white" fill-opacity="0.24" />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M22.3327 14C22.3327 18.6024 18.6017 22.3333 13.9993 22.3333C9.39698 22.3333 5.66602 18.6024 5.66602 14C5.66602 9.39762 9.39698 5.66666 13.9993 5.66666C18.6017 5.66666 22.3327 9.39762 22.3327 14ZM17.358 11.4747C17.602 11.7188 17.602 12.1145 17.358 12.3586L13.1913 16.5253C12.9472 16.7693 12.5515 16.7693 12.3074 16.5253L10.6407 14.8586C10.3967 14.6145 10.3967 14.2188 10.6407 13.9747C10.8848 13.7306 11.2805 13.7306 11.5246 13.9747L12.7493 15.1994L14.6117 13.3371L16.4741 11.4747C16.7182 11.2306 17.1139 11.2306 17.358 11.4747Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+const ToastWarning = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 21.5H23L12 2.5L1 21.5ZM13 18.5H11V16.5H13V18.5ZM13 14.5H11V10.5H13V14.5Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
+const ToastError = () => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"
+        fill="white"
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -1746,4 +1819,8 @@ export {
   ArtifactLogo,
   ArtifactOpen,
   BreadcrumbHome,
+  ToastSucess,
+  ToastWarning,
+  ToastError,
+  ToastClose,
 };

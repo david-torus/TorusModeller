@@ -30,7 +30,7 @@ import {
   applicationLists,
 } from "./commonComponents/api/fabricsApi";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { FiEdit2 } from "react-icons/fi";
 import {
   getDomainList,
@@ -46,6 +46,7 @@ import { Breadcrumbs, Breadcrumb, Link } from "react-aria-components";
 import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
+import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 
 export default function Navbar({
   tKey,
@@ -118,6 +119,22 @@ export default function Navbar({
   const [urlOpen, setUrlOpen] = useState(false);
   const [urls, setUrl] = useState("");
   const [selectedClient, setSelectedClient] = useState(null);
+  const [wordLength, setWordLength] = useState(0);
+
+  const SaveToast = () => {
+    toast(
+      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+      {
+        type: "success",
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        title: "Success",
+        text: `Saved successfully`,
+        closeButton: false,
+      },
+    );
+  };
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -1046,7 +1063,7 @@ export default function Navbar({
                       setSelected={handleApplicationName}
                     /> */}
 
-                        <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r">
+                        <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
                           {/* <div className="flex h-[70px] w-[100%] flex-col  items-center   ">
                             <TorusTab
                               defaultSelectedKey={selectedClient}
@@ -1316,8 +1333,10 @@ export default function Navbar({
                                           classNames={{
                                             buttonClassName:
                                               "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                                            popoverClassName: "w-[70px]",
-                                            listBoxClassName: "overflow-y-auto",
+                                            popoverClassName:
+                                              "w-[70px] max-h-[100px] min-h-[50px]",
+                                            listBoxClassName:
+                                              " min-h-[35px] max-h-[100px] overflow-y-auto",
                                             listBoxItemClassName:
                                               "flex text-sm justify-between",
                                           }}
@@ -1507,15 +1526,16 @@ export default function Navbar({
                           />
                           <TorusButton
                             buttonClassName=" bg-[#0736C4]/15 w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs dark:text-white flex justify-center items-center"
-                            onPress={() =>
-                              saveProcessFlow(
-                                "create",
-                                selectedProject,
-                                selectedArtifact,
-                                selectedVersion,
-                                getDataFromFabrics(),
-                              )
-                            }
+                            onPress={() => {
+                              // saveProcessFlow(
+                              //   "create",
+                              //   selectedProject,
+                              //   selectedArtifact,
+                              //   selectedVersion,
+                              //   getDataFromFabrics(),
+                              // );
+                              SaveToast();
+                            }}
                             Children={"Save"}
                           />
                           <TorusButton
