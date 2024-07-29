@@ -204,7 +204,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                   className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
                     ${index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
                     
-                    
+
                
                `}
                 >
@@ -263,7 +263,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
           </div>
         </div>
       ) : (
-        <p>No keys available</p>
+        <p>No Decisions available</p>
       )}
     </div>
   );
