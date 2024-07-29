@@ -1,4 +1,11 @@
-import { useCallback, useState, useRef, createContext, useMemo } from "react";
+import {
+  useCallback,
+  useState,
+  useRef,
+  createContext,
+  useMemo,
+  useEffect,
+} from "react";
 import {
   MiniMap,
   Background,
@@ -33,7 +40,8 @@ export default function Layout({ client }) {
   const [selectedFabric, setSelectedFabric] = useState("Home");
   const [selectedtKey, setSelectedtKey] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
-
+  const [selectedComponentName, setSelectedComponentName] = useState(null);
+  const [selectedControlName, setSelectedControlName] = useState(null);
   const [selectedArtifact, setSelectedArtifact] = useState(null);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [showNodeProperty, setShowNodeProperty] = useState(false);
@@ -199,7 +207,9 @@ export default function Layout({ client }) {
       console.error(error);
     }
   };
-
+  useEffect(() => {
+    console.log("nodes", selectedControlEvents);
+  }, [selectedControlEvents]);
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -207,13 +217,24 @@ export default function Layout({ client }) {
     <TorusModellerContext.Provider
       value={{
         ref,
+        client,
         controlJson,
         onPaneClick,
         selectedFabric,
         handleTabChange,
         eventsNavBarData,
         nodePropertyData,
+        setSelectedComponentName,
+        selectedComponentName,
+        setSelectedControlName,
+        selectedControlName,
         onNodeContextMenu,
+        selectedArtifact,
+        setSelectedArtifact,
+        selectedProject,
+        setSelectedProject,
+        selectedVersion,
+        setSelectedVersion,
         selectedControlEvents,
         setSelectedControlEvents,
       }}
@@ -228,9 +249,7 @@ export default function Layout({ client }) {
             <div className="sticky top-0 h-[8%] w-full">
               <Navbar
                 tKey={"FRK"}
-                client={client}
                 project={""}
-                fabrics={selectedFabric}
                 handleTabChange={handleTabChange}
                 color={colors[selectedFabric]?.light}
                 sendDataToFabrics={(data) => {
@@ -245,7 +264,7 @@ export default function Layout({ client }) {
                 setSelectedVerison={setSelectedVersion}
                 getDataFromFabrics={() => ({
                   nodes: nodes,
-                  edges: edges,
+                  nodeEdges: edges,
                 })}
                 // setdomain={setDomain}
                 // setartifact={setArtifact}
@@ -308,6 +327,7 @@ export default function Layout({ client }) {
                                 color={colors[selectedFabric]?.light}
                                 handleSidebarToggle={handleSidebarToggle}
                                 showNodeProperty={showNodeProperty}
+                                selectedControlEvents={selectedControlEvents}
                               />
 
                               {!showNodeProperty && (
@@ -356,7 +376,6 @@ export default function Layout({ client }) {
               {showNodeProperty && (
                 <div
                   className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} `}
-                  
                 >
                   <div
                     className={`h-full transform border bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}

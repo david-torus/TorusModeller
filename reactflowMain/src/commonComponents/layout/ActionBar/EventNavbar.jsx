@@ -1,4 +1,10 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { motion } from "framer-motion";
 import { DarkmodeContext } from "../../context/DarkmodeContext";
 import { MdOutlineClose } from "react-icons/md";
@@ -16,7 +22,10 @@ import { IoSunny } from "react-icons/io5";
 import { FaMoon } from "react-icons/fa";
 import ReusableDropDown from "../../reusableComponents/ReusableDropDown";
 import { TorusModellerContext } from "../../../Layout";
+import TorusDropDown from "../../torusComponents/TorusDropDown";
 export default function EventNavbar({
+  sendDataToFabrics,
+  getDataFromFabrics,
   setToggleReactflow,
   tKey,
   client,
@@ -24,12 +33,17 @@ export default function EventNavbar({
   fabrics,
   mainArtifacts,
   mainVersion,
-  data,
-  setData,
 }) {
-  const { eventsNavBarData, setSelectedControlEvents } =
-    useContext(TorusModellerContext);
-  console.log("eventsNavBarData", eventsNavBarData);
+  const {
+    selectedControlEvents,
+    eventsNavBarData,
+    setSelectedControlEvents,
+    setSelectedComponentName,
+    selectedComponentName,
+    setSelectedControlName,
+    selectedControlName,
+  } = useContext(TorusModellerContext);
+  console.log("eventsNavBarData", selectedControlEvents);
   const [open, setOpen] = useState(false);
 
   const [versions, setVersions] = useState([]);
@@ -45,11 +59,7 @@ export default function EventNavbar({
 
   const [selectedComponent, setSelectedComponent] = useState(null);
 
-  const [selectedComponentName, setSelectedComponentName] = useState(null);
-
   const [selectedControl, setSelectedControl] = useState(null);
-
-  const [selectedControlName, setSelectedControlName] = useState(null);
 
   const getEventsfromVersion = useCallback(
     async (
@@ -76,7 +86,7 @@ export default function EventNavbar({
           selectedVersion,
         );
 
-        if (res) setData(res.data);
+        if (res) sendDataToFabrics(res.data);
       } catch (error) {
         toast.error("Cannot find Events by version", {
           position: "bottom-right",
@@ -85,7 +95,7 @@ export default function EventNavbar({
         });
       }
     },
-    [darkMode, setData],
+    [darkMode, sendDataToFabrics],
   );
 
   const getVersionList = useCallback(
@@ -315,20 +325,20 @@ export default function EventNavbar({
 
   const handleComponentChange = (e) => {
     try {
-      setSelectedComponent(Array.from(e)[0]);
+      setSelectedComponent(e);
       const selectedComponentData = eventsNavBarData.find(
-        (component) => component.component.nodeId === Array.from(e)[0],
+        (component) => component.component.nodeId === e,
       );
 
       setSelectedComponentName(selectedComponentData?.component?.nodeName);
 
-      // setData({
-      //   nodes: [],
+      sendDataToFabrics({
+        nodes: [],
 
-      //   nodeEdges: [],
+        nodeEdges: [],
 
-      //   nodeProperty: {},
-      // });
+        nodeProperty: {},
+      });
 
       setSelectedControl(null);
 
@@ -342,25 +352,26 @@ export default function EventNavbar({
     }
   };
 
-  const handleControlChange = (e) => {
+  const handleControlChange = (e, commonComponentId, componentName) => {
     try {
       setSelectedControl(Array.from(e)[0]);
-
+      setSelectedComponent(commonComponentId);
+      setSelectedComponentName(componentName);
       const selectedComponentData = eventsNavBarData.find(
-        (component) => component.component.nodeId === selectedComponent,
+        (component) => component.component.nodeId === commonComponentId,
       );
 
       const selectedControlData = selectedComponentData?.controls.find(
         (control) => control.nodeId === Array.from(e)[0],
       );
 
-      // setData({
-      //   nodes: [],
+      sendDataToFabrics({
+        nodes: [],
 
-      //   nodeEdges: [],
+        nodeEdges: [],
 
-      //   nodeProperty: {},
-      // });
+        nodeProperty: {},
+      });
 
       setSelectedControlName(selectedControlData?.nodeName);
 
@@ -372,87 +383,132 @@ export default function EventNavbar({
     }
   };
 
-  const componentOptions =
-    eventsNavBarData &&
-    eventsNavBarData.length > 0 &&
-    eventsNavBarData.map((component) => ({
-      label: component?.component?.nodeName,
-      key: component?.component?.nodeId,
-      value: component?.component?.nodeId,
-    }));
-
-  const controlOptions =
-    selectedComponent && selectedComponent
-      ? eventsNavBarData
-
-          .find((component) => component.component.nodeId === selectedComponent)
-
-          .controls?.map((control) => ({
-            label: control?.nodeName,
-            key: control?.nodeId,
-            value: control?.nodeId,
-
-            events: control?.events,
-          }))
+  const componentOptions = useMemo(() => {
+    return eventsNavBarData && eventsNavBarData.length > 0
+      ? eventsNavBarData.map((component) => ({
+          label: component?.component?.nodeName,
+          key: component?.component?.nodeId,
+          value: component?.component?.nodeId,
+          controls: component?.controls,
+        }))
       : [];
+  }, [eventsNavBarData]);
+
+  const controlOptions = useMemo(
+    (selectedComponent) => {
+      if (!selectedComponent) return [];
+      return eventsNavBarData && eventsNavBarData.length > 0
+        ? eventsNavBarData
+            .find(
+              (component) => component.component.nodeId === selectedComponent,
+            )
+            ?.controls?.map((control) => ({
+              label: control?.nodeName,
+              key: control?.nodeId,
+              value: control?.nodeId,
+
+              events: control?.events,
+            }))
+        : [];
+    },
+    [eventsNavBarData],
+  );
 
   return (
-    <div
-      style={{
-        transitionDuration: "0.4s",
+    <div className="flex h-full w-full items-center justify-center">
+      <div className="flex flex-col items-center  bg-white dark:border-[#212121] dark:bg-[#161616] xl:h-[320px] xl:w-[350px] 2xl:h-[580px] 2xl:w-[700px]">
+        <div className="flex flex-col gap-2">
+          {componentOptions &&
+            componentOptions.length > 0 &&
+            componentOptions.map((obj, index) => {
+              console.log(obj, "itemisinl;oop");
+              return (
+                <div className="flex h-full w-full flex-row items-center justify-center gap-2 ">
+                  <div
+                    key={index}
+                    className="flex h-[30px] w-[170px] cursor-pointer items-center justify-between rounded-md bg-[#F4F5FA] p-2 text-sm dark:bg-[#0F0F0F]"
+                  >
+                    {obj.label}
+                  </div>
+                  <div>
+                    <TorusDropDown
+                      title={
+                        selectedControlName &&
+                        selectedComponentName === obj?.label
+                          ? selectedControlName
+                          : "Control"
+                      }
+                      key={obj?.key}
+                      selected={
+                        selectedComponentName === obj?.label
+                          ? new Set([selectedControl])
+                          : new Set([""])
+                      }
+                      selectionMode="single"
+                      items={obj?.controls?.map((control) => ({
+                        label: control?.nodeName,
+                        key: control?.nodeId,
+                        value: control?.nodeId,
 
-        zIndex: 100,
+                        events: control?.events,
+                      }))}
+                      setSelected={(e) => {
+                        handleControlChange(e, obj?.key, obj?.label);
 
-        width: "100%",
+                        // if (obj.key && Array.from(e)[0]) {
+                        //   getVersionList(
+                        //     tKey,
+                        //     client,
+                        //     project,
+                        //     fabrics,
+                        //     mainArtifacts,
+                        //     mainVersion,
+                        //     obj.key,
+                        //     Array.from(e)[0],
+                        //   );
+                        // } else {
+                        //   toast.error("Please Select Component and Control", {
+                        //     position: "bottom-right",
+                        //     autoClose: 2000,
+                        //     hideProgressBar: false,
+                        //     closeOnClick: true,
+                        //     pauseOnHover: true,
+                        //     progress: undefined,
+                        //     theme: darkMode ? "dark" : "light",
+                        //   });
+                        // }
+                      }}
+                      classNames={{
+                        buttonClassName:
+                          "rounded-md h-[30px] w-[170px] text-sm font-medium   bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                        popoverClassName: "w-[170px] text-md",
+                        listBoxClassName:
+                          "overflow-y-auto bg-white border border-[#F2F4F7] dark:bg-[#0F0F0F] ",
+                        listBoxItemClassName: "flex  justify-between text-md",
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          {/* <TorusDropDown
+              title={
+                selectedComponentName ? selectedComponentName : "Component"
+              }
+              items={componentOptions}
+              key={"EcomponentDropdown"}
+              selected={selectedComponent}
+              setSelected={(e) => handleComponentChange(e)}
+              classNames={{
+                buttonClassName:
+                  "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                popoverClassName: "w-[70px]",
+                listBoxClassName: "overflow-y-auto",
+                listBoxItemClassName: "flex text-sm justify-between",
+              }}
+            /> */}
 
-        height: "8%",
-      }}
-    >
-      <motion.div
-        onClick={() => {
-          if (!open) setOpen(true);
-        }}
-        style={{
-          width: "100%",
-
-          height: "100%",
-
-          cursor: "pointer",
-
-          transitionDuration: "0.4s",
-        }}
-        className={`${
-          darkMode
-            ? "border-b border-gray-600 bg-[#1E1E1E]/90 pb-2  pl-1 pr-2 pt-2 backdrop-blur-sm "
-            : "border-b border-gray-600 bg-[#F0F0F0] pb-2 pl-1 pr-2 pt-2 backdrop-blur-sm "
-        } `}
-        initial={false}
-      >
-        <div
-          className="flex flex-row items-center justify-around gap-[21.5%] pb-2 pl-1 pr-2 pt-2"
-          style={{
-            height: "inherit",
-          }}
-        >
-          <div className="flex w-[35%] flex-row items-center justify-around gap-1">
-            <p
-              className={`border ${darkMode ? "border-gray-300/50" : "border-gray-800/50"}  cursor-pointer  rounded-md p-[3px] transition-all active:opacity-50 `}
-              onClick={handleClick}
-            >
-              <MdOutlineClose
-                color={darkMode ? "#F4F4F5" : "#1D1D1D"}
-                size={20}
-              />
-            </p>
-
-            <div
-              className={`${
-                darkMode
-                  ? "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border   border-gray-600/30 bg-gray-50/10 p-1   "
-                  : "flex h-11 w-[80%] flex-row items-center justify-evenly gap-1 rounded-md border  border-gray-600/30 bg-gray-600/10 p-1 "
-              }`}
-            >
-              <ReusableDropDown
+          {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcomponentDropdown"}
                 title={
@@ -466,9 +522,8 @@ export default function EventNavbar({
                 selectedKey={selectedComponent}
                 handleSelectedKey={(e) => handleComponentChange(e)}
                 items={componentOptions}
-              />
-
-              <ReusableDropDown
+              /> */}
+          {/* <ReusableDropDown
                 darkMode={!darkMode}
                 key={"EcontrolDropdown"}
                 isDisabled={selectedComponentName ? false : true}
@@ -508,11 +563,10 @@ export default function EventNavbar({
                   }
                 }}
                 items={controlOptions}
-              />
-            </div>
-          </div>
+              /> */}
+        </div>
 
-          {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
+        {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
             <Button
               size="xs"
               isIconOnly
@@ -717,8 +771,7 @@ export default function EventNavbar({
               </div>
             </div>
           </div> */}
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

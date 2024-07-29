@@ -4,8 +4,9 @@ import AppDF from "./VPT_DF/VPT_DF_ERD/Components/App";
 import { TorusModellerContext } from "./Layout";
 import AppPF from "./VPT_PF/VPT_PF_PFD/components/App";
 import AppUF from "./VPT_UF/VPT_UF_SLD/components/App";
-import EventsMain from "./VPT_UF/VPT_EVENTS/EventsMain";
-import EventDisplay from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
+// import EventsMain from "./VPT_UF/VPT_EVENTS/EventsMain";
+// import EventDisplay from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
+import { EventDashBoard } from "./VPT_UF/VPT_EVENTS/components/DashBoard";
 
 const proOptions = { hideAttribution: true };
 export const FabricsSelector = memo(
@@ -91,7 +92,7 @@ export const FabricsSelector = memo(
           );
         case "events":
           return (
-            <EventDisplay
+            <EventDashBoard
               nodes={nodes}
               edges={edges}
               setEdges={setEdges}
