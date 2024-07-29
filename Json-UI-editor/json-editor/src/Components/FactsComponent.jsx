@@ -3,11 +3,20 @@ import { useContext, useEffect, useState } from "react";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import { FiDelete } from "@react-icons/all-files/fi/FiDelete";
 import { JsonUiEditorContext } from "../Layout";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export default function FactsComponent() {
   const { factsVariables, setFactsVariables } = useContext(JsonUiEditorContext);
   const [selectedType, setSelectedType] = useState("");
   const [editingFactId, setEditingFactId] = useState(null);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     console.log(factsVariables, "FACTS");
@@ -41,7 +50,7 @@ export default function FactsComponent() {
   };
 
   const resetActions = () => {
-    setFactsVariables([]);
+    setFactsVariables([{ id: 1, name: "", type: "" }]);
     setEditingFactId(null);
   };
 
@@ -91,7 +100,7 @@ export default function FactsComponent() {
             </Button>
             <Button
               className="w-[30%] rounded-none bg-teal-400 text-white text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
-              onClick={resetActions}
+              onClick={onOpen}
             >
               RESET
             </Button>
@@ -174,16 +183,16 @@ export default function FactsComponent() {
 
                           <div className="col-span-3 flex justify-center">
                             <div
-                              className={`w-[100%] flex justify-center items-center font-bold ${
+                              className={`w-[100%] flex justify-center items-center font-bold border-b border-[#818181] ${
                                 fact.type === "string"
-                                  ? "text-blue-800 bg-blue-400/75  p-1"
+                                  ? "text-blue-800   p-1"
                                   : fact.type === "number"
-                                  ? "text-green-800 bg-green-400/75  p-1"
+                                  ? "text-green-800  p-1"
                                   : fact.type === "array"
-                                  ? "text-yellow-800 bg-yellow-400/75  p-1"
+                                  ? "text-yellow-800   p-1"
                                   : fact.type === "object"
-                                  ? "text-pink-800 bg-pink-400/75  p-1"
-                                  : "text-slate-800 bg-slate-400/75  p-1"
+                                  ? "text-pink-800  p-1"
+                                  : "text-slate-800   p-1"
                               }`}
                             >
                               {fact.type || "Type"}
@@ -195,18 +204,22 @@ export default function FactsComponent() {
                               <div className="w-[80%] flex ">
                                 <Button
                                   onClick={() => startEditing(fact.id)}
-                                  className="w-[50%] rounded-none border-purple-400 text-white text-sm font-bold hover:border-purple-500 hover:text-purple-800"
+                                  className="w-[50%] rounded-none border-[#818181] text-white text-sm font-bold hover:border-purple-500 hover:text-purple-500"
                                   isIconOnly
                                   variant="bordered"
                                 >
-                                  <FiEdit size={20} color="purple" />
+                                  <FiEdit
+                                    size={20}
+                                    color="#818181"
+                                    className="hover:text-purple-800"
+                                  />
                                 </Button>
                                 <Button
-                                  className="w-[50%] rounded-none border-red-400 text-white text-sm font-bold hover:border-red-500 hover:text-red-800"
+                                  className="w-[50%] rounded-none border-[#818181] text-white text-sm font-bold hover:border-red-500 hover:text-red-800"
                                   onClick={() => removeComponent(fact.id)}
                                   variant="bordered"
                                 >
-                                  <FiDelete size={20} color="red" />
+                                  <FiDelete size={20} color="#818181" />
                                 </Button>
                               </div>
                             </div>
@@ -221,6 +234,38 @@ export default function FactsComponent() {
           )}
         </div>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Modal Title
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  This action is not revertible and will reset the total number
+                  of facts
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => {
+                    resetActions();
+                    onClose();
+                  }}
+                >
+                  Reset all Facts
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
