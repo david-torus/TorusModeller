@@ -31,6 +31,7 @@ import {
   transformNodesToProps,
 } from "./VPT_UF/VPT_EVENTS/utils/utils";
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
+import { ToastContainer } from "react-toastify";
 
 export const TorusModellerContext = createContext(null);
 
@@ -338,6 +339,13 @@ export default function Layout({ client }) {
                                       : "animate-fadeOut"
                                   }`}
                                 >
+                                  <ToastContainer
+                                    newestOnTop
+                                    icon={false}
+                                    pauseOnHover={false}
+                                    hideProgressBar={true}
+                                    className={`z-[999] flex min-w-[80%] max-w-[85%] items-center justify-end`}
+                                  />
                                   <MiniMap
                                     position="bottom-right"
                                     style={{ bottom: "8%" }}
