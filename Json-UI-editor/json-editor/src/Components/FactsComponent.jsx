@@ -1,9 +1,11 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import { FiDelete } from "@react-icons/all-files/fi/FiDelete";
+import { JsonUiEditorContext } from "../Layout";
 
-export default function FactsComponent({ factsVariables, setFactsVariables }) {
+export default function FactsComponent() {
+  const { factsVariables, setFactsVariables } = useContext(JsonUiEditorContext);
   const [selectedType, setSelectedType] = useState("");
   const [editingFactId, setEditingFactId] = useState(null);
 

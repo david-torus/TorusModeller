@@ -8,8 +8,15 @@ export default function Layout({}) {
     decision2: {},
     decision3: {},
   });
+
+  const [factsVariables, setFactsVariables] = useState([
+    { id: 1, name: "", type: "" },
+  ]);
+
   return (
-    <JsonUiEditorContext.Provider value={{ json, setJson }}>
+    <JsonUiEditorContext.Provider
+      value={{ json, setJson, factsVariables, setFactsVariables }}
+    >
       <div className="w-full h-full">
         <div className="flex justify-between flex-row items-center">
           <div className="w-[20%] ">
