@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@nextui-org/react";
+import Swal from "sweetalert2";
 export const DisplayAddFactsPopup = ({
   isOpen,
   onOpenChange,
@@ -25,11 +26,14 @@ export const DisplayAddFactsPopup = ({
   ];
 
   const [factName, setFactName] = React.useState(null);
+  const [factsNameChecker, setFactsNameChecker] = React.useState([]);
   const [operator, setOperator] = React.useState(null);
   const [value, setSelectedValue] = React.useState(null);
   const [operatorList, setOperatorList] = React.useState([]);
   const { decisionSelectedFacts, setDecisionSelectedFacts } =
     useContext(JsonUiEditorContext);
+
+  console.log(factName, factsNameChecker, "factsName");
 
   const factsData = {
     factName,
@@ -43,9 +47,20 @@ export const DisplayAddFactsPopup = ({
   };
 
   const handleFactSelection = (e) => {
-    if (Array.from(e)[0]) {
-      setFactName(Array.from(e)[0]);
-      setDecisionSelectedFacts([...decisionSelectedFacts, Array.from(e)[0]]);
+    const newFacts = Array.from(e)[0];
+    if (newFacts) {
+      // setFactName(newFacts);
+
+      if (!factsNameChecker.includes(newFacts)) {
+        setFactsNameChecker([...factsNameChecker, newFacts]);
+        setFactName(newFacts);
+      } else {
+        Swal.fire("Error", "Fact already exists", "error");
+      }
+
+      if (!decisionSelectedFacts.includes(newFacts)) {
+        setDecisionSelectedFacts([...decisionSelectedFacts, newFacts]);
+      }
     } else {
       setFactName(null);
     }

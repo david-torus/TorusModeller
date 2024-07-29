@@ -10,13 +10,13 @@ import { JsonUiEditorContext } from "./Layout";
 import DecisionView from "./Components/decisionView";
 
 export default function Editor() {
-  const mainHeadings = ["Facts", "Decisions", "Validations", "Generate"];
+  const mainHeadings = ["Facts", "Decisions"];
   const [showDecision, setDecision] = useState(false);
   const { factsVariables, setFactsVariables } = useContext(JsonUiEditorContext);
   const [selectedDecison, setSelectedDecison] = useState(null);
   return (
     <div className="w-full h-[100%] p-2">
-      <div className="bg-slate-400/25  shadow-sm p-2">
+      <div className="p-2">
         <Tabs
           aria-label="Options"
           color="primary"
@@ -29,12 +29,12 @@ export default function Editor() {
             tabContent: "group-data-[selected=true]:text-[#06b6d4]",
             panel: "w-full h-[83vh] p-2",
           }}
-          disabledKeys={
-            factsVariables[factsVariables.length - 1]?.name === "" &&
-            factsVariables[factsVariables.length - 1]?.type === ""
-              ? ["Decisions"]
-              : []
-          }
+          // disabledKeys={
+          //   factsVariables[factsVariables.length - 1]?.name === "" &&
+          //   factsVariables[factsVariables.length - 1]?.type === ""
+          //     ? ["Decisions"]
+          //     : []
+          // }
         >
           {mainHeadings.map((heading, index) => (
             <Tab
@@ -66,17 +66,7 @@ export default function Editor() {
                 </div>
               )}
 
-              {heading === "Validations" && (
-                <div className="w-full flex justify-center p-2 ">
-                  <ValidationsComponent />
-                </div>
-              )}
-
-              {heading === "Generate" && (
-                <div className="w-full flex justify-center p-2 ">
-                  <GenerateComponent />
-                </div>
-              )}
+            
             </Tab>
           ))}
         </Tabs>

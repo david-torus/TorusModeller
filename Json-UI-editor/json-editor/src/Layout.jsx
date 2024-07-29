@@ -25,10 +25,7 @@ export default function Layout({}) {
     >
       <div className="w-full h-full">
         <div className="flex justify-between flex-row items-center">
-          <div className="w-[20%] ">
-            <SideBar />
-          </div>
-          <div className="w-[80%] h-full">
+          <div className="w-[100%] h-full">
             <Editor />
           </div>
         </div>

@@ -1,9 +1,11 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
-import { FiDelete } from "@react-icons/all-files/fi/FiDelete";
+import { MdDeleteOutline } from "react-icons/md";
 import Swal from "sweetalert2";
 import { JsonUiEditorContext } from "../Layout";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { GrPowerReset } from "react-icons/gr";
 import {
   Modal,
   ModalContent,
@@ -99,15 +101,36 @@ export default function FactsComponent() {
           <div className="w-[50%] flex flex-row justify-end">
             <Button
               size="md"
-              endContent={<p>+</p>}
+              endContent={
+                <IoAddCircleOutline
+                  size={20}
+                  style={{
+                    color: "#006FEE",
+                  }}
+                  
+                />
+              }
+              variant="light"
+              className="flex justify-center items-center text-primary  text-sm font-bold border-[#2563eb] border"
+              color="primary"
               onClick={addComponent}
-              className="w-[30%] rounded-none border border-r-0 border-[#1F2937] text-blue-400 text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
+           
             >
               ADD
             </Button>
             <Button
-              className="w-[30%] rounded-none border border-l-0 border-[#1F2937] text-teal-400  text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
+              endContent={
+                <GrPowerReset
+                  size={20}
+                  color="#818181"
+                  style={{
+                    color: "white",
+                  }}
+                />
+              }
               onClick={onOpen}
+              variant="faded"
+              className="flex justify-center items-center bg-blue-500 text-sm font-bold text-white"
             >
               RESET
             </Button>
@@ -154,20 +177,10 @@ export default function FactsComponent() {
                       />
                     ) : (
                       <div
-                        className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
+                        className={`mt-3 w-[100%] flex justify-center items-center h-20 border-b-1 border-slate-800 rounded-sm shadow-md *:
                     ${fact.id % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
 
-                    ${
-                      fact.type === "string"
-                        ? "border-l-blue-500 border-l-4"
-                        : fact.type === "number"
-                        ? "border-l-green-500 border-l-4"
-                        : fact.type === "array"
-                        ? "border-l-yellow-500 border-l-4"
-                        : fact.type === "object"
-                        ? "border-l-pink-500 border-l-4"
-                        : "border-l-slate-500 border-l-4"
-                    }
+                  
                     
                     `}
                       >
@@ -211,30 +224,35 @@ export default function FactsComponent() {
                               <div className="w-[80%] flex ">
                                 <Button
                                   onClick={() => startEditing(fact.id)}
-                                  className="w-[50%] border border-r-0 rounded-none border-[#818181] text-white text-sm font-bold "
-                                  isIconOnly
-                                  variant="bordered"
+                                  endContent={
+                                    <FiEdit
+                                      size={20}
+                                      color="#818181"
+                                      style={{
+                                        color: "white",
+                                      }}
+                                    />
+                                  }
+                                  variant="faded"
+                                  className="flex justify-center items-center bg-blue-500 text-sm font-bold text-white"
                                 >
-                                  <FiEdit
-                                    size={20}
-                                    color="#818181"
-                                    style={{
-                                      color: "purple",
-                                    }}
-                                  />
+                                  EDIT
                                 </Button>
                                 <Button
-                                  className="w-[50%]  border border-l-0 rounded-none border-[#818181] text-white text-sm font-bold "
+                                  variant="faded"
+                                  className="flex justify-center items-center bg-red-500 text-sm font-bold text-white"
+                                  endContent={
+                                    <MdDeleteOutline
+                                      size={23}
+                                      color="#818181"
+                                      style={{
+                                        color: "white",
+                                      }}
+                                    />
+                                  }
                                   onClick={() => removeComponent(fact.id)}
-                                  variant="bordered"
                                 >
-                                  <FiDelete
-                                    size={20}
-                                    color="#818181"
-                                    style={{
-                                      color: "red",
-                                    }}
-                                  />
+                                  DELETE
                                 </Button>
                               </div>
                             </div>

@@ -1,15 +1,28 @@
 import { Button, Input } from "@nextui-org/react";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
 import { FiDelete } from "@react-icons/all-files/fi/FiDelete";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import React, { useContext, useEffect, useState } from "react";
 import { JsonUiEditorContext } from "../Layout";
 import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { IoAddCircleOutline } from "react-icons/io5";
+import { GrPowerReset } from "react-icons/gr";
+import { MdDeleteOutline } from "react-icons/md";
 
 export default function DecisionView({ setSelectedDecison, setDecision }) {
   const [firstLevelKeys, setFirstLevelkeys] = useState([]);
   const { json, setJson } = useContext(JsonUiEditorContext);
   const [decisionName, setDecisionName] = useState("");
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpenpop, setIsOpenpop] = React.useState(false);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   const addDecisionComponent = () => {
     // Create a deep clone of the json object
     const newJson = structuredClone(json);
@@ -19,7 +32,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
     if (newJson && targetKey) {
       newJson[targetKey] = {};
 
-      setIsOpen(false);
+      setIsOpenpop(false);
       setDecisionName("");
 
       setJson((prev) => ({
@@ -40,10 +53,14 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
     setFirstLevelkeys(Object.keys(json));
   }, [json]);
 
+  const resetActions = () => {
+    setJson({});
+  };
+
   return (
     <div className="w-full h-full ">
       <div className="w-full flex justify-end">
-        <div className="w-[50%] flex flex-row justify-end">
+        <div className="w-[50%] flex flex-row justify-end gap-[1.5rem]">
           <Popover
             showArrow
             backdrop="opaque"
@@ -60,16 +77,26 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                 "dark:from-default-100 dark:to-default-50",
               ],
             }}
-            isOpen={isOpen}
-            onOpenChange={(open) => setIsOpen(open)}
+            isOpen={isOpenpop}
+            onOpenChange={(open) => setIsOpenpop(open)}
           >
             <PopoverTrigger>
               <Button
                 size="md"
-                endContent={<p>+</p>}
-                className="w-[30%] rounded-none border border-[#1F2937] text-blue-400 text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
+                isIconOnly
+                variant="light"
+                color="primary"
+                className="border border-[#2563eb]"
               >
-                ADD
+                <IoAddCircleOutline
+                  size={20}
+                  style={{
+                    color: "#006FEE",
+                  }}
+                  className={`transition-transform duration-100 ease-in-out ${
+                    isOpenpop ? "rotate-45" : "rotate-0"
+                  }`}
+                />
               </Button>
             </PopoverTrigger>
             <PopoverContent>
@@ -86,7 +113,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                     onChange={handleChange}
                     classNames={{
                       inputWrapper:
-                        "px-[0.25rem] py-[0.25rem] rounded-none data-[open=true]:border-slate-800 data-[hover=true]:border-slate-800 data-[focus=true]:border-slate-800 border-slate-800  font-bold",
+                        "px-[0.25rem] py-[0.25rem] bg-transparent rounded-md data-[open=true]:border-slate-800 data-[hover=true]:border-slate-800 data-[focus=true]:border-slate-800 border-slate-800  font-bold",
                       innerWrapper:
                         "min-h-[1.5rem] min-w-[1.5rem] bg-transparent border-2 border-blue-100",
                     }}
@@ -94,9 +121,19 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                 </div>
                 <div className="w-[20%] flex justify-center items-center">
                   <Button
-                    size="md"
                     onClick={addDecisionComponent}
-                    className="w-[30%] rounded-none border border-[#1F2937] text-blue-400 text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
+                    size="md"
+                    endContent={
+                      <IoAddCircleOutline
+                        size={20}
+                        style={{
+                          color: "#006FEE",
+                        }}
+                      />
+                    }
+                    variant="light"
+                    className="flex justify-center items-center text-primary  text-sm font-bold border border-[#2563eb]"
+                    color="primary"
                   >
                     ADD
                   </Button>
@@ -105,11 +142,57 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
             </PopoverContent>
           </Popover>
           <Button
-            className="w-[30%] rounded-none border border-[#1F2937] text-teal-400  text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
-            // onClick={onOpen}
+            // className="w-[30%] rounded-none border border-[#1F2937] text-teal-400  text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
+            onClick={onOpen}
+            size="md"
+            className="border border-[#9333ea]"
+            isIconOnly
+            variant="light"
+            color="secondary"
           >
-            RESET
+            <GrPowerReset
+              size={20}
+              style={{
+                color: "#9333ea",
+              }}
+              className={`transition-transform duration-250 ease-in-out ${
+                isOpen ? "rotate-180" : "rotate-0"
+              }`}
+            />
           </Button>
+
+          <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Reset Confirmation
+                  </ModalHeader>
+                  <ModalBody>
+                    <p>
+                      This action is not revertible and will reset the total
+                      number of facts
+                    </p>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" variant="light" onPress={onClose}>
+                      Close
+                    </Button>
+                    <Button
+                      color="danger"
+                      variant="light"
+                      onPress={() => {
+                        resetActions();
+                        onClose();
+                      }}
+                    >
+                      Reset all Facts
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
       </div>
       {firstLevelKeys.length > 0 ? (
@@ -118,28 +201,15 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
             {firstLevelKeys.map((fact, index) => (
               <div key={fact}>
                 <div
-                  className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
+                  className={`mt-3 w-[100%] flex justify-center items-center h-20 border-b-1 border-slate-800 rounded-sm shadow-md *:
                     ${index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
 
-               ${
-                 fact.type === "string"
-                   ? "border-l-blue-500 border-l-4"
-                   : fact.type === "number"
-                   ? "border-l-green-500 border-l-4"
-                   : fact.type === "boolean"
-                   ? "border-l-red-500 border-l-4"
-                   : fact.type === "array"
-                   ? "border-l-yellow-500 border-l-4"
-                   : fact.type === "object"
-                   ? "border-l-pink-500 border-l-4"
-                   : "border-l-slate-500 border-l-4"
-               }
                
                `}
                 >
                   <div className="grid grid-cols-12 w-[100%]">
                     <div className="col-span-3 flex justify-center">
-                      <div className="w-[50%] flex justify-center items-center font-semibold ">
+                      <div className="w-[50%] flex justify-center items-center font-semibold text-slate-800">
                         {fact}
                       </div>
                     </div>
@@ -152,18 +222,35 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                               setSelectedDecison(fact);
                               setDecision(true);
                             }}
-                            className="w-[50%] border-purple-400 text-white text-sm font-bold hover:border-purple-500 hover:text-purple-800"
-                            isIconOnly
-                            variant="bordered"
+                            endContent={
+                              <FiEdit
+                                size={20}
+                                color="#818181"
+                                style={{
+                                  color: "white",
+                                }}
+                              />
+                            }
+                            variant="faded"
+                            className="flex justify-center items-center bg-blue-500 text-sm font-bold text-white"
                           >
-                            <FiEdit size={20} color="purple" />
+                            EDIT
                           </Button>
                           <Button
-                            className="w-[50%] border-red-400 text-white text-sm font-bold hover:border-red-500 hover:text-red-800"
+                            variant="faded"
+                            className="flex justify-center items-center bg-red-500 text-sm font-bold text-white"
+                            endContent={
+                              <MdDeleteOutline
+                                size={23}
+                                color="#818181"
+                                style={{
+                                  color: "white",
+                                }}
+                              />
+                            }
                             // onClick={() => removeComponent(fact.id)}
-                            variant="bordered"
                           >
-                            <FiDelete size={20} color="red" />
+                            DELETE
                           </Button>
                         </div>
                       </div>
