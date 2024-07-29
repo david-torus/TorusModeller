@@ -52,6 +52,7 @@ export const DisplayAddFactsPopup = ({
     if (factsData.factName && factsData.operator && factsData.value) {
       console.log(factsData);
       handleAddNode(factName, { [operator]: value });
+      removeComponent();
     } else {
       alert("Please fill all the fields to continue");
     }
@@ -110,10 +111,10 @@ export const DisplayAddFactsPopup = ({
               Modal Title
             </ModalHeader>
             <ModalBody>
-              <div className="w-[100%]  py-3 px-2 border border-slate-800">
+              <div className="w-[100%]  py-3 px-2">
                 <div className="w-[100%] flex justify-end px-2">
                   <Button
-                    className="w-[10%] rounded-none bg-blue-400 text-white text-sm font-bold
+                    className="w-[10%] rounded-none  px-2 bg-blue-400 text-white text-sm font-bold
         hover:bg-blue-500 hover:text-blue-800"
                     startContent={<IoAddCircle size={20} color="white" />}
                   >
