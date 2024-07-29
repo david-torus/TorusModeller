@@ -48,10 +48,11 @@ export const DisplayAddFactsPopup = ({
     }
   };
 
-  const saveChanges = () => {
+  const saveChanges = (onClose) => {
     if (factsData.factName && factsData.operator && factsData.value) {
       console.log(factsData);
-      handleAddNode(factName, { [operator]: value });
+      handleAddNode(factName, { operator, value, path: "." + factName });
+      onClose();
       removeComponent();
     } else {
       alert("Please fill all the fields to continue");
@@ -107,9 +108,7 @@ export const DisplayAddFactsPopup = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              Modal Title
-            </ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">Add Facts</ModalHeader>
             <ModalBody>
               <div className="w-[100%]  py-3 px-2">
                 <div className="w-[100%] flex justify-end px-2">
@@ -225,8 +224,7 @@ export const DisplayAddFactsPopup = ({
                 color="success"
                 radius="md"
                 onClick={() => {
-                  saveChanges();
-                  onClose();
+                  saveChanges(onClose);
                 }}
                 className="w-[30%] rounded-none bg-blue-400 text-white text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
               >

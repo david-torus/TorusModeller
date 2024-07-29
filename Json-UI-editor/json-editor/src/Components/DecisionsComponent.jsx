@@ -84,6 +84,7 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
   });
 
   const handleAddNode = (type, attributes) => {
+    console.log(type, attributes, "render");
     if (
       nodeData &&
       !(nodeData.data.name === "all" || nodeData.data.name === "any")
