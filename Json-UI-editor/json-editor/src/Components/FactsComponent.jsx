@@ -4,7 +4,7 @@ import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import { MdDeleteOutline } from "react-icons/md";
 import Swal from "sweetalert2";
 import { JsonUiEditorContext } from "../Layout";
-import { IoAddCircleOutline } from "react-icons/io5";
+import { IoAddCircleOutline, IoSaveOutline } from "react-icons/io5";
 import { GrPowerReset } from "react-icons/gr";
 import {
   Modal,
@@ -98,7 +98,9 @@ export default function FactsComponent() {
     <div className="w-full h-[100%] p-2">
       <div className="bg-transparent  scrollbar-hide rounded-md shadow-sm p-2">
         <div className="w-full flex justify-end px-2">
-          <div className="w-[50%] flex flex-row justify-end">
+          
+
+          <div className="w-[50%] flex flex-row justify-end gap-[0.5rem]">
             <Button
               size="md"
               endContent={
@@ -107,14 +109,12 @@ export default function FactsComponent() {
                   style={{
                     color: "#006FEE",
                   }}
-                  
                 />
               }
               variant="light"
               className="flex justify-center items-center text-primary  text-sm font-bold border-[#2563eb] border"
               color="primary"
               onClick={addComponent}
-           
             >
               ADD
             </Button>
@@ -177,7 +177,7 @@ export default function FactsComponent() {
                       />
                     ) : (
                       <div
-                        className={`mt-3 w-[100%] flex justify-center items-center h-20 border-b-1 border-slate-800 rounded-sm shadow-md *:
+                        className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
                     ${fact.id % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
 
                   

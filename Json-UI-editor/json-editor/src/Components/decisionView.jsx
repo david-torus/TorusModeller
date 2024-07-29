@@ -71,7 +71,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                 "before:bg-default-200",
               ],
               content: [
-                "w-[30rem] h-[10rem] rounded-none",
+                "w-[30rem] h-[5rem] rounded-md",
                 "py-3 px-4 border border-default-200",
                 "bg-gradient-to-br from-white to-default-300",
                 "dark:from-default-100 dark:to-default-50",
@@ -201,9 +201,10 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
             {firstLevelKeys.map((fact, index) => (
               <div key={fact}>
                 <div
-                  className={`mt-3 w-[100%] flex justify-center items-center h-20 border-b-1 border-slate-800 rounded-sm shadow-md *:
+                  className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
                     ${index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
-
+                    
+                    
                
                `}
                 >
