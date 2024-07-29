@@ -169,6 +169,7 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
 
   return (
     <div className="w-full h-[100%] p-2">
+      
       <div className="bg-slate-400/25 h-90 rounded-md shadow-sm p-2">
         <div className="w-full flex justify-end mb-4">
           <div className="w-[100%] flex items-center  justify-between">

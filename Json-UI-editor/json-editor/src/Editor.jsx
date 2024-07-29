@@ -60,6 +60,7 @@ export default function Editor() {
                     <DecisionView
                       setSelectedDecison={setSelectedDecison}
                       setDecision={setDecision}
+                    
                     />
                   )}
                 </div>

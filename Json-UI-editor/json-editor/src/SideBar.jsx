@@ -6,7 +6,7 @@ export default function SideBar() {
 
   return (
     <div className="w-full h-[100%] p-2">
-      {/* <div className="bg-slate-400/25 h-[93vh] rounded-md shadow-sm">
+      <div className="bg-slate-400/25 h-[93vh] rounded-md shadow-sm">
         <header>Rule Engine</header>
 
         <div className="flex flex-col justify-between gap-[0.25rem] p-2">
@@ -24,7 +24,7 @@ export default function SideBar() {
             );
           })}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

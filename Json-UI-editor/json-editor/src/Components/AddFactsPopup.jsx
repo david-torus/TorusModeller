@@ -28,6 +28,8 @@ export const DisplayAddFactsPopup = ({
   const [operator, setOperator] = React.useState(null);
   const [value, setSelectedValue] = React.useState(null);
   const [operatorList, setOperatorList] = React.useState([]);
+  const { decisionSelectedFacts, setDecisionSelectedFacts } =
+    useContext(JsonUiEditorContext);
 
   const factsData = {
     factName,
@@ -43,6 +45,7 @@ export const DisplayAddFactsPopup = ({
   const handleFactSelection = (e) => {
     if (Array.from(e)[0]) {
       setFactName(Array.from(e)[0]);
+      setDecisionSelectedFacts([...decisionSelectedFacts, Array.from(e)[0]]);
     } else {
       setFactName(null);
     }
@@ -111,15 +114,6 @@ export const DisplayAddFactsPopup = ({
             <ModalHeader className="flex flex-col gap-1">Add Facts</ModalHeader>
             <ModalBody>
               <div className="w-[100%]  py-3 px-2">
-                <div className="w-[100%] flex justify-end px-2">
-                  <Button
-                    className="w-[10%] rounded-none  px-2 bg-blue-400 text-white text-sm font-bold
-        hover:bg-blue-500 hover:text-blue-800"
-                    startContent={<IoAddCircle size={20} color="white" />}
-                  >
-                    ADD PATH
-                  </Button>
-                </div>
                 <div className="w-[100%] grid grid-cols-12 gap-4">
                   <div className="col-span-6">
                     <div className="flex w-full flex-wrap flex-col justify-end md:flex-nowrap gap-4">

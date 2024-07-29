@@ -2,6 +2,7 @@ import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useContext, useEffect, useState } from "react";
 import { FiEdit } from "@react-icons/all-files/fi/FiEdit";
 import { FiDelete } from "@react-icons/all-files/fi/FiDelete";
+import Swal from "sweetalert2";
 import { JsonUiEditorContext } from "../Layout";
 import {
   Modal,
@@ -42,11 +43,17 @@ export default function FactsComponent() {
       ]);
 
       console.log("Trueeee=====>>>");
+    } else {
+      Swal.fire("Warning", "Please enter fact name and type", "warning");
     }
   };
 
   const removeComponent = (id) => {
-    setFactsVariables(factsVariables.filter((fact) => fact.id !== id));
+    if (factsVariables.length === 1) {
+      Swal.fire("Error", "There should be atleast one fact", "error");
+    } else {
+      setFactsVariables(factsVariables.filter((fact) => fact.id !== id));
+    }
   };
 
   const resetActions = () => {
@@ -94,12 +101,12 @@ export default function FactsComponent() {
               size="md"
               endContent={<p>+</p>}
               onClick={addComponent}
-              className="w-[30%] rounded-none bg-blue-400 text-white text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
+              className="w-[30%] rounded-none border border-r-0 border-[#1F2937] text-blue-400 text-sm font-bold hover:bg-blue-500 hover:text-blue-800"
             >
               ADD
             </Button>
             <Button
-              className="w-[30%] rounded-none bg-teal-400 text-white text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
+              className="w-[30%] rounded-none border border-l-0 border-[#1F2937] text-teal-400  text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
               onClick={onOpen}
             >
               RESET
@@ -204,22 +211,30 @@ export default function FactsComponent() {
                               <div className="w-[80%] flex ">
                                 <Button
                                   onClick={() => startEditing(fact.id)}
-                                  className="w-[50%] rounded-none border-[#818181] text-white text-sm font-bold hover:border-purple-500 hover:text-purple-500"
+                                  className="w-[50%] border border-r-0 rounded-none border-[#818181] text-white text-sm font-bold "
                                   isIconOnly
                                   variant="bordered"
                                 >
                                   <FiEdit
                                     size={20}
                                     color="#818181"
-                                    className="hover:text-purple-800"
+                                    style={{
+                                      color: "purple",
+                                    }}
                                   />
                                 </Button>
                                 <Button
-                                  className="w-[50%] rounded-none border-[#818181] text-white text-sm font-bold hover:border-red-500 hover:text-red-800"
+                                  className="w-[50%]  border border-l-0 rounded-none border-[#818181] text-white text-sm font-bold "
                                   onClick={() => removeComponent(fact.id)}
                                   variant="bordered"
                                 >
-                                  <FiDelete size={20} color="#818181" />
+                                  <FiDelete
+                                    size={20}
+                                    color="#818181"
+                                    style={{
+                                      color: "red",
+                                    }}
+                                  />
                                 </Button>
                               </div>
                             </div>
