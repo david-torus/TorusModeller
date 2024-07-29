@@ -15,48 +15,57 @@ import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { GrPowerReset } from "react-icons/gr";
 import { MdDeleteOutline } from "react-icons/md";
-
-export default function DecisionView({ setSelectedDecison, setDecision }) {
+ 
+export default function DecisionView({ setSelectedDecision, setDecision }) {
   const [firstLevelKeys, setFirstLevelkeys] = useState([]);
   const { json, setJson } = useContext(JsonUiEditorContext);
   const [decisionName, setDecisionName] = useState("");
   const [isOpenpop, setIsOpenpop] = React.useState(false);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+ 
   const addDecisionComponent = () => {
     // Create a deep clone of the json object
     const newJson = structuredClone(json);
-
+ 
     const targetKey = decisionName;
-
+ 
     if (newJson && targetKey) {
       newJson[targetKey] = {};
-
+ 
       setIsOpenpop(false);
       setDecisionName("");
-
+ 
       setJson((prev) => ({
         ...prev,
         ...newJson,
       }));
     }
-
+ 
     console.log(newJson, "DecisionView==>");
   };
-
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setDecisionName(value);
   };
-
+ 
   useEffect(() => {
     setFirstLevelkeys(Object.keys(json));
   }, [json]);
-
+ 
   const resetActions = () => {
     setJson({});
   };
 
+
+  const removeComponent = (fact) => {
+    setFirstLevelkeys(prev => prev.filter(key => key !== fact));
+    const newJson = structuredClone(json);
+ 
+    delete newJson[fact];
+    setJson(newJson);
+  }
+ 
   return (
     <div className="w-full h-full ">
       <div className="w-full flex justify-end">
@@ -142,7 +151,6 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
             </PopoverContent>
           </Popover>
           <Button
-            // className="w-[30%] rounded-none border border-[#1F2937] text-teal-400  text-sm font-bold hover:bg-teal-500 hover:text-teal-800"
             onClick={onOpen}
             size="md"
             className="border border-[#9333ea]"
@@ -160,7 +168,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
               }`}
             />
           </Button>
-
+ 
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
               {(onClose) => (
@@ -203,8 +211,8 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                 <div
                   className={`mt-3 w-[100%] flex justify-center items-center h-20 border-1 border-slate-800 rounded-sm shadow-md *:
                     ${index % 2 === 0 ? "bg-slate-200" : "bg-slate-300"}
-                    
-
+                   
+ 
                
                `}
                 >
@@ -214,14 +222,14 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                         {fact}
                       </div>
                     </div>
-
+ 
                     <div className="col-span-9 flex justify-end">
                       <div className="w-[30%] flex justify-center gap-2">
                         <div className="w-[80%] flex justify-between gap-1">
                           <Button
                             onClick={() => {
-                              setSelectedDecison(fact);
-                              setDecision(true);
+                              setSelectedDecision(fact);
+                              setDecision(prev => !prev);
                             }}
                             endContent={
                               <FiEdit
@@ -249,7 +257,7 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
                                 }}
                               />
                             }
-                            // onClick={() => removeComponent(fact.id)}
+                            onClick={() => removeComponent(fact)}
                           >
                             DELETE
                           </Button>
@@ -268,3 +276,5 @@ export default function DecisionView({ setSelectedDecison, setDecision }) {
     </div>
   );
 }
+ 
+ 

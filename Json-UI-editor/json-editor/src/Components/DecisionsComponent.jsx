@@ -25,7 +25,7 @@ const initialData = {
   children: [],
 };
 
-export default function DecisionsComponent({ selectedDecison, setDecision }) {
+export default function DecisionsComponent({ selectedDecision, setDecision }) {
   const { json, setJson } = useContext(JsonUiEditorContext);
   const [params, setParams] = useState([{ key: "", value: "" }]);
   const [type, setType] = useState(null);
@@ -119,6 +119,10 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
     return null;
   };
 
+  
+
+
+
   const handleRemoveNode = () => {
     if (nodeData) {
       const updatedData = { ...data };
@@ -145,7 +149,7 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
     }));
   };
 
-  console.log(data, selectedDecison, json, "nnn");
+  console.log(data, selectedDecision, json, "nnn");
 
   useEffect(() => {
     if (treeContainerRef.current) {
@@ -158,14 +162,16 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
   }, []);
 
   useEffect(() => {
-    if (Object.keys(json[selectedDecison]).length > 0) {
-      setData(json[selectedDecison].condition);
-      setType(json[selectedDecison].type);
-      setParams(json[selectedDecison].params);
+
+    
+    if (selectedDecision && Object.keys(json[selectedDecision]).length > 0 ) {
+      setData(json[selectedDecision].condition);
+      setType(json[selectedDecision].type);
+      setParams(json[selectedDecision].params);
     } else {
       setData(initialData);
     }
-  }, [json, selectedDecison]);
+  }, [json, selectedDecision]);
 
   return (
     <div className="w-full h-[100%] p-2">
@@ -180,7 +186,7 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
                 setSelectedOutcome={setSelectedOutcome}
               />
             </div>
-            <div>{selectedDecison}</div>
+            <div>{selectedDecision}</div>
             <div className="flex items-center  justify-between gap-2 border border-gray-600/50 rounded-md">
               <div>
                 <Button
@@ -190,8 +196,8 @@ export default function DecisionsComponent({ selectedDecison, setDecision }) {
                   onClick={() => {
                     setJson({
                       ...json,
-                      [selectedDecison]: {
-                        ...json[selectedDecison],
+                      [selectedDecision]: {
+                        ...json[selectedDecision],
                         condition: data,
                         events: outCome,
                         params: params,
