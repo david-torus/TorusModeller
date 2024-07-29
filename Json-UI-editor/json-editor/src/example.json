@@ -1,0 +1,48 @@
+{
+  "glossary": {
+    "title": "example glossary"
+  },
+  "author": {
+    "name": "John Doe",
+    "role": "Editor",
+    "contact": {
+      "email": "johndoe@example.com",
+      "phone": "+1234567890"
+    }
+  },
+  "publication": {
+    "date": "2024-07-26",
+    "publisher": "Example Publisher",
+    "location": "New York, USA"
+  },
+  "relatedResources": [
+    {
+      "id": "R1",
+      "title": "Introduction to SGML",
+      "url": "https://example.com/intro-sgml"
+    },
+    {
+      "id": "R2",
+      "title": "Advanced XML Techniques",
+      "url": "https://example.com/advanced-xml"
+    }
+  ],
+  "GlossDiv": {
+    "title": "S"
+  },
+
+  "GlossList": {
+    "GlossEntry": {
+      "ID": "SGML",
+      "SortAs": "SGML",
+      "GlossTerm": "Standard Generalized Markup Language",
+      "Acronym": "SGML",
+      "Abbrev": "ISO 8879:1986",
+      "GlossDef": {
+        "para": "A meta-markup language, used to create markup languages such as DocBook.",
+        "GlossSeeAlso": ["GML", "XML"]
+      },
+      "GlossSee": "markup"
+    }
+  }
+}
