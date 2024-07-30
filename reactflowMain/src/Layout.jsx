@@ -377,35 +377,35 @@ export default function Layout({ client }) {
                               selectedControlEvents={selectedControlEvents}
                             />
 
-                            {!showNodeProperty && (
-                              <div
-                                className={`transition-transform duration-500 ease-in-out ${
-                                  !showNodeProperty
-                                    ? "animate-fadeIn"
-                                    : "animate-fadeOut"
-                                }`}
-                              >
-                                <ToastContainer
-                                  newestOnTop
-                                  icon={false}
-                                  pauseOnHover={false}
-                                  hideProgressBar={true}
-                                  className={`z-[999] flex min-w-[80%] max-w-[85%] items-center justify-end`}
-                                />
-                                <MiniMap
-                                  position="bottom-right"
-                                  style={{ bottom: "8%" }}
-                                  maskColor="transparent"
-                                  className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                                />
-                                <CanvasPanel
-                                  undo={undo}
-                                  redo={redo}
-                                  canUndo={canUndo}
-                                  canRedo={canRedo}
-                                />
-                              </div>
-                            )}
+                              {!showNodeProperty && (
+                                <div
+                                  className={`transition-transform duration-500 ease-in-out ${
+                                    !showNodeProperty
+                                      ? "animate-fadeIn"
+                                      : "animate-fadeOut"
+                                  }`}
+                                >
+                                  <ToastContainer
+                                    newestOnTop
+                                    icon={false}
+                                    pauseOnHover={false}
+                                    hideProgressBar={true}
+                                    className={`z-[999] flex min-w-[0%] max-w-[85%] items-center justify-end flex-col min-h-11`}
+                                  />
+                                  <MiniMap
+                                    position="bottom-right"
+                                    style={{ bottom: "8%" }}
+                                    maskColor="transparent"
+                                    className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                                  />
+                                  <CanvasPanel
+                                    undo={undo}
+                                    redo={redo}
+                                    canUndo={canUndo}
+                                    canRedo={canRedo}
+                                  />
+                                </div>
+                              )}
 
                             {menu && (
                               <ContextMenuSelector
