@@ -42,6 +42,7 @@ import Toolbar from "../Toolbar";
 
 import { VscDebug } from "react-icons/vsc";
 import ReusableInput from "../../reusableComponents/ReusableInput";
+import TorusToast from "../../../torusComponents/TorusToaster/TorusToast";
 export default function FabricsNavbar({
   setFabricsKey = null,
   setUpIdKey = null,
@@ -96,6 +97,8 @@ export default function FabricsNavbar({
   const [openArtifactsModal, setOpenArtifactsModal] = useState(false);
   const [openProjectModal, setOpenProjectModal] = useState(false);
 
+  const [wordLength, setWordLength] = useState(0);
+
   const [selectedDeletingArtifactsItem, setSelectedDeletingArtifactsItem] =
     useState(null);
   const [selectedDeletingVersinItem, setSelectedDeletingVersionItem] =
@@ -110,36 +113,47 @@ export default function FabricsNavbar({
   const [urlOpen, setUrlOpen] = useState(false);
   const [urls, setUrl] = useState("");
 
-
-const handleArtifactSubmit = async (e, erDatas, type = "") => {
-  try{
-
+  const handleArtifactSubmit = async (e, erDatas, type = "") => {
+    try {
       const res = await saveProcessFlow(
         "create",
-       selectedApplictionName ,
+        selectedApplictionName,
         new Set([newArtifactsName.trim().toLocaleLowerCase()]),
         new Set("v1"),
-        erDatas
+        erDatas,
       );
 
       if (res.status === 200 || res.status === 201) {
-        toast.success("created successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Saved successfully`,
+            closeButton: false,
+          },
+        );
       } else {
-        toast.error("Error while creating", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Error while saving`,
+            closeButton: false,
+          },
+        );
       }
-    
-  }
-  catch(err){
-    console.error(err);
-  }
-}
-
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSubmit = async (e, erDatas, type = "") => {
     try {
@@ -149,39 +163,82 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           selectedApplication,
           selectedArtifactsname,
           new Set("v1"),
-          erDatas
+          erDatas,
         );
         if (res.status === 200 || res.status === 201) {
-          toast.success("saveAs successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `saveAs successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while saveAs", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while saveAs`,
+              closeButton: false,
+            },
+          );
         }
-      }
-       else {
+      } else {
         const res = await saveProcessFlow(
           "create",
-          new Set([newProjectName.trim().toLocaleLowerCase()]) ,
+          new Set([newProjectName.trim().toLocaleLowerCase()]),
           new Set([newArtifactsName.trim().toLocaleLowerCase()]),
           new Set("v1"),
-          erDatas
+          erDatas,
         );
 
         if (res.status === 200 || res.status === 201) {
-          toast.success("created successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `created successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while creating", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while creating`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
@@ -209,33 +266,74 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
             window.open(url, "_blank");
             setPeModal(
-              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`
+              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`,
             );
 
             setPeurlopen(true);
 
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           } else if (data && data.data) {
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error sending key to process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error sending key to process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleDebug = async () => {
@@ -256,37 +354,81 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         .then((response) => response.json())
         .then((data) => {
           if (data) {
-            toast.success(
-              "upId found in process engine - " + data.formjson.url,
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
               {
+                type: "success",
                 position: "bottom-right",
                 autoClose: 2000,
-              }
+                closeButton: false,
+                hideProgressBar: true,
+                title: "Success",
+                text: `upId found in process engine - ${data.formjson.url}`,
+              },
             );
+
             const { key, upId, nodeId, nodeName, url, mode } = data.formjson;
             setUrl(
-              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`
+              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`,
             );
             setUpIdKey(data.formjson.upId);
             setUrlOpen(true);
           } else if (data.hasOwnProperty("err")) {
-            toast.success(" Error found in process engine - " + data.err, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            // toast.success(" Error found in process engine - " + data.err, {
+            //   position: "bottom-right",
+            //   autoClose: 2000,
+            // });
+
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                closeButton: false,
+                hideProgressBar: true,
+                title: "Success",
+                text: `Error found in process engine - ${data.err}`,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error in process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              closeButton: false,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error in process engine`,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          closeButton: false,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+        },
+      );
     }
   };
 
@@ -308,10 +450,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         setNewProjectNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifact`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -333,10 +483,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         setNewArtifactsNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifact`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -348,14 +506,25 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           group,
           Array.from(selectedApplictionName)[0],
           artifact,
-          fabrics
+          fabrics,
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
-          toast.error("Cannot get version details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get version details`,
+              closeButton: false,
+            },
+          );
       }
     } catch (err) {
       toast.error("Cannot get artifacts details", {
@@ -377,10 +546,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
       setSelectedArtifacts(e);
       setMainArtifacts && setMainArtifacts(Array.from(e)[0]);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -388,10 +565,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
       setSelectedArtifactsname(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -402,10 +587,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
       setSelectedDefaultArtifacts("");
       setSelectedDefaultVersion("");
     } catch (err) {
-      toast.error("Cannot set Domain", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set Domain`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -415,10 +608,19 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
       setartifact(e);
     } catch (err) {
       setSelectedDefaultVersion("");
-      toast.error("Cannot set selected artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -426,10 +628,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
       setSelectedDefaultVersion(e);
     } catch (err) {
-      toast.error("Cannot set selected Default Version", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Default Version`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -440,15 +650,23 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         Array.from(selectedDefaultArtifacts)[0],
         selectedsource,
         Array.from(selectedDomainLIst)[0],
-        fabrics
+        fabrics,
       );
 
       if (responses) sendDataToFabrics(responses.data);
     } catch (err) {
-      toast.error("Cannot load Default FLow details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot load Default FLow details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -462,14 +680,22 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         handleIntialLoad(tenant, group, fabrics, Array.from(e)[0]).catch(
           (err) => {
             throw err;
-          }
+          },
         );
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleApplication = async (e) => {
@@ -481,24 +707,43 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
             tenant,
             group,
             Array.from(e)[0],
-            fabrics
+            fabrics,
           );
 
           if (response && response?.status === 200) {
             setApplicationArtifactsName(response.data);
           }
         } catch (error) {
-          toast.error("Cannot get artifacts details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get artifacts details`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -511,10 +756,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         setApplicationList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot save application details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
     }
   };
   console.log("applicationList", applicationList);
@@ -527,10 +780,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         setArtifactsList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -577,7 +838,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
     selectedApplictionNames,
     selectedArtifactss,
     selectedVerisonss,
-    erDatas
+    erDatas,
   ) => {
     try {
       const payload = {
@@ -594,7 +855,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         Array.from(selectedVerisonss)[0],
         tenant,
         group,
-        fabrics
+        fabrics,
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -602,7 +863,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
             tenant,
             group,
             fabrics,
-            Array.from(selectedApplictionNames)[0] || selectedApplication
+            Array.from(selectedApplictionNames)[0] || selectedApplication,
           );
           setNewArtifactsName("");
           setSelectedApplictionName(selectedApplictionNames);
@@ -611,7 +872,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
             setMainArtifacts(Array.from(selectedArtifactss)[0]);
           setVersions(response.data);
           setSelectedVerison(
-            new Set([response.data[response.data.length - 1]])
+            new Set([response.data[response.data.length - 1]]),
           );
           setMainVersion &&
             setMainVersion(response.data[response.data.length - 1]);
@@ -627,20 +888,39 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           setSelectedApplictionName(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
           if (fabrics) {
-            toast.info(`${fabrics} Fabrics updated successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "info",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Information",
+                text: `${fabrics} Fabrics updated successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       }
 
       return response;
     } catch (error) {
-      toast.error("Cannot save artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -654,7 +934,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
             Array.from(selectedArtifacts)[0],
             tenant,
             group,
-            fabrics
+            fabrics,
           );
 
           if (response && typeof response === "object" && response) {
@@ -662,19 +942,38 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
               ...response.data,
             });
           } else {
-            toast.error("no data found", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "error",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `no data found`,
+                closeButton: false,
+              },
+            );
           }
         } else {
           sendDataToFabrics({});
         }
       } catch (error) {
-        toast.error("Cannot load Flow details", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Cannot load Flow details`,
+            closeButton: false,
+          },
+        );
       }
     },
     [
@@ -685,7 +984,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
       selectedVerison,
       sendDataToFabrics,
       tenant,
-    ]
+    ],
   );
 
   const openmodal = (type) => {
@@ -705,10 +1004,18 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         onOpen();
       }
     } catch (err) {
-      toast.error(`cannot get ${type}`, {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `cannot get ${type}`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -720,7 +1027,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         `${BASE_URL}/deleteApplication?tenant=${tenant}&appGroup=${group}&applicationName=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -734,10 +1041,19 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenProjectModal(false);
       }
@@ -754,7 +1070,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         `${BASE_URL}/deleteFlowArtifact?tenant=${tenant}&appGroup=${group}&applicationName=${application}&fabrics=${fabrics}&artifact=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -767,10 +1083,19 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenArtifactsModal(false);
       }
@@ -787,7 +1112,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         `${BASE_URL}/deleteFlowVersion?tenant=${tenant}&appGroup=${group}&applicationName=${application}&fabrics=${fabrics}&artifact=${Array.from(selectedArtifacts)[0]}&version=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -799,10 +1124,19 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           nodeProperty: {},
         });
 
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
+
         // setOpenVersionModal(false);
       }
     } catch (error) {
@@ -830,7 +1164,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
         getartifactList(
           selectedsource,
           Array.from(selectedDomainLIst)[0],
-          fabrics
+          fabrics,
         )
           .then((artifacts) => {
             if (artifacts) setDefaultArtifactList(artifacts.data);
@@ -851,7 +1185,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
           selectedsource,
           Array.from(selectedDomainLIst)[0],
           fabrics,
-          Array.from(selectedDefaultArtifacts)[0]
+          Array.from(selectedDefaultArtifacts)[0],
         )
           .then((res) => {
             if (res) setDefaultVersionList(res.data.version);
@@ -871,7 +1205,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tenant}:${group}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`
+          `${tenant}:${group}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`,
         );
       getProcessFlowApi(selectedVerison).catch((err) => {
         throw err;
@@ -959,8 +1293,8 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
             }}
             className={`${
               darkMode
-                ? "bg-[#1E1E1E]/90 relative rounded-lg  border border-gray-500"
-                : "backdrop-blur-sm relative rounded-lg  border border-gray-500"
+                ? "relative rounded-lg border  border-gray-500 bg-[#1E1E1E]/90"
+                : "relative rounded-lg border  border-gray-500 backdrop-blur-sm"
             } `}
             initial={false}
             animate={open ? "open" : "closed"}
@@ -973,7 +1307,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
             <div
               style={{ visibility: open ? "visible" : "hidden" }}
-              className="w-[100%] h-[60%] p-2 flex flex-row   justify-between  items-center  "
+              className="flex h-[60%] w-[100%] flex-row items-center   justify-between  p-2  "
             >
               <div
                 style={{
@@ -1037,8 +1371,8 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
               <div
                 style={{ transitionDuration: open ? "1.7s" : "0.1s" }}
-                className={`flex gap-1 flex-row justify-between  items-center opacity-0   ${
-                  open ? "opacity-100 h-full" : ""
+                className={`flex flex-row items-center justify-between  gap-1 opacity-0   ${
+                  open ? "h-full opacity-100" : ""
                 }`}
               >
                 <Popover
@@ -1050,7 +1384,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       size="sm"
                       isIconOnly
                       variant="outline"
-                      className="flex flex-row w-full justify-center gap-2 items-center"
+                      className="flex w-full flex-row items-center justify-center gap-2"
                     >
                       <Tooltip
                         content="Load Default Template"
@@ -1062,10 +1396,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       >
                         <span>
                           <TbTemplate
-                            className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                            className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                               darkMode
-                                ? " hover:text-white hover:border-gray-200/80 "
-                                : " hover:text-gray-700 hover:border-gray-700 "
+                                ? " hover:border-gray-200/80 hover:text-white "
+                                : " hover:border-gray-700 hover:text-gray-700 "
                             }`}
                             size={25}
                             color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1074,12 +1408,12 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       </Tooltip>
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="bg-white border border-slate-400/30 text-black">
-                    <div className="mt-2 flex flex-wrap gap-2 w-full mb-2 ">
+                  <PopoverContent className="border border-slate-400/30 bg-white text-black">
+                    <div className="mb-2 mt-2 flex w-full flex-wrap gap-2 ">
                       <Button
                         size="sm"
                         variant="outline"
-                        className="bg-[#143C59]/70 border border-slate-400/30 text-white"
+                        className="border border-slate-400/30 bg-[#143C59]/70 text-white"
                       >
                         {(selectedsource && selectedsource) || "Source"}
                       </Button>
@@ -1192,7 +1526,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   size="sm"
                   isIconOnly
                   variant="outline"
-                  className=" flex flex-row w-full justify-center gap-2 items-center p-2"
+                  className=" flex w-full flex-row items-center justify-center gap-2 p-2"
                   onClick={() => toggleDarkMode(!darkMode)}
                 >
                   <Tooltip
@@ -1206,20 +1540,20 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                     <span>
                       {darkMode ? (
                         <FaMoon
-                          className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
+                          className={` cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                             darkMode
-                              ? " hover:text-white hover:border-gray-200/80 "
-                              : " hover:text-gray-700 hover:border-gray-700"
+                              ? " hover:border-gray-200/80 hover:text-white "
+                              : " hover:border-gray-700 hover:text-gray-700"
                           }`}
                           size={25}
                           color={darkMode ? "#F4F4F5" : "#616A6B "}
                         />
                       ) : (
                         <IoSunny
-                          className={` p-[3px] rounded cursor-pointer border border-gray-600/50 active:opacity-50 transition-all ${
+                          className={` cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                             darkMode
-                              ? " hover:text-white hover:border-gray-200/80 "
-                              : " hover:text-gray-700 hover:border-gray-700"
+                              ? " hover:border-gray-200/80 hover:text-white "
+                              : " hover:border-gray-700 hover:text-gray-700"
                           }`}
                           size={25}
                           color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1262,8 +1596,8 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   <div
                     className={`${
                       darkMode
-                        ? "bg-[#353535]/80 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-gray-400/50 cursor-pointer"
-                        : "bg-gray-600/10 rounded-md flex  flex-row items-center justify-center p-1 gap-3 transition-all  hover:ring-2 ring-white cursor-pointer"
+                        ? "flex cursor-pointer flex-row  items-center justify-center gap-3 rounded-md bg-[#353535]/80 p-1  ring-gray-400/50 transition-all hover:ring-2"
+                        : "flex cursor-pointer flex-row  items-center justify-center gap-3 rounded-md bg-gray-600/10 p-1  ring-white transition-all hover:ring-2"
                     }  `}
                   >
                     <ReusableDropDown
@@ -1371,7 +1705,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         isIconOnly
                         size="sm"
                         variant="outline"
-                        className=" flex flex-row w-full justify-center gap-2 items-center "
+                        className=" flex w-full flex-row items-center justify-center gap-2 "
                         onClick={() => {
                           if (selectedArtifacts && selectedVerison) {
                             setToggleReactflow((prev) => ({
@@ -1379,15 +1713,21 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               events: true,
                             }));
                           } else {
-                            toast.error("Please select artifacts and version", {
-                              position: "bottom-right",
-                              autoClose: 2000,
-                              hideProgressBar: false,
-                              closeOnClick: true,
-                              pauseOnHover: true,
-                              progress: undefined,
-                              theme: darkMode ? "dark" : "light",
-                            });
+                            toast(
+                              <TorusToast
+                                setWordLength={setWordLength}
+                                wordLength={wordLength}
+                              />,
+                              {
+                                position: "bottom-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                closeButton: false,
+                                closeOnClick: true,
+                                title: "Error",
+                                text: "Please select artifacts and version",
+                              },
+                            );
                           }
                         }}
                       >
@@ -1401,10 +1741,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         >
                           <span>
                             <MdOutlineEventNote
-                              className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                              className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                 darkMode
-                                  ? " hover:text-white hover:border-gray-200/80 "
-                                  : " hover:text-gray-700 hover:border-gray-700 "
+                                  ? " hover:border-gray-200/80 hover:text-white "
+                                  : " hover:border-gray-700 hover:text-gray-700 "
                               }`}
                               size={25}
                               color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1419,7 +1759,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         <>
                           <Button
                             isIconOnly
-                            className=" flex flex-row w-full justify-center gap-2 items-center "
+                            className=" flex w-full flex-row items-center justify-center gap-2 "
                             size="sm"
                             onClick={handleProcessEngine}
                             variant="outline"
@@ -1434,10 +1774,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             >
                               <span>
                                 <VscServerProcess
-                                  className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                                  className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                     darkMode
-                                      ? " hover:text-white hover:border-gray-200/80 "
-                                      : " hover:text-gray-700 hover:border-gray-700 "
+                                      ? " hover:border-gray-200/80 hover:text-white "
+                                      : " hover:border-gray-700 hover:text-gray-700 "
                                   }`}
                                   size={25}
                                   color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1447,7 +1787,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           </Button>
                           <Button
                             isIconOnly
-                            className=" flex flex-row w-full justify-center gap-2 items-center "
+                            className=" flex w-full flex-row items-center justify-center gap-2 "
                             size="sm"
                             onClick={handleDebug}
                             variant="outline"
@@ -1462,10 +1802,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             >
                               <span>
                                 <VscDebug
-                                  className={`border border-gray-600/50 p-[3px]  rounded cursor-pointer active:opacity-50 transition-all ${
+                                  className={`cursor-pointer rounded border  border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                     darkMode
-                                      ? " hover:text-white hover:border-gray-200/80"
-                                      : " hover:text-gray-700 hover:border-gray-700 "
+                                      ? " hover:border-gray-200/80 hover:text-white"
+                                      : " hover:border-gray-700 hover:text-gray-700 "
                                   }`}
                                   size={25}
                                   color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1485,7 +1825,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       <Button
                         size="sm"
                         isIconOnly
-                        className=" flex flex-row w-full justify-center gap-2 items-center "
+                        className=" flex w-full flex-row items-center justify-center gap-2 "
                         variant="outline"
                       >
                         <Tooltip
@@ -1497,12 +1837,11 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           }`}
                         >
                           <span>
-                
                             <IoIosCreate
-                              className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                              className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                 darkMode
-                                  ? " hover:text-white hover:border-gray-200/80 "
-                                  : " hover:text-gray-700 hover:border-gray-700 "
+                                  ? " hover:border-gray-200/80 hover:text-white "
+                                  : " hover:border-gray-700 hover:text-gray-700 "
                               }`}
                               size={25}
                               color={darkMode ? "#ffffff" : "#616A6B "}
@@ -1514,7 +1853,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                     <PopoverContent
                       className={`${darkMode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
                     >
-                      <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
+                      <div className="mb-2 mt-2 flex w-full flex-col gap-2 ">
                         <ReusableInput
                           key={"fabricsNavbarInput1"}
                           darkMode={darkMode}
@@ -1577,7 +1916,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         size="sm"
                         isIconOnly
                         color="red"
-                        className=" flex flex-row w-full justify-center gap-2 items-center "
+                        className=" flex w-full flex-row items-center justify-center gap-2 "
                         variant="outline"
                       >
                         <Tooltip
@@ -1590,10 +1929,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         >
                           <span>
                             <IoMdAdd
-                              className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                              className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                 darkMode
-                                  ? " hover:text-white hover:border-gray-200/80 "
-                                  : " hover:text-gray-700 hover:border-gray-700 "
+                                  ? " hover:border-gray-200/80 hover:text-white "
+                                  : " hover:border-gray-700 hover:text-gray-700 "
                               }`}
                               size={25}
                               color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1605,9 +1944,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                     <PopoverContent
                       className={`${darkMode ? "bg-[#121212]" : " bg-white"} border border-gray-400/30 text-black/70`}
                     >
-                      <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
-                       
-
+                      <div className="mb-2 mt-2 flex w-full flex-col gap-2 ">
                         <ReusableInput
                           key={"fabricsNavbarInput1"}
                           darkMode={darkMode}
@@ -1627,12 +1964,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
 
                         <Button
                           size="sm"
-                        
                           isDisabled={
                             newArtifactsNameValidation ||
                             newArtifactsName === "" ||
-                            !selectedApplictionName  
-
+                            !selectedApplictionName
                           }
                           onClick={async (e) =>
                             await handleArtifactSubmit(e, getDataFromFabrics())
@@ -1647,21 +1982,21 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                   <div
                     className={`${
                       darkMode
-                        ? "flex flex-row justify-center items-center gap-2  bg-[#121212] rounded-md p-1  "
-                        : "flex flex-row justify-center items-center gap-2  bg-gray-600/10 rounded-md p-1 "
+                        ? "flex flex-row items-center justify-center gap-2  rounded-md bg-[#121212] p-1  "
+                        : "flex flex-row items-center justify-center gap-2  rounded-md bg-gray-600/10 p-1 "
                     }`}
                   >
                     <Button
                       size="sm"
                       isIconOnly
-                      className=" flex flex-row w-full justify-center gap-2 items-center "
+                      className=" flex w-full flex-row items-center justify-center gap-2 "
                       onClick={async () => {
                         await saveProcessFlow(
                           "update",
                           selectedApplictionName,
                           selectedArtifacts,
                           selectedVerison,
-                          getDataFromFabrics()
+                          getDataFromFabrics(),
                         );
                       }}
                       isDisabled={
@@ -1682,10 +2017,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       >
                         <span>
                           <MdOutlineUploadFile
-                            className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                            className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                               darkMode
-                                ? " hover:text-white hover:border-gray-200/80 "
-                                : " hover:text-gray-700 hover:border-gray-700 "
+                                ? " hover:border-gray-200/80 hover:text-white "
+                                : " hover:border-gray-700 hover:text-gray-700 "
                             }`}
                             size={25}
                             color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1696,14 +2031,14 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                     <Button
                       isIconOnly
                       size="sm"
-                      className=" flex flex-row w-full justify-center gap-2 items-center "
+                      className=" flex w-full flex-row items-center justify-center gap-2 "
                       onClick={async () => {
                         await saveProcessFlow(
                           "create",
                           selectedApplictionName,
                           selectedArtifacts,
                           selectedVerison,
-                          getDataFromFabrics()
+                          getDataFromFabrics(),
                         );
                       }}
                       isDisabled={
@@ -1724,10 +2059,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                       >
                         <span>
                           <MdOutlineSave
-                            className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                            className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                               darkMode
-                                ? " hover:text-white hover:border-gray-200/80 "
-                                : " hover:text-gray-700 hover:border-gray-700 "
+                                ? " hover:border-gray-200/80 hover:text-white "
+                                : " hover:border-gray-700 hover:text-gray-700 "
                             }`}
                             size={25}
                             color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1758,7 +2093,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                             selectedArtifacts === "" ||
                             selectedVerison === ""
                           }
-                          className=" flex flex-row w-full justify-center gap-2 items-center "
+                          className=" flex w-full flex-row items-center justify-center gap-2 "
                         >
                           <Tooltip
                             content="Save As"
@@ -1770,10 +2105,10 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                           >
                             <span>
                               <VscSaveAs
-                                className={`border border-gray-600/50 p-[3px] rounded cursor-pointer active:opacity-50 transition-all ${
+                                className={`cursor-pointer rounded border border-gray-600/50 p-[3px] transition-all active:opacity-50 ${
                                   darkMode
-                                    ? " hover:text-white hover:border-gray-200/80 "
-                                    : " hover:text-gray-700 hover:border-gray-700 "
+                                    ? " hover:border-gray-200/80 hover:text-white "
+                                    : " hover:border-gray-700 hover:text-gray-700 "
                                 }`}
                                 size={25}
                                 color={darkMode ? "#F4F4F5" : "#616A6B "}
@@ -1783,8 +2118,8 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                         </Button>
                       </PopoverTrigger>
 
-                      <PopoverContent className="bg-white border border-slate-400/30 text-black">
-                        <div className="mt-2 flex flex-col gap-2 w-full mb-2 ">
+                      <PopoverContent className="border border-slate-400/30 bg-white text-black">
+                        <div className="mb-2 mt-2 flex w-full flex-col gap-2 ">
                           <ReusableDropDown
                             key={"ApplicationDropdown"}
                             title={
@@ -1851,7 +2186,7 @@ const handleArtifactSubmit = async (e, erDatas, type = "") => {
                               await handleSubmit(
                                 e,
                                 getDataFromFabrics(),
-                                "saveAs"
+                                "saveAs",
                               )
                             }
                           >

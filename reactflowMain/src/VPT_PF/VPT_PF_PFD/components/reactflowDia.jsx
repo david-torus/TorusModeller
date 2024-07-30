@@ -54,7 +54,7 @@ const ReactFlowDia = ({
 
   onEdgeUpdateStart,
   onEdgeUpdateEnd,
-  uniqueNames,
+
   defaults,
   setDefaults,
   setdomain,
@@ -147,11 +147,6 @@ const ReactFlowDia = ({
           {children &&
             (typeof children == "function"
               ? children({
-                  setToggleReactflow,
-                  uniqueNames,
-                  changeProperty,
-                  updatedNodeConfig,
-                  sideBarData,
                   ...undoRedo,
                 })
               : children)}

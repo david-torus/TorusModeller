@@ -21,7 +21,7 @@ function MonacoEditor({
             setJson(sideBarData?.data.nodeProperty["customCode"]?.request.code);
           } else {
             setJson(
-              sideBarData?.data.nodeProperty["customCode"]?.request.code || ""
+              sideBarData?.data.nodeProperty["customCode"]?.request.code || "",
             );
           }
         } else {
@@ -62,20 +62,21 @@ function MonacoEditor({
             code: json,
           },
         },
-      }
+      },
     );
 
-    setToggleReactflow(() => ({
-      rule: false,
-      mapper: false,
+    setToggleReactflow((prev) => ({
+      ...prev,
+      flow: true,
+      code: false,
     }));
   };
 
   return (
-    <div className="w-[100%] h-[100%] bg-[#0f0a19] text-gray-500">
+    <div className="h-[100%] w-[100%] bg-[#0f0a19] text-gray-500">
       <div className="h-[2%]">
         <p
-          className=" ml-4 mt-2 w-[33px] p-2 text-white rounded  bg-[#4095FD]  text-center hover:cursor-pointer z-50"
+          className=" z-50 ml-4 mt-2 w-[33px] rounded bg-[#4095FD]  p-2  text-center text-white hover:cursor-pointer"
           onClick={handleClick}
         >
           <TiArrowBackOutline />

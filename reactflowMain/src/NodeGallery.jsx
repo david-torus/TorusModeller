@@ -7,9 +7,11 @@ import { EnvSideData } from "./commonComponents/layout/SideBar/SidebarData";
 import { TorusModellerContext } from "./Layout";
 import { DarkmodeContext } from "./commonComponents/context/DarkmodeContext";
 import { MdOutlineEmojiEvents } from "react-icons/md";
+import OrpsSidebar from "./VPT_SF/Components/layout/sidebar";
 
 export default function NodeGallery({
   color,
+  sfNodeGalleryData,
   showFabricSideBar,
   handleSidebarToggle,
   children,
@@ -63,6 +65,7 @@ export default function NodeGallery({
             color={color}
             selectedFabric={selectedFabric}
             selectedControlEvents={selectedControlEvents}
+            sfNodeGalleryData={sfNodeGalleryData}
           />
         </div>
 
@@ -105,15 +108,17 @@ export default function NodeGallery({
   );
 }
 
-const Loop = ({ color, selectedControlEvents }) => {
-  const { selectedFabric } = useContext(TorusModellerContext);
+const Loop = ({ color }) => {
+  const { selectedFabric, selectedControlEvents, sfNodeGalleryData } =
+    useContext(TorusModellerContext);
+  console.log(sfNodeGalleryData, "sf");
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
   return (
     <>
-      {selectedFabric !== "events" ? (
+      {selectedFabric !== "events" && selectedFabric !== "SF" ? (
         EnvSideData[selectedFabric] &&
         EnvSideData[selectedFabric].map((item, index) => (
           <div
@@ -136,10 +141,17 @@ const Loop = ({ color, selectedControlEvents }) => {
             </span>
           </div>
         ))
-      ) : (
+      ) : selectedFabric == "events" ? (
         <>
           <EventScreen selectedControlEvents={selectedControlEvents} />
         </>
+      ) : (
+        selectedFabric === "SF" && (
+          <OrpsSidebar
+            dropdownJson={sfNodeGalleryData}
+            fabrics={selectedFabric}
+          />
+        )
       )}
     </>
   );

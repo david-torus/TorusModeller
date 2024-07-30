@@ -7,6 +7,7 @@ import AppUF from "./VPT_UF/VPT_UF_SLD/components/App";
 // import EventsMain from "./VPT_UF/VPT_EVENTS/EventsMain";
 // import EventDisplay from "./VPT_UF/VPT_EVENTS/components/EventDisplay";
 import { EventDashBoard } from "./VPT_UF/VPT_EVENTS/components/DashBoard";
+import AppSF from "./VPT_SF/Components/App";
 
 const proOptions = { hideAttribution: true };
 export const FabricsSelector = memo(
@@ -16,10 +17,8 @@ export const FabricsSelector = memo(
     setEdges,
     setNodes,
     children,
-
     onEdgesChange,
     onNodesChange,
-    prevNodesEdges,
   }) => {
     const { selectedFabric } = useContext(TorusModellerContext);
     const cycleFabric = () => {
@@ -28,13 +27,7 @@ export const FabricsSelector = memo(
           return (
             <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
               Home Screen
-              {children({
-                setToggleReactflow: null,
-                uniqueNames: null,
-                changeProperty: null,
-                updatedNodeConfig: null,
-                sideBarData: null,
-              })}
+              {children({})}
             </div>
           );
 
@@ -79,16 +72,16 @@ export const FabricsSelector = memo(
           );
         case "SF":
           return (
-            <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
-              Not Implemented Yet
-              {children({
-                setToggleReactflow: null,
-                uniqueNames: null,
-                changeProperty: null,
-                updatedNodeConfig: null,
-                sideBarData: null,
-              })}
-            </div>
+            <AppSF
+              nodes={nodes}
+              edges={edges}
+              setEdges={setEdges}
+              setNodes={setNodes}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              children={children}
+              proOptions={proOptions}
+            />
           );
         case "events":
           return (

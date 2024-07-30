@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Handle, Position, useReactFlow } from "reactflow";
 import { InputText } from "primereact/inputtext";
-import { uniQueNameContext } from "./App";
+
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
+import { TorusModellerContext } from "../../../Layout";
 
 export function CustomTableNode({ data, id }) {
-  const { uniqueNames } = useContext(uniQueNameContext);
+  const { uniqueNames } = useContext(TorusModellerContext);
   const [datas, setDatas] = useState({});
   const [editingHeader, setEditingHeader] = useState(false);
   const [editedHeader, setEditedHeader] = useState("");
@@ -124,17 +125,17 @@ export function CustomTableNode({ data, id }) {
     <table
       removeWrapper
       topContentPlacement="top"
-      className={`${darkMode ? "ring-neutral-500/60 bg-neutral-700" : "ring-neutral-400 bg-neutral-400"} w-[200px] ring-2    rounded-sm    `}
+      className={`${darkMode ? "bg-neutral-700 ring-neutral-500/60" : "bg-neutral-400 ring-neutral-400"} w-[200px] rounded-sm    ring-2    `}
     >
       <th className="relative ">
         <tr
           onClick={handleHeaderClick}
-          className={`${darkMode ? "bg-neutral-800 text-white" : "bg-neutral-300/70 text-black"} h-[40px]   flex items-center justify-center `}
+          className={`${darkMode ? "bg-neutral-800 text-white" : "bg-neutral-300/70 text-black"} flex   h-[40px] items-center justify-center `}
         >
           {editingHeader ? (
             <div>
               <InputText
-                className="border border-[#DCDCDC] w-full text-gray-600"
+                className="w-full border border-[#DCDCDC] text-gray-600"
                 aria-describedby="username-help"
                 value={editedHeader}
                 onChange={handleHeaderChange}
@@ -198,9 +199,9 @@ export function CustomTableNode({ data, id }) {
               datas?.attributes[key].cname !== "" && (
                 <td
                   key={index}
-                  className={`${darkMode ? "bg-[#333333] text-white border-neutral-500" : "bg-neutral-200/80 text-black/70 border-neutral-400"}  flex h-[43px] text-md flex-col  justify-center   border-t-2 p-[10px] 
-                  hover:bg-neutral-600/10
-                  transition-ease-in-out duration-150 last:rounded-b-sm first:border-none`}
+                  className={`${darkMode ? "border-neutral-500 bg-[#333333] text-white" : "border-neutral-400 bg-neutral-200/80 text-black/70"}  text-md transition-ease-in-out flex h-[43px]  flex-col   justify-center border-t-2 
+                  p-[10px]
+                  duration-150 first:border-none last:rounded-b-sm hover:bg-neutral-600/10`}
                 >
                   <tr className="relative ">
                     <Handle
@@ -236,7 +237,7 @@ export function CustomTableNode({ data, id }) {
                     />
                   </tr>
                 </td>
-              )
+              ),
           )}
       </tbody>
     </table>

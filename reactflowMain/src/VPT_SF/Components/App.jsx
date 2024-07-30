@@ -12,7 +12,14 @@ import { GiOrganigram } from "react-icons/gi";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { FaRegHandshake } from "react-icons/fa";
 import FabricsNavbar from "../../commonComponents/layout/ActionBar/FabricsNavbar";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import OrpsSidebar from "./layout/sidebar";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -27,77 +34,31 @@ import ContextMenu from "./ContextMenu";
 import NodeInfoSidebar from "../../commonComponents/CommonSideBar/NodeInfoSidebar";
 import useUndoRedo from "../../commonComponents/react-flow-pro/useUndoRedo";
 import { toast } from "react-toastify";
+import { TorusModellerContext } from "../../Layout";
 const BASEURL = `${process.env.REACT_APP_API_URL}tp/getTenantInfo`;
 
-const App = ({ tenant, appGroup, application, currentFabric }) => {
+const AppSF = ({
+  nodes,
+  edges,
+  setEdges,
+  setNodes,
+  onNodesChange,
+  onEdgesChange,
+
+  children,
+}) => {
   //reactflow states
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { ref, onNodeContextMenu, onPaneClick } =
+    useContext(TorusModellerContext);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [menu, setMenu] = useState(null);
-  const ref = useRef(null);
+
   const [toogleNodeInfo, setToogleNodeInfo] = useState(false);
   const [nodeInfoData, setNodeInfoData] = useState(null);
   const [status, setStatus] = useState(false);
-  const [renderPolicyJson, setRenderPolicyJson] = useState(null);
 
   const { undo, redo, canUndo, canRedo, takeSnapshot } = useUndoRedo();
   const { getNode, getNodes } = useReactFlow();
-  const fabrics = [
-    { fabricName: "orgGrp", fabricIcon: <GiOrganigram /> },
-    { fabricName: "roleGrp", fabricIcon: <RiUserSettingsLine /> },
-    { fabricName: "psGrp", fabricIcon: <FaRegHandshake /> },
-  ];
-
-console.log(tenant, appGroup, application, currentFabric , "sajh")
-
-
-
-  const getTenantPolicy = async (tenant) => {
-    try {
-      const response = await fetch(`${BASEURL}?tenant=${tenant}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-
-      data.orgGrp =
-        data.orgGrp &&
-        data.orgGrp.length > 0 &&
-        data.orgGrp.map((orgGrp) => ({
-          ...orgGrp,
-          id: uuidv4(),
-        }));
-
-      data.psGrp =
-        data.psGrp &&
-        data.psGrp.length > 0 &&
-        data.psGrp.map((psGrp) => ({
-          ...psGrp,
-          id: uuidv4(),
-        }));
-
-      data.roleGrp =
-        data.roleGrp &&
-        data.roleGrp.length > 0 &&
-        data.roleGrp.map((roleGrp) => ({
-          ...roleGrp,
-          id: uuidv4(),
-        }));
-
-      return data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
-  useEffect(() => {
-    getTenantPolicy(tenant).then((res) => {
-      setRenderPolicyJson(res);
-    });
-  }, [tenant]);
 
   const NODE_TYPES = useMemo(
     () => ({
@@ -108,7 +69,7 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
       org: OrgName,
       roles: RoleName,
     }),
-    []
+    [],
   );
 
   const onConnect = useCallback(
@@ -193,11 +154,11 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
                 color: "#2196f3",
               },
             },
-            eds
-          )
+            eds,
+          ),
         );
     },
-    [getNode, setNodes, setEdges, getNodes,takeSnapshot]
+    [getNode, setNodes, setEdges, getNodes, takeSnapshot],
   );
 
   const updateOptions = (data) => {
@@ -236,8 +197,6 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-
-
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -254,11 +213,11 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
 
       const rolesColor = event.dataTransfer.getData("application/roleColor");
 
-      const validateGroup =(nodeType) => {
+      const validateGroup = (nodeType) => {
         return getNodes().some((node) => {
           return node.type === nodeType;
         });
-      }
+      };
 
       if (orgGrp) {
         let validateOrgGrp = validateGroup("orgGrp");
@@ -354,7 +313,7 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
             const childPosition = calculateChildPosition(
               i,
               newNode.position,
-              totalNodes
+              totalNodes,
             );
             childNodes.push({
               id: childId,
@@ -468,32 +427,10 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
         takeSnapshot();
       }
     },
-    [reactFlowInstance, setNodes, setEdges,getNodes,takeSnapshot]
+    [reactFlowInstance, setNodes, setEdges, getNodes, takeSnapshot],
   );
 
-  const onNodeContextMenu = useCallback(
-    (event, node) => {
-      // Prevent native context menu from showing
-      event.preventDefault();
-
-      // Calculate position of the context menu. We want to make sure it
-      // doesn't get positioned off-screen.
-      const pane = ref.current.getBoundingClientRect();
-      setMenu({
-        id: node.id,
-        top: event.clientY < pane.height - 200 && event.clientY,
-        left: event.clientX < pane.width - 200 && event.clientX,
-        right: event.clientX >= pane.width - 200 && pane.width - event.clientX,
-        bottom:
-          event.clientY >= pane.height - 200 && pane.height - event.clientY,
-      });
-    },
-    [setMenu]
-  );
-
-  const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
-
-  const updatedNodeConfig = (id,  nodeDetalis, datas) => {
+  const updatedNodeConfig = (id, nodeDetalis, datas) => {
     try {
       setNodes((prev) => {
         return (
@@ -508,7 +445,7 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
                     nodeProperty: {
                       ...node.data.nodeProperty,
                       ...nodeDetalis,
-                       ...datas,
+                      ...datas,
                     },
                   },
                 };
@@ -517,7 +454,7 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
                   ...node,
                   data: {
                     ...node.data,
-                    nodeProperty: { ...nodeDetalis,  ...datas },
+                    nodeProperty: { ...nodeDetalis, ...datas },
                   },
                 };
               }
@@ -552,12 +489,12 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
         console.error(error);
       }
     },
-    [setNodes, setEdges]
+    [setNodes, setEdges],
   );
 
   return (
     <>
-      <div>
+      {/* <div>
         <FabricsNavbar
           undoredo={{
             undo: undo,
@@ -571,9 +508,9 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
           fabrics={currentFabric}
           getDataFromFabrics={sendDataToNavBar}
           sendDataToFabrics={getDataFromNavBar}
-        ></FabricsNavbar>
+        />
         <OrpsSidebar dropdownJson={renderPolicyJson} fabrics={fabrics} />
-      </div>
+      </div> */}
 
       <ReactFlow
         ref={ref}
@@ -590,7 +527,21 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
         onNodeContextMenu={onNodeContextMenu}
         fitView
       >
-        <NodeInfoSidebar
+        {children &&
+          (typeof children == "function"
+            ? children({
+                setToggleReactflow: null,
+                uniqueNames: null,
+                changeProperty: null,
+                updatedNodeConfig,
+                sideBarData: nodeInfoData,
+                undo,
+                redo,
+                canUndo,
+                canRedo,
+              })
+            : children)}
+        {/* <NodeInfoSidebar
           updatedNodeConfig={updatedNodeConfig}
           currentDrawing={currentFabric}
           sideBarData={nodeInfoData}
@@ -613,21 +564,11 @@ console.log(tenant, appGroup, application, currentFabric , "sajh")
             setNodeInfoData={setNodeInfoData}
             takeSnapshot={takeSnapshot}
           />
-        )}
-        <MiniMap />
+        )} */}
+        {/* <MiniMap /> */}
       </ReactFlow>
     </>
   );
 };
 
-function ReactFlowWrapper(props) {
-  return (
-    <ReactFlowProvider>
-      <div style={{ height: "100vh", width: "100%" }}>
-        <App {...props} />
-      </div>
-    </ReactFlowProvider>
-  );
-}
-
-export default ReactFlowWrapper;
+export default AppSF;

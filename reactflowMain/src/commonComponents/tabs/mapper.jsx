@@ -40,11 +40,12 @@ export const Mapper = ({
       },
       {
         mapper: json,
-      }
+      },
     );
 
-    setToggleReactflow(() => ({
-      rule: false,
+    setToggleReactflow((prev) => ({
+      ...prev,
+      flow: true,
       mapper: false,
     }));
   };

@@ -47,6 +47,8 @@ import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
+import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
+import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 
 export default function Navbar({
   tKey,
@@ -54,7 +56,7 @@ export default function Navbar({
   project,
   setdomain,
   setartifact,
-  handleTabChange,
+
   sendDataToFabrics,
   setUpIdKey = null,
   setToggleReactflow,
@@ -63,6 +65,7 @@ export default function Navbar({
 }) {
   const {
     client,
+    handleTabChange,
     selectedFabric,
     selectedArtifact,
     setSelectedArtifact,
@@ -111,15 +114,18 @@ export default function Navbar({
     useState(null);
   const [selectedDeletingProjectItem, setSelectedDeletingProjectItem] =
     useState(null);
-
-  const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
-
   const [peModal, setPeModal] = useState("");
   const [peurlopen, setPeurlopen] = useState(false);
   const [urlOpen, setUrlOpen] = useState(false);
   const [urls, setUrl] = useState("");
   const [selectedClient, setSelectedClient] = useState(null);
   const [wordLength, setWordLength] = useState(0);
+  const [newArtifact, setNewArtifact] = useState(false);
+  const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
+
+  const handleNewArtifact = () => {
+    setNewArtifact(!newArtifact);
+  };
 
   const SaveToast = () => {
     toast(
@@ -147,15 +153,31 @@ export default function Navbar({
       );
 
       if (res.status === 200 || res.status === 201) {
-        toast.success("created successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `created successfully`,
+            closeButton: false,
+          },
+        );
       } else {
-        toast.error("Error while creating", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Error while creating`,
+            closeButton: false,
+          },
+        );
       }
     } catch (err) {
       console.error(err);
@@ -173,15 +195,37 @@ export default function Navbar({
           erDatas,
         );
         if (res.status === 200 || res.status === 201) {
-          toast.success("saveAs successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `saveAs successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while saveAs", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while saveAs`,
+              closeButton: false,
+            },
+          );
         }
       } else {
         const res = await saveProcessFlow(
@@ -193,15 +237,37 @@ export default function Navbar({
         );
 
         if (res.status === 200 || res.status === 201) {
-          toast.success("created successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `created successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while creating", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while creating`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
@@ -234,28 +300,69 @@ export default function Navbar({
 
             setPeurlopen(true);
 
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           } else if (data && data.data) {
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "error",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `Error while sending data`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error sending key to process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error sending key to process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleDebug = async () => {
@@ -276,11 +383,19 @@ export default function Navbar({
         .then((response) => response.json())
         .then((data) => {
           if (data) {
-            toast.success(
-              "upId found in process engine - " + data.formjson.url,
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
               {
+                type: "success",
                 position: "bottom-right",
                 autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `upId found in process engine - ${data.formjson.url}`,
+                closeButton: false,
               },
             );
             const { key, upId, nodeId, nodeName, url, mode } = data.formjson;
@@ -290,23 +405,53 @@ export default function Navbar({
             setUpIdKey(data.formjson.upId);
             setUrlOpen(true);
           } else if (data.hasOwnProperty("err")) {
-            toast.success(" Error found in process engine - " + data.err, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `Error found in process engine - ${data.err}`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error in process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error in process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -328,10 +473,18 @@ export default function Navbar({
         setNewProjectNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifact`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -353,10 +506,18 @@ export default function Navbar({
         setNewArtifactsNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -372,16 +533,35 @@ export default function Navbar({
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
-          toast.error("Cannot get version details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get version details`,
+              closeButton: false,
+            },
+          );
       }
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -396,10 +576,18 @@ export default function Navbar({
       sendDataToFabrics({});
       setSelectedArtifact(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -407,10 +595,18 @@ export default function Navbar({
     try {
       setSelectedArtifactsname(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -421,10 +617,18 @@ export default function Navbar({
       setSelectedDefaultArtifacts("");
       setSelectedDefaultVersion("");
     } catch (err) {
-      toast.error("Cannot set Domain", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set Domain`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -434,10 +638,19 @@ export default function Navbar({
       setartifact(e);
     } catch (err) {
       setSelectedDefaultVersion("");
-      toast.error("Cannot set selected artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -445,10 +658,18 @@ export default function Navbar({
     try {
       setSelectedDefaultVersion(e);
     } catch (err) {
-      toast.error("Cannot set selected Default Version", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Default Version`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -464,27 +685,43 @@ export default function Navbar({
 
       if (responses) sendDataToFabrics(responses.data);
     } catch (err) {
-      toast.error("Cannot load Default FLow details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot load Default FLow details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
   const handleApplicationName = async (e) => {
     try {
-      setSelectedArtifact([]);
-      setSelectedVersion([]);
+      setSelectedArtifact("");
+      setSelectedVersion("");
       setSelectedProject(e);
 
       handleIntialLoad(tKey, client, selectedFabric, e).catch((err) => {
         throw err;
       });
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleApplication = async (e) => {
@@ -503,17 +740,36 @@ export default function Navbar({
             setSelectedProject(response.data);
           }
         } catch (error) {
-          toast.error("Cannot get artifacts details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get artifacts details`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -526,10 +782,18 @@ export default function Navbar({
         setApplicationList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot save application details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
     }
   };
   console.log("projectList", projectList);
@@ -552,10 +816,18 @@ export default function Navbar({
         setArtifactsList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -643,10 +915,21 @@ export default function Navbar({
           setSelectedVersion(response.data[response.data.length - 1]);
 
           if (selectedFabric) {
-            toast.success(`${selectedFabric} Fabrics saved successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `${selectedFabric} Fabrics saved successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       } else if (response && response.status === 201) {
@@ -654,20 +937,39 @@ export default function Navbar({
           setSelectedProject(selectedApplictionNames);
           setSelectedArtifact(selectedArtifactss);
           if (selectedFabric) {
-            toast.info(`${selectedFabric} Fabrics updated successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "info",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "INFORMATION",
+                text: `${selectedFabric} Fabrics updated successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       }
 
       return response;
     } catch (error) {
-      toast.error("Cannot save artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "ERROR",
+          text: `Cannot save artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -689,19 +991,38 @@ export default function Navbar({
               ...response.data,
             });
           } else {
-            toast.error("no data found", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                position: "bottom-right",
+                type: "error",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeButton: false,
+                title: "ERROR",
+                text: `Cannot load Flow details`,
+              },
+            );
           }
         } else {
           sendDataToFabrics({});
         }
       } catch (error) {
-        toast.error("Cannot load Flow details", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            position: "bottom-right",
+            type: "error",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeButton: false,
+            title: "ERROR",
+            text: `Cannot load Flow details`,
+          },
+        );
       }
     },
     [
@@ -732,10 +1053,18 @@ export default function Navbar({
         onOpen();
       }
     } catch (err) {
-      toast.error(`cannot get ${type}`, {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `cannot get ${type}`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -761,10 +1090,19 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenProjectModal(false);
       }
@@ -794,10 +1132,23 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        // toast.success(`${e} Deleted Successfully`, {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenArtifactsModal(false);
       }
@@ -826,11 +1177,20 @@ export default function Navbar({
           nodeProperty: {},
         });
 
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
         // setOpenVersionModal(false);
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
       }
     } catch (error) {
       console.error(error);
@@ -965,6 +1325,50 @@ export default function Navbar({
     }
   }, [selectedFabric, client, tKey]);
 
+  console.log(projectList, "ProductsLists");
+
+  const handleAccordionToggle = (index) => {
+    console.log("Accordion toggled to index:", index);
+  };
+
+  const handleAccordionContentToggle = (item) => {
+    console.log("Accordion content toggled to item:", item);
+    handleApplicationName(item);
+    setProjectCollectionName(item);
+    setArtifactCollectionName(null);
+  };
+
+  const accordionItems = [
+    {
+      title: "My Artifacts",
+      content: projectList,
+    },
+    {
+      title: "My Components",
+
+      content: `
+          Flowbite is an open-source library of interactive components built on
+          top of Tailwind CSS including buttons, dropdowns, modals, navbars, and
+          more.`,
+    },
+    {
+      title: "Shared with Me",
+
+      content: {
+        "item-1": "item-1",
+        "item-2": "item-2",
+        "item-3": "item-3",
+        "item-4": "item-4",
+        "item-5": "item-5",
+        "item-6": "item-6",
+        "item-7": "item-7",
+        "item-8": "item-8",
+        "item-9": "item-9",
+        "item-10": "item-10",
+      },
+    },
+  ];
+
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
       <div className="flex h-[90%] w-[100%] flex-col items-center justify-center">
@@ -992,6 +1396,7 @@ export default function Navbar({
                   </div>
                 </div>
               }
+              popbuttonClassNames={selectedFabric === "events" && "w-1/3"}
               children={({ close }) => (
                 <div
                   className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -1007,27 +1412,32 @@ export default function Navbar({
                         <div className="flex w-full items-center justify-center gap-2">
                           <Input
                             startcontent={<CiSearch />}
-                            value={inputValue}
+                            // value={search}
                             placeholder="Search"
                             className={
-                              "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300  bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                              "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300 bg-[#F4F5FA]  p-2 text-sm text-black dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-white"
                             }
                           />
                         </div>
                         <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
-                          <div className="flex h-[27px] w-[27px] items-center justify-center rounded-md bg-[#0736C4] p-[5px]">
-                            <ArtifactOpen />
-                          </div>
+                          <TorusButton
+                            onPress={() => {
+                              selectedVersion && handleTabChange("events");
+                            }}
+                            Children={<ArtifactOpen />}
+                            buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                          />
 
                           <span
-                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
+                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200  hover:border-red-400 hover:bg-red-200 dark:hover:border-red-500 dark:hover:bg-red-500/30"
                             onClick={() => {
                               close();
                               setProjectCollectionName(null);
                               setArtifactCollectionName(null);
+                              setNewArtifact(false);
                             }}
                           >
-                            <IoCloseOutline />
+                            <IoCloseOutline className="text-black dark:text-white" />
                           </span>
                         </div>
                       </div>
@@ -1131,13 +1541,13 @@ export default function Navbar({
                               // onSelectionChange={handleTabChange}
                             />
                           </div> */}
-                          <div className="flex h-full w-[130px] flex-col  overflow-scroll ">
-                            {projectList &&
+                          <div className="flex h-full w-[100%] flex-col overflow-scroll  px-0.5 ">
+                            {/* {projectList &&
                               projectList?.map((project, index) => (
                                 <div
                                   onClick={() => {
                                     handleApplicationName(project);
-
+                                    setNewArtifact(false);
                                     setProjectCollectionName(project);
                                     setArtifactCollectionName(null);
                                   }}
@@ -1149,7 +1559,12 @@ export default function Navbar({
                                     {project}
                                   </div>
                                 </div>
-                              ))}
+                              ))} */}
+                            <TorusAccordion
+                              items={accordionItems}
+                              onToggle={handleAccordionToggle}
+                              onContentToggle={handleAccordionContentToggle}
+                            />
                           </div>
                         </div>
                         {/* <TorusModularInput
@@ -1241,116 +1656,156 @@ export default function Navbar({
                               </Breadcrumb>
                             </Breadcrumbs>
                           </div>
-                          <div className="flex h-[90%] w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default ">
-                            {artifactsList && artifactsList.length > 0 ? (
-                              <>
-                                {artifactsList.map((obj, index) => {
-                                  return (
-                                    <div className="flex h-[30%] w-full items-center justify-center">
-                                      <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
-                                        <>
-                                          {inputchange !== index ? (
-                                            <div
-                                              onClick={() =>
-                                                handleArtifactsChange(
-                                                  obj?.artifact,
-                                                )
-                                              }
-                                              className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
-                                            >
-                                              <div className="flex w-9/12 items-center justify-start truncate text-sm">
-                                                {obj?.artifact}
-                                              </div>
-                                              <div className="flex w-2/12 items-center justify-end gap-2">
-                                                <span
-                                                  className="cursor-pointer"
-                                                  onClick={() =>
-                                                    setInputchange(index)
-                                                  }
-                                                >
-                                                  <FiEdit2
-                                                    color="black"
-                                                    size={13}
-                                                  />
-                                                </span>
-                                                <span
-                                                  className="cursor-pointer"
-                                                  onClick={() =>
-                                                    setInputValue("")
-                                                  }
-                                                >
-                                                  <BsTrash3
-                                                    color="red"
-                                                    size={13}
-                                                  />
-                                                </span>
-                                              </div>
-                                            </div>
-                                          ) : (
-                                            <div className="w-full">
-                                              <Input
-                                                defaultValue={obj?.artifact}
-                                                placeholder="Enter text"
-                                                className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
-                                                onKeyDown={(e) => {
-                                                  if (e.key === "Enter") {
-                                                    setInputchange(null);
-                                                  }
-                                                }}
-                                                onChange={(e) => {
-                                                  setInputValue(e.target.value);
-                                                }}
-                                              />
-                                            </div>
-                                          )}
-                                        </>
-                                      </div>
-                                      <div className="flex h-full w-[25%] items-center justify-center">
-                                        <TorusDropDown
-                                          title={
-                                            (selectedVersion &&
-                                              selectedVersion) ||
-                                            "Version"
-                                          }
-                                          selectionMode="single"
-                                          selected={new Set([selectedVersion])}
-                                          setSelected={(e) => {
-                                            setSelectedArtifact(obj?.artifact);
-                                            setSelectedVersion(
-                                              Array.from(e)[0],
-                                            );
-                                            setArtifactCollectionName(
-                                              obj?.artifact,
-                                            );
-                                          }}
-                                          items={
-                                            obj?.versionList &&
-                                            obj?.versionList?.map((item) => ({
-                                              label: item,
-                                              key: item,
-                                            }))
-                                          }
-                                          classNames={{
-                                            buttonClassName:
-                                              "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                                            popoverClassName:
-                                              "w-[70px] max-h-[100px] min-h-[50px]",
-                                            listBoxClassName:
-                                              " min-h-[35px] max-h-[100px] overflow-y-auto",
-                                            listBoxItemClassName:
-                                              "flex text-sm justify-between",
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                  );
-                                })}
-                              </>
-                            ) : (
-                              <div className="flex h-full w-full items-center justify-center">
-                                no artifacts
+
+                          <div className="flex h-[90%] w-full flex-col items-center justify-center transition-all duration-300 ">
+                            {newArtifact === true ? (
+                              <div className="flex h-[30%] w-full items-center justify-center border-b border-t border-[#E5E9EB] dark:border-[#212121]  ">
+                                <div className="flex  h-full w-[65%] flex-row items-center justify-center p-2">
+                                  <Input
+                                    defaultValue={newArtifactValue}
+                                    placeholder="Enter artifact name"
+                                    className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                    onChange={(e) => {
+                                      setInputValue(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                                <div className="flex h-full w-[25%] items-center justify-center">
+                                  <TorusButton
+                                    buttonClassName="text-black w-[80px] dark:text-white bg-[#F4F5FA] hover:bg-[#e1e2e8]  transition-all duration-200 dark:bg-[#0F0F0F]  h-[30px] rounded-md  text-xs  flex justify-center items-center"
+                                    onPress={() =>
+                                      saveProcessFlow(
+                                        "create",
+                                        selectedProject,
+                                        newArtifactValue,
+                                        "v1",
+                                        getDataFromFabrics(),
+                                      )
+                                    }
+                                    Children={"Create"}
+                                  />
+                                </div>
                               </div>
-                            )}
+                            ) : null}
+                            <div
+                              className={`${newArtifact ? "h-[75%]" : "h-[100%]"} flex  w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default `}
+                            >
+                              {artifactsList && artifactsList.length > 0 ? (
+                                <>
+                                  {artifactsList.map((obj, index) => {
+                                    return (
+                                      <div className="flex h-[30%] w-full items-center justify-center">
+                                        <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
+                                          <>
+                                            {inputchange !== index ? (
+                                              <div
+                                                onClick={() =>
+                                                  handleArtifactsChange(
+                                                    obj?.artifact,
+                                                  )
+                                                }
+                                                className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
+                                              >
+                                                <div className="flex w-9/12 items-center justify-start truncate text-sm text-black dark:text-white">
+                                                  {obj?.artifact}
+                                                </div>
+                                                <div className="flex w-2/12 items-center justify-end gap-2">
+                                                  <span
+                                                    className="cursor-pointer"
+                                                    onClick={() =>
+                                                      setInputchange(index)
+                                                    }
+                                                  >
+                                                    <FiEdit2
+                                                      className="text-black dark:text-white"
+                                                      size={13}
+                                                    />
+                                                  </span>
+                                                  <span
+                                                    className="cursor-pointer"
+                                                    onClick={() =>
+                                                      setInputValue("")
+                                                    }
+                                                  >
+                                                    <BsTrash3
+                                                      color="red"
+                                                      size={13}
+                                                    />
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            ) : (
+                                              <div className="w-full">
+                                                <Input
+                                                  defaultValue={obj?.artifact}
+                                                  placeholder="Enter text"
+                                                  className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white "
+                                                  onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                      setInputchange(null);
+                                                    }
+                                                  }}
+                                                  onChange={(e) => {
+                                                    setInputValue(
+                                                      e.target.value,
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            )}
+                                          </>
+                                        </div>
+                                        <div className="flex h-full w-[25%] items-center justify-center">
+                                          <TorusDropDown
+                                            title={
+                                              (selectedVersion &&
+                                                selectedVersion) ||
+                                              "Version"
+                                            }
+                                            selectionMode="single"
+                                            selected={
+                                              new Set([selectedVersion])
+                                            }
+                                            setSelected={(e) => {
+                                              setSelectedArtifact(
+                                                obj?.artifact,
+                                              );
+                                              setSelectedVersion(
+                                                Array.from(e)[0],
+                                              );
+                                              setArtifactCollectionName(
+                                                obj?.artifact,
+                                              );
+                                            }}
+                                            items={
+                                              obj?.versionList &&
+                                              obj?.versionList?.map((item) => ({
+                                                label: item,
+                                                key: item,
+                                              }))
+                                            }
+                                            classNames={{
+                                              buttonClassName:
+                                                "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                                              popoverClassName:
+                                                "w-[70px] max-h-[100px] min-h-[50px]",
+                                              listBoxClassName:
+                                                " min-h-[35px] max-h-[100px] overflow-y-auto",
+                                              listBoxItemClassName:
+                                                "flex text-sm justify-between",
+                                            }}
+                                          />
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                </>
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center">
+                                  no artifacts
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
 
@@ -1485,12 +1940,17 @@ export default function Navbar({
                         <div className="flex w-1/3 items-center justify-start">
                           <TorusButton
                             btncolor={"primary"}
-                            buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
+                            onPress={() => handleNewArtifact()}
+                            buttonClassName={`${newArtifact ? "bg-red-200 dark:bg-red-500/30 w-[80px] h-[30px] text-red-500 dark:text-red-400" : "text-black dark:text-white bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]"}   rounded-md flex justify-center items-center`}
                             Children={
                               <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
-                                <ArtifactLogo className="stroke-black dark:stroke-white" />
-                                <p className="text-xs text-black dark:text-white">
-                                  New Artifact
+                                {newArtifact ? (
+                                  <></>
+                                ) : (
+                                  <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                )}
+                                <p className="text-xs  ">
+                                  {newArtifact ? "Cancel" : "New Artifact"}
                                 </p>
                               </div>
                             }
@@ -1512,20 +1972,20 @@ export default function Navbar({
 
                         <div className="flex w-2/3 items-center justify-end gap-2">
                           <TorusButton
-                            buttonClassName=" bg-[#4CAF50]/15 w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs dark:text-white flex justify-center items-center"
+                            buttonClassName=" bg-[#4CAF50]/15  w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs  flex justify-center items-center"
                             onPress={() =>
                               saveProcessFlow(
                                 "update",
                                 selectedProject,
                                 selectedArtifact,
                                 selectedVersion,
-                                getDataFromFabrics(),
+                                getDataFromFabrics,
                               )
                             }
                             Children={"Update"}
                           />
                           <TorusButton
-                            buttonClassName=" bg-[#0736C4]/15 w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs dark:text-white flex justify-center items-center"
+                            buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
                             onPress={() => {
                               // saveProcessFlow(
                               //   "create",
@@ -1539,7 +1999,7 @@ export default function Navbar({
                             Children={"Save"}
                           />
                           <TorusButton
-                            buttonClassName=" bg-[#0736C4] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                            buttonClassName=" bg-[#0736C4] dark:bg-[#3063FF] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
                             Children={"Save as"}
                           />
                         </div>
@@ -1555,9 +2015,11 @@ export default function Navbar({
                         </div>
                         <span
                           className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
-                          onClick={() => close()}
+                          onClick={() => {
+                            close(), setNewArtifact(false);
+                          }}
                         >
-                          <IoCloseOutline />
+                          <IoCloseOutline className="text-black dark:text-white" />
                         </span>
                       </div>
                       <div className="flex h-[87%] w-[100%]">
@@ -1571,24 +2033,21 @@ export default function Navbar({
                 </div>
               )}
             />
+
+            {selectedFabric === "events" && (
+              <TorusButton
+                onPress={() => {
+                  selectedFabric === "events" && handleTabChange("UF");
+                }}
+                Children={<ArtifactOpen />}
+                buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+              />
+            )}
           </div>
 
           <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
-                <TorusButton
-                  isDisabled={!selectedVersion}
-                  onPress={() => {
-                    handleTabChange("events");
-                  }}
-                  className="flex w-[30%] items-center justify-center"
-                  isIconOnly={true}
-                  Children={
-                    <MdOutlineEmojiEvents
-                      className={"stroke-black dark:stroke-white"}
-                    />
-                  }
-                />
                 <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>

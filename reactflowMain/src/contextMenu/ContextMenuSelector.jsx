@@ -2,6 +2,7 @@ import DataFabricContextMenu from "./dataFabric/DataFabricContextMenu";
 import UserFabricContextMenu from "./userFabric/UserFabricContextMenu";
 import ProcessFabricContextMenu from "./processFabric/ProcessFabricContextMenu";
 import SecurityFabricContextMenu from "./securityFabric/SecurityFabricContextMenu";
+import ContextMenuEvents from "../VPT_UF/VPT_EVENTS/components/ContextMenu/ContextMenu";
 
 export default function ContextMenuSelector(props) {
   const cycleContextMenu = (fabric) => {
@@ -14,6 +15,8 @@ export default function ContextMenuSelector(props) {
         return <ProcessFabricContextMenu {...props} />;
       case "SF":
         return <SecurityFabricContextMenu {...props} />;
+      case "events":
+        return <ContextMenuEvents {...props} />;
       default:
         return null;
     }

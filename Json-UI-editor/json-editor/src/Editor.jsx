@@ -7,7 +7,7 @@ import { saveRule } from "./api";
 import { IoSaveOutline } from "react-icons/io5";
 import { JsonUiEditorContext } from "./Layout";
 
-export default function Editor() {
+export default function Editor({ruleId}) {
 	const [activeTab, setActiveTab] = useState("Facts");
 	const [showDecision, setDecision] = useState(false);
 	const [selectedDecision, setSelectedDecision] = useState(null);
@@ -38,7 +38,7 @@ export default function Editor() {
 		<div className="w-full h-[100%] p-2 relative">
 			<div className="p-2">
 			<Button
-				onClick={() => saveRule("401", {fact_json: factsVariables, rule_json: json})}
+				onClick={() => saveRule(ruleId, {fact_json: factsVariables, rule_json: json})}
 				size="md"
 				endContent={
 					<IoSaveOutline
@@ -52,7 +52,7 @@ export default function Editor() {
 				className="flex absolute top-0 right-3 items-center text-primary  text-sm font-bold border-[#2563eb] border"
 				color="primary"
 				>
-					Generate
+					Save Rule
 				</Button>
 				<div className="flex gap-6 border-b border-divider text-sm font-medium text-slate-400">
 					<button

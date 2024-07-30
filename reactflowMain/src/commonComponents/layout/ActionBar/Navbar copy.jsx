@@ -62,6 +62,7 @@ import Toolbar from "../Toolbar";
 
 import { VscDebug } from "react-icons/vsc";
 import ReusableInput from "../../reusableComponents/ReusableInput";
+import TorusToast from "../../../torusComponents/TorusToaster/TorusToast.jsx";
 
 export default function Navbar({
   color,
@@ -119,6 +120,7 @@ export default function Navbar({
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [openArtifactsModal, setOpenArtifactsModal] = useState(false);
   const [openProjectModal, setOpenProjectModal] = useState(false);
+  const [wordLength, setWordLength] = useState(0);
 
   const [selectedDeletingArtifactsItem, setSelectedDeletingArtifactsItem] =
     useState(null);
@@ -141,19 +143,35 @@ export default function Navbar({
         selectedApplictionName,
         new Set([newArtifactsName.trim().toLocaleLowerCase()]),
         new Set("v1"),
-        erDatas
+        erDatas,
       );
 
       if (res.status === 200 || res.status === 201) {
-        toast.success("created successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `created successfully`,
+            closeButton: false,
+          },
+        );
       } else {
-        toast.error("Error while creating", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Error while creating`,
+            closeButton: false,
+          },
+        );
       }
     } catch (err) {
       console.error(err);
@@ -168,18 +186,42 @@ export default function Navbar({
           selectedApplication,
           selectedArtifactsname,
           new Set("v1"),
-          erDatas
+          erDatas,
         );
         if (res.status === 200 || res.status === 201) {
-          toast.success("saveAs successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          
+
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `saveAs successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while saveAs", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while saveAs`,
+              closeButton: false,
+            },
+          );
         }
       } else {
         const res = await saveProcessFlow(
@@ -187,19 +229,46 @@ export default function Navbar({
           new Set([newProjectName.trim().toLocaleLowerCase()]),
           new Set([newArtifactsName.trim().toLocaleLowerCase()]),
           new Set("v1"),
-          erDatas
+          erDatas,
         );
 
         if (res.status === 200 || res.status === 201) {
-          toast.success("created successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          // toast.success("created successfully", {
+          //   position: "bottom-right",
+          //   autoClose: 2000,
+          // });
+
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `created successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while creating", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while creating`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
@@ -227,33 +296,79 @@ export default function Navbar({
 
             window.open(url, "_blank");
             setPeModal(
-              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`
+              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`,
             );
 
             setPeurlopen(true);
 
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            // toast.success("data send to process engine", {
+            //   position: "bottom-right",
+            //   autoClose: 2000,
+            // });
+
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           } else if (data && data.data) {
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error sending key to process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error sending key to process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleDebug = async () => {
@@ -274,37 +389,80 @@ export default function Navbar({
         .then((response) => response.json())
         .then((data) => {
           if (data) {
-            toast.success(
-              "upId found in process engine - " + data.formjson.url,
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
               {
+                type: "success",
                 position: "bottom-right",
                 autoClose: 2000,
-              }
+                hideProgressBar: true,
+                title: "Success",
+                text: `upId found in process engine - ${data.formjson.url}`,
+                closeButton: false,
+              },
             );
             const { key, upId, nodeId, nodeName, url, mode } = data.formjson;
             setUrl(
-              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`
+              `${url}?key=${key}&upId=${upId}&nodeId=${nodeId}&nodeName=${nodeName}&mode=${mode}`,
             );
             setUpIdKey(data.formjson.upId);
             setUrlOpen(true);
           } else if (data.hasOwnProperty("err")) {
-            toast.success(" Error found in process engine - " + data.err, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "error",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `Error found in process engine - ${data.err}`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error in process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error in process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      // toast.error("Error sending key to process engine", {
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      // });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -326,10 +484,18 @@ export default function Navbar({
         setNewProjectNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -351,10 +517,18 @@ export default function Navbar({
         setNewArtifactsNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -366,20 +540,39 @@ export default function Navbar({
           group,
           Array.from(selectedApplictionName)[0],
           artifact,
-          fabrics
+          fabrics,
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
-          toast.error("Cannot get version details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get version details`,
+              closeButton: false,
+            },
+          );
       }
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -395,10 +588,18 @@ export default function Navbar({
       setSelectedArtifacts(e);
       setMainArtifacts && setMainArtifacts(Array.from(e)[0]);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -406,10 +607,18 @@ export default function Navbar({
     try {
       setSelectedArtifactsname(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -420,10 +629,18 @@ export default function Navbar({
       setSelectedDefaultArtifacts("");
       setSelectedDefaultVersion("");
     } catch (err) {
-      toast.error("Cannot set Domain", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set Domain`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -433,10 +650,18 @@ export default function Navbar({
       setartifact(e);
     } catch (err) {
       setSelectedDefaultVersion("");
-      toast.error("Cannot set selected artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Default Artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -444,10 +669,18 @@ export default function Navbar({
     try {
       setSelectedDefaultVersion(e);
     } catch (err) {
-      toast.error("Cannot set selected Default Version", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Default Version`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -458,15 +691,23 @@ export default function Navbar({
         Array.from(selectedDefaultArtifacts)[0],
         selectedsource,
         Array.from(selectedDomainLIst)[0],
-        fabrics
+        fabrics,
       );
 
       if (responses) sendDataToFabrics(responses.data);
     } catch (err) {
-      toast.error("Cannot load Default FLow details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get default artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -480,14 +721,22 @@ export default function Navbar({
         handleIntialLoad(tenant, group, fabrics, Array.from(e)[0]).catch(
           (err) => {
             throw err;
-          }
+          },
         );
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleApplication = async (e) => {
@@ -499,24 +748,43 @@ export default function Navbar({
             tenant,
             group,
             Array.from(e)[0],
-            fabrics
+            fabrics,
           );
 
           if (response && response?.status === 200) {
             setApplicationArtifactsName(response.data);
           }
         } catch (error) {
-          toast.error("Cannot get artifacts details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get artifacts details`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -529,10 +797,18 @@ export default function Navbar({
         setApplicationList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot save application details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
     }
   };
   console.log("applicationList", applicationList);
@@ -545,10 +821,23 @@ export default function Navbar({
         setArtifactsList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      // toast.error("Cannot get artifacts details", {
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      // });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -595,7 +884,7 @@ export default function Navbar({
     selectedApplictionNames,
     selectedArtifactss,
     selectedVerisonss,
-    erDatas
+    erDatas,
   ) => {
     try {
       const payload = {
@@ -612,7 +901,7 @@ export default function Navbar({
         Array.from(selectedVerisonss)[0],
         tenant,
         group,
-        fabrics
+        fabrics,
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -620,7 +909,7 @@ export default function Navbar({
             tenant,
             group,
             fabrics,
-            Array.from(selectedApplictionNames)[0] || selectedApplication
+            Array.from(selectedApplictionNames)[0] || selectedApplication,
           );
           setNewArtifactsName("");
           setSelectedApplictionName(selectedApplictionNames);
@@ -629,15 +918,26 @@ export default function Navbar({
             setMainArtifacts(Array.from(selectedArtifactss)[0]);
           setVersions(response.data);
           setSelectedVerison(
-            new Set([response.data[response.data.length - 1]])
+            new Set([response.data[response.data.length - 1]]),
           );
           setMainVersion &&
             setMainVersion(response.data[response.data.length - 1]);
           if (fabrics) {
-            toast.success(`${fabrics} Fabrics saved successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `${fabrics} Fabrics saved successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       } else if (response && response.status === 201) {
@@ -645,20 +945,44 @@ export default function Navbar({
           setSelectedApplictionName(selectedApplictionNames);
           setSelectedArtifacts(selectedArtifactss);
           if (fabrics) {
-            toast.info(`${fabrics} Fabrics updated successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `${fabrics} Fabrics updated successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       }
 
       return response;
     } catch (error) {
-      toast.error("Cannot save artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      // toast.error("Cannot save artifacts details", {
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      // });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -672,7 +996,7 @@ export default function Navbar({
             Array.from(selectededArtifacts)[0],
             tenant,
             group,
-            fabrics
+            fabrics,
           );
 
           if (response && typeof response === "object" && response) {
@@ -680,19 +1004,48 @@ export default function Navbar({
               ...response.data,
             });
           } else {
-            toast.error("no data found", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            // toast.error("no data found", {
+            //   position: "bottom-right",
+            //   autoClose: 2000,
+            // });
+
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "error",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `no data found`,
+                closeButton: false,
+              },
+            );
           }
         } else {
           sendDataToFabrics({});
         }
       } catch (error) {
-        toast.error("Cannot load Flow details", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        // toast.error("Cannot load Flow details", {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Cannot load Flow details`,
+            closeButton: false,
+          },
+        );
       }
     },
     [
@@ -703,7 +1056,7 @@ export default function Navbar({
       selectedVerison,
       sendDataToFabrics,
       tenant,
-    ]
+    ],
   );
 
   const openmodal = (type) => {
@@ -723,10 +1076,18 @@ export default function Navbar({
         onOpen();
       }
     } catch (err) {
-      toast.error(`cannot get ${type}`, {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `cannot get ${type}`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -738,7 +1099,7 @@ export default function Navbar({
         `${BASE_URL}/deleteApplication?tenant=${tenant}&appGroup=${group}&applicationName=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -752,10 +1113,19 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenProjectModal(false);
       }
@@ -772,7 +1142,7 @@ export default function Navbar({
         `${BASE_URL}/deleteFlowArtifact?tenant=${tenant}&appGroup=${group}&applicationName=${application}&fabrics=${fabrics}&artifact=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -785,10 +1155,19 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenArtifactsModal(false);
       }
@@ -805,7 +1184,7 @@ export default function Navbar({
         `${BASE_URL}/deleteFlowVersion?tenant=${tenant}&appGroup=${group}&applicationName=${application}&fabrics=${fabrics}&artifact=${Array.from(selectededArtifacts)[0]}&version=${e}`,
         {
           method: "DELETE",
-        }
+        },
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
@@ -817,10 +1196,24 @@ export default function Navbar({
           nodeProperty: {},
         });
 
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        // toast.success(`${e} Deleted Successfully`, {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
+
         // setOpenVersionModal(false);
       }
     } catch (error) {
@@ -848,7 +1241,7 @@ export default function Navbar({
         getartifactList(
           selectedsource,
           Array.from(selectedDomainLIst)[0],
-          fabrics
+          fabrics,
         )
           .then((artifacts) => {
             if (artifacts) setDefaultArtifactList(artifacts.data);
@@ -869,7 +1262,7 @@ export default function Navbar({
           selectedsource,
           Array.from(selectedDomainLIst)[0],
           fabrics,
-          Array.from(selectedDefaultArtifacts)[0]
+          Array.from(selectedDefaultArtifacts)[0],
         )
           .then((res) => {
             if (res) setDefaultVersionList(res.data.version);
@@ -889,7 +1282,7 @@ export default function Navbar({
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tenant}:${group}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`
+          `${tenant}:${group}:${Array.from(selectedApplictionName)[0]}:${fabrics}:${artifact}:${version}:`,
         );
       getProcessFlowApi(selectedVerison).catch((err) => {
         throw err;
@@ -952,26 +1345,26 @@ export default function Navbar({
   }, [fabrics, group, tenant]);
 
   return (
-    <div className="w-full h-full bg-white dark:bg-[#161616] dark:border-none border-b border-slate-300 flex items-center justify-center">
-      <div className="w-[100%] h-[90%] flex flex-col items-center justify-center">
-        <div className="w-[99%] h-[80%]  flex flex-row items-center">
-          <div className="w-1/3 flex justify-start gap-2">
+    <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
+      <div className="flex h-[90%] w-[100%] flex-col items-center justify-center">
+        <div className="flex h-[80%]  w-[99%] flex-row items-center">
+          <div className="flex w-1/3 justify-start gap-2">
             <TorusLogo />
-            <span className=" font-semibold font-Neue Montreal text-black text-lg dark:text-white ">
+            <span className=" font-Neue Montreal text-lg font-semibold text-black dark:text-white ">
               TORUS
             </span>
           </div>
 
-          <div className=" w-1/3 bg-transparent rounded-md h-full flex items-center justify-center ">
+          <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
             <TorusPopOver
               parentHeading={
-                <div className="flex flex-row items-center justify-center gap-2 w-[100%]">
-                  <div className="text-black dark:text-white font-semibold text-sm">
+                <div className="flex w-[100%] flex-row items-center justify-center gap-2">
+                  <div className="text-sm font-semibold text-black dark:text-white">
                     {(selectededArtifacts &&
                       Array.from(selectededArtifacts)[0]) ||
                       "Select Artifacts"}
                   </div>
-                  <div className="text-white  bg-[#0736C4]  px-4 rounded-xl">
+                  <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
                     {(selectedVersion && Array.from(selectedVersion)[0]) || "*"}
                   </div>
                   <div>
@@ -980,22 +1373,21 @@ export default function Navbar({
                 </div>
               }
               children={
-                <div className="w-[330px] mt-[4%] h-[365px] border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg flex flex-col justify-between">
-                  <div className="w-[100%] flex flex-row p-2 border-b border-gray-300 dark:border-[#212121]">
-                    <div className="w-1/3 flex justify-start">
-                      <p className="text-sm font-medium text-black dark:text-white text-start px-2">
+                <div className="mt-[4%] flex h-[365px] w-[330px] flex-col justify-between rounded-lg border border-[#000000]/15 bg-white dark:border-[#212121] dark:bg-[#161616]">
+                  <div className="flex w-[100%] flex-row border-b border-gray-300 p-2 dark:border-[#212121]">
+                    <div className="flex w-1/3 justify-start">
+                      <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
                         Artifact
                       </p>
                     </div>
-                    <div className="w-2/3 flex justify-end gap-2">
+                    <div className="flex w-2/3 justify-end gap-2">
                       <CiSquarePlus />
                       <CiSearch />
                       <IoCloseOutline />
                     </div>
                   </div>
-                  <div className="w-4/5 h-[95%] items-center justify-center grid grid-cols-2 gap-3 ">
-
-                  <TorusDropDown
+                  <div className="grid h-[95%] w-4/5 grid-cols-2 items-center justify-center gap-3 ">
+                    <TorusDropDown
                       title={
                         (selectedApplictionName &&
                           Array.from(selectedApplictionName)[0]) ||
@@ -1008,13 +1400,15 @@ export default function Navbar({
                       }}
                       popOverProps={{ offset: 15 }}
                       selectionMode="single"
-                      items={applicationList &&
+                      items={
+                        applicationList &&
                         applicationList?.map((obj) => {
                           return {
                             key: obj,
                             label: obj,
                           };
-                        })}
+                        })
+                      }
                       btncolor={"#f0f0f0"}
                       fontStyle={
                         "font-inter 3xl:text-xs text-black  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
@@ -1087,8 +1481,6 @@ export default function Navbar({
                       }}
                     /> */}
 
-                   
-
                     <ReusableDropDown
                       key={"artifactsDropdown"}
                       title={
@@ -1159,15 +1551,15 @@ export default function Navbar({
                       }}
                     />
                   </div>
-                  <div className="w-[100%] p-2 border-t border-gray-300 dark:border-[#212121] flex flex-row space-x-2 ">
-                    <div className="w-1/3 flex justify-start">
+                  <div className="flex w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
+                    <div className="flex w-1/3 justify-start">
                       <TorusButton
                         buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
                         Children={"Make a copy"}
                       />
                     </div>
 
-                    <div className="w-2/3 flex justify-end gap-4">
+                    <div className="flex w-2/3 justify-end gap-4">
                       <TorusButton
                         buttonClassName=" bg-transparent w-[40px] text-[#0736C4] text-xs dark:text-white flex justify-center items-center"
                         Children={"Save"}
@@ -1183,8 +1575,8 @@ export default function Navbar({
             />
           </div>
 
-          <div className="w-1/3 bg-transparent h-full flex justify-end items-center gap-3 ">
-            <div className=" rounded-md col-span-3 ">
+          <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
+            <div className=" col-span-3 rounded-md ">
               <div class="flex items-center -space-x-3">
                 <img
                   class="inline-block size-6 rounded-full ring-2 ring-white dark:ring-neutral-900"
@@ -1215,29 +1607,29 @@ export default function Navbar({
                   style={{
                     backgroundColor: color ? color : "#0736C4",
                   }}
-                  class="flex justify-center items-center size-6 rounded-full ring-2  ring-white dark:ring-neutral-900"
+                  class="flex size-6 items-center justify-center rounded-full ring-2  ring-white dark:ring-neutral-900"
                 >
-                  <span className="text-white font-semibold text-xs">+2</span>
+                  <span className="text-xs font-semibold text-white">+2</span>
                 </div>
               </div>
             </div>
-            <div className=" col-span-1 flex justify-center items-center">
+            <div className=" col-span-1 flex items-center justify-center">
               <VerticalLine className={"stroke-black dark:stroke-white"} />
             </div>
-            <div className=" col-span-4 flex justify-center items-center">
-              <div className="flex justify-around gap-[0.8rem] items-center ">
-                <div className="w-[30%] flex justify-center items-center">
+            <div className=" col-span-4 flex items-center justify-center">
+              <div className="flex items-center justify-around gap-[0.8rem] ">
+                <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>
-                <div className="w-[30%] flex justify-center items-center">
+                <div className="flex w-[30%] items-center justify-center">
                   <Preview className={"stroke-black dark:stroke-white"} />
                 </div>
-                <div className="w-[30%] flex justify-center items-center">
+                <div className="flex w-[30%] items-center justify-center">
                   <Shared className={"stroke-black dark:stroke-white"} />
                 </div>
               </div>
             </div>
-            <div className=" col-span-1 flex justify-center items-center">
+            <div className=" col-span-1 flex items-center justify-center">
               <VerticalLine className={"stroke-black dark:stroke-white"} />
             </div>
             <div className=" col-span-3">
