@@ -1348,18 +1348,9 @@ export default function Navbar({
                   <div>
                     <IoIosArrowDown className="text-black dark:text-white" />
                   </div>
-                  {selectedFabric === "events" && (
-                    <div
-                      onClick={() => {
-                        selectedVersion && handleTabChange("UF");
-                      }}
-                      className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
-                    >
-                      <ArtifactOpen />
-                    </div>
-                  )}
                 </div>
               }
+              popbuttonClassNames={selectedFabric === "events" && "w-1/3"}
               children={({ close }) => (
                 <div
                   className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -1383,14 +1374,13 @@ export default function Navbar({
                           />
                         </div>
                         <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
-                          <div
-                            onClick={() => {
+                          <TorusButton
+                            onPress={() => {
                               selectedVersion && handleTabChange("events");
                             }}
-                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
-                          >
-                            <ArtifactOpen />
-                          </div>
+                            Children={<ArtifactOpen />}
+                            buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                          />
 
                           <span
                             className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200  hover:border-red-400 hover:bg-red-200 dark:hover:border-red-500 dark:hover:bg-red-500/30"
@@ -1992,24 +1982,21 @@ export default function Navbar({
                 </div>
               )}
             />
+
+            {selectedFabric === "events" && (
+              <TorusButton
+                onPress={() => {
+                  selectedFabric === "events" && handleTabChange("UF");
+                }}
+                Children={<ArtifactOpen />}
+                buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+              />
+            )}
           </div>
 
           <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
             <div className=" col-span-4 flex items-center justify-center">
               <div className="flex items-center justify-around gap-[0.8rem] ">
-                <TorusButton
-                  isDisabled={!selectedVersion}
-                  onPress={() => {
-                    handleTabChange("events");
-                  }}
-                  className="flex w-[30%] items-center justify-center"
-                  isIconOnly={true}
-                  Children={
-                    <MdOutlineEmojiEvents
-                      className={"stroke-black dark:stroke-white"}
-                    />
-                  }
-                />
                 <div className="flex w-[30%] items-center justify-center">
                   <Debugger className={"stroke-black dark:stroke-white"} />
                 </div>
