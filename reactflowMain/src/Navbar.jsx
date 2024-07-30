@@ -47,6 +47,8 @@ import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
+import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
+import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 
 export default function Navbar({
   tKey,
@@ -1318,6 +1320,50 @@ export default function Navbar({
     }
   }, [selectedFabric, client, tKey]);
 
+  console.log(projectList, "ProductsLists");
+
+  const handleAccordionToggle = (index) => {
+    console.log("Accordion toggled to index:", index);
+  };
+
+  const handleAccordionContentToggle = (item) => {
+    console.log("Accordion content toggled to item:", item);
+    handleApplicationName(item);
+    setProjectCollectionName(item);
+    setArtifactCollectionName(null);
+  };
+
+  const accordionItems = [
+    {
+      title: "My Artifacts",
+      content: projectList,
+    },
+    {
+      title: "My Components",
+
+      content: `
+          Flowbite is an open-source library of interactive components built on
+          top of Tailwind CSS including buttons, dropdowns, modals, navbars, and
+          more.`,
+    },
+    {
+      title: "Shared with Me",
+
+      content: {
+        "item-1": "item-1",
+        "item-2": "item-2",
+        "item-3": "item-3",
+        "item-4": "item-4",
+        "item-5": "item-5",
+        "item-6": "item-6",
+        "item-7": "item-7",
+        "item-8": "item-8",
+        "item-9": "item-9",
+        "item-10": "item-10",
+      },
+    },
+  ];
+
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
       <div className="flex h-[90%] w-[100%] flex-col items-center justify-center">
@@ -1484,8 +1530,8 @@ export default function Navbar({
                               // onSelectionChange={handleTabChange}
                             />
                           </div> */}
-                          <div className="flex h-full w-[130px] flex-col  overflow-scroll ">
-                            {projectList &&
+                          <div className="flex h-full w-[100%] flex-col overflow-scroll  px-0.5 ">
+                            {/* {projectList &&
                               projectList?.map((project, index) => (
                                 <div
                                   onClick={() => {
@@ -1502,7 +1548,12 @@ export default function Navbar({
                                     {project}
                                   </div>
                                 </div>
-                              ))}
+                              ))} */}
+                            <TorusAccordion
+                              items={accordionItems}
+                              onToggle={handleAccordionToggle}
+                              onContentToggle={handleAccordionContentToggle}
+                            />
                           </div>
                         </div>
                         {/* <TorusModularInput
