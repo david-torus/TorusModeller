@@ -1541,7 +1541,7 @@ export default function Navbar({
                               // onSelectionChange={handleTabChange}
                             />
                           </div> */}
-                          <div className="flex h-full w-[100%] flex-col overflow-scroll  px-0.5 ">
+                          <div className="flex h-full w-[100%] flex-col overflow-scroll">
                             {/* {projectList &&
                               projectList?.map((project, index) => (
                                 <div
@@ -1666,7 +1666,7 @@ export default function Navbar({
                                     placeholder="Enter artifact name"
                                     className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
                                     onChange={(e) => {
-                                      setInputValue(e.target.value);
+                                      setNewArtifactValue(e.target.value);
                                     }}
                                   />
                                 </div>
@@ -1679,8 +1679,8 @@ export default function Navbar({
                                         selectedProject,
                                         newArtifactValue,
                                         "v1",
-                                        getDataFromFabrics(),
-                                      )
+                                        getDataFromFabrics,
+                                      ).then(() => setNewArtifact(false))
                                     }
                                     Children={"Create"}
                                   />
@@ -1688,13 +1688,15 @@ export default function Navbar({
                               </div>
                             ) : null}
                             <div
-                              className={`${newArtifact ? "h-[75%]" : "h-[100%]"} flex  w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default `}
+                              className={`${newArtifact ? "h-[75%]" : "h-[100%]"} flex  w-full flex-col items-center justify-start overflow-y-scroll scroll-smooth scrollbar-default `}
                             >
                               {artifactsList && artifactsList.length > 0 ? (
                                 <>
                                   {artifactsList.map((obj, index) => {
                                     return (
-                                      <div className="flex h-[30%] w-full items-center justify-center">
+                                      <div
+                                        className={`justify-center" flex h-[{${artifactsList.length / 100}%] w-full items-center`}
+                                      >
                                         <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
                                           <>
                                             {inputchange !== index ? (
@@ -1759,6 +1761,8 @@ export default function Navbar({
                                           <TorusDropDown
                                             title={
                                               (selectedVersion &&
+                                                selectedArtifact ===
+                                                  obj?.artifact &&
                                                 selectedVersion) ||
                                               "Version"
                                             }
@@ -1987,14 +1991,13 @@ export default function Navbar({
                           <TorusButton
                             buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
                             onPress={() => {
-                              // saveProcessFlow(
-                              //   "create",
-                              //   selectedProject,
-                              //   selectedArtifact,
-                              //   selectedVersion,
-                              //   getDataFromFabrics(),
-                              // );
-                              SaveToast();
+                              saveProcessFlow(
+                                "create",
+                                selectedProject,
+                                selectedArtifact,
+                                selectedVersion,
+                                getDataFromFabrics,
+                              );
                             }}
                             Children={"Save"}
                           />
@@ -2070,7 +2073,7 @@ export default function Navbar({
                 outlineColor="torus-hover:ring-blue-500/50"
                 radius={"lg"}
                 fontStyle={
-                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-1 py-2"
+                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
                 }
                 color={"white"}
               />
