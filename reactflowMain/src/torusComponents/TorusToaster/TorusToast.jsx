@@ -8,6 +8,7 @@ import {
   ToastError,
   ToastSucess,
   ToastWarning,
+  TorusInformation,
 } from "../../SVG_Application";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -58,7 +59,9 @@ const TorusToast = ({ closeToast, toastProps, setWordLength }) => {
               <ToastWarning />
             ) : toastProps.type === "error" ? (
               <ToastError />
-            ) : null}
+            ) : toastProps.type === "info" ? (
+              <TorusInformation />
+            ): null}
           </div>
           <div className="flex w-[90%] items-center justify-start">
             <p className="font-roboto text-lg font-medium text-white ">

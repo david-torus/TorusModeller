@@ -34,7 +34,7 @@ export const NodeInfoSidebarTabs = ({
             return (
               <Tab
                 title={
-                  <Tooltip content={value.label} color={ "secondary" }>
+                  <Tooltip content={value.label} color={"secondary"}>
                     <span
                       className={
                         darkMode
@@ -55,24 +55,28 @@ export const NodeInfoSidebarTabs = ({
                         if (value.label === "CustomCode") {
                           setToggleReactflow((prev) => ({
                             ...prev,
+                            flow: false,
                             code: true,
                           }));
                         }
                         if (value.label === "Rule") {
                           setToggleReactflow((prev) => ({
                             ...prev,
+                            flow: false,
                             rule: true,
                           }));
                         }
                         if (value.label === "Mapper") {
                           setToggleReactflow((prev) => ({
                             ...prev,
+                            flow: false,
                             mapper: true,
                           }));
                         }
                         if (value.label === "Events") {
                           setToggleReactflow((prev) => ({
                             ...prev,
+                            flow: false,
                             events: true,
                           }));
                         }

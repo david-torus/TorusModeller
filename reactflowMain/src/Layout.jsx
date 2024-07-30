@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useState,
-  useRef,
-  createContext,
-  useMemo,
-  useEffect,
-} from "react";
+import { useCallback, useState, useRef, createContext, useMemo } from "react";
 import {
   MiniMap,
   Background,
@@ -15,7 +8,7 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { FabricsSelector } from "./FabricsSelector";
-
+import { v4 as uuidv4 } from "uuid";
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import CanvasPanel from "./CanvasPanel";
 import { nodeInfoTabs } from "./jonui/JsonUI";
@@ -26,34 +19,42 @@ import { Gorule } from "./commonComponents/tabs/Gorule";
 import { Mapper } from "./commonComponents/tabs/mapper";
 import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
-import {
-  gettingValues,
-  transformNodesToProps,
-} from "./VPT_UF/VPT_EVENTS/utils/utils";
+
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
-
+const BASEURL = `${process.env.REACT_APP_API_URL}tp/getTenantInfo`;
 export const TorusModellerContext = createContext(null);
+const colors = {
+  hidden: { dark: "#008080", light: "#008080" },
+  DF: {
+    dark: "#0736C4",
+    light: "#244DCB",
+  },
+  UF: {
+    dark: "#33CCFF",
+    light: "#00BFFF",
+  },
+  PF: { dark: "#2AE38F", light: "#13CC78" },
 
+  SF: { dark: "#FFc723", light: "#FFBE00" },
+};
 export default function Layout({ client }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
-  const [selectedtKey, setSelectedtKey] = useState(null);
+
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedComponentName, setSelectedComponentName] = useState(null);
   const [selectedControlName, setSelectedControlName] = useState(null);
   const [selectedArtifact, setSelectedArtifact] = useState(null);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [showNodeProperty, setShowNodeProperty] = useState(false);
-  const { screenToFlowPosition } = useReactFlow();
+
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
-  const [reactFlowInstance, setreactflowinstance] = useState(null);
+
   const [menu, setMenu] = useState(null);
-  const [prevNodesEdges, setPrevNodesEdges] = useState({
-    nodes: [],
-    edges: [],
-  });
+
+  const [sfNodeGalleryData, setSfNodeGalleryData] = useState(null);
   const [selectedControlEvents, setSelectedControlEvents] = useState(null);
   const [recentClicked, setrecentClicked] = useState(false);
   const ref = useRef(null);
@@ -63,28 +64,54 @@ export default function Layout({ client }) {
   const [eventsNavBarData, setEventsNavBarData] = useState([]);
   const [controlJson, setControlJson] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState({
+    flow: true,
     rule: false,
     mapper: false,
     code: false,
   });
 
-  const colors = {
-    hidden: { dark: "#008080", light: "#008080" },
-    DF: {
-      dark: "#0736C4",
-      light: "#244DCB",
-    },
-    UF: {
-      dark: "#33CCFF",
-      light: "#00BFFF",
-    },
-    PF: { dark: "#2AE38F", light: "#13CC78" },
+  const getTenantPolicy = async (tenant) => {
+    try {
+      const response = await fetch(`${BASEURL}?tenant=${tenant}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
 
-    SF: { dark: "#FFc723", light: "#FFBE00" },
+      data.orgGrp =
+        data.orgGrp &&
+        data.orgGrp.length > 0 &&
+        data.orgGrp.map((orgGrp) => ({
+          ...orgGrp,
+          id: uuidv4(),
+        }));
+
+      data.psGrp =
+        data.psGrp &&
+        data.psGrp.length > 0 &&
+        data.psGrp.map((psGrp) => ({
+          ...psGrp,
+          id: uuidv4(),
+        }));
+
+      data.roleGrp =
+        data.roleGrp &&
+        data.roleGrp.length > 0 &&
+        data.roleGrp.map((roleGrp) => ({
+          ...roleGrp,
+          id: uuidv4(),
+        }));
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   const handleTabChange = (fabric) => {
-    console.log("clicked", fabric, recentClicked);
     if (fabric == selectedFabric) {
       setShowFabricSideBar(!showFabricSideBar);
       return;
@@ -108,10 +135,10 @@ export default function Layout({ client }) {
           }
         });
     }
-    setPrevNodesEdges({
-      nodes: nodes,
-      edges: edges,
-    });
+    if (fabric == "SF") {
+      getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
+    }
+
     setNodes([]);
     setEdges([]);
 
@@ -141,7 +168,19 @@ export default function Layout({ client }) {
     },
     [setMenu],
   );
-
+  const uniqueNames = useMemo(() => {
+    if (nodes.length > 0) {
+      let uniqNameArray = [];
+      for (let node of nodes) {
+        if (!uniqNameArray.includes(node.data.label)) {
+          uniqNameArray.push(node.data.label);
+        }
+      }
+      return uniqNameArray;
+    } else {
+      return [];
+    }
+  }, [nodes]);
   const updatedNodeConfig = (id, metadata, updatedData) => {
     try {
       setNodes((prev) => {
@@ -208,9 +247,14 @@ export default function Layout({ client }) {
       console.error(error);
     }
   };
-  useEffect(() => {
-    console.log("nodes", selectedControlEvents);
-  }, [selectedControlEvents]);
+
+  const sendDataToFabrics = useMemo(() => {
+    return {
+      nodes: nodes,
+      nodeEdges: edges,
+    };
+  }, [nodes, edges]);
+
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -221,6 +265,7 @@ export default function Layout({ client }) {
         client,
         controlJson,
         onPaneClick,
+        uniqueNames,
         selectedFabric,
         handleTabChange,
         eventsNavBarData,
@@ -235,6 +280,7 @@ export default function Layout({ client }) {
         selectedProject,
         setSelectedProject,
         selectedVersion,
+        sfNodeGalleryData,
         setSelectedVersion,
         selectedControlEvents,
         setSelectedControlEvents,
@@ -243,9 +289,7 @@ export default function Layout({ client }) {
       <div
         className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
       >
-        {!toggleReactflow.rule &&
-        !toggleReactflow.mapper &&
-        !toggleReactflow.code ? (
+        {toggleReactflow.flow ? (
           <>
             <div className="sticky top-0 h-[8%] w-full">
               <Navbar
@@ -257,27 +301,7 @@ export default function Layout({ client }) {
                   setEdges(data?.nodeEdges ?? []);
                   setNodes(data?.nodes ?? []);
                 }}
-                selectedArtifacts={selectedArtifact}
-                setSelectedArtifacts={setSelectedArtifact}
-                selectedApplication={selectedProject}
-                setSelectedAppliction={setSelectedProject}
-                selectedVerison={selectedVersion}
-                setSelectedVerison={setSelectedVersion}
-                getDataFromFabrics={() => ({
-                  nodes: nodes,
-                  nodeEdges: edges,
-                })}
-                // setdomain={setDomain}
-                // setartifact={setArtifact}
-                // mainVersion={mainVersion}
-                // setMainVersion={setVersion}
-                // sendartifact={sendartifact}
-                // mainArtifacts={mainArtifacts}
-                // setMainArtifacts={setMainArtifacts}
-                // setToggleReactflow={setToggleReactflow}
-                // undoredo={{ undo, redo, canUndo, canRedo }}
-                // selecetedWholeVersion={selecetedWholeVersion}
-                // setSelectedWholeVersion={setSelectedWholeVersion}
+                getDataFromFabrics={sendDataToFabrics}
               />
             </div>
 
@@ -287,98 +311,77 @@ export default function Layout({ client }) {
               <div
                 className={`flex h-[100%]  ${showNodeProperty ? "w-[79%]" : "w-[100%]"}`}
               >
-                <TorusModellerContext.Provider
-                  value={{
-                    selectedFabric,
-                    handleTabChange,
-                    ref,
-                    onNodeContextMenu,
-                    onPaneClick,
-                    nodePropertyData,
-                  }}
+                <FabricsSelector
+                  nodes={nodes}
+                  edges={edges}
+                  setEdges={setEdges}
+                  setNodes={setNodes}
+                  fabric={selectedFabric}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
                 >
-                  <FabricsSelector
-                    nodes={nodes}
-                    edges={edges}
-                    setEdges={setEdges}
-                    setNodes={setNodes}
-                    fabric={selectedFabric}
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
-                    onInit={setreactflowinstance}
-                    prevNodesEdges={prevNodesEdges}
-                  >
-                    {({
-                      redo,
-                      undo,
-                      canUndo,
-                      canRedo,
-                      uniqueNames,
-                      changeProperty,
-                      updatedNodeConfig,
-                      setToggleReactflow,
-                    }) => (
-                      <>
-                        <SideBar showNodeProperty={showNodeProperty} />
-                        {selectedFabric !== "Home" &&
-                          selectedFabric !== "SF" && (
-                            <>
-                              <NodeGallery
-                                showFabricSideBar={showFabricSideBar}
-                                color={colors[selectedFabric]?.light}
-                                handleSidebarToggle={handleSidebarToggle}
-                                showNodeProperty={showNodeProperty}
-                                selectedControlEvents={selectedControlEvents}
+                  {({ redo, undo, canUndo, canRedo }) => (
+                    <>
+                      <SideBar showNodeProperty={showNodeProperty} />
+                      {selectedFabric !== "Home" && (
+                        <>
+                          <NodeGallery
+                            showFabricSideBar={showFabricSideBar}
+                            color={colors[selectedFabric]?.light}
+                            handleSidebarToggle={handleSidebarToggle}
+                            showNodeProperty={showNodeProperty}
+                          />
+
+                          {!showNodeProperty && (
+                            <div
+                              className={`transition-transform duration-500 ease-in-out ${
+                                !showNodeProperty
+                                  ? "animate-fadeIn"
+                                  : "animate-fadeOut"
+                              }`}
+                            >
+                              <ToastContainer
+                                newestOnTop
+                                icon={false}
+                                pauseOnHover={false}
+                                hideProgressBar={true}
+                                className={`z-[999] flex min-h-11 min-w-[0%] max-w-[85%] flex-col items-center justify-end`}
                               />
-
-                              {!showNodeProperty && (
-                                <div
-                                  className={`transition-transform duration-500 ease-in-out ${
-                                    !showNodeProperty
-                                      ? "animate-fadeIn"
-                                      : "animate-fadeOut"
-                                  }`}
-                                >
-                                  <ToastContainer
-                                    newestOnTop
-                                    icon={false}
-                                    pauseOnHover={false}
-                                    hideProgressBar={true}
-                                    className={`z-[999] flex min-w-[0%] max-w-[85%] items-center justify-end flex-col min-h-11`}
-                                  />
-                                  <MiniMap
-                                    position="bottom-right"
-                                    style={{ bottom: "8%" }}
-                                    maskColor="transparent"
-                                    className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                                  />
-                                  <CanvasPanel
-                                    undo={undo}
-                                    redo={redo}
-                                    canUndo={canUndo}
-                                    canRedo={canRedo}
-                                  />
-                                </div>
-                              )}
-
-                              {menu && (
-                                <ContextMenuSelector
-                                  onClick={onPaneClick}
-                                  fabric={selectedFabric}
-                                  onEdit={(id) => {
-                                    setNodePropertyData(getNode(id));
-                                    setShowNodeProperty(!showNodeProperty);
-                                  }}
-                                  {...menu}
-                                />
-                              )}
-                              <Background variant="dots" gap={12} size={1} />
-                            </>
+                              <MiniMap
+                                position="bottom-right"
+                                style={{ bottom: "8%" }}
+                                maskColor="transparent"
+                                className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                              />
+                              <CanvasPanel
+                                undo={undo}
+                                redo={redo}
+                                canUndo={canUndo}
+                                canRedo={canRedo}
+                              />
+                            </div>
                           )}
-                      </>
-                    )}
-                  </FabricsSelector>
-                </TorusModellerContext.Provider>
+
+                          {menu && (
+                            <ContextMenuSelector
+                              onClick={() => {
+                                selectedFabric !== "events" && onPaneClick();
+                              }}
+                              onClose={onPaneClick}
+                              fabric={selectedFabric}
+                              onEdit={(id) => {
+                                setNodePropertyData(getNode(id));
+                                setShowNodeProperty(!showNodeProperty);
+                              }}
+                              {...menu}
+                            />
+                          )}
+                          <Background variant="dots" gap={12} size={1} />
+                        </>
+                      )}
+                    </>
+                  )}
+                </FabricsSelector>
               </div>
 
               {showNodeProperty && (
@@ -410,13 +413,13 @@ export default function Layout({ client }) {
               )}
             </div>
           </>
-        ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
+        ) : toggleReactflow.rule ? (
           <Gorule
             sideBarData={nodePropertyData}
             updatedNodeConfig={updatedNodeConfig}
             setToggleReactflow={setToggleReactflow}
           />
-        ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
+        ) : toggleReactflow.mapper ? (
           <Mapper
             sideBarData={nodePropertyData}
             updatedNodeConfig={updatedNodeConfig}
@@ -429,7 +432,9 @@ export default function Layout({ client }) {
             setToggleReactflow={setToggleReactflow}
           />
         ) : (
-          <>nothing</>
+          <div className="h-full w-full bg-white text-center italic">
+            nothing
+          </div>
         )}
       </div>
     </TorusModellerContext.Provider>

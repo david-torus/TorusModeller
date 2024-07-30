@@ -2,7 +2,7 @@
 import React from "react";
 import { useEffect, useState, useCallback } from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css"
+import "./index.css";
 import "primereact/resources/primereact.min.css";
 
 import "primereact/resources/themes/saga-blue/theme.css";
@@ -58,7 +58,7 @@ function App() {
         console.log(error);
       }
     },
-    [clientDetails]
+    [clientDetails],
   );
 
   useEffect(() => {
@@ -85,10 +85,10 @@ function App() {
                 <ReactFlowProvider>
                   <Layout client={clientDetails?.client} />
                 </ReactFlowProvider>
-              </> 
+              </>
             ) : (
               <ReactFlowProvider>
-                <Layout  />
+                <Layout />
               </ReactFlowProvider>
             )}
           </>

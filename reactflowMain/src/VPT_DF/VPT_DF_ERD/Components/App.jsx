@@ -65,7 +65,8 @@ export default function AppDF({
   children,
 }) {
   const edgeUpdateSuccessful = useRef(true);
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
+  const { ref, onNodeContextMenu, onPaneClick } =
+    useContext(TorusModellerContext);
   const entityJson = {};
   // const ref = useRef(null);
   const [menu, setMenu] = useState(null);
@@ -115,19 +116,6 @@ export default function AppDF({
   );
 
   //useEFfect for get data from navbar
-  const uniqueNames = useMemo(() => {
-    if (nodes.length > 0) {
-      let uniqNameArray = [];
-      for (let node of nodes) {
-        if (!uniqNameArray.includes(node.data.label)) {
-          uniqNameArray.push(node.data.label);
-        }
-      }
-      return uniqNameArray;
-    } else {
-      return [];
-    }
-  });
 
   //This function is used to update the edges
   const onEdgeUpdateStart = useCallback(() => {
@@ -602,49 +590,43 @@ export default function AppDF({
 
   // Returns JSX
   return (
-    <uniQueNameContext.Provider value={{ uniqueNames, nodeConfig }}>
-      <>
-        <Toast ref={toast} />
-        <ReactFlow
-          proOptions={proOptions}
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onDragOver={onDragOver}
-          nodeTypes={NODE_TYPES}
-          onPaneClick={onPaneClick}
-          onNodeContextMenu={onNodeContextMenu}
-          onInit={setreactflowinstance}
-          ref={ref}
-          onDrop={onDrop}
-          edgeTypes={edgeTypes}
-          onEdgeUpdate={onEdgeUpdate}
-          onEdgeUpdateStart={onEdgeUpdateStart}
-          onEdgeUpdateEnd={onEdgeUpdateEnd}
-          connectionLineType={ConnectionLineType.SimpleBezier}
-          fitView
-          fitViewOptions={{
-            padding: 0.2,
-          }}
-        >
-          {children &&
-            (typeof children == "function"
-              ? children({
-                  setToggleReactflow: null,
-                  uniqueNames,
-                  changeProperty: updatenodeDetails,
-                  updatedNodeConfig,
-                  sideBarData: nodeData,
-                  undo,
-                  redo,
-                  canUndo,
-                  canRedo,
-                })
-              : children)}
+    <>
+      <Toast ref={toast} />
+      <ReactFlow
+        proOptions={proOptions}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onDragOver={onDragOver}
+        nodeTypes={NODE_TYPES}
+        onPaneClick={onPaneClick}
+        onNodeContextMenu={onNodeContextMenu}
+        onInit={setreactflowinstance}
+        ref={ref}
+        onDrop={onDrop}
+        edgeTypes={edgeTypes}
+        onEdgeUpdate={onEdgeUpdate}
+        onEdgeUpdateStart={onEdgeUpdateStart}
+        onEdgeUpdateEnd={onEdgeUpdateEnd}
+        connectionLineType={ConnectionLineType.SimpleBezier}
+        fitView
+        fitViewOptions={{
+          padding: 0.2,
+        }}
+      >
+        {children &&
+          (typeof children == "function"
+            ? children({
+                undo,
+                redo,
+                canUndo,
+                canRedo,
+              })
+            : children)}
 
-          {/* {menu && (
+        {/* {menu && (
             <ContextMenu
               deleteNode={deleteNode}
               nodeConfig={entityJson}
@@ -661,7 +643,7 @@ export default function AppDF({
             />
           )} */}
 
-          {/* <NodeInfoSidebar
+        {/* <NodeInfoSidebar
             nodeConfig={nodeConfig}
             defaults={defaults}
             changeProperty={updatenodeDetails}
@@ -677,7 +659,7 @@ export default function AppDF({
             setPropertywindow={setPropertywindow}
           /> */}
 
-          {/* <FabricsNavbar
+        {/* <FabricsNavbar
             undoredo={{
               undo: undo,
               redo: redo,
@@ -697,8 +679,7 @@ export default function AppDF({
       
 
           <Background variant="dots" gap={12} size={1} /> */}
-        </ReactFlow>
-      </>
-    </uniQueNameContext.Provider>
+      </ReactFlow>
+    </>
   );
 }

@@ -84,7 +84,6 @@ const NewNodeInfoSidebar = ({
   const getNodeConfig = (jsons, toogle) => {
     try {
       if (toogle === "AT") {
-
         setJson((prev) => {
           if (prev?.entities)
             return {
@@ -114,13 +113,11 @@ const NewNodeInfoSidebar = ({
           },
           {
             ...json,
-          }
+          },
         );
       }
 
-
       if (toogle === "MT") {
-
         setJson((prev) => {
           if (prev?.entities)
             return {
@@ -139,7 +136,7 @@ const NewNodeInfoSidebar = ({
             };
         });
 
-         return  updatedNodeConfig(
+        return updatedNodeConfig(
           sideBarData?.id,
           {
             nodeId: sideBarData?.id,
@@ -148,12 +145,9 @@ const NewNodeInfoSidebar = ({
           },
           {
             ...json,
-          }
+          },
         );
-
-
       }
-
     } catch (err) {
       console.error(err);
     }
@@ -263,7 +257,7 @@ const NewNodeInfoSidebar = ({
                 type: "multipleSelect",
                 selectionList: [...getCname],
               },
-            }
+            },
           );
         } else {
           MT =

@@ -49,12 +49,13 @@ export const Gorule = ({
         },
         {
           rule: json,
-        }
+        },
       );
 
-      setToggleReactflow(() => ({
+      setToggleReactflow((prev) => ({
+        ...prev,
         rule: false,
-        mapper: false,
+        flow: true,
       }));
     } catch (err) {
       console.error(err);
@@ -67,7 +68,7 @@ export const Gorule = ({
     <div className="h-[100%]">
       <div className="h-[5%]   bg-[#FFFFFF]">
         <p
-          className=" ml-2 mt-0 w-[33px] p-2 text-white rounded  bg-[#4095FD]  text-center hover:cursor-pointer z-50"
+          className=" z-50 ml-2 mt-0 w-[33px] rounded bg-[#4095FD]  p-2  text-center text-white hover:cursor-pointer"
           onClick={handleClick}
         >
           <TiArrowBackOutline />
