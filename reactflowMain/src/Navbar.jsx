@@ -1694,7 +1694,9 @@ export default function Navbar({
                                 <>
                                   {artifactsList.map((obj, index) => {
                                     return (
-                                      <div className="flex h-[30%] w-full items-center justify-center">
+                                      <div
+                                        className={`justify-center" flex h-[{${artifactsList.length / 100}%] w-full items-center`}
+                                      >
                                         <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
                                           <>
                                             {inputchange !== index ? (
