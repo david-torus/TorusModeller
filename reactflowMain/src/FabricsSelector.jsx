@@ -17,10 +17,8 @@ export const FabricsSelector = memo(
     setEdges,
     setNodes,
     children,
-
     onEdgesChange,
     onNodesChange,
-    prevNodesEdges,
   }) => {
     const { selectedFabric } = useContext(TorusModellerContext);
     const cycleFabric = () => {
@@ -29,13 +27,7 @@ export const FabricsSelector = memo(
           return (
             <div className="relative flex h-full w-full items-center justify-center italic dark:text-white">
               Home Screen
-              {children({
-                setToggleReactflow: null,
-                uniqueNames: null,
-                changeProperty: null,
-                updatedNodeConfig: null,
-                sideBarData: null,
-              })}
+              {children({})}
             </div>
           );
 

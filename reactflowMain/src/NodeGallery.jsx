@@ -108,8 +108,9 @@ export default function NodeGallery({
   );
 }
 
-const Loop = ({ color, selectedControlEvents, sfNodeGalleryData }) => {
-  const { selectedFabric } = useContext(TorusModellerContext);
+const Loop = ({ color }) => {
+  const { selectedFabric, selectedControlEvents, sfNodeGalleryData } =
+    useContext(TorusModellerContext);
   console.log(sfNodeGalleryData, "sf");
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);

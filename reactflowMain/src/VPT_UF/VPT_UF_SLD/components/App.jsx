@@ -97,7 +97,8 @@ const AppUF = ({
   children,
   proOptions,
 }) => {
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
+  const { ref, onNodeContextMenu, onPaneClick } =
+    useContext(TorusModellerContext);
   const [helperLineHorizontal, setHelperLineHorizontal] = useState(undefined);
   const [helperLineVertical, setHelperLineVertical] = useState(undefined);
   const { getIntersectingNodes, flowToScreenPosition, getNode } =
@@ -765,22 +766,6 @@ const AppUF = ({
     });
   };
 
-  const uniqueNames = useMemo(() => {
-    if (nodes && nodes.length > 0) {
-      let uniqNameArray = [];
-      for (let node of nodes) {
-        if (!uniqNameArray.includes(node.data.label)) {
-          uniqNameArray.push(node.data.label);
-        } else {
-          uniqNameArray = uniqNameArray;
-        }
-      }
-      return uniqNameArray;
-    } else {
-      return [];
-    }
-  });
-
   useEffect(() => {}, [nodes]);
 
   /**
@@ -988,15 +973,11 @@ const AppUF = ({
               nodesDraggable={true}
               onEdgeUpdate={onEdgeUpdate}
               connectionLineStyle={connectionLineStyle}
+              proOptions={proOptions}
             >
               {children &&
                 (typeof children == "function"
                   ? children({
-                      setToggleReactflow,
-                      uniqueNames,
-                      changeProperty: updatenodeDetails,
-                      updatedNodeConfig,
-                      sideBarData: nodeData,
                       undo,
                       redo,
                       canUndo,

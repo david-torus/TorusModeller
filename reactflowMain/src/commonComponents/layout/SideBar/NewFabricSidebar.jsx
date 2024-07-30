@@ -18,6 +18,7 @@ import { BiMoon, BiSun } from "react-icons/bi";
 import TorusTab from "../../../torusComponents/TorusTab";
 import TorusAvatar from "../../../torusComponents/TorusAvatar";
 import { DarkmodeContext } from "../../context/DarkmodeContext";
+import { TorusModellerContext } from "../../../Layout";
 
 const colors = {
   home: { dark: "#008080", light: "#008080" },
@@ -56,13 +57,8 @@ const focusBLcolor = {
   },
 };
 
-export default function NewFabricSidebar({
-  color,
-  selectedFabric,
-  showFabricSideBar,
-  handleSidebarToggle,
-  handleTabChange,
-}) {
+export default function NewFabricSidebar() {
+  const { handleTabChange, selectedFabric } = useContext(TorusModellerContext);
   const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
   const borderFn = () => {
     if (selectedFabric === "home") {
@@ -84,9 +80,9 @@ export default function NewFabricSidebar({
   return (
     <Panel
       position="top-left"
-      className=" w-[5%] z-100 h-[90%] flex flex-col   items-center py-2   bg-white  border  border-slate-300 dark:border-[#212121] rounded-lg  "
+      className=" z-100 flex h-[90%] w-[5%] flex-col   items-center rounded-lg   border  border-slate-300  bg-white py-2 dark:border-[#212121]  "
     >
-      <div className=" w-[100%] flex flex-col  items-center   ">
+      <div className=" flex w-[100%] flex-col  items-center   ">
         <TorusTab
           key="TorusTab"
           orientation="vertical"
@@ -146,11 +142,11 @@ export default function NewFabricSidebar({
           onSelectionChange={handleTabChange}
         />
 
-        <div className="rotate-90 p-2 py-5 h-[5%] flex items-center ">
+        <div className="flex h-[5%] rotate-90 items-center p-2 py-5 ">
           <VerticalLine className={"stroke-white"} />
         </div>
 
-        <div className="  h-[30%] w-[100%]  mb-5 flex flex-col items-center gap-3 cursor-pointer">
+        <div className="  mb-5 flex  h-[30%] w-[100%] cursor-pointer flex-col items-center gap-3">
           <FabricBar className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
 
           <Faq className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
@@ -158,7 +154,7 @@ export default function NewFabricSidebar({
           <Support className="stroke-[#A6A6A6] dark:stroke-[#686868]" />
         </div>
 
-        <div className="flex flex-col h-[40%] justify-end  items-center gap-3">
+        <div className="flex h-[40%] flex-col items-center  justify-end gap-3">
           <div
             className="cursor-pointer"
             onClick={() => toggleDarkMode(!darkMode)}

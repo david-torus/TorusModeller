@@ -54,7 +54,7 @@ export default function Navbar({
   project,
   setdomain,
   setartifact,
-  handleTabChange,
+
   sendDataToFabrics,
   setUpIdKey = null,
   setToggleReactflow,
@@ -63,6 +63,7 @@ export default function Navbar({
 }) {
   const {
     client,
+    handleTabChange,
     selectedFabric,
     selectedArtifact,
     setSelectedArtifact,

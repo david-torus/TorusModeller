@@ -79,7 +79,8 @@ const AppPF = ({
   proOptions,
 }) => {
   const [defaults, setDefaults] = useState({});
-  const { ref, onNodeContextMenu, onPaneClick } = useContext(TorusModellerContext);
+  const { ref, onNodeContextMenu, onPaneClick } =
+    useContext(TorusModellerContext);
 
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
@@ -134,13 +135,13 @@ const AppPF = ({
             if (node.id !== id) {
               if (node.T_parentId.includes(id)) {
                 node.T_parentId = node.T_parentId.filter(
-                  (parentId) => parentId !== id
+                  (parentId) => parentId !== id,
                 );
                 return node;
               }
               return node;
             }
-          })
+          }),
         );
 
         setEdges((edges) =>
@@ -149,7 +150,7 @@ const AppPF = ({
               return edge;
             }
             return edge;
-          })
+          }),
         );
 
         setMenu(null);
@@ -157,7 +158,7 @@ const AppPF = ({
         console.error(error);
       }
     },
-    [nodeConfig, setNodes, setEdges, takeSnapshot]
+    [nodeConfig, setNodes, setEdges, takeSnapshot],
   );
   console.log("-->", nodes);
 
@@ -233,7 +234,7 @@ const AppPF = ({
         if (
           nodeConfig &&
           (Object.keys(nodeConfig).includes(
-            `${nodeData.property.name}.config`
+            `${nodeData.property.name}.config`,
           ) ||
             Object.keys(nodeConfig).includes(`${nodeData.property.name}.WF`))
         ) {
@@ -364,7 +365,7 @@ const AppPF = ({
                     type: MarkerType.ArrowClosed,
                   },
                 },
-                eds
+                eds,
               );
             } else {
               console.error("Source and Target cannot be same");
@@ -376,7 +377,7 @@ const AppPF = ({
         console.error(error);
       }
     },
-    [setEdges, nodes, takeSnapshot]
+    [setEdges, nodes, takeSnapshot],
   );
 
   /**
@@ -437,7 +438,7 @@ const AppPF = ({
         return nodes; // Return original nodes array in case of error
       }
     },
-    [edges] // Dependency array should include all dependencies used within this function
+    [edges], // Dependency array should include all dependencies used within this function
   );
 
   // find child node Id using edges and targetId
@@ -461,7 +462,7 @@ const AppPF = ({
         return []; // Return an empty array or handle error case appropriately
       }
     },
-    [] // Ensure to include all dependencies used inside getChildId if any
+    [], // Ensure to include all dependencies used inside getChildId if any
   );
 
   /**
@@ -484,7 +485,7 @@ const AppPF = ({
       edges,
       setNodes,
       getChildId,
-      updateNodeDetails
+      updateNodeDetails,
     ) => {
       if (nodes && nodes.length) {
         try {
@@ -494,7 +495,7 @@ const AppPF = ({
             nodes,
             oldEdge,
             newEdges,
-            childID
+            childID,
           );
 
           setNodes(updatedNodes);
@@ -503,7 +504,7 @@ const AppPF = ({
         }
       }
     },
-    [] // Dependency array should ideally include all dependencies used within this function.
+    [], // Dependency array should ideally include all dependencies used within this function.
   );
 
   /**
@@ -525,7 +526,7 @@ const AppPF = ({
           edges,
           setNodes,
           getChildId,
-          updateNodeDetails
+          updateNodeDetails,
         );
         return setEdges((els) => {
           return updateEdge(oldEdge, newConnection, els);
@@ -543,7 +544,7 @@ const AppPF = ({
       setNodes,
       getChildId,
       updateNodeDetails,
-    ]
+    ],
   );
 
   /**
@@ -563,7 +564,7 @@ const AppPF = ({
             "torus",
             Array.from(senddomain)[0],
             "PF",
-            Array.from(sendartifact)[0]
+            Array.from(sendartifact)[0],
           );
 
           if (
@@ -622,7 +623,7 @@ const AppPF = ({
         console.error(error);
       }
     },
-    [sendartifact, senddomain, setNodes]
+    [sendartifact, senddomain, setNodes],
   );
 
   /**
@@ -682,7 +683,7 @@ const AppPF = ({
         console.error(error);
       }
     },
-    [reactFlowInstance, setNodes, takeSnapshot]
+    [reactFlowInstance, setNodes, takeSnapshot],
   );
 
   console.log(nodes, "<--nodes");
@@ -742,7 +743,7 @@ const AppPF = ({
         console.error(error);
       }
     },
-    [setNodes] // Include dependencies used inside updateNode
+    [setNodes], // Include dependencies used inside updateNode
   );
 
   const updateAddedEdges = useCallback(
@@ -766,7 +767,7 @@ const AppPF = ({
         }
       }
     },
-    [updateNode, nodes, edges]
+    [updateNode, nodes, edges],
   );
 
   /**
@@ -844,21 +845,6 @@ const AppPF = ({
       console.error(error);
     }
   };
-  const uniqueNames = useMemo(() => {
-    if (nodes && nodes.length > 0) {
-      let uniqueName = [];
-      for (let i = 0; i < nodes.length; i++) {
-        if (
-          !uniqueName.includes(nodes[i].property.name.toLowerCase()) &&
-          nodes[i]?.property?.name !== ""
-        )
-          uniqueName.push(nodes[i].property.name.toLowerCase());
-      }
-      return uniqueName;
-    } else {
-      return [];
-    }
-  });
 
   /**
    * Retrieves the control policy configuration and workflow policy for a given type.
@@ -888,13 +874,13 @@ const AppPF = ({
         getCases(
           data?.nodes ?? [],
           data?.nodeEdges ?? [],
-          data?.nodeProperty ?? {}
+          data?.nodeProperty ?? {},
         );
       } catch (error) {
         console.error(error);
       }
     },
-    [setNodes, setEdges, getCases] // Include getCases as a dependency for getDataFromNavBar
+    [setNodes, setEdges, getCases], // Include getCases as a dependency for getDataFromNavBar
   );
 
   return (
@@ -946,7 +932,6 @@ const AppPF = ({
         nodeConfig={nodeConfig}
         userRoleDetails={userRoleDetails}
         selectedRole={selectedRole}
-        uniqueNames={uniqueNames}
         children={children}
       />
     </>
