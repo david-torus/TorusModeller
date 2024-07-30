@@ -15,12 +15,12 @@ export default function TorusDialog({ triggerElement, children, classNames }) {
       <ModalOverlay
         isDismissable
         className={merger(
-          "fixed z-[100] top-0 left-0 w-screen h-screen bg-transparent/45 flex items-center justify-center",
-          classNames?.modalClassName
+          "fixed left-0 top-0 z-[100] flex h-screen w-screen items-center justify-center bg-transparent/45",
+          classNames?.modalOverlayClassName,
         )}
       >
-        <Modal  isDismissable>
-          <Dialog className={merger("", classNames?.dialogClassName)}>
+        <Modal className={merger("", classNames?.modalClassName)} isDismissable>
+          <Dialog className={merger("", classNames?.dialogClassName)} >
             {children}
           </Dialog>
         </Modal>
@@ -28,6 +28,3 @@ export default function TorusDialog({ triggerElement, children, classNames }) {
     </DialogTrigger>
   );
 }
-
-
-

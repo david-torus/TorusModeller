@@ -386,13 +386,13 @@ export default function Layout({ client }) {
 
               {showNodeProperty && (
                 <div
-                  className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} `}
+                  className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} border dark:border-[#212121]  `}
                 >
                   <div
-                    className={`h-full transform border bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
+                    className={`h-full transform   dark:bg-[#161616] bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
                   >
                     <div
-                      className="top-0 flex w-[100%] cursor-pointer justify-end"
+                      className="top-0 flex w-[100%] cursor-pointer justify-end text-[#161616] dark:text-[#FFFFFF]"
                       onClick={() => setShowNodeProperty(!showNodeProperty)}
                     >
                       x
