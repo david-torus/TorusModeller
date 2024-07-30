@@ -344,7 +344,7 @@ export default function Layout({ client }) {
                                     icon={false}
                                     pauseOnHover={false}
                                     hideProgressBar={true}
-                                    className={`z-[999] flex min-w-[80%] max-w-[85%] items-center justify-end`}
+                                    className={`z-[999] flex min-w-[0%] max-w-[85%] items-center justify-end flex-col min-h-11`}
                                   />
                                   <MiniMap
                                     position="bottom-right"
