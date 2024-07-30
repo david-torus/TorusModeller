@@ -3,6 +3,7 @@ import App from "./Components/App";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import { ReactFlowProvider } from "reactflow";
 import { NextUIProvider } from "@nextui-org/system";
+import AppSF from "./Components/App";
 
 export default function SFMain({
   appGroup,
@@ -20,7 +21,7 @@ export default function SFMain({
             display: "flex",
           }}
         >
-          <App
+          <AppSF
             currentFabric={currentFabric}
             tenant={tenant}
             appGroup={appGroup}

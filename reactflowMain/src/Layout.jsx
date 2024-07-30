@@ -15,7 +15,7 @@ import {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { FabricsSelector } from "./FabricsSelector";
-
+import { v4 as uuidv4 } from "uuid";
 import ContextMenuSelector from "./contextMenu/ContextMenuSelector";
 import CanvasPanel from "./CanvasPanel";
 import { nodeInfoTabs } from "./jonui/JsonUI";
@@ -32,7 +32,7 @@ import {
 } from "./VPT_UF/VPT_EVENTS/utils/utils";
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
-
+const BASEURL = `${process.env.REACT_APP_API_URL}tp/getTenantInfo`;
 export const TorusModellerContext = createContext(null);
 
 export default function Layout({ client }) {
@@ -54,6 +54,7 @@ export default function Layout({ client }) {
     nodes: [],
     edges: [],
   });
+  const [sfNodeGalleryData, setSfNodeGalleryData] = useState(null);
   const [selectedControlEvents, setSelectedControlEvents] = useState(null);
   const [recentClicked, setrecentClicked] = useState(false);
   const ref = useRef(null);
@@ -82,6 +83,46 @@ export default function Layout({ client }) {
 
     SF: { dark: "#FFc723", light: "#FFBE00" },
   };
+  const getTenantPolicy = async (tenant) => {
+    try {
+      const response = await fetch(`${BASEURL}?tenant=${tenant}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      data.orgGrp =
+        data.orgGrp &&
+        data.orgGrp.length > 0 &&
+        data.orgGrp.map((orgGrp) => ({
+          ...orgGrp,
+          id: uuidv4(),
+        }));
+
+      data.psGrp =
+        data.psGrp &&
+        data.psGrp.length > 0 &&
+        data.psGrp.map((psGrp) => ({
+          ...psGrp,
+          id: uuidv4(),
+        }));
+
+      data.roleGrp =
+        data.roleGrp &&
+        data.roleGrp.length > 0 &&
+        data.roleGrp.map((roleGrp) => ({
+          ...roleGrp,
+          id: uuidv4(),
+        }));
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
 
   const handleTabChange = (fabric) => {
     console.log("clicked", fabric, recentClicked);
@@ -107,6 +148,9 @@ export default function Layout({ client }) {
             setControlJson(res?.data?.controlJson ?? {});
           }
         });
+    }
+    if (fabric == "SF") {
+      getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
     setPrevNodesEdges({
       nodes: nodes,
@@ -221,6 +265,7 @@ export default function Layout({ client }) {
         client,
         controlJson,
         onPaneClick,
+
         selectedFabric,
         handleTabChange,
         eventsNavBarData,
@@ -313,6 +358,7 @@ export default function Layout({ client }) {
                       undo,
                       canUndo,
                       canRedo,
+
                       uniqueNames,
                       changeProperty,
                       updatedNodeConfig,
@@ -320,61 +366,61 @@ export default function Layout({ client }) {
                     }) => (
                       <>
                         <SideBar showNodeProperty={showNodeProperty} />
-                        {selectedFabric !== "Home" &&
-                          selectedFabric !== "SF" && (
-                            <>
-                              <NodeGallery
-                                showFabricSideBar={showFabricSideBar}
-                                color={colors[selectedFabric]?.light}
-                                handleSidebarToggle={handleSidebarToggle}
-                                showNodeProperty={showNodeProperty}
-                                selectedControlEvents={selectedControlEvents}
-                              />
+                        {selectedFabric !== "Home" && (
+                          <>
+                            <NodeGallery
+                              sfNodeGalleryData={sfNodeGalleryData}
+                              showFabricSideBar={showFabricSideBar}
+                              color={colors[selectedFabric]?.light}
+                              handleSidebarToggle={handleSidebarToggle}
+                              showNodeProperty={showNodeProperty}
+                              selectedControlEvents={selectedControlEvents}
+                            />
 
-                              {!showNodeProperty && (
-                                <div
-                                  className={`transition-transform duration-500 ease-in-out ${
-                                    !showNodeProperty
-                                      ? "animate-fadeIn"
-                                      : "animate-fadeOut"
-                                  }`}
-                                >
-                                  <ToastContainer
-                                    newestOnTop
-                                    icon={false}
-                                    pauseOnHover={false}
-                                    hideProgressBar={true}
-                                    className={`z-[999] flex min-w-[80%] max-w-[85%] items-center justify-end`}
-                                  />
-                                  <MiniMap
-                                    position="bottom-right"
-                                    style={{ bottom: "8%" }}
-                                    maskColor="transparent"
-                                    className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
-                                  />
-                                  <CanvasPanel
-                                    undo={undo}
-                                    redo={redo}
-                                    canUndo={canUndo}
-                                    canRedo={canRedo}
-                                  />
-                                </div>
-                              )}
-
-                              {menu && (
-                                <ContextMenuSelector
-                                  onClick={onPaneClick}
-                                  fabric={selectedFabric}
-                                  onEdit={(id) => {
-                                    setNodePropertyData(getNode(id));
-                                    setShowNodeProperty(!showNodeProperty);
-                                  }}
-                                  {...menu}
+                            {!showNodeProperty && (
+                              <div
+                                className={`transition-transform duration-500 ease-in-out ${
+                                  !showNodeProperty
+                                    ? "animate-fadeIn"
+                                    : "animate-fadeOut"
+                                }`}
+                              >
+                                <ToastContainer
+                                  newestOnTop
+                                  icon={false}
+                                  pauseOnHover={false}
+                                  hideProgressBar={true}
+                                  className={`z-[999] flex min-w-[80%] max-w-[85%] items-center justify-end`}
                                 />
-                              )}
-                              <Background variant="dots" gap={12} size={1} />
-                            </>
-                          )}
+                                <MiniMap
+                                  position="bottom-right"
+                                  style={{ bottom: "8%" }}
+                                  maskColor="transparent"
+                                  className="rounded-lg border border-slate-300 dark:border-[#21212126]/15 dark:bg-[#161616]  xl:h-[22%] xl:w-[15%]"
+                                />
+                                <CanvasPanel
+                                  undo={undo}
+                                  redo={redo}
+                                  canUndo={canUndo}
+                                  canRedo={canRedo}
+                                />
+                              </div>
+                            )}
+
+                            {menu && (
+                              <ContextMenuSelector
+                                onClick={onPaneClick}
+                                fabric={selectedFabric}
+                                onEdit={(id) => {
+                                  setNodePropertyData(getNode(id));
+                                  setShowNodeProperty(!showNodeProperty);
+                                }}
+                                {...menu}
+                              />
+                            )}
+                            <Background variant="dots" gap={12} size={1} />
+                          </>
+                        )}
                       </>
                     )}
                   </FabricsSelector>
