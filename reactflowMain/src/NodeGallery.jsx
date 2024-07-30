@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Header, Text } from "react-aria-components";
 import { Back } from "./SVG_Application";
 import TorusButton from "./torusComponents/TorusButton";
@@ -19,6 +19,7 @@ export default function NodeGallery({
   selectedControlEvents,
 }) {
   const { selectedFabric } = useContext(TorusModellerContext);
+
   return (
     <Panel
       position="top-left"
@@ -30,7 +31,9 @@ export default function NodeGallery({
       showFabricSideBar
         ? `h-[95%] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[13.5%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
-    }`}
+    }
+    ${selectedFabric === "SF" ? " xl:w-[17.5%]" : ""}
+    `}
     >
       <div
         className={`flex h-full  w-full items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]`}
