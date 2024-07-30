@@ -83,7 +83,7 @@ export default function SideBar({ showNodeProperty }) {
     <>
       <Panel
         position="top-left"
-        className={`flex h-[95%]  ${showNodeProperty ? "w-[5.5%] " : "w-[5%] "} flex-col items-center justify-between rounded-lg   border border-slate-300 bg-white  py-2 dark:border-[#212121] dark:bg-[#161616]`}
+        className={`flex h-[95%]  ${showNodeProperty ? "w-[5.5%] " : "xl:w-[5%] 3xl:w-[3%] "} flex-col items-center justify-between rounded-lg   border border-slate-300 bg-white  py-2 dark:border-[#212121] dark:bg-[#161616]`}
       >
         <div className="flex h-[30%] w-[100%] flex-col  items-center   ">
           <TorusTab

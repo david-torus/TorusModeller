@@ -23,7 +23,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
           <h2 id={`accordion-open-heading-${index}`}>
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-3  font-medium text-gray-500 hover:bg-gray-100   dark:text-gray-400 dark:hover:bg-gray-800"
+              className="flex w-full items-center justify-between gap-3  font-medium text-[#000000] hover:bg-gray-100 dark:hover:bg-gray-800"
               aria-expanded={openIndex === index}
               aria-controls={`accordion-open-body-${index}`}
               onClick={() => handleToggle(index)}
@@ -33,7 +33,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                   <div className="flex w-[20%] items-center justify-end">
                     <div className="flex w-[100%] justify-start">
                       <span
-                        className={`transition duration-300 ease-in-out ${openIndex === index ? "rotate-[180deg]" : "rotate-[-90deg]"}`}
+                        className={`transition duration-300 ease-in-out ${openIndex === index ? "rotate-[0deg]" : "rotate-[-90deg]"}`}
                       >
                         <TorusAccordianArrow />
                       </span>
@@ -41,7 +41,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                   </div>
                   <div className="flex w-[80%] items-center justify-start">
                     <div className="flex w-[100%] justify-start">
-                      <p className="whitespace-nowrap text-xs font-medium text-slate-800 hover:text-gray-900 dark:text-gray-300">
+                      <p className="whitespace-nowrap pl-[0.4rem] text-xs font-medium text-[#000000] hover:text-gray-900 dark:text-gray-300">
                         {item.title}
                       </p>
                     </div>
@@ -59,7 +59,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
           >
             <div className="pl-[1.10rem]">
               <div
-                className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
+                className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1 py-2 pl-[1.10rem] transition-[max-height] duration-300 ease-in-out ${
                   openIndex === index
                     ? "max-h-96 opacity-100"
                     : "max-h-0 opacity-0"
