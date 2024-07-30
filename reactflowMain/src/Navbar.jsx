@@ -1344,6 +1344,16 @@ export default function Navbar({
                   <div>
                     <IoIosArrowDown className="text-black dark:text-white" />
                   </div>
+                  {selectedFabric === "events" && (
+                    <div
+                      onClick={() => {
+                        selectedVersion && handleTabChange("UF");
+                      }}
+                      className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                    >
+                      <ArtifactOpen />
+                    </div>
+                  )}
                 </div>
               }
               children={({ close }) => (
@@ -1369,7 +1379,12 @@ export default function Navbar({
                           />
                         </div>
                         <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
-                          <div className="flex h-[27px] w-[27px] items-center justify-center rounded-md bg-[#0736C4] p-[5px]">
+                          <div
+                            onClick={() => {
+                              selectedVersion && handleTabChange("events");
+                            }}
+                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                          >
                             <ArtifactOpen />
                           </div>
 
