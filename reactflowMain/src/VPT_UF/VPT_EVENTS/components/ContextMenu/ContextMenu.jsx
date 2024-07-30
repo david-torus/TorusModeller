@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useReactFlow } from "reactflow";
 import { InputText } from "primereact/inputtext";
-import { Sidebar } from "primereact/sidebar";
+
 import { Divider, Tooltip } from "@nextui-org/react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import styles from "../styles.module.css";
@@ -35,17 +35,18 @@ import {
 import ReusableDropDown from "../../../../commonComponents/reusableComponents/ReusableDropDown";
 import ReusableInput from "../../../../commonComponents/reusableComponents/ReusableInput";
 import { TorusModellerContext } from "../../../../Layout";
-export default function ContextMenu({
+export default function ContextMenuEvents({
   id,
   top,
   left,
   right,
   bottom,
   uniqueNames,
-  setMenu,
+  onClose,
   currentDrawing,
   changeProperty,
   setToogle,
+  onEdit,
   updatedNodeConfig,
   nodeConfig,
   nodeData,
@@ -114,33 +115,33 @@ export default function ContextMenu({
     });
   }, []);
 
-  useEffect(() => {
-    try {
-      if (files) {
-        updatedNodeConfig(
-          node.id,
-          rendervalue,
-          {
-            nodeId: node.id,
-            nodeName: node.data.label,
-            nodeType: node.type,
-          },
-          {
-            ...JSON.parse(files),
-          },
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [
-    files,
-    node.id,
-    node.data.label,
-    node.type,
-    rendervalue,
-    updatedNodeConfig,
-  ]);
+  // useEffect(() => {
+  //   try {
+  //     if (files) {
+  //       updatedNodeConfig(
+  //         node.id,
+  //         rendervalue,
+  //         {
+  //           nodeId: node.id,
+  //           nodeName: node.data.label,
+  //           nodeType: node.type,
+  //         },
+  //         {
+  //           ...JSON.parse(files),
+  //         },
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [
+  //   files,
+  //   node.id,
+  //   node.data.label,
+  //   node.type,
+  //   rendervalue,
+  //   updatedNodeConfig,
+  // ]);
 
   useEffect(() => {
     const handleOutsideClick = () => {
@@ -156,14 +157,7 @@ export default function ContextMenu({
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [
-    contextMenuVisible,
-    node.data.label,
-    node.id,
-    node.type,
-    rendervalue,
-    updatedNodeConfig,
-  ]);
+  }, [contextMenuVisible, node.data.label, node.id, node.type, rendervalue]);
 
   /**
    * Handles the context menu event and sets the context menu position.
@@ -180,39 +174,39 @@ export default function ContextMenu({
     setContextMenuVisible(true);
   };
 
-  /**
-   * Handles the opening of a modal based on the provided flow type.
-   *
-   * @param {string} flowType - The type of flow to open the modal for.
-   * @param {boolean} [isDockey=false] - Indicates whether the flow is a docky flow.
-   * @param {Object} [flow] - The flow object to use.
-   * @return {Promise<void>} A promise that resolves when the modal is opened.
-   */
-  const handleOpenModal = async (flowType, isDockey = false, flow) => {
-    try {
-      setCurrentModel(flowType);
-      if (currentDrawing !== "DF") {
-        if (nodeData) {
-          if (nodeData.data.nodeProperty.hasOwnProperty(flowType)) {
-            setOpensideTab(true);
-            setJson(nodeData.data.nodeProperty[flowType]);
-          } else {
-            setOpensideTab(true);
-            setJson(nodeData.data.nodeProperty[flowType]);
-          }
-        }
+  // /**
+  //  * Handles the opening of a modal based on the provided flow type.
+  //  *
+  //  * @param {string} flowType - The type of flow to open the modal for.
+  //  * @param {boolean} [isDockey=false] - Indicates whether the flow is a docky flow.
+  //  * @param {Object} [flow] - The flow object to use.
+  //  * @return {Promise<void>} A promise that resolves when the modal is opened.
+  //  */
+  // const handleOpenModal = async (flowType, isDockey = false, flow) => {
+  //   try {
+  //     setCurrentModel(flowType);
+  //     if (currentDrawing !== "DF") {
+  //       if (nodeData) {
+  //         if (nodeData.data.nodeProperty.hasOwnProperty(flowType)) {
+  //           setOpensideTab(true);
+  //           setJson(nodeData.data.nodeProperty[flowType]);
+  //         } else {
+  //           setOpensideTab(true);
+  //           setJson(nodeData.data.nodeProperty[flowType]);
+  //         }
+  //       }
 
-        // if (nodeConfig && nodeConfig.hasOwnProperty(id)) {
-        //   if (nodeConfig[id].hasOwnProperty(flowType)) {
-        //     setToggle(!toggle);
-        //     setJson(nodeConfig[id][flowType]);
-        //   }
-        // }
-      }
-    } catch (error) {
-      console.error("error in Loading handleopenjson");
-    }
-  };
+  //       // if (nodeConfig && nodeConfig.hasOwnProperty(id)) {
+  //       //   if (nodeConfig[id].hasOwnProperty(flowType)) {
+  //       //     setToggle(!toggle);
+  //       //     setJson(nodeConfig[id][flowType]);
+  //       //   }
+  //       // }
+  //     }
+  //   } catch (error) {
+  //     console.error("error in Loading handleopenjson");
+  //   }
+  // };
 
   console.log(opensideTab, "opensideTab");
 
@@ -230,50 +224,50 @@ export default function ContextMenu({
     }
   };
 
-  /**
-   * Renders a Builder component based on the provided model and JSON configuration.
-   *
-   * @param {Object} propw - The props object containing the necessary configuration for the Builder component.
-   * @param {Object} model - The model object used to determine the UI policy for the Builder component.
-   * @param {Object} js - The JSON object used as the default configuration for the Builder component.
-   * @return {JSX.Element|null} The rendered Builder component or null if an error occurred.
-   */
-  const handleRender = (propw, model, js) => {
-    try {
-      let ConfigToRender;
-      if (model) {
-        ConfigToRender = (
-          <Builder
-            key={model}
-            isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-            defaultJSOn={js}
-            controlPolicy={controlPolicy}
-            colorPolicy={colorPolicy}
-            updatedNodeConfig={updatejson}
-            uiPolicy={cardUIPolicy}
-            showError={showError}
-            helperJson={{}}
-          />
-        );
-      } else {
-        ConfigToRender = (
-          <Builder
-            isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-            defaultJSOn={js}
-            controlPolicy={controlPolicy}
-            colorPolicy={colorPolicy}
-            updatedNodeConfig={updatejson}
-            uiPolicy={cardUIPolicy}
-            showError={showError}
-            helperJson={{}}
-          />
-        );
-      }
-      return ConfigToRender;
-    } catch (error) {
-      console.error("Something went wrong on handle render");
-    }
-  };
+  // /**
+  //  * Renders a Builder component based on the provided model and JSON configuration.
+  //  *
+  //  * @param {Object} propw - The props object containing the necessary configuration for the Builder component.
+  //  * @param {Object} model - The model object used to determine the UI policy for the Builder component.
+  //  * @param {Object} js - The JSON object used as the default configuration for the Builder component.
+  //  * @return {JSX.Element|null} The rendered Builder component or null if an error occurred.
+  //  */
+  // const handleRender = (propw, model, js) => {
+  //   try {
+  //     let ConfigToRender;
+  //     if (model) {
+  //       ConfigToRender = (
+  //         <Builder
+  //           key={model}
+  //           isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
+  //           defaultJSOn={js}
+  //           controlPolicy={controlPolicy}
+  //           colorPolicy={colorPolicy}
+  //           updatedNodeConfig={updatejson}
+  //           uiPolicy={cardUIPolicy}
+  //           showError={showError}
+  //           helperJson={{}}
+  //         />
+  //       );
+  //     } else {
+  //       ConfigToRender = (
+  //         <Builder
+  //           isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
+  //           defaultJSOn={js}
+  //           controlPolicy={controlPolicy}
+  //           colorPolicy={colorPolicy}
+  //           updatedNodeConfig={updatejson}
+  //           uiPolicy={cardUIPolicy}
+  //           showError={showError}
+  //           helperJson={{}}
+  //         />
+  //       );
+  //     }
+  //     return ConfigToRender;
+  //   } catch (error) {
+  //     console.error("Something went wrong on handle render");
+  //   }
+  // };
 
   //function used to
   const risenode = useCallback(
@@ -1231,7 +1225,6 @@ export default function ContextMenu({
           className={`flex w-full justify-between gap-3  
           ${darkMode ? "rounded-md border border-[#979BA1] bg-[#363636] px-1 py-1" : "rounded-md border border-[#15181a]  bg-[#ffffff] px-1 py-1"}`}
         >
-          {" "}
           {!toogleInputNameEdit ? (
             <div className="min-w-max-[80%] flex items-center justify-center">
               {node?.type === "controlNode" ? (
@@ -1325,10 +1318,8 @@ export default function ContextMenu({
                   selectedResponseData ? selectedResponseData : "",
                 );
 
-                setToogle(node, id);
-
                 setTimeout(() => {
-                  setMenu(null);
+                  onClose(null);
                 }, 1000);
               }}
               className={
@@ -1346,39 +1337,36 @@ export default function ContextMenu({
                 </div>
               </div>
             </button>
-            {
-              <button
-                onClick={() => {
-                  risenode(
-                    "riseListen",
-                    node.type,
-                    selectedResponseData ? selectedResponseData : "",
-                  );
-                  setToogle(node, id);
-                }}
-                className={
-                  darkMode
-                    ? "mt-1 w-full rounded-md bg-transparent text-sm text-white"
-                    : "mt-1 w-full rounded-md bg-transparent text-sm text-black"
-                }
-              >
-                <div className=" item-center flex w-full justify-between gap-5">
-                  <div className="flex w-[25%] items-center justify-center">
-                    <RaiseAndListenIcon />
-                  </div>
-                  <div className="flex w-[75%] items-center justify-start text-sm">
-                    Rise & Listen
-                  </div>
+
+            <button
+              onClick={() => {
+                risenode(
+                  "riseListen",
+                  node.type,
+                  selectedResponseData ? selectedResponseData : "",
+                );
+              }}
+              className={
+                darkMode
+                  ? "mt-1 w-full rounded-md bg-transparent text-sm text-white"
+                  : "mt-1 w-full rounded-md bg-transparent text-sm text-black"
+              }
+            >
+              <div className=" item-center flex w-full justify-between gap-5">
+                <div className="flex w-[25%] items-center justify-center">
+                  <RaiseAndListenIcon />
                 </div>
-              </button>
-            }
+                <div className="flex w-[75%] items-center justify-start text-sm">
+                  Rise & Listen
+                </div>
+              </div>
+            </button>
+
             <button
               onClick={() => {
                 risenode("self", node.type, selectedResponseData);
-                setToogle(node, id);
-
                 setTimeout(() => {
-                  setMenu(null);
+                  onClose(null);
                 }, 1000);
               }}
               className={
@@ -1403,8 +1391,8 @@ export default function ContextMenu({
         {/*Edit node */}
         <button
           onClick={() => {
+            onEdit();
             setVisible({ bool: true, type: "rise" });
-            setToogle(node, id);
           }}
           className={
             darkMode
@@ -1424,7 +1412,7 @@ export default function ContextMenu({
           }
           onClick={() => {
             deleteNodesAndEdges(nodes, edges, node.id);
-            setMenu(null);
+            onClose(null);
           }}
         >
           Delete
@@ -1434,7 +1422,7 @@ export default function ContextMenu({
           visible={isOpen}
           onHide={() => {
             onOpenChange(false);
-            setMenu(null);
+            onClose(null);
           }}
           headerStyle={{ width: "400px", maxHeight: "50px" }}
           headerClassName="bg-neutral-100"
@@ -1517,7 +1505,7 @@ export default function ContextMenu({
                                 );
                                 onOpenChange(false);
                                 setTimeout(() => {
-                                  setMenu(null);
+                                  onClose(null);
                                 }, 500);
                               }}
                               className="flex w-full cursor-pointer items-start justify-center overflow-ellipsis text-lg"
@@ -1548,7 +1536,7 @@ export default function ContextMenu({
                                                   // setClickedJson(key1);
                                                   // setShowEvents(true);
                                                   setTimeout(() => {
-                                                    setMenu(null);
+                                                    onClose(null);
                                                   }, 500);
                                                 }}
                                               >
@@ -1568,7 +1556,7 @@ export default function ContextMenu({
                                                   );
                                                   onOpenChange(false);
                                                   setTimeout(() => {
-                                                    setMenu(null);
+                                                    onClose(null);
                                                   }, 1000);
                                                 }}
                                                 className={`${darkMode ? "text-black" : ""} text-lg`}
@@ -1592,11 +1580,11 @@ export default function ContextMenu({
           </div>
         </Dialog>
 
-        <Sidebar
+        {/* <Sidebar
           visible={visible.bool}
           onHide={() => {
             setVisible({ ...visible, bool: false });
-            setMenu(null);
+            onClose(null);
           }}
           position="right"
           className={darkMode ? "bg-[#333334]" : "bg-[#f0f0f0]"}
@@ -1792,9 +1780,9 @@ export default function ContextMenu({
                 ))}
             </div>
           </div>
-        </Sidebar>
+        </Sidebar> */}
 
-        <Sidebar
+        {/* <Sidebar
           className={"bg-[#242424]"}
           position="right"
           visible={opensideTab}
@@ -1825,7 +1813,7 @@ export default function ContextMenu({
               : currentDrawing && currentModel === "STT"
                 ? handleRender("", currentModel, json)
                 : ""}
-        </Sidebar>
+        </Sidebar> */}
       </div>
     </>
   );
