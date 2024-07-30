@@ -6,7 +6,7 @@ export const JsonUiEditorContext = React.createContext();
 export default function Layout({}) {
   const [json, setJson] = useState({});
   const [decisionSelectedFacts, setDecisionSelectedFacts] = useState([]);
-
+  const [ruleId, setRuleId] = useState(null);
   const [factsVariables, setFactsVariables] = useState([
     { id: 1, name: "", type: "" },
   ]);
@@ -14,12 +14,13 @@ export default function Layout({}) {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
+    setRuleId(id);
     const fetchData = async () => {
       const data = await fetchRule(id);
-      if (data.fact_json) {
+      if (data && data.fact_json) {
         setFactsVariables(data.fact_json);
       }
-      if (data.rule_json) {
+      if (data && data.rule_json) {
         setJson(data.rule_json);
       }
     };
@@ -41,7 +42,7 @@ export default function Layout({}) {
       <div className="w-full h-full">
         <div className="flex justify-between flex-row items-center">
           <div className="w-[100%] h-full">
-            <Editor />
+            <Editor ruleId={ruleId} />
           </div>
         </div>
       </div>
