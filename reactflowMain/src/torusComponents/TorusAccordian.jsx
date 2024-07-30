@@ -50,71 +50,72 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
           </h2>
           <div
             id={`accordion-open-body-${index}`}
-            className={`border-0.5 border-b-0 border-l-1 border-r-0 border-t-0 border-gray-500 ${
+            className={` border-gray-500 ${
               openIndex === index ? "block" : "hidden"
             }`}
             aria-labelledby={`accordion-open-heading-${index}`}
           >
-            <div
-              className={`overflow-hidden border-none border-gray-500 px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
-                openIndex === index
-                  ? "max-h-96 opacity-100"
-                  : "max-h-0 opacity-0"
-              }`}
-              style={{ maxHeight: openIndex === index ? "500px" : "0px" }}
-            >
-              {typeof item.content === "string" ? (
-                <p>{item.content}</p>
-              ) : React.isValidElement(item.content) ? (
-                <div className="w-[100%] bg-yellow-400">{item.content}</div>
-              ) : Array.isArray(item.content) ? (
-                item.content.map((contentItem, contentIndex) => (
-                  <div
-                    key={contentIndex}
-                    onClick={() => {
-                      setSelectedContent(contentItem);
-                      onContentToggle(contentItem);
-                    }}
-                    className={`flex w-[100%] flex-row items-center gap-1 ${
-                      contentItem === selectedContent
-                        ? "font-semibold text-black dark:text-white"
-                        : "font-normal text-black/35 dark:text-white/35"
-                    }`}
-                  >
-                    {typeof contentItem === "string" ? (
-                      <p>{contentItem}</p>
-                    ) : React.isValidElement(contentItem) ? (
-                      contentItem
-                    ) : null}
-                  </div>
-                ))
-              ) : typeof item.content === "object" &&
-                !Array.isArray(item.content) ? (
-                <>
-                  {Object.values(item.content).map(
-                    (contentItem, contentIndex) => (
-                      <div
-                        key={contentIndex}
-                        onClick={() => {
-                          setSelectedContent(contentItem);
-                        }}
-                        className={`flex w-[100%] flex-row items-center gap-1 ${
-                          contentItem === selectedContent
-                            ? "font-semibold text-black dark:text-white"
-                            : "font-normal text-black/35 dark:text-white/35"
-                        }`}
-                      >
-                        {typeof contentItem === "string" ? (
-                          <p>{contentItem}</p>
-                        ) : React.isValidElement(contentItem) ? (
-                          contentItem
-                        ) : null}
-                      </div>
-                    ),
-                  )}
-                  <p>ITS OBJ</p>
-                </>
-              ) : null}
+            <div className="pl-[0.5rem]">
+              <div
+                className={`border-[#00000026] overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
+                  openIndex === index
+                    ? "max-h-96 opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+                style={{ maxHeight: openIndex === index ? "500px" : "0px" }}
+              >
+                {typeof item.content === "string" ? (
+                  <p>{item.content}</p>
+                ) : React.isValidElement(item.content) ? (
+                  <div className="w-[100%] bg-yellow-400">{item.content}</div>
+                ) : Array.isArray(item.content) ? (
+                  item.content.map((contentItem, contentIndex) => (
+                    <div
+                      key={contentIndex}
+                      onClick={() => {
+                        setSelectedContent(contentItem);
+                        onContentToggle(contentItem);
+                      }}
+                      className={`cursor-pointer flex w-[100%] flex-row items-center gap-1 ${
+                        contentItem === selectedContent
+                          ? "font-semibold text-black dark:text-white"
+                          : "font-normal text-black/35 dark:text-white/35"
+                      }`}
+                    >
+                      {typeof contentItem === "string" ? (
+                        <p>{contentItem}</p>
+                      ) : React.isValidElement(contentItem) ? (
+                        contentItem
+                      ) : null}
+                    </div>
+                  ))
+                ) : typeof item.content === "object" &&
+                  !Array.isArray(item.content) ? (
+                  <>
+                    {Object.values(item.content).map(
+                      (contentItem, contentIndex) => (
+                        <div
+                          key={contentIndex}
+                          onClick={() => {
+                            setSelectedContent(contentItem);
+                          }}
+                          className={`cursor-pointer flex w-[100%] flex-row items-center gap-1 ${
+                            contentItem === selectedContent
+                              ? "font-semibold text-black dark:text-white"
+                              : "font-normal text-black/35 dark:text-white/35"
+                          }`}
+                        >
+                          {typeof contentItem === "string" ? (
+                            <p>{contentItem}</p>
+                          ) : React.isValidElement(contentItem) ? (
+                            contentItem
+                          ) : null}
+                        </div>
+                      ),
+                    )}
+                  </>
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
