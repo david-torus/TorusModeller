@@ -23,7 +23,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
           <h2 id={`accordion-open-heading-${index}`}>
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-3 border border-b-0 border-gray-200 font-medium text-gray-500 hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800 dark:focus:ring-gray-800 rtl:text-right"
+              className="flex w-full items-center justify-between gap-3  font-medium text-gray-500 hover:bg-gray-100   dark:text-gray-400 dark:hover:bg-gray-800"
               aria-expanded={openIndex === index}
               aria-controls={`accordion-open-body-${index}`}
               onClick={() => handleToggle(index)}
@@ -57,7 +57,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
           >
             <div className="pl-[0.5rem]">
               <div
-                className={`border-[#00000026] overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
+                className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
                   openIndex === index
                     ? "max-h-96 opacity-100"
                     : "max-h-0 opacity-0"
@@ -76,7 +76,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                         setSelectedContent(contentItem);
                         onContentToggle(contentItem);
                       }}
-                      className={`cursor-pointer flex w-[100%] flex-row items-center gap-1 ${
+                      className={`flex w-[100%] cursor-pointer flex-row items-center gap-1 ${
                         contentItem === selectedContent
                           ? "font-semibold text-black dark:text-white"
                           : "font-normal text-black/35 dark:text-white/35"
@@ -99,7 +99,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                           onClick={() => {
                             setSelectedContent(contentItem);
                           }}
-                          className={`cursor-pointer flex w-[100%] flex-row items-center gap-1 ${
+                          className={`flex w-[100%] cursor-pointer flex-row items-center gap-1 ${
                             contentItem === selectedContent
                               ? "font-semibold text-black dark:text-white"
                               : "font-normal text-black/35 dark:text-white/35"
