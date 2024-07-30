@@ -49,9 +49,9 @@ export default function Layout({ client }) {
   const [selectedArtifact, setSelectedArtifact] = useState(null);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [showNodeProperty, setShowNodeProperty] = useState(false);
-  const { screenToFlowPosition } = useReactFlow();
+
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
-  const [reactFlowInstance, setreactflowinstance] = useState(null);
+
   const [menu, setMenu] = useState(null);
 
   const [sfNodeGalleryData, setSfNodeGalleryData] = useState(null);
@@ -64,6 +64,7 @@ export default function Layout({ client }) {
   const [eventsNavBarData, setEventsNavBarData] = useState([]);
   const [controlJson, setControlJson] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState({
+    flow: true,
     rule: false,
     mapper: false,
     code: false,
@@ -111,7 +112,6 @@ export default function Layout({ client }) {
   };
 
   const handleTabChange = (fabric) => {
-    console.log("clicked", fabric, recentClicked);
     if (fabric == selectedFabric) {
       setShowFabricSideBar(!showFabricSideBar);
       return;
@@ -248,6 +248,13 @@ export default function Layout({ client }) {
     }
   };
 
+  const sendDataToFabrics = useMemo(() => {
+    return {
+      nodes: nodes,
+      nodeEdges: edges,
+    };
+  }, [nodes, edges]);
+
   // Close the context menu if it's open whenever the window is clicked.
   const onPaneClick = useCallback(() => setMenu(null), [setMenu]);
 
@@ -282,9 +289,7 @@ export default function Layout({ client }) {
       <div
         className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
       >
-        {!toggleReactflow.rule &&
-        !toggleReactflow.mapper &&
-        !toggleReactflow.code ? (
+        {toggleReactflow.flow ? (
           <>
             <div className="sticky top-0 h-[8%] w-full">
               <Navbar
@@ -296,10 +301,7 @@ export default function Layout({ client }) {
                   setEdges(data?.nodeEdges ?? []);
                   setNodes(data?.nodes ?? []);
                 }}
-                getDataFromFabrics={() => ({
-                  nodes: nodes,
-                  nodeEdges: edges,
-                })}
+                getDataFromFabrics={sendDataToFabrics}
               />
             </div>
 
@@ -411,13 +413,13 @@ export default function Layout({ client }) {
               )}
             </div>
           </>
-        ) : toggleReactflow.rule && !toggleReactflow.mapper ? (
+        ) : toggleReactflow.rule ? (
           <Gorule
             sideBarData={nodePropertyData}
             updatedNodeConfig={updatedNodeConfig}
             setToggleReactflow={setToggleReactflow}
           />
-        ) : !toggleReactflow.rule && toggleReactflow.mapper ? (
+        ) : toggleReactflow.mapper ? (
           <Mapper
             sideBarData={nodePropertyData}
             updatedNodeConfig={updatedNodeConfig}
@@ -430,7 +432,9 @@ export default function Layout({ client }) {
             setToggleReactflow={setToggleReactflow}
           />
         ) : (
-          <>nothing</>
+          <div className="h-full w-full bg-white text-center italic">
+            nothing
+          </div>
         )}
       </div>
     </TorusModellerContext.Provider>

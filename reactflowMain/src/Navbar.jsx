@@ -1873,7 +1873,7 @@ export default function Navbar({
                                 selectedProject,
                                 selectedArtifact,
                                 selectedVersion,
-                                getDataFromFabrics(),
+                                getDataFromFabrics,
                               )
                             }
                             Children={"Update"}
