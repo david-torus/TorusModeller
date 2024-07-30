@@ -525,10 +525,11 @@ const RenderObject = ({
   setToggleReactflow,
   nodeInfoTabs,
   setDupJson,
+  handleAddjs,
 }) => {
   return (
     <>
-      { (
+      {
         <FabricsSideBar
           obj={obj}
           handlejs={handlejs}
@@ -540,8 +541,9 @@ const RenderObject = ({
           setToggleReactflow={setToggleReactflow}
           nodeInfoTabs={nodeInfoTabs}
           setDupJson={setDupJson}
+          handleAddjs={handleAddjs}
         />
-      )}
+      }
     </>
   );
 };
@@ -707,7 +709,7 @@ export const RenderJson = memo(
     setToggleReactflow,
     json,
     updatedNodeConfig,
-    nodedata
+    nodedata,
   }) => {
     const [dupJson, setDupJson] = useState(null);
 
@@ -751,8 +753,8 @@ export const RenderJson = memo(
       const newjson = JSON.stringify(jss, null, 2);
 
       let newjs = unflatten(jss);
-      console.log(newjs,nodedata, "new");
-    
+      console.log(newjs, nodedata, "new");
+
       setConvertedJson(newjs);
       updatedNodeConfig(
         nodedata?.id,
@@ -763,13 +765,9 @@ export const RenderJson = memo(
         },
         {
           ...newjs,
-        }
+        },
       );
-
     };
-
-
-    
 
     const handlejs = (e, i, key, type, jskey) => {
       console.log(e, i, key, type, jskey, "rendertype");
@@ -804,6 +802,47 @@ export const RenderJson = memo(
       }
     };
 
+    const handleAddjs = (path, key, value, type, i, selectedType) => {
+      console.log(path, key, value, type,i,selectedType,"handleAddjs");
+      if (type == "obj") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: {
+              ...prev[path],
+              [key]: value,
+            },
+          };
+        });
+      }
+      else if (type === "arr" && selectedType === "input") {
+       setDupJson((prev) => {
+         return {
+           ...prev,
+           [path]:prev[path].map((item, index) => {
+             if (index === i) {
+               return {
+                 ...item,
+                 [key]: value,
+               };
+             } else {
+               return item;
+             }
+           }),
+         };
+       })
+      }
+      else if (type === "arr" && selectedType === "object") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]:[...prev[path], {
+              label:key
+            } ],
+          };
+        })
+       }
+    }
 
     function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
       const copy = JSON.parse(JSON.stringify(obj));
@@ -816,7 +855,10 @@ export const RenderJson = memo(
             !Array.isArray(copy[key])
           ) {
             if (
-              !(copy[key].hasOwnProperty("type") && copy[key].type === "dropdown")
+              !(
+                copy[key].hasOwnProperty("type") &&
+                copy[key].type === "dropdown"
+              )
             ) {
               if (copy[key] === originalObj) {
                 return result; // Return early if the object being processed is the same as the original object
@@ -825,7 +867,10 @@ export const RenderJson = memo(
               denormalizeJson(copy[key], newKey, result, originalObj);
               delete copy[key];
             }
-          } else if (Array.isArray(copy[key]) && typeof copy[key][0] === "object") {
+          } else if (
+            Array.isArray(copy[key]) &&
+            typeof copy[key][0] === "object"
+          ) {
             result[newKey] = copy[key];
             copy[key].forEach((item, index) => {
               if (typeof item === "object" && item !== null) {
@@ -846,21 +891,19 @@ export const RenderJson = memo(
       return result;
     }
 
-const haandledenormalize = () => {
-  if(json){
-    const denormalized = denormalizeJson(json);
-    console.log(denormalized, 'denormalized')
-    setDupJson(structuredClone(denormalized))
-  }
-}
+    const haandledenormalize = () => {
+      if (json) {
+        const denormalized = denormalizeJson(json);
+        console.log(denormalized, "denormalized");
+        setDupJson(structuredClone(denormalized));
+      }
+    };
 
     useEffect(() => {
-      haandledenormalize()
+      haandledenormalize();
     }, [json]);
 
-
-    
-    console.log(convertedJson,nodedata, "convertedJson");
+    console.log(convertedJson, nodedata, "convertedJson");
     console.log(json, nodedata, "rrenderjs");
 
     return (
@@ -868,9 +911,9 @@ const haandledenormalize = () => {
         className="  "
         // style={{ display: showNodeProperty ? "block" : "none" }}
       >
-        {dupJson &&Object.keys(dupJson).length > 0 && (
+        {dupJson && Object.keys(dupJson).length > 0 && (
           <div className="">
-            { (
+            {
               <>
                 <RenderObject
                   obj={dupJson}
@@ -883,9 +926,10 @@ const haandledenormalize = () => {
                   setToggleReactflow={setToggleReactflow}
                   nodeInfoTabs={nodeInfoTabs}
                   setDupJson={setDupJson}
+                  handleAddjs={handleAddjs}
                 />
               </>
-            )}
+            }
           </div>
         )}
       </div>

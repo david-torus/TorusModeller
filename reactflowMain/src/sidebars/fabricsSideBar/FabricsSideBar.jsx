@@ -18,7 +18,8 @@ export default function FabricsSideBar({
   setShowNodeProperty,
   setToggleReactflow,
   nodeInfoTabs,
-  setDupJson
+  setDupJson,
+  handleAddjs,
 }) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
@@ -49,6 +50,7 @@ export default function FabricsSideBar({
           path={path}
           label={label}
           OgJson={OgJson}
+          handleAddjs={handleAddjs}
         />}
         </div>
         {/* <FabricsSideBarDetails /> */}

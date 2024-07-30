@@ -472,7 +472,7 @@ const NewNodeInfoSidebar = ({
         />
       </div>
 
-      <div className=" h-full bg-red-400 ">
+      <div className=" h-full  ">
         <RenderData
           sideBarData={sideBarData}
           currentModel={currentModel}
