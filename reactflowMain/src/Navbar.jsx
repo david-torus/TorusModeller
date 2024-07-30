@@ -1645,13 +1645,13 @@ export default function Navbar({
                               </Breadcrumb>
                               <Breadcrumb>
                                 <Link className="flex flex-row items-center justify-center gap-1">
-                                  {projectCollectionName}
+                                  {selectedProject}
                                   <IoIosArrowForward />
                                 </Link>
                               </Breadcrumb>
                               <Breadcrumb>
                                 <Link className="flex flex-row items-center justify-center gap-1">
-                                  {artifactCollectionName}
+                                  {selectedArtifact}
                                 </Link>
                               </Breadcrumb>
                             </Breadcrumbs>
@@ -1768,7 +1768,10 @@ export default function Navbar({
                                             }
                                             selectionMode="single"
                                             selected={
-                                              new Set([selectedVersion])
+                                              selectedVersion &&
+                                              selectedArtifact === obj?.artifact
+                                                ? new Set([selectedVersion])
+                                                : new Set([])
                                             }
                                             setSelected={(e) => {
                                               setSelectedArtifact(
