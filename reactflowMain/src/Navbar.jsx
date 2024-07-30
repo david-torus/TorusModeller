@@ -700,8 +700,8 @@ export default function Navbar({
 
   const handleApplicationName = async (e) => {
     try {
-      setSelectedArtifact([]);
-      setSelectedVersion([]);
+      setSelectedArtifact("");
+      setSelectedVersion("");
       setSelectedProject(e);
 
       handleIntialLoad(tKey, client, selectedFabric, e).catch((err) => {
