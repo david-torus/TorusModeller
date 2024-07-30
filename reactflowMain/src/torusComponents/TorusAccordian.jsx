@@ -28,21 +28,23 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
               aria-controls={`accordion-open-body-${index}`}
               onClick={() => handleToggle(index)}
             >
-              <div className="flex w-[100%] items-center justify-between py-1.5">
-                <div className="flex w-[20%] items-center justify-end">
-                  <div className="flex w-[100%] justify-start">
-                    <span
-                      className={`transition duration-300 ease-in-out ${openIndex === index ? "" : "rotate-180"}`}
-                    >
-                      <TorusAccordianArrow />
-                    </span>
-                  </div>
-                </div>
+              <div className="flex w-[100%] items-center justify-between py-1.5 pl-2.5">
                 <div className="flex w-[80%] items-center justify-start">
-                  <div className="flex w-[100%] justify-start">
-                    <p className="text-xs font-medium text-slate-800 hover:text-gray-900 dark:text-gray-300">
-                      {item.title}
-                    </p>
+                  <div className="flex w-[20%] items-center justify-end">
+                    <div className="flex w-[100%] justify-start">
+                      <span
+                        className={`transition duration-300 ease-in-out ${openIndex === index ? "rotate-[180deg]" : "rotate-[-90deg]"}`}
+                      >
+                        <TorusAccordianArrow />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex w-[80%] items-center justify-start">
+                    <div className="flex w-[100%] justify-start">
+                      <p className="whitespace-nowrap text-xs font-medium text-slate-800 hover:text-gray-900 dark:text-gray-300">
+                        {item.title}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -55,7 +57,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
             }`}
             aria-labelledby={`accordion-open-heading-${index}`}
           >
-            <div className="pl-[0.5rem]">
+            <div className="pl-[1.10rem]">
               <div
                 className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1 py-2 transition-[max-height] duration-300 ease-in-out ${
                   openIndex === index
@@ -65,7 +67,9 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                 style={{ maxHeight: openIndex === index ? "500px" : "0px" }}
               >
                 {typeof item.content === "string" ? (
-                  <p>{item.content}</p>
+                  <p className="w-[100%] text-sm text-black/35">
+                    {item.content}
+                  </p>
                 ) : React.isValidElement(item.content) ? (
                   <div className="w-[100%] bg-yellow-400">{item.content}</div>
                 ) : Array.isArray(item.content) ? (
@@ -83,7 +87,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                       }`}
                     >
                       {typeof contentItem === "string" ? (
-                        <p>{contentItem}</p>
+                        <p className="w-[100%] text-sm">{contentItem}</p>
                       ) : React.isValidElement(contentItem) ? (
                         contentItem
                       ) : null}
@@ -106,7 +110,7 @@ const TorusAccordion = memo(({ items, onToggle, onContentToggle }) => {
                           }`}
                         >
                           {typeof contentItem === "string" ? (
-                            <p>{contentItem}</p>
+                            <p className="w-[100%] text-sm">{contentItem}</p>
                           ) : React.isValidElement(contentItem) ? (
                             contentItem
                           ) : null}

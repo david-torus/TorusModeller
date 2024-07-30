@@ -1541,7 +1541,7 @@ export default function Navbar({
                               // onSelectionChange={handleTabChange}
                             />
                           </div> */}
-                          <div className="flex h-full w-[100%] flex-col overflow-scroll  px-0.5 ">
+                          <div className="flex h-full w-[100%] flex-col overflow-scroll">
                             {/* {projectList &&
                               projectList?.map((project, index) => (
                                 <div
@@ -2070,7 +2070,7 @@ export default function Navbar({
                 outlineColor="torus-hover:ring-blue-500/50"
                 radius={"lg"}
                 fontStyle={
-                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-1 py-2"
+                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
                 }
                 color={"white"}
               />
