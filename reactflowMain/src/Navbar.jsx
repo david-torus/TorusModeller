@@ -113,7 +113,6 @@ export default function Navbar({
     useState(null);
 
   const { darkMode, toggleDarkMode } = useContext(DarkmodeContext);
-
   const [peModal, setPeModal] = useState("");
   const [peurlopen, setPeurlopen] = useState(false);
   const [urlOpen, setUrlOpen] = useState(false);
@@ -147,15 +146,31 @@ export default function Navbar({
       );
 
       if (res.status === 200 || res.status === 201) {
-        toast.success("created successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `created successfully`,
+            closeButton: false,
+          },
+        );
       } else {
-        toast.error("Error while creating", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Error while creating`,
+            closeButton: false,
+          },
+        );
       }
     } catch (err) {
       console.error(err);
@@ -173,15 +188,37 @@ export default function Navbar({
           erDatas,
         );
         if (res.status === 200 || res.status === 201) {
-          toast.success("saveAs successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `saveAs successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while saveAs", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while saveAs`,
+              closeButton: false,
+            },
+          );
         }
       } else {
         const res = await saveProcessFlow(
@@ -193,15 +230,37 @@ export default function Navbar({
         );
 
         if (res.status === 200 || res.status === 201) {
-          toast.success("created successfully", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `created successfully`,
+              closeButton: false,
+            },
+          );
         } else {
-          toast.error("Error while creating", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error while creating`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
@@ -234,28 +293,69 @@ export default function Navbar({
 
             setPeurlopen(true);
 
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `data send to process engine`,
+                closeButton: false,
+              },
+            );
           } else if (data && data.data) {
-            toast.success("data send to process engine", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "error",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Error",
+                text: `Error while sending data`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error sending key to process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error sending key to process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleDebug = async () => {
@@ -276,11 +376,19 @@ export default function Navbar({
         .then((response) => response.json())
         .then((data) => {
           if (data) {
-            toast.success(
-              "upId found in process engine - " + data.formjson.url,
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
               {
+                type: "success",
                 position: "bottom-right",
                 autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `upId found in process engine - ${data.formjson.url}`,
+                closeButton: false,
               },
             );
             const { key, upId, nodeId, nodeName, url, mode } = data.formjson;
@@ -290,23 +398,53 @@ export default function Navbar({
             setUpIdKey(data.formjson.upId);
             setUrlOpen(true);
           } else if (data.hasOwnProperty("err")) {
-            toast.success(" Error found in process engine - " + data.err, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `Error found in process engine - ${data.err}`,
+                closeButton: false,
+              },
+            );
           }
         })
         .catch((err) => {
-          toast.error("Error in process engine", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Error in process engine`,
+              closeButton: false,
+            },
+          );
         });
     } catch (error) {
-      toast.error("Error sending key to process engine", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Error sending key to process engine`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -328,10 +466,18 @@ export default function Navbar({
         setNewProjectNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifact`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -353,10 +499,18 @@ export default function Navbar({
         setNewArtifactsNameValidation(true);
       }
     } catch (err) {
-      toast.error("Cannot create artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot create artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -372,16 +526,35 @@ export default function Navbar({
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
-          toast.error("Cannot get version details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get version details`,
+              closeButton: false,
+            },
+          );
       }
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -396,10 +569,18 @@ export default function Navbar({
       sendDataToFabrics({});
       setSelectedArtifact(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -407,10 +588,18 @@ export default function Navbar({
     try {
       setSelectedArtifactsname(e);
     } catch (err) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -421,10 +610,18 @@ export default function Navbar({
       setSelectedDefaultArtifacts("");
       setSelectedDefaultVersion("");
     } catch (err) {
-      toast.error("Cannot set Domain", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set Domain`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -434,10 +631,19 @@ export default function Navbar({
       setartifact(e);
     } catch (err) {
       setSelectedDefaultVersion("");
-      toast.error("Cannot set selected artifacts", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected artifacts`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -445,10 +651,18 @@ export default function Navbar({
     try {
       setSelectedDefaultVersion(e);
     } catch (err) {
-      toast.error("Cannot set selected Default Version", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Default Version`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -464,10 +678,18 @@ export default function Navbar({
 
       if (responses) sendDataToFabrics(responses.data);
     } catch (err) {
-      toast.error("Cannot load Default FLow details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot load Default FLow details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -481,10 +703,18 @@ export default function Navbar({
         throw err;
       });
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
   const handleApplication = async (e) => {
@@ -503,17 +733,36 @@ export default function Navbar({
             setSelectedProject(response.data);
           }
         } catch (error) {
-          toast.error("Cannot get artifacts details", {
-            position: "bottom-right",
-            autoClose: 2000,
-          });
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "error",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Error",
+              text: `Cannot get artifacts details`,
+              closeButton: false,
+            },
+          );
         }
       }
     } catch (err) {
-      toast.error("Cannot set selected Application", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot set selected Application`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -526,10 +775,18 @@ export default function Navbar({
         setApplicationList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot save application details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
     }
   };
   console.log("projectList", projectList);
@@ -552,10 +809,18 @@ export default function Navbar({
         setArtifactsList(response.data);
       }
     } catch (error) {
-      toast.error("Cannot get artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot get artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -643,10 +908,21 @@ export default function Navbar({
           setSelectedVersion(response.data[response.data.length - 1]);
 
           if (selectedFabric) {
-            toast.success(`${selectedFabric} Fabrics saved successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "success",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "Success",
+                text: `${selectedFabric} Fabrics saved successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       } else if (response && response.status === 201) {
@@ -654,20 +930,39 @@ export default function Navbar({
           setSelectedProject(selectedApplictionNames);
           setSelectedArtifact(selectedArtifactss);
           if (selectedFabric) {
-            toast.info(`${selectedFabric} Fabrics updated successfully`, {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                type: "info",
+                position: "bottom-right",
+                autoClose: 2000,
+                hideProgressBar: true,
+                title: "INFORMATION",
+                text: `${selectedFabric} Fabrics updated successfully`,
+                closeButton: false,
+              },
+            );
           }
         }
       }
 
       return response;
     } catch (error) {
-      toast.error("Cannot save artifacts details", {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "ERROR",
+          text: `Cannot save artifacts details`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -689,19 +984,38 @@ export default function Navbar({
               ...response.data,
             });
           } else {
-            toast.error("no data found", {
-              position: "bottom-right",
-              autoClose: 2000,
-            });
+            toast(
+              <TorusToast
+                setWordLength={setWordLength}
+                wordLength={wordLength}
+              />,
+              {
+                position: "bottom-right",
+                type: "error",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeButton: false,
+                title: "ERROR",
+                text: `Cannot load Flow details`,
+              },
+            );
           }
         } else {
           sendDataToFabrics({});
         }
       } catch (error) {
-        toast.error("Cannot load Flow details", {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            position: "bottom-right",
+            type: "error",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeButton: false,
+            title: "ERROR",
+            text: `Cannot load Flow details`,
+          },
+        );
       }
     },
     [
@@ -732,10 +1046,18 @@ export default function Navbar({
         onOpen();
       }
     } catch (err) {
-      toast.error(`cannot get ${type}`, {
-        position: "bottom-right",
-        autoClose: 2000,
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `cannot get ${type}`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -761,10 +1083,19 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenProjectModal(false);
       }
@@ -794,10 +1125,23 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
+        // toast.success(`${e} Deleted Successfully`, {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
 
         setOpenArtifactsModal(false);
       }
@@ -826,11 +1170,20 @@ export default function Navbar({
           nodeProperty: {},
         });
 
-        toast.success(`${e} Deleted Successfully`, {
-          position: "bottom-right",
-          autoClose: 2000,
-        });
         // setOpenVersionModal(false);
+
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `${e} Deleted Successfully`,
+            closeButton: false,
+          },
+        );
       }
     } catch (error) {
       console.error(error);
