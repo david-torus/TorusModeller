@@ -17,12 +17,10 @@ const CustomInput = ({ keyJson, Objkey, value, path }) => {
   const { darkMode } = useContext(DarkmodeContext);
 
   return (
-    <div className="w-full h-full flex items-start">
+    <div className="flex h-full w-full items-start">
       {!toogleInput ? (
         <div className="flex gap-2">
-          <span className={darkMode ? "text-white" : "text-grey-700"}>
-            {Objkey}:
-          </span>
+          <span className={"text-grey-700 dark:text-white"}>{Objkey}:</span>
           {keyJson &&
             keyJson.hasOwnProperty(handlepath(path + "." + Objkey)) && (
               <Tooltip
@@ -32,32 +30,30 @@ const CustomInput = ({ keyJson, Objkey, value, path }) => {
                   />
                 }
               >
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
                   <span>
-                    <AiOutlineInfoCircle color={darkMode ? "white" : "black"} />
+                    <AiOutlineInfoCircle className="text-black dark:text-white " />
                   </span>
                 </div>
               </Tooltip>
             )}
           <span
-            className={darkMode ? "text-white" : "text-grey-700"}
+            className={"text-grey-700 dark:text-white"}
             onDoubleClick={() => setToogleInput(true)}
           >
             {value || "Double Click to Edit"}
           </span>
         </div>
       ) : (
-        <div className="flex g-2">
-          <span className={darkMode ? "text-white" : "text-grey-700"}>
-            {Objkey}:
-          </span>
+        <div className="g-2 flex">
+          <span className={"text-grey-700 dark:text-white"}>{Objkey}:</span>
           <div className=" ">
             <ReusableInput
               key={path + "." + Objkey}
               type="text"
               darkMode={darkMode}
               defaultValue={value}
-              className={`border-gray-600/80 ${darkMode ? "text-white" : "text-grey-700"}  border-2  rounded-2xl outline-none shadow-none h-[100%] w-[80%] bg-transparent`}
+              className={`text-grey-700 h-[100%] w-[80%]  rounded-2xl  border-2 border-gray-600/80 bg-transparent shadow-none outline-none dark:text-white`}
               value={editedValues[path + "." + Objkey]}
               handleChange={(e) =>
                 setEditedValues((prev) => ({
@@ -103,7 +99,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
           functionality("update", path + "." + "selectedValue", {
             value: [
               ...data.selectedValue.filter((item) =>
-                data.selectionList.includes(item)
+                data.selectionList.includes(item),
               ),
             ],
           });
@@ -179,15 +175,11 @@ export default function Tableuidecider({ data, path, keyJson }) {
                 "Select"}
             </span>
           }
-          buttonClassName={`${
-            darkMode
-              ? " border border-slate-400/30 text-[#F4F4F5] "
-              : " border border-slate-400/30 text-black "
-          } w-[100px]`}
+          buttonClassName={`  border border-slate-400/30 dark:text-[#F4F4F5] text-black w-[100px]`}
           selectedKey={
             new Set(
               editedValues[path + "." + "selectedValue"] ??
-                newData.selectedValue
+                newData.selectedValue,
             )
           }
           handleSelectedKey={(e) => {
@@ -227,7 +219,7 @@ export default function Tableuidecider({ data, path, keyJson }) {
                 if (typeof newData[key] == "object") {
                   return (
                     <li key={key} className="flex flex-row gap-2">
-                      <label className={darkMode ? "text-white" : "text-black"}>
+                      <label className="text-black dark:text-white">
                         {key}:
                       </label>
                       <Tableuidecider
@@ -283,12 +275,12 @@ export default function Tableuidecider({ data, path, keyJson }) {
     return (
       <div
         key={path + "." + "value"}
-        className="flex justify-center items-center gap-2 mb-1"
+        className="mb-1 flex items-center justify-center gap-2"
       >
         <input
           key={path + "." + "value"}
           type="checkbox"
-          className="  w-[20px] h-[20px] rounded-md transition-all duration-100 border-slate-500"
+          className="  h-[20px] w-[20px] rounded-md border-slate-500 transition-all duration-100"
           defaultChecked={
             editedValues?.[path + "." + "value"] ?? newData?.value
           }
