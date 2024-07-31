@@ -63,14 +63,12 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-2  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
-          <Loop
-            color={color}
-            selectedFabric={selectedFabric}
-            selectedControlEvents={selectedControlEvents}
-            sfNodeGalleryData={sfNodeGalleryData}
-          />
-        </div>
+        <Loop
+          color={color}
+          selectedFabric={selectedFabric}
+          selectedControlEvents={selectedControlEvents}
+          sfNodeGalleryData={sfNodeGalleryData}
+        />
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
@@ -122,32 +120,32 @@ const Loop = ({ color }) => {
   return (
     <>
       {selectedFabric !== "events" && selectedFabric !== "SF" ? (
-        EnvSideData[selectedFabric] &&
-        EnvSideData[selectedFabric].map((item, index) => (
-          <div
-            key={index}
-            className="flex w-full items-center gap-1 rounded-lg p-2 hover:bg-[#F4F5FA] dark:text-white dark:hover:bg-[#0F0F0F]"
-            draggable
-            onDragStart={(event) => onDragStart(event, item.nodeType)}
-          >
-            <div
-              className={` flex  cursor-grab  items-center justify-center rounded-lg  bg-gray-100 dark:bg-[#0736C4]/15 dark:text-white xl:h-7 xl:w-7 3xl:h-10 3xl:w-10`}
-            >
-              {React.createElement(item.icon, {
-                color: color ? color : "#0736C4",
-                size: 18,
-                selectedFabric: selectedFabric,
-              })}
-            </div>
-            <span className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
-              {item.label}
-            </span>
-          </div>
-        ))
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+          {EnvSideData[selectedFabric] &&
+            EnvSideData[selectedFabric].map((item, index) => (
+              <div
+                key={index}
+                className="flex w-full items-center gap-1 rounded-lg p-2 hover:bg-[#F4F5FA] dark:text-white dark:hover:bg-[#0F0F0F]"
+                draggable
+                onDragStart={(event) => onDragStart(event, item.nodeType)}
+              >
+                <div
+                  className={` flex  cursor-grab  items-center justify-center rounded-lg  bg-gray-100 dark:bg-[#0736C4]/15 dark:text-white xl:h-7 xl:w-7 3xl:h-10 3xl:w-10`}
+                >
+                  {React.createElement(item.icon, {
+                    color: color ? color : "#0736C4",
+                    size: 18,
+                    selectedFabric: selectedFabric,
+                  })}
+                </div>
+                <span className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+        </div>
       ) : selectedFabric == "events" ? (
-        <>
-          <EventScreen selectedControlEvents={selectedControlEvents} />
-        </>
+        <EventScreen selectedControlEvents={selectedControlEvents} />
       ) : (
         selectedFabric === "SF" && (
           <OrpsSidebar
