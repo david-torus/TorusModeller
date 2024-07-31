@@ -29,10 +29,10 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? `h-[95%] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[13.5%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
+        ? ` h-[95%] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[13.5%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
     }
-    ${selectedFabric === "SF" ? " xl:w-[17.5%]" : ""}
+    ${selectedFabric === "SF" ? " xl:w-[17.5%] 3xl:w-[15%]" : ""}
     `}
     >
       <div

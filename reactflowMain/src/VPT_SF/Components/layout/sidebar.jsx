@@ -32,7 +32,7 @@ const OrpsSidebar = ({ dropdownJson }) => {
             ? " border-none rounded-md outline-none"
             : " border-none rounded-md outline-none",
           cursor:
-            "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none",
+            "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none torus-focus-within:outline-none",
           base: "p-2 mt-2",
         }}
         items={
