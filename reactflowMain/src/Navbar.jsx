@@ -67,6 +67,11 @@ export default function Navbar({
   setToggleReactflow,
   getDataFromFabrics,
   setFabricsKey = null,
+  tennant,
+  appgroup,
+  application,
+  artifacts,
+  version,
 }) {
   const {
     client,
@@ -133,6 +138,12 @@ export default function Navbar({
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
   };
+
+  console.log(`${selectedTkey},
+  ${client},
+  ${selectedProject},
+  ${selectedArtifact},
+  ${selectedVersion}, mkEdit`)
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -1327,7 +1338,7 @@ export default function Navbar({
 
   const handleAccordionToggle = (index, tkey) => {
     console.log("Accordion toggled to index:", index, "tkey:", tkey);
-    setSelectedTkey(tkey);
+    // setSelectedTkey(tkey);
     handleApplicationName("");
     setSelectedArtifact("");
     setSelectedVersion("");
@@ -1899,7 +1910,10 @@ export default function Navbar({
                             <EventNavbar
                               getDataFromFabrics={getDataFromFabrics}
                               sendDataToFabrics={sendDataToFabrics}
+                             
                             />
+
+                            
                           </div>
                         </>
                       )}
