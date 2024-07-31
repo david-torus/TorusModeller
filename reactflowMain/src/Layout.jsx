@@ -26,10 +26,8 @@ import { Gorule } from "./commonComponents/tabs/Gorule";
 import { Mapper } from "./commonComponents/tabs/mapper";
 import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
-
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
-const BASEURL = `${process.env.REACT_APP_API_URL}tp/getTenantInfo`;
 export const TorusModellerContext = createContext(null);
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
@@ -49,16 +47,14 @@ export default function Layout({ client }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
-
+  const [selectedTkey, setSelectedTkey] = useState("FRK");
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedComponentName, setSelectedComponentName] = useState(null);
   const [selectedControlName, setSelectedControlName] = useState(null);
   const [selectedArtifact, setSelectedArtifact] = useState(null);
   const [selectedVersion, setSelectedVersion] = useState(null);
   const [showNodeProperty, setShowNodeProperty] = useState(false);
-
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
-
   const [menu, setMenu] = useState(null);
 
   const [sfNodeGalleryData, setSfNodeGalleryData] = useState(null);
@@ -81,12 +77,15 @@ export default function Layout({ client }) {
 
   const getTenantPolicy = async (tenant) => {
     try {
-      const response = await fetch(`${BASEURL}?tenant=${tenant}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}tp/getTenantInfo?tenant=${tenant}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
       const data = await response.json();
 
       data.orgGrp =
@@ -147,7 +146,9 @@ export default function Layout({ client }) {
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-
+    setSelectedProject("");
+    setSelectedArtifact("");
+    setSelectedVersion("");
     setNodes([]);
     setEdges([]);
 
@@ -178,23 +179,8 @@ export default function Layout({ client }) {
     [setMenu],
   );
 
-  const getTypesinFlow = useCallback(() => {
-    try {
-      let typeinFlow = [];
-      for (const node of nodes) {
-        if (!typeinFlow.includes(node.type)) {
-          typeinFlow.push(node.type);
-        }
-      }
-
-      setTypesInFlow(typeinFlow);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [nodes]);
-
-  useEffect(() => {
-    if (nodes && nodes.length > 0) {
+  const uniqueNames = useMemo(() => {
+    if (nodes.length > 0) {
       let uniqNameArray = [];
       for (let node of nodes) {
         if (!uniqNameArray.includes(node.data.label)) {
@@ -207,21 +193,8 @@ export default function Layout({ client }) {
     } else {
       setTypesInFlow([]);
     }
-  }, [nodes, getTypesinFlow]);
+  }, [nodes]);
 
-  // const uniqueNames = useMemo(() => {
-  //   if (nodes.length > 0) {
-  //     let uniqNameArray = [];
-  //     for (let node of nodes) {
-  //       if (!uniqNameArray.includes(node.data.label)) {
-  //         uniqNameArray.push(node.data.label);
-  //       }
-  //     }
-  //     return uniqNameArray;
-  //   } else {
-  //     return [];
-  //   }
-  // }, [nodes]);
   const updatedNodeConfig = (id, metadata, updatedData) => {
     try {
       setNodes((prev) => {
@@ -412,6 +385,8 @@ export default function Layout({ client }) {
         onPaneClick,
         uniqueNames,
         selectedFabric,
+        selectedTkey,
+        setSelectedTkey,
         handleTabChange,
         eventsNavBarData,
         nodePropertyData,

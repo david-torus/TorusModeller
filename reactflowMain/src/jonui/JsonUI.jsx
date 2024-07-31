@@ -30,9 +30,9 @@ const js = {
       orgGrpCode: "OG1",
       SIFlag: {
         label: "SI Flag",
-        type: "dropdown",
-        selectedValue: [],
-        selectionList: [],
+        type: "boolean",
+        selectedValue: false,
+        selectionList: [true, false],
       },
       actionAllowed: {
         label: "Allowed Actions",
@@ -770,7 +770,6 @@ export const RenderJson = memo(
     };
 
     const handlejs = (e, i, key, type, jskey) => {
-      console.log(e, i, key, type, jskey, "rendertype");
 
       if (type == "obj") {
         setDupJson((prev) => {
@@ -793,6 +792,16 @@ export const RenderJson = memo(
       }
 
       if (type == "dropdown") {
+        if (i) {
+          const js = structuredClone(dupJson);
+          _.set(js, i, e);
+          setDupJson(js);
+          console.log(js, "arrjs");
+        }
+      }
+
+      if (type == "boolean") {
+        console.log(i, e, "mmm")
         if (i) {
           const js = structuredClone(dupJson);
           _.set(js, i, e);
@@ -857,7 +866,7 @@ export const RenderJson = memo(
             if (
               !(
                 copy[key].hasOwnProperty("type") &&
-                copy[key].type === "dropdown"
+                (copy[key].type === "dropdown" || copy[key].type === "boolean")
               )
             ) {
               if (copy[key] === originalObj) {

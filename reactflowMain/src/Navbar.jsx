@@ -1,5 +1,11 @@
 /*eslint-disable*/
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import React, {
+  useEffect,
+  useState,
+  useContext,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   ArtifactLogo,
   ArtifactOpen,
@@ -56,7 +62,6 @@ export default function Navbar({
   project,
   setdomain,
   setartifact,
-
   sendDataToFabrics,
   setUpIdKey = null,
   setToggleReactflow,
@@ -65,6 +70,8 @@ export default function Navbar({
 }) {
   const {
     client,
+    selectedTkey,
+    setSelectedTkey,
     handleTabChange,
     selectedFabric,
     selectedArtifact,
@@ -125,21 +132,6 @@ export default function Navbar({
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
-  };
-
-  const SaveToast = () => {
-    toast(
-      <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
-      {
-        type: "success",
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: true,
-        title: "Success",
-        text: `Saved successfully`,
-        closeButton: false,
-      },
-    );
   };
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
@@ -285,7 +277,7 @@ export default function Navbar({
           role: "Admin",
         },
         body: JSON.stringify({
-          key: `${tKey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
+          key: `${selectedTkey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
         }),
       })
         .then((response) => response.json())
@@ -377,7 +369,7 @@ export default function Navbar({
           role: "Admin",
         },
         body: JSON.stringify({
-          key: `${tKey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
+          key: `${selectedTkey}:${client}:${project}:${selectedFabric}:${artifact}:${version}:`,
         }),
       })
         .then((response) => response.json())
@@ -525,7 +517,7 @@ export default function Navbar({
     try {
       if (artifact) {
         const version = await versionList(
-          tKey,
+          selectedTkey,
           client,
           selectedProject,
           artifact,
@@ -706,7 +698,7 @@ export default function Navbar({
       setSelectedVersion("");
       setSelectedProject(e);
 
-      handleIntialLoad(tKey, client, selectedFabric, e).catch((err) => {
+      handleIntialLoad(selectedTkey, client, selectedFabric, e).catch((err) => {
         throw err;
       });
     } catch (err) {
@@ -730,7 +722,7 @@ export default function Navbar({
       if (e) {
         try {
           const response = await artifactList(
-            tKey,
+            selectedTkey,
             client,
             Array.from(e)[0],
             selectedFabric,
@@ -773,10 +765,17 @@ export default function Navbar({
     }
   };
 
-  const handleGetApplications = async (tKey, client, selectedFabric) => {
+  const handleGetApplications = async (
+    selectedTkey,
+    client,
+    selectedFabric,
+  ) => {
     try {
-      console.log("handleGetApplications", tKey, client, selectedFabric);
-      const response = await applicationLists(tKey, client, selectedFabric);
+      const response = await applicationLists(
+        selectedTkey,
+        client,
+        selectedFabric,
+      );
 
       if (response && response.status === 200) {
         setApplicationList(response.data);
@@ -796,10 +795,9 @@ export default function Navbar({
       );
     }
   };
-  console.log("projectList", projectList);
 
   const handleIntialLoad = async (
-    tKey,
+    selectedTkey,
     client,
     selectedFabric,
     applications,
@@ -807,7 +805,7 @@ export default function Navbar({
     try {
       console.log("handleIntialLoad", applications);
       const response = await artifactList(
-        tKey,
+        selectedTkey,
         client,
         applications,
         selectedFabric,
@@ -832,7 +830,7 @@ export default function Navbar({
   };
 
   // const handleApplicationLoad = async (
-  //   tKey,
+  //   selectedTkey,
   //   client,
   //   selectedFabric,
   //   selectedProject
@@ -840,7 +838,7 @@ export default function Navbar({
   //   try {
   //     console.log("handleApplicationLoad", selectedProject )
   //     const response = await artifactList(
-  //       tKey,
+  //       selectedTkey,
   //       client,
   //       selectedProject,
   //       selectedFabric
@@ -890,14 +888,14 @@ export default function Navbar({
         payload,
         type,
         selectedVerisonss,
-        tKey,
+        selectedTkey,
         client,
         selectedFabric,
       );
       if (response && response.status === 200) {
         if (type === "create") {
           await handleIntialLoad(
-            tKey,
+            selectedTkey,
             client,
             selectedFabric,
             selectedApplictionNames || selectedProject,
@@ -907,7 +905,7 @@ export default function Navbar({
           setSelectedArtifact(selectedArtifactss);
 
           handleIntialLoad(
-            tKey,
+            selectedTkey,
             client,
             selectedFabric,
             selectedApplictionNames,
@@ -981,7 +979,7 @@ export default function Navbar({
             selectedProject,
             selectedVersion,
             selectedArtifact,
-            tKey,
+            selectedTkey,
             client,
             selectedFabric,
           );
@@ -1032,7 +1030,7 @@ export default function Navbar({
       selectedArtifact,
       selectedVersion,
       sendDataToFabrics,
-      tKey,
+      selectedTkey,
     ],
   );
 
@@ -1073,7 +1071,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteApplication?tKey=${tKey}&appGroup=${client}&applicationName=${e}`,
+        `${BASE_URL}/deleteApplication?tKey=${selectedTkey}&appGroup=${client}&applicationName=${e}`,
         {
           method: "DELETE",
         },
@@ -1116,7 +1114,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${e}`,
+        `${BASE_URL}/deleteFlowArtifact?tKey=${selectedTkey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${e}`,
         {
           method: "DELETE",
         },
@@ -1162,7 +1160,7 @@ export default function Navbar({
       const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
 
       const response = await fetch(
-        `${BASE_URL}/deleteFlowVersion?tKey=${tKey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${selectedArtifact}&version=${e}`,
+        `${BASE_URL}/deleteFlowVersion?tKey=${selectedTkey}&appGroup=${client}&applicationName=${project}&selectedFabric=${selectedFabric}&artifact=${selectedArtifact}&version=${e}`,
         {
           method: "DELETE",
         },
@@ -1263,7 +1261,7 @@ export default function Navbar({
 
       if (setFabricsKey)
         setFabricsKey(
-          `${tKey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
+          `${selectedTkey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
         );
       getProcessFlowApi(selectedVersion).catch((err) => {
         throw err;
@@ -1278,7 +1276,7 @@ export default function Navbar({
     selectedFabric,
     client,
     setFabricsKey,
-    tKey,
+    selectedTkey,
   ]);
 
   // useEffect(() => {
@@ -1289,20 +1287,20 @@ export default function Navbar({
   //     setVersions([]);
   //     setSelectedVersion("");
   //     if(selectedProject){
-  //       handleIntialLoad(tKey, client, selectedFabric, Array.from(selectedProject)[0]).catch((err) => {
+  //       handleIntialLoad(selectedTkey, client, selectedFabric, Array.from(selectedProject)[0]).catch((err) => {
   //         throw err;
   //       });
   //     }
   //   } catch (error) {
   //     console.error(error);
   //   }
-  // }, [selectedFabric, application, client, tKey]);
+  // }, [selectedFabric, application, client, selectedTkey]);
 
   // useEffect(() => {
   //   try {
   //     if (selectedProject) {
   //       handleApplicationLoad(
-  //         tKey,
+  //         selectedTkey,
   //         client,
   //         selectedFabric,
   //         Array.from(selectedProject)[0]
@@ -1313,22 +1311,28 @@ export default function Navbar({
   //   } catch (error) {
   //     console.error(error);
   //   }
-  // }, [selectedProject, selectedFabric, client, tKey]);
+  // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   useEffect(() => {
     try {
-      handleGetApplications(tKey, client, selectedFabric).catch((err) => {
-        throw err;
-      });
+      handleGetApplications(selectedTkey, client, selectedFabric).catch(
+        (err) => {
+          throw err;
+        },
+      );
     } catch (error) {
       console.error(error);
     }
-  }, [selectedFabric, client, tKey]);
+  }, [selectedFabric, client, selectedTkey]);
 
-  console.log(projectList, "ProductsLists");
-
-  const handleAccordionToggle = (index) => {
-    console.log("Accordion toggled to index:", index);
+  const handleAccordionToggle = (index, tkey) => {
+    console.log("Accordion toggled to index:", index, "tkey:", tkey);
+    setSelectedTkey(tkey);
+    handleApplicationName("");
+    setSelectedArtifact("");
+    setSelectedVersion("");
+    setProjectCollectionName("");
+    setArtifactCollectionName("");
   };
 
   const handleAccordionContentToggle = (item) => {
@@ -1338,36 +1342,27 @@ export default function Navbar({
     setArtifactCollectionName(null);
   };
 
-  const accordionItems = [
-    {
-      title: "My Artifacts",
-      content: projectList,
-    },
-    {
-      title: "My Components",
-
-      content: `
-          Flowbite is an open-source library of interactive components built on
-          top of Tailwind CSS including buttons, dropdowns, modals, navbars, and
-          more.`,
-    },
-    {
-      title: "Shared with Me",
-
-      content: {
-        "item-1": "item-1",
-        "item-2": "item-2",
-        "item-3": "item-3",
-        "item-4": "item-4",
-        "item-5": "item-5",
-        "item-6": "item-6",
-        "item-7": "item-7",
-        "item-8": "item-8",
-        "item-9": "item-9",
-        "item-10": "item-10",
+  const accordionItems = useMemo(() => {
+    return [
+      {
+        title: "My Artifacts",
+        content: projectList,
+        id: "FRK",
       },
-    },
-  ];
+      {
+        title: "My Components",
+
+        content: projectList,
+        id: "CRK",
+      },
+      {
+        title: "Shared with Me",
+
+        content: projectList,
+        id: "TRK",
+      },
+    ];
+  }, [projectList]);
 
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
@@ -1381,667 +1376,547 @@ export default function Navbar({
           </div>
 
           <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
-            <TorusPopOver
-              parentHeading={
-                <div className="flex w-[100%] flex-row items-center justify-center gap-2">
-                  <div className="text-sm font-semibold text-black dark:text-white">
-                    {(selectedArtifact && selectedArtifact) ||
-                      "Select Artifacts"}
-                  </div>
-                  <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
-                    {(selectedVersion && selectedVersion) || "*"}
-                  </div>
-                  <div>
-                    <IoIosArrowDown className="text-black dark:text-white" />
-                  </div>
-                </div>
-              }
-              popbuttonClassNames={selectedFabric === "events" && "w-1/3"}
-              children={({ close }) => (
-                <div
-                  className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
-                >
-                  {selectedFabric !== "events" ? (
-                    <>
-                      <div className="flex h-[13%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
-                        <div className="flex w-full items-center justify-start">
-                          <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
-                            Library
-                          </p>
-                        </div>
-                        <div className="flex w-full items-center justify-center gap-2">
-                          <Input
-                            startcontent={<CiSearch />}
-                            // value={search}
-                            placeholder="Search"
-                            className={
-                              "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300 bg-[#F4F5FA]  p-2 text-sm text-black dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-white"
-                            }
-                          />
-                        </div>
-                        <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
-                          <TorusButton
-                            onPress={() => {
-                              selectedVersion && handleTabChange("events");
-                            }}
-                            Children={<ArtifactOpen />}
-                            buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
-                          />
-
-                          <span
-                            className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200  hover:border-red-400 hover:bg-red-200 dark:hover:border-red-500 dark:hover:bg-red-500/30"
-                            onClick={() => {
-                              close();
-                              setProjectCollectionName(null);
-                              setArtifactCollectionName(null);
-                              setNewArtifact(false);
-                            }}
-                          >
-                            <IoCloseOutline className="text-black dark:text-white" />
-                          </span>
-                        </div>
+            {selectedFabric !== "Home" && (
+              <>
+                <TorusPopOver
+                  parentHeading={
+                    <div className="flex w-[100%] flex-row items-center justify-center gap-2">
+                      <div className="text-sm font-semibold text-black dark:text-white">
+                        {(selectedArtifact && selectedArtifact) ||
+                          "Select Artifacts"}
                       </div>
-                      <div className=" flex h-[74%] w-full items-center  justify-center   ">
-                        {/* <TorusDropDown
-                      title={
-                        (selectedProject &&
-                          Array.from(selectedProject)[0]) ||
-                        "Projects"
-                      }
-                      classNames={{
-                        buttonClassName:
-                          " bg-white dark:bg-[#262626] font-semibold torus-pressed:animate-torusButtonActive ",
-                        listBoxClassName: "bg-white text-black ",
-                      }}
-                      popOverProps={{ offset: 15 }}
-                      selectionMode="single"
-                      items={
-                        projectList &&
-                        projectList?.map((obj) => {
-                          return {
-                            key: obj,
-                            label: obj,
-                          };
-                        })
-                      }
-                      btncolor={"#f0f0f0"}
-                      fontStyle={
-                        "font-inter 3xl:text-xs text-black  3xl:font-medium xl:text-sm xl:font-semibold tracking-tighter"
-                      }
-                      radius={"xl"}
-                      size={"lg"}
-                      setSelected={handleApplicationName}
-                    /> */}
-
-                        <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
-                          {/* <div className="flex h-[70px] w-[100%] flex-col  items-center   ">
-                            <TorusTab
-                              defaultSelectedKey={selectedClient}
-                              key="TorusTab"
-                              orientation="vertical"
-                              classNames={{
-                                tabs: "cursor-pointer border",
-                                tabList:
-                                  "w-full h-[100%] border  flex justify-center items-center",
-                                tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  `,
-                              }}
-                              tabs={[
-                                {
-                                  id: "My Artifacts",
-                                  content: ({ isSelected }) => (
-                                    <TorusButton
-                                      btncolor={"primary"}
-                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
-                                      Children={
-                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
-                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
-                                          <p className="text-xs text-black dark:text-white">
-                                            New Artifact
-                                          </p>
-                                        </div>
-                                      }
-                                    />
-                                  ),
-                                },
-                                {
-                                  id: "UF",
-                                  content: ({ isSelected }) => (
-                                    <TorusButton
-                                      btncolor={"primary"}
-                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
-                                      Children={
-                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
-                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
-                                          <p className="text-xs text-black dark:text-white">
-                                            New Artifact
-                                          </p>
-                                        </div>
-                                      }
-                                    />
-                                  ),
-                                },
-                                {
-                                  id: "PF",
-                                  content: ({ isSelected }) => (
-                                    <TorusButton
-                                      btncolor={"primary"}
-                                      buttonClassName="bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[80px] h-[30px]  rounded-md flex justify-center items-center"
-                                      Children={
-                                        <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
-                                          <ArtifactLogo className="stroke-black dark:stroke-white" />
-                                          <p className="text-xs text-black dark:text-white">
-                                            New Artifact
-                                          </p>
-                                        </div>
-                                      }
-                                    />
-                                  ),
-                                },
-                              ]}
-                              // onSelectionChange={handleTabChange}
-                            />
-                          </div> */}
-                          <div className="flex h-full w-[100%] flex-col overflow-scroll  px-0.5 ">
-                            {/* {projectList &&
-                              projectList?.map((project, index) => (
-                                <div
-                                  onClick={() => {
-                                    handleApplicationName(project);
-                                    setNewArtifact(false);
-                                    setProjectCollectionName(project);
-                                    setArtifactCollectionName(null);
-                                  }}
-                                  className={`${project == selectedProject ? "font-semibold text-black dark:text-white" : "font-normal text-black/35 dark:text-white/35"} flex w-[100%] flex-row items-center gap-1`}
-                                >
-                                  <div
-                                    className={`w-full cursor-pointer text-sm  `}
-                                  >
-                                    {project}
-                                  </div>
-                                </div>
-                              ))} */}
-                            <TorusAccordion
-                              items={accordionItems}
-                              onToggle={handleAccordionToggle}
-                              onContentToggle={handleAccordionContentToggle}
-                            />
-                          </div>
-                        </div>
-                        {/* <TorusModularInput
-                      isRequired={true}
-                      isReadOnly={false}
-                      placeholder="Artifact"
-                      // label="Input"
-                      variant="bordered"
-                      labelColor="text-[#000000]/50"
-                      borderColor="border-[#000000]/20"
-                      isDisabled={false}
-                      // onChange={setModular}
-                      radius="lg"
-                      textColor="text-[#000000]"
-                      bgColor="bg-[#FFFFFF]"
-                      value={"this is value from state "}
-                      type="text"
-                      marginT="mt-3"
-                      // startContent={
-                      //   <FaSearchLocation size={15} color="#9CA3AF" />
-                      // }
-                      maxLength={20}
-                      discription="This is a hint text to help user."
-                      isClearable={true}
-                      className="w-[50px] h-[40px] "
-                    />
-
-                    <TorusDropDown
-                      label={"Select Version"}
-                      options={["1.0.0", "2.0.0", "3.0.0"]}
-                      onChange={(e) => setSelectedVersion(new Set([e]))}
-                      value={Array.from(selectedVersion)[0] || "1.0.0"}
-                      className="w-[90%] h-[40px]  border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg"
-                    /> */}
-
-                        {/* <ReusableDropDown
-                      key={"ApplicationDropdown"}
-                      title={
-                        (selectedProject &&
-                          Array.from(selectedProject)[0]) ||
-                        "Projects"
-                      }
-                      darkMode={darkMode}
-                      isDisabled={projectList.length < 0 ? true : false}
-                      DropdownMenuClassName={
-                        projectList.length > 6
-                          ? "h-56 overflow-y-scroll"
-                          : ""
-                      }
-                      items={
-                        projectList &&
-                        projectList?.map((obj) => {
-                          return {
-                            key: obj,
-                            label: obj,
-                          };
-                        })
-                      }
-                      selectedKey={selectedProject}
-                      handleSelectedKey={handleApplicationName}
-                      handleDelete={(key) => {
-                        setSelectedDeletingProjectItem(key);
-                        openmodal("project");
-                      }}
-                    /> */}
-                        <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
-                          <div className="flex h-[10%] w-[85%] items-center justify-start bg-white dark:bg-[#161616]">
-                            <Breadcrumbs
-                              isDisabled
-                              className="flex flex-row gap-2 text-xs"
-                            >
-                              <Breadcrumb>
-                                <Link className="flex flex-row items-center justify-center gap-1 text-black dark:text-white">
-                                  <RiHome5Line size={15} />
-                                  {client}
-                                  <IoIosArrowForward />
-                                </Link>
-                              </Breadcrumb>
-                              <Breadcrumb>
-                                <Link className="flex flex-row items-center justify-center gap-1">
-                                  {projectCollectionName}
-                                  <IoIosArrowForward />
-                                </Link>
-                              </Breadcrumb>
-                              <Breadcrumb>
-                                <Link className="flex flex-row items-center justify-center gap-1">
-                                  {artifactCollectionName}
-                                </Link>
-                              </Breadcrumb>
-                            </Breadcrumbs>
-                          </div>
-
-                          <div className="flex h-[90%] w-full flex-col items-center justify-center transition-all duration-300 ">
-                            {newArtifact === true ? (
-                              <div className="flex h-[30%] w-full items-center justify-center border-b border-t border-[#E5E9EB] dark:border-[#212121]  ">
-                                <div className="flex  h-full w-[65%] flex-row items-center justify-center p-2">
-                                  <Input
-                                    defaultValue={newArtifactValue}
-                                    placeholder="Enter artifact name"
-                                    className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
-                                    onChange={(e) => {
-                                      setInputValue(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                                <div className="flex h-full w-[25%] items-center justify-center">
-                                  <TorusButton
-                                    buttonClassName="text-black w-[80px] dark:text-white bg-[#F4F5FA] hover:bg-[#e1e2e8]  transition-all duration-200 dark:bg-[#0F0F0F]  h-[30px] rounded-md  text-xs  flex justify-center items-center"
-                                    onPress={() =>
-                                      saveProcessFlow(
-                                        "create",
-                                        selectedProject,
-                                        newArtifactValue,
-                                        "v1",
-                                        getDataFromFabrics(),
-                                      )
-                                    }
-                                    Children={"Create"}
-                                  />
-                                </div>
-                              </div>
-                            ) : null}
-                            <div
-                              className={`${newArtifact ? "h-[75%]" : "h-[100%]"} flex  w-full flex-col items-center justify-between overflow-y-scroll scroll-smooth scrollbar-default `}
-                            >
-                              {artifactsList && artifactsList.length > 0 ? (
-                                <>
-                                  {artifactsList.map((obj, index) => {
-                                    return (
-                                      <div className="flex h-[30%] w-full items-center justify-center">
-                                        <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
-                                          <>
-                                            {inputchange !== index ? (
-                                              <div
-                                                onClick={() =>
-                                                  handleArtifactsChange(
-                                                    obj?.artifact,
-                                                  )
-                                                }
-                                                className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
-                                              >
-                                                <div className="flex w-9/12 items-center justify-start truncate text-sm text-black dark:text-white">
-                                                  {obj?.artifact}
-                                                </div>
-                                                <div className="flex w-2/12 items-center justify-end gap-2">
-                                                  <span
-                                                    className="cursor-pointer"
-                                                    onClick={() =>
-                                                      setInputchange(index)
-                                                    }
-                                                  >
-                                                    <FiEdit2
-                                                      className="text-black dark:text-white"
-                                                      size={13}
-                                                    />
-                                                  </span>
-                                                  <span
-                                                    className="cursor-pointer"
-                                                    onClick={() =>
-                                                      setInputValue("")
-                                                    }
-                                                  >
-                                                    <BsTrash3
-                                                      color="red"
-                                                      size={13}
-                                                    />
-                                                  </span>
-                                                </div>
-                                              </div>
-                                            ) : (
-                                              <div className="w-full">
-                                                <Input
-                                                  defaultValue={obj?.artifact}
-                                                  placeholder="Enter text"
-                                                  className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white "
-                                                  onKeyDown={(e) => {
-                                                    if (e.key === "Enter") {
-                                                      setInputchange(null);
-                                                    }
-                                                  }}
-                                                  onChange={(e) => {
-                                                    setInputValue(
-                                                      e.target.value,
-                                                    );
-                                                  }}
-                                                />
-                                              </div>
-                                            )}
-                                          </>
-                                        </div>
-                                        <div className="flex h-full w-[25%] items-center justify-center">
-                                          <TorusDropDown
-                                            title={
-                                              (selectedVersion &&
-                                                selectedVersion) ||
-                                              "Version"
-                                            }
-                                            selectionMode="single"
-                                            selected={
-                                              new Set([selectedVersion])
-                                            }
-                                            setSelected={(e) => {
-                                              setSelectedArtifact(
-                                                obj?.artifact,
-                                              );
-                                              setSelectedVersion(
-                                                Array.from(e)[0],
-                                              );
-                                              setArtifactCollectionName(
-                                                obj?.artifact,
-                                              );
-                                            }}
-                                            items={
-                                              obj?.versionList &&
-                                              obj?.versionList?.map((item) => ({
-                                                label: item,
-                                                key: item,
-                                              }))
-                                            }
-                                            classNames={{
-                                              buttonClassName:
-                                                "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
-                                              popoverClassName:
-                                                "w-[70px] max-h-[100px] min-h-[50px]",
-                                              listBoxClassName:
-                                                " min-h-[35px] max-h-[100px] overflow-y-auto",
-                                              listBoxItemClassName:
-                                                "flex text-sm justify-between",
-                                            }}
-                                          />
-                                        </div>
-                                      </div>
-                                    );
-                                  })}
-                                </>
-                              ) : (
-                                <div className="flex h-full w-full items-center justify-center">
-                                  no artifacts
-                                </div>
-                              )}
+                      <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
+                        {(selectedVersion && selectedVersion) || "*"}
+                      </div>
+                      <div>
+                        <IoIosArrowDown className="text-black dark:text-white" />
+                      </div>
+                    </div>
+                  }
+                  popbuttonClassNames={selectedFabric === "events" && "w-1/3"}
+                  children={({ close }) => (
+                    <div
+                      className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
+                    >
+                      {selectedFabric !== "events" ? (
+                        <>
+                          <div className="flex h-[13%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
+                            <div className="flex w-full items-center justify-start">
+                              <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
+                                Library
+                              </p>
                             </div>
-                          </div>
-                        </div>
-
-                        {/* <div className="col-span-1 flex h-full flex-col gap-1 border-l px-2 py-3">
-                      {artifactsList &&
-                        artifactsList?.map((obj) => (
-                          <div
-                            onClick={() =>
-                              handleArtifactsChange(new Set([obj]))
-                            }
-                            className=" flex w-full flex-row items-center justify-center  "
-                          >
-                            <div className="w-[60%] text-xs  file:text-black">
-                              {obj}
-                            </div>
-                            <div className="w-[40%]">
-                              <ReusableDropDown
-                                key={"versionDropdown"}
-                                title={
-                                  (selectedVersion &&
-                                    Array.from(selectedVersion)[0]) ||
-                                  "Version"
+                            <div className="flex w-full items-center justify-center gap-2">
+                              <Input
+                                startcontent={<CiSearch />}
+                                // value={search}
+                                placeholder="Search"
+                                className={
+                                  "flex h-[25px] w-[280px] items-center justify-center rounded-md border border-gray-300 bg-[#F4F5FA]  p-2 text-sm text-black dark:border-[#212121] dark:bg-[#0F0F0F] dark:text-white"
                                 }
-                                darkMode={!darkMode}
+                              />
+                            </div>
+                            <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
+                              <TorusButton
                                 isDisabled={
-                                  selectedArtifact &&
-                                  Array.from(selectedArtifact)[0]
+                                  selectedVersion && selectedFabric == "UF"
                                     ? false
                                     : true
                                 }
-                                DropdownMenuClassName={
-                                  versions && versions.length > 6
-                                    ? "h-30 overflow-y-scroll  "
-                                    : ""
-                                }
-                                items={
-                                  versions &&
-                                  versions?.map((obj) => {
-                                    return {
-                                      key: obj,
-                                      label: obj,
-                                    };
-                                  })
-                                }
-                                selectedKey={selectedVersion}
-                                handleSelectedKey={(key) => {
-                                  setSelectedVersion(key);
-                               
+                                onPress={() => {
+                                  selectedVersion &&
+                                    selectedFabric == "UF" &&
+                                    handleTabChange("events");
                                 }}
-                                handleDelete={(key) => {
-                                  setSelectedDeletingVersionItem(key);
+                                Children={<ArtifactOpen />}
+                                buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                              />
 
-                                  openmodal("version");
+                              <span
+                                className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200  hover:border-red-400 hover:bg-red-200 dark:hover:border-red-500 dark:hover:bg-red-500/30"
+                                onClick={() => {
+                                  close();
+                                  setProjectCollectionName(null);
+                                  setArtifactCollectionName(null);
+                                  setNewArtifact(false);
                                 }}
+                              >
+                                <IoCloseOutline className="text-black dark:text-white" />
+                              </span>
+                            </div>
+                          </div>
+                          <div className=" flex h-[74%] w-full items-center  justify-center   ">
+                            <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
+                              <div className="flex h-full w-[100%] flex-col overflow-scroll">
+                                <TorusAccordion
+                                  selectedContent={selectedProject}
+                                  items={accordionItems}
+                                  onToggle={handleAccordionToggle}
+                                  onContentToggle={handleAccordionContentToggle}
+                                />
+                              </div>
+                            </div>
+                            {/* <TorusModularInput
+                       isRequired={true}
+                       isReadOnly={false}
+                       placeholder="Artifact"
+                       // label="Input"
+                       variant="bordered"
+                       labelColor="text-[#000000]/50"
+                       borderColor="border-[#000000]/20"
+                       isDisabled={false}
+                       // onChange={setModular}
+                       radius="lg"
+                       textColor="text-[#000000]"
+                       bgColor="bg-[#FFFFFF]"
+                       value={"this is value from state "}
+                       type="text"
+                       marginT="mt-3"
+                       // startContent={
+                       //   <FaSearchLocation size={15} color="#9CA3AF" />
+                       // }
+                       maxLength={20}
+                       discription="This is a hint text to help user."
+                       isClearable={true}
+                       className="w-[50px] h-[40px] "
+                     />
+ 
+                */}
+                            <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
+                              <div className="flex h-[10%] w-[85%] items-center justify-start bg-white dark:bg-[#161616]">
+                                <Breadcrumbs
+                                  isDisabled
+                                  className="flex flex-row gap-2 text-xs"
+                                >
+                                  {client && (
+                                    <>
+                                      <Breadcrumb>
+                                        <Link className="flex flex-row items-center justify-center gap-1 text-black dark:text-white">
+                                          <RiHome5Line size={15} />
+                                          {client}
+                                          <IoIosArrowForward />
+                                        </Link>
+                                      </Breadcrumb>
+                                      {selectedProject && (
+                                        <>
+                                          <Breadcrumb>
+                                            <Link className="flex flex-row items-center justify-center gap-1">
+                                              {selectedProject}
+                                              <IoIosArrowForward />
+                                            </Link>
+                                          </Breadcrumb>
+                                          {selectedArtifact && (
+                                            <Breadcrumb>
+                                              <Link className="flex flex-row items-center justify-center gap-1">
+                                                {selectedArtifact}
+                                              </Link>
+                                            </Breadcrumb>
+                                          )}
+                                        </>
+                                      )}
+                                    </>
+                                  )}
+                                </Breadcrumbs>
+                              </div>
+
+                              <div className="flex h-[90%] w-full flex-col items-center justify-center transition-all duration-300 ">
+                                {newArtifact === true ? (
+                                  <div className="flex h-[30%] w-full items-center justify-center border-b border-t border-[#E5E9EB] dark:border-[#212121]  ">
+                                    <div className="flex  h-full w-[65%] flex-row items-center justify-center p-2">
+                                      <Input
+                                        defaultValue={newArtifactValue}
+                                        placeholder="Enter artifact name"
+                                        className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                        onChange={(e) => {
+                                          setNewArtifactValue(e.target.value);
+                                        }}
+                                      />
+                                    </div>
+                                    <div className="flex h-full w-[25%] items-center justify-center">
+                                      <TorusButton
+                                        buttonClassName="text-black w-[80px] dark:text-white bg-[#F4F5FA] hover:bg-[#e1e2e8]  transition-all duration-200 dark:bg-[#0F0F0F]  h-[30px] rounded-md  text-xs  flex justify-center items-center"
+                                        onPress={() =>
+                                          saveProcessFlow(
+                                            "create",
+                                            selectedProject,
+                                            newArtifactValue,
+                                            "v1",
+                                            getDataFromFabrics,
+                                          ).then(() => setNewArtifact(false))
+                                        }
+                                        Children={"Create"}
+                                      />
+                                    </div>
+                                  </div>
+                                ) : null}
+                                <div
+                                  className={`${newArtifact ? "h-[75%]" : "h-[100%]"} flex  w-full flex-col items-center justify-start overflow-y-scroll scroll-smooth scrollbar-default `}
+                                >
+                                  {artifactsList && artifactsList.length > 0 ? (
+                                    <>
+                                      {artifactsList.map((obj, index) => {
+                                        return (
+                                          <div
+                                            className={`justify-center" flex h-[{${artifactsList.length / 100}%] w-full items-center`}
+                                          >
+                                            <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
+                                              <>
+                                                {inputchange !== index ? (
+                                                  <div
+                                                    onClick={() =>
+                                                      handleArtifactsChange(
+                                                        obj?.artifact,
+                                                      )
+                                                    }
+                                                    className="flex h-[30px] w-full flex-row items-center justify-between rounded-md bg-[#F4F5FA] p-2 dark:bg-[#0F0F0F]"
+                                                  >
+                                                    <div className="flex w-9/12 items-center justify-start truncate text-sm text-black dark:text-white">
+                                                      {obj?.artifact}
+                                                    </div>
+                                                    <div className="flex w-2/12 items-center justify-end gap-2">
+                                                      <span
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                          setInputchange(index)
+                                                        }
+                                                      >
+                                                        <FiEdit2
+                                                          className="text-black dark:text-white"
+                                                          size={13}
+                                                        />
+                                                      </span>
+                                                      <span
+                                                        className="cursor-pointer"
+                                                        onClick={() =>
+                                                          setInputValue("")
+                                                        }
+                                                      >
+                                                        <BsTrash3
+                                                          color="red"
+                                                          size={13}
+                                                        />
+                                                      </span>
+                                                    </div>
+                                                  </div>
+                                                ) : (
+                                                  <div className="w-full">
+                                                    <Input
+                                                      defaultValue={
+                                                        obj?.artifact
+                                                      }
+                                                      placeholder="Enter text"
+                                                      className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white "
+                                                      onKeyDown={(e) => {
+                                                        if (e.key === "Enter") {
+                                                          setInputchange(null);
+                                                        }
+                                                      }}
+                                                      onChange={(e) => {
+                                                        setInputValue(
+                                                          e.target.value,
+                                                        );
+                                                      }}
+                                                    />
+                                                  </div>
+                                                )}
+                                              </>
+                                            </div>
+                                            <div className="flex h-full w-[25%] items-center justify-center">
+                                              <TorusDropDown
+                                                title={
+                                                  (selectedVersion &&
+                                                    selectedArtifact ===
+                                                      obj?.artifact &&
+                                                    selectedVersion) ||
+                                                  "Version"
+                                                }
+                                                selectionMode="single"
+                                                selected={
+                                                  selectedVersion &&
+                                                  selectedArtifact ===
+                                                    obj?.artifact
+                                                    ? new Set([selectedVersion])
+                                                    : new Set([])
+                                                }
+                                                setSelected={(e) => {
+                                                  setSelectedArtifact(
+                                                    obj?.artifact,
+                                                  );
+                                                  setSelectedVersion(
+                                                    Array.from(e)[0],
+                                                  );
+                                                  setArtifactCollectionName(
+                                                    obj?.artifact,
+                                                  );
+                                                }}
+                                                items={
+                                                  obj?.versionList &&
+                                                  obj?.versionList?.map(
+                                                    (item) => ({
+                                                      label: item,
+                                                      key: item,
+                                                    }),
+                                                  )
+                                                }
+                                                classNames={{
+                                                  buttonClassName:
+                                                    "rounded-lg w-[100px] text-xs h-[30px] font-medium  p-2 bg-[#F4F5FA] dark:bg-[#0F0F0F] text-center dark:text-white",
+                                                  popoverClassName:
+                                                    "w-[70px] max-h-[100px] min-h-[50px]",
+                                                  listBoxClassName:
+                                                    " min-h-[35px] max-h-[100px] overflow-y-auto",
+                                                  listBoxItemClassName:
+                                                    "flex text-sm justify-between",
+                                                }}
+                                              />
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </>
+                                  ) : (
+                                    <div className="flex h-full w-full items-center justify-center">
+                                      no artifacts
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* <div className="col-span-1 flex h-full flex-col gap-1 border-l px-2 py-3">
+                       {artifactsList &&
+                         artifactsList?.map((obj) => (
+                           <div
+                             onClick={() =>
+                               handleArtifactsChange(new Set([obj]))
+                             }
+                             className=" flex w-full flex-row items-center justify-center  "
+                           >
+                             <div className="w-[60%] text-xs  file:text-black">
+                               {obj}
+                             </div>
+                             <div className="w-[40%]">
+                               <ReusableDropDown
+                                 key={"versionDropdown"}
+                                 title={
+                                   (selectedVersion &&
+                                     Array.from(selectedVersion)[0]) ||
+                                   "Version"
+                                 }
+                                 darkMode={!darkMode}
+                                 isDisabled={
+                                   selectedArtifact &&
+                                   Array.from(selectedArtifact)[0]
+                                     ? false
+                                     : true
+                                 }
+                                 DropdownMenuClassName={
+                                   versions && versions.length > 6
+                                     ? "h-30 overflow-y-scroll  "
+                                     : ""
+                                 }
+                                 items={
+                                   versions &&
+                                   versions?.map((obj) => {
+                                     return {
+                                       key: obj,
+                                       label: obj,
+                                     };
+                                   })
+                                 }
+                                 selectedKey={selectedVersion}
+                                 handleSelectedKey={(key) => {
+                                   setSelectedVersion(key);
+                                
+                                 }}
+                                 handleDelete={(key) => {
+                                   setSelectedDeletingVersionItem(key);
+ 
+                                   openmodal("version");
+                                 }}
+                               />
+                             </div>
+                           </div>
+                         ))}
+                     </div> */}
+
+                            {/* <ReusableDropDown
+                       key={"artifactsDropdown"}
+                       title={
+                         (selectedArtifact &&
+                           Array.from(selectedArtifact)[0]) ||
+                         "Artifacts"
+                       }
+                       darkMode={darkMode}
+                       isDisabled={!selectedProject ? true : false}
+                       DropdownMenuClassName={
+                         artifactsList && artifactsList.length > 6
+                           ? "h-56 overflow-y-scroll"
+                           : ""
+                       }
+                       items={
+                         artifactsList &&
+                         artifactsList?.map((obj, index) => {
+                           return {
+                             key: obj,
+                             label: obj,
+                           };
+                         })
+                       }
+                       selectedKey={selectedArtifact}
+                       handleSelectedKey={handleArtifactsChange}
+                       handleDelete={(key) => {
+                         setSelectedDeletingArtifactsItem(key);
+                         openmodal("artifacts");
+                       }}
+                     />
+ 
+                     <ReusableDropDown
+                       key={"versionDropdown"}
+                       title={
+                         (selectedVersion && Array.from(selectedVersion)[0]) ||
+                         "Version"
+                       }
+                       darkMode={darkMode}
+                       isDisabled={
+                         selectedArtifact &&
+                         Array.from(selectedArtifact)[0]
+                           ? false
+                           : true
+                       }
+                       DropdownMenuClassName={
+                         versions && versions.length > 6
+                           ? "h-30 overflow-y-scroll  "
+                           : ""
+                       }
+                       items={
+                         versions &&
+                         versions?.map((obj) => {
+                           return {
+                             key: obj,
+                             label: obj,
+                           };
+                         })
+                       }
+                       selectedKey={selectedVersion}
+                       handleSelectedKey={(key) => {
+                         setSelectedVersion(key);
+                      
+                       }}
+                       handleDelete={(key) => {
+                         setSelectedDeletingVersionItem(key);
+ 
+                         openmodal("version");
+                       }}
+                     /> */}
+                          </div>
+                          <div className="flex h-[13%] w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
+                            <div className="flex w-1/3 items-center justify-start">
+                              <TorusButton
+                                btncolor={"primary"}
+                                onPress={() => handleNewArtifact()}
+                                buttonClassName={`${newArtifact ? "bg-red-200 dark:bg-red-500/30 w-[80px] h-[30px] text-red-500 dark:text-red-400" : "text-black dark:text-white bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]"}   rounded-md flex justify-center items-center`}
+                                Children={
+                                  <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                                    {newArtifact ? (
+                                      <></>
+                                    ) : (
+                                      <ArtifactLogo className="stroke-black dark:stroke-white" />
+                                    )}
+                                    <p className="text-xs  ">
+                                      {newArtifact ? "Cancel" : "New Artifact"}
+                                    </p>
+                                  </div>
+                                }
+                              />
+                              {/* <TorusButton
+                         onClick={() => {
+                           saveProcessFlow(
+                             "create",
+                             selectedProject,
+                             selectedArtifact,
+                             selectedVersion,
+                             getDataFromFabrics(),
+                           );
+                         }}
+                         buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
+                         Children={"Make a copy"}
+                       /> */}
+                            </div>
+
+                            <div className="flex w-2/3 items-center justify-end gap-2">
+                              <TorusButton
+                                buttonClassName=" bg-[#4CAF50]/15  w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs  flex justify-center items-center"
+                                onPress={() =>
+                                  saveProcessFlow(
+                                    "update",
+                                    selectedProject,
+                                    selectedArtifact,
+                                    selectedVersion,
+                                    getDataFromFabrics,
+                                  )
+                                }
+                                Children={"Update"}
+                              />
+                              <TorusButton
+                                buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
+                                onPress={() => {
+                                  saveProcessFlow(
+                                    "create",
+                                    selectedProject,
+                                    selectedArtifact,
+                                    selectedVersion,
+                                    getDataFromFabrics,
+                                  );
+                                }}
+                                Children={"Save"}
+                              />
+                              <TorusButton
+                                buttonClassName=" bg-[#0736C4] dark:bg-[#3063FF] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                                Children={"Save as"}
                               />
                             </div>
                           </div>
-                        ))}
-                    </div> */}
-
-                        {/* <ReusableDropDown
-                      key={"artifactsDropdown"}
-                      title={
-                        (selectedArtifact &&
-                          Array.from(selectedArtifact)[0]) ||
-                        "Artifacts"
-                      }
-                      darkMode={darkMode}
-                      isDisabled={!selectedProject ? true : false}
-                      DropdownMenuClassName={
-                        artifactsList && artifactsList.length > 6
-                          ? "h-56 overflow-y-scroll"
-                          : ""
-                      }
-                      items={
-                        artifactsList &&
-                        artifactsList?.map((obj, index) => {
-                          return {
-                            key: obj,
-                            label: obj,
-                          };
-                        })
-                      }
-                      selectedKey={selectedArtifact}
-                      handleSelectedKey={handleArtifactsChange}
-                      handleDelete={(key) => {
-                        setSelectedDeletingArtifactsItem(key);
-                        openmodal("artifacts");
-                      }}
-                    />
-
-                    <ReusableDropDown
-                      key={"versionDropdown"}
-                      title={
-                        (selectedVersion && Array.from(selectedVersion)[0]) ||
-                        "Version"
-                      }
-                      darkMode={darkMode}
-                      isDisabled={
-                        selectedArtifact &&
-                        Array.from(selectedArtifact)[0]
-                          ? false
-                          : true
-                      }
-                      DropdownMenuClassName={
-                        versions && versions.length > 6
-                          ? "h-30 overflow-y-scroll  "
-                          : ""
-                      }
-                      items={
-                        versions &&
-                        versions?.map((obj) => {
-                          return {
-                            key: obj,
-                            label: obj,
-                          };
-                        })
-                      }
-                      selectedKey={selectedVersion}
-                      handleSelectedKey={(key) => {
-                        setSelectedVersion(key);
-                     
-                      }}
-                      handleDelete={(key) => {
-                        setSelectedDeletingVersionItem(key);
-
-                        openmodal("version");
-                      }}
-                    /> */}
-                      </div>
-                      <div className="flex h-[13%] w-[100%] flex-row space-x-2 border-t border-gray-300 p-2 dark:border-[#212121] ">
-                        <div className="flex w-1/3 items-center justify-start">
-                          <TorusButton
-                            btncolor={"primary"}
-                            onPress={() => handleNewArtifact()}
-                            buttonClassName={`${newArtifact ? "bg-red-200 dark:bg-red-500/30 w-[80px] h-[30px] text-red-500 dark:text-red-400" : "text-black dark:text-white bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]"}   rounded-md flex justify-center items-center`}
-                            Children={
-                              <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
-                                {newArtifact ? (
-                                  <></>
-                                ) : (
-                                  <ArtifactLogo className="stroke-black dark:stroke-white" />
-                                )}
-                                <p className="text-xs  ">
-                                  {newArtifact ? "Cancel" : "New Artifact"}
-                                </p>
-                              </div>
-                            }
-                          />
-                          {/* <TorusButton
-                        onClick={() => {
-                          saveProcessFlow(
-                            "create",
-                            selectedProject,
-                            selectedArtifact,
-                            selectedVersion,
-                            getDataFromFabrics(),
-                          );
-                        }}
-                        buttonClassName=" bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[100px] h-[30px] text-xs text-black dark:text-white rounded-md flex justify-center items-center"
-                        Children={"Make a copy"}
-                      /> */}
-                        </div>
-
-                        <div className="flex w-2/3 items-center justify-end gap-2">
-                          <TorusButton
-                            buttonClassName=" bg-[#4CAF50]/15  w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs  flex justify-center items-center"
-                            onPress={() =>
-                              saveProcessFlow(
-                                "update",
-                                selectedProject,
-                                selectedArtifact,
-                                selectedVersion,
-                                getDataFromFabrics,
-                              )
-                            }
-                            Children={"Update"}
-                          />
-                          <TorusButton
-                            buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
-                            onPress={() => {
-                              // saveProcessFlow(
-                              //   "create",
-                              //   selectedProject,
-                              //   selectedArtifact,
-                              //   selectedVersion,
-                              //   getDataFromFabrics(),
-                              // );
-                              SaveToast();
-                            }}
-                            Children={"Save"}
-                          />
-                          <TorusButton
-                            buttonClassName=" bg-[#0736C4] dark:bg-[#3063FF] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
-                            Children={"Save as"}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex h-[12%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
-                        <div className="flex w-full items-center justify-start">
-                          <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
-                            Events
-                          </p>
-                        </div>
-                        <span
-                          className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
-                          onClick={() => {
-                            close(), setNewArtifact(false);
-                          }}
-                        >
-                          <IoCloseOutline className="text-black dark:text-white" />
-                        </span>
-                      </div>
-                      <div className="flex h-[87%] w-[100%]">
-                        <EventNavbar
-                          getDataFromFabrics={getDataFromFabrics}
-                          sendDataToFabrics={sendDataToFabrics}
-                        />
-                      </div>
-                    </>
+                        </>
+                      ) : (
+                        <>
+                          <div className="flex h-[12%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
+                            <div className="flex w-full items-center justify-start">
+                              <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
+                                Events
+                              </p>
+                            </div>
+                            <span
+                              className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
+                              onClick={() => {
+                                close(), setNewArtifact(false);
+                              }}
+                            >
+                              <IoCloseOutline className="text-black dark:text-white" />
+                            </span>
+                          </div>
+                          <div className="flex h-[87%] w-[100%]">
+                            <EventNavbar
+                              getDataFromFabrics={getDataFromFabrics}
+                              sendDataToFabrics={sendDataToFabrics}
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
                   )}
-                </div>
-              )}
-            />
+                />
 
-            {selectedFabric === "events" && (
-              <TorusButton
-                onPress={() => {
-                  selectedFabric === "events" && handleTabChange("UF");
-                }}
-                Children={<ArtifactOpen />}
-                buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
-              />
+                {selectedFabric === "events" && (
+                  <TorusButton
+                    onPress={() => {
+                      selectedFabric === "events" && handleTabChange("UF");
+                    }}
+                    Children={<ArtifactOpen />}
+                    buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                  />
+                )}
+              </>
             )}
           </div>
 
@@ -2066,11 +1941,11 @@ export default function Navbar({
               <TorusButton
                 Children="Publish"
                 size={"md"}
-                btncolor={color ? color : "#0736C4"}
+                btncolor={"#0736C4"}
                 outlineColor="torus-hover:ring-blue-500/50"
                 radius={"lg"}
                 fontStyle={
-                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-1 py-2"
+                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
                 }
                 color={"white"}
               />
