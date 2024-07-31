@@ -145,9 +145,12 @@ export default function Layout({ client }) {
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-    setSelectedProject("");
-    setSelectedArtifact("");
-    setSelectedVersion("");
+    if (!fabric === "events") {
+      setSelectedProject("");
+      setSelectedArtifact("");
+      setSelectedVersion("");
+    }
+
     setNodes([]);
     setEdges([]);
 
@@ -378,13 +381,16 @@ export default function Layout({ client }) {
     <TorusModellerContext.Provider
       value={{
         ref,
+        setSelectedTkey,
+        selectedTkey,
         client,
+        selectedProject,
+        selectedArtifact,
+        selectedVersion,
         controlJson,
         onPaneClick,
         uniqueNames,
         selectedFabric,
-        selectedTkey,
-        setSelectedTkey,
         handleTabChange,
         eventsNavBarData,
         nodePropertyData,
@@ -393,11 +399,8 @@ export default function Layout({ client }) {
         setSelectedControlName,
         selectedControlName,
         onNodeContextMenu,
-        selectedArtifact,
         setSelectedArtifact,
-        selectedProject,
         setSelectedProject,
-        selectedVersion,
         sfNodeGalleryData,
         setSelectedVersion,
         selectedControlEvents,

@@ -1,35 +1,35 @@
-export const getVersion = async (
-  tenant,
-  appGroup,
-  app,
-  fabrics,
-  artifact,
-  version,
-  componentName,
-  controlName,
-  ccwVersion,
-) => {
-  const BASE_URL = `${process.env.REACT_APP_API_URL}events/version`;
+// export const getVersion = async (
+//   tenant,
+//   appGroup,
+//   app,
+//   fabrics,
+//   artifact,
+//   version,
+//   componentName,
+//   controlName,
+//   ccwVersion,
+// ) => {
+//   const BASE_URL = `${process.env.REACT_APP_API_URL}events/version`;
 
-  try {
-    const response = await fetch(
-      `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${app}&fabrics=${fabrics}&artifact=${artifact}&version=${version}&componentName=${componentName}&controlName=${controlName}&ccwVersion=${ccwVersion}`,
+//   try {
+//     const response = await fetch(
+//       `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${app}&fabrics=${fabrics}&artifact=${artifact}&version=${version}&componentName=${componentName}&controlName=${controlName}&ccwVersion=${ccwVersion}`,
 
-      {
-        method: "GET",
-      },
-    );
+//       {
+//         method: "GET",
+//       },
+//     );
 
-    if (!response.ok) {
-      //throw new Error(`HTTP error! status: ${response.status}`);
-    }
+//     if (!response.ok) {
+//       //throw new Error(`HTTP error! status: ${response.status}`);
+//     }
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching version:", error);
-  }
-};
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching version:", error);
+//   }
+// };
 
 export const getEventsByVersion = async (
   tenant,
@@ -40,12 +40,11 @@ export const getEventsByVersion = async (
   mainVersion,
   componentName,
   controlName,
-  ccwversion,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events/`;
   try {
     const response = await fetch(
-      `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}&ccwVersion=${ccwversion}`,
+      `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}`,
 
       {
         method: "GET",
@@ -53,7 +52,7 @@ export const getEventsByVersion = async (
     );
 
     if (!response.ok) {
-      //throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
@@ -62,6 +61,7 @@ export const getEventsByVersion = async (
     console.error("Error fetching events:", error);
   }
 };
+
 export const getInitialEvents = async (
   tKey,
   client,
@@ -75,6 +75,7 @@ export const getInitialEvents = async (
     const response = await fetch(
       `${BASE_URL}?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}`,
     ).then((res) => res.json());
+    console.log(response, "response from intiate events");
     return response;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -87,17 +88,13 @@ export const handleEvents = async (
   application,
   fabrics,
   mainArtifacts,
-
   mainVersion,
-
   componentName,
-
   controlName,
-
   data,
-
-  type,
 ) => {
+  console.log(data, "bodyyy-->");
+
   const BASE_URL = `${process.env.REACT_APP_API_URL}events`;
 
   try {
@@ -108,9 +105,10 @@ export const handleEvents = async (
     url = `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}`;
 
     body = {
-      type: type,
       data: data,
     };
+
+    console.log(url, body, "bodyy-->");
 
     const response = await fetch(url, {
       method: "POST",
@@ -123,7 +121,7 @@ export const handleEvents = async (
     });
 
     if (!response.ok) {
-      //throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const responseData = await response.json();

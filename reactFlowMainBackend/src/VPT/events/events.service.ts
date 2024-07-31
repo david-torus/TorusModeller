@@ -62,27 +62,12 @@ export class EventsService {
   ) {
     try {
       let res = {};
+      let key = `${tenant}:${appGroup}:${app}:${fabrics}:${artifact}:${version}:events`;
+
       const nodes: Promise<any> = new Promise((resolve, reject) => {
         try {
           const node = this.redisService.getJsonData(
-            tenant +
-              ':' +
-              appGroup +
-              ':' +
-              app +
-              ':' +
-              fabrics +
-              ':' +
-              artifact +
-              ':' +
-              version +
-              ':' +
-              'events:' +
-              componentName +
-              ':' +
-              controlName +
-              ':' +
-              'nodes',
+            key + ':' + componentName + ':' + controlName + ':' + 'nodes',
           );
           resolve(node);
           console.log(node, 'Getting nodes');
@@ -94,24 +79,7 @@ export class EventsService {
       const nodeEdges: Promise<any> = new Promise((resolve, reject) => {
         try {
           const nodeEdge = this.redisService.getJsonData(
-            tenant +
-              ':' +
-              appGroup +
-              ':' +
-              app +
-              ':' +
-              fabrics +
-              ':' +
-              artifact +
-              ':' +
-              version +
-              ':' +
-              'events:' +
-              componentName +
-              ':' +
-              controlName +
-              ':' +
-              'nodeEdges',
+            key + ':' + componentName + ':' + controlName + ':' + 'nodeEdges',
           );
           resolve(nodeEdge);
         } catch (error) {
@@ -119,35 +87,24 @@ export class EventsService {
         }
       });
 
-      const nodeProperty: Promise<any> = new Promise((resolve, reject) => {
-        try {
-          const property = this.redisService.getJsonData(
-            tenant +
-              ':' +
-              appGroup +
-              ':' +
-              app +
-              ':' +
-              fabrics +
-              ':' +
-              artifact +
-              ':' +
-              version +
-              ':' +
-              'events:' +
-              componentName +
-              ':' +
-              controlName +
-              ':' +
-              'nodeProperty',
-          );
-          resolve(property);
-        } catch (error) {
-          reject(error);
-        }
-      });
+      // const nodeProperty: Promise<any> = new Promise((resolve, reject) => {
+      //   try {
+      //     const property = this.redisService.getJsonData(
+      //       key +
+      //         ':' +
+      //         componentName +
+      //         ':' +
+      //         controlName +
+      //         ':' +
+      //         'nodeProperty',
+      //     );
+      //     resolve(property);
+      //   } catch (error) {
+      //     reject(error);
+      //   }
+      // });
 
-      const result = await Promise.all([nodes, nodeEdges, nodeProperty])
+      const result = await Promise.all([nodes, nodeEdges])
         .then((values) => {
           console.log('🚀 ~ AppService ~ values:', values);
           return values;
@@ -160,36 +117,36 @@ export class EventsService {
       res = {
         nodes: JSON.parse(result[0]),
         nodeEdges: JSON.parse(result[1]),
-        nodeProperty: JSON.parse(result[2]),
+        // nodeProperty: JSON.parse(result[2]),
       };
 
-      let node = res['nodes'].map((node) => {
-        if (
-          res.hasOwnProperty('nodeProperty') &&
-          res['nodeProperty'].hasOwnProperty(node.id)
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              label: res['nodeProperty'][node.id].nodeName,
-              nodeProperty: res['nodeProperty'][node.id],
-            },
-          };
-        } else {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              nodeProperty: {},
-            },
-          };
-        }
-      });
+      // let node = res['nodes'].map((node) => {
+      //   if (
+      //     res.hasOwnProperty('nodeProperty') &&
+      //     res['nodeProperty'].hasOwnProperty(node.id)
+      //   ) {
+      //     return {
+      //       ...node,
+      //       data: {
+      //         ...node.data,
+      //         label: res['nodeProperty'][node.id].nodeName,
+      //         nodeProperty: res['nodeProperty'][node.id],
+      //       },
+      //     };
+      //   } else {
+      //     return {
+      //       ...node,
+      //       data: {
+      //         ...node.data,
+      //         nodeProperty: {},
+      //       },
+      //     };
+      //   }
+      // });
 
       res = {
         ...res,
-        nodes: node,
+        // nodes: node,
       };
 
       return {
@@ -392,13 +349,14 @@ export class EventsService {
 
       const key = `${tenant}:${appGroup}:${app}:${fabrics}:${artifact}:${version}:events`;
       const type = resquestBody.type;
-      console.log(resquestBody, 'dsb', resquestBody.data.nodes, 'fds');
+      console.log(resquestBody, 'dsb', resquestBody.data, 'fds');
 
       const nodes = resquestBody.data.nodes;
 
       let eventSummary = this.convertToNewFormat(data.nodes) || {};
       data = {
-        ...data,
+        nodes: data.nodes,
+        nodeEdges: data.nodeEdges,
         nodeProperty:
           nodes &&
           nodes.reduce((acc, node) => {
@@ -412,75 +370,78 @@ export class EventsService {
           }, {}),
         eventSummary: eventSummary,
       };
-      let newEventsVersion = 'v1';
-      if (type === 'save') {
-        let versionList = await this.getVersion(
-          tenant,
-          appGroup,
-          app,
-          fabrics,
-          artifact,
-          version,
-          componentName,
-          controlName,
-        );
-        if (
-          versionList &&
-          versionList.status === 200 &&
-          versionList.data &&
-          versionList.data.length > 0
-        ) {
-          newEventsVersion = `v${versionList.data.length + 1}`;
-        }
-      } else {
-        newEventsVersion = eventsVersion;
-      }
+      // let newEventsVersion = 'v1';
+      // if (type === 'save') {
+      //   let versionList = await this.getVersion(
+      //     tenant,
+      //     appGroup,
+      //     app,
+      //     fabrics,
+      //     artifact,
+      //     version,
+      //     componentName,
+      //     controlName,
+      //   );
+      //   if (
+      //     versionList &&
+      //     versionList.status === 200 &&
+      //     versionList.data &&
+      //     versionList.data.length > 0
+      //   ) {
+      //     newEventsVersion = `v${versionList.data.length + 1}`;
+      //   }
+      // } else {
+      //   newEventsVersion = eventsVersion;
+      // }
 
       Object.keys(data).forEach(async (keys) => {
         await this.redisService.setJsonData(
-          key + `:${componentName}:${controlName}:${newEventsVersion}:${keys}`,
+          key + `:${componentName}:${controlName}:${keys}`,
           JSON.stringify(data[keys]),
         );
       });
-      if (type === 'save') {
-        let versions = await this.getVersion(
-          tenant,
-          appGroup,
-          app,
-          fabrics,
-          artifact,
-          version,
-          componentName,
-          controlName,
-        );
-        if (versions && versions.status === 200 && versions.data) {
-          return {
-            status: 200,
-            data: versions.data,
-          };
-        } else {
-          return {
-            status: 200,
-            data: [],
-          };
-        }
-      } else {
-        return {
-          status: 200,
-          data: 'updated',
-        };
-      }
+
+      return {
+        status: 200,
+        data: 'updated',
+      };
+
+      // if (type === 'save') {
+      //   let versions = await this.getVersion(
+      //     tenant,
+      //     appGroup,
+      //     app,
+      //     fabrics,
+      //     artifact,
+      //     version,
+      //     componentName,
+      //     controlName,
+      //   );
+      //   if (versions && versions.status === 200 && versions.data) {
+      //     return {
+      //       status: 200,
+      //       data: versions.data,
+      //     };
+      //   } else {
+      //     return {
+      //       status: 200,
+      //       data: [],
+      //     };
+      //   }
+      // } else {
+      //   return {
+      //     status: 200,
+      //     data: 'updated',
+      //   };
+      // }
     } catch (error) {
       throw error;
     }
   }
 
-  
-
   async deleteEventVersion(
     tenant,
     appGroup,
-
     application,
     fabrics,
     artifact,

@@ -24,7 +24,6 @@ export class EventsController {
       query.version,
       query.componentName,
       query.controlName,
-      query.ccwVersion,
     );
   }
   @Get('initiate')

@@ -13,7 +13,7 @@ import { MdOutlineSave, MdOutlineUploadFile } from "react-icons/md";
 import { Tooltip } from "@nextui-org/react";
 import {
   getEventsByVersion,
-  getVersion,
+  getInitialEvents,
   handleEvents,
 } from "../../../commonComponents/api/eventsApi";
 import { toast } from "react-toastify";
@@ -23,12 +23,13 @@ import { FaMoon } from "react-icons/fa";
 import ReusableDropDown from "../../reusableComponents/ReusableDropDown";
 import { TorusModellerContext } from "../../../Layout";
 import TorusDropDown from "../../torusComponents/TorusDropDown";
+import TorusButton from "../../torusComponents/TorusButton";
+import TorusToast from "../../../torusComponents/TorusToaster/TorusToast";
 export default function EventNavbar({
   sendDataToFabrics,
   getDataFromFabrics,
   setToggleReactflow,
   tKey,
-  client,
   project,
   fabrics,
   mainArtifacts,
@@ -42,15 +43,26 @@ export default function EventNavbar({
     selectedComponentName,
     setSelectedControlName,
     selectedControlName,
+    selectedVersion,
+    selectedTkey,
+    selectedProject,
+    selectedArtifact,
+    client,
   } = useContext(TorusModellerContext);
-  console.log("eventsNavBarData", selectedControlEvents);
+
+  const eventSelectedVersion = console.log(
+    "eventsNavBarData",
+    selectedControlEvents,
+  );
   const [open, setOpen] = useState(false);
+
+  const [wordLength, setWordLength] = useState(0);
 
   const [versions, setVersions] = useState([]);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const [selectedVersion, setSelectedVersion] = useState(null);
+  const [defSelectedVersion, setDefSelectedVersion] = useState(null);
 
   const [selectedDeletingVersinItem, setSelectedDeletingVersionItem] =
     useState(null);
@@ -61,92 +73,11 @@ export default function EventNavbar({
 
   const [selectedControl, setSelectedControl] = useState(null);
 
-  const getEventsfromVersion = useCallback(
-    async (
-      tKey,
-      client,
-      project,
-      fabrics,
-      mainArtifacts,
-      mainVersion,
-      selectedComponentName,
-      selectedControlName,
-      selectedVersion,
-    ) => {
-      try {
-        const res = await getEventsByVersion(
-          tKey,
-          client,
-          project,
-          fabrics,
-          mainArtifacts,
-          mainVersion,
-          selectedComponentName,
-          selectedControlName,
-          selectedVersion,
-        );
-
-        if (res) sendDataToFabrics(res.data);
-      } catch (error) {
-        toast.error("Cannot find Events by version", {
-          position: "bottom-right",
-          autoClose: 2000,
-          theme: darkMode ? "dark" : "light",
-        });
-      }
-    },
-    [darkMode, sendDataToFabrics],
-  );
-
-  const getVersionList = useCallback(
-    async (
-      tKey,
-      client,
-      project,
-      fabrics,
-      mainArtifacts,
-      mainVersion,
-      componentName,
-      controlName,
-    ) => {
-      try {
-        const res = await getVersion(
-          tKey,
-          client,
-          project,
-          fabrics,
-          mainArtifacts,
-          mainVersion,
-          componentName,
-          controlName,
-          "v1",
-        );
-
-        if (res) setVersions(res?.data);
-      } catch (error) {
-        console.error("Error in getVersionList:", error);
-
-        toast.error("Cannot find Events Version list", {
-          position: "bottom-right",
-          autoClose: 2000,
-          theme: darkMode ? "dark" : "light",
-        });
-      }
-    },
-    [darkMode], // Add any other dependencies needed inside useCallback
-  );
-
-  const handleClick = () => {
-    try {
-      setToggleReactflow((prev) => ({
-        ...prev,
-
-        events: false,
-      }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  console.log(`${selectedTkey},
+    ${client},
+    ${selectedProject},
+    ${selectedArtifact},
+    ${selectedVersion}, mkEdit`);
 
   const openmodal = (type) => {
     try {
@@ -154,169 +85,189 @@ export default function EventNavbar({
         onOpen();
       }
     } catch (err) {
-      toast.error(`cannot get ${type}`, {
-        position: "bottom-right",
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `cannot get ${type}`,
+          closeButton: false,
+        },
+      );
 
-        autoClose: 2000,
-
-        theme: darkMode ? "dark" : "light",
-      });
       console.error(err);
     }
   };
 
-  useEffect(() => {
-    try {
-      if (selectedComponentName && selectedControlName) {
-        getVersionList(
-          tKey,
-          client,
-          project,
-          fabrics,
-          mainArtifacts,
-          mainVersion,
-          selectedComponentName,
-          selectedControlName,
-        );
-      } else {
-        return;
-      }
-    } catch (error) {
-      console.error("Error in getVersionList:", error);
+  // useEffect(() => {
+  //   try {
+  //     if (selectedComponentName && selectedControlName) {
+  //       getVersionList(
+  //         tKey,
+  //         client,
+  //         project,
+  //         fabrics,
+  //         mainArtifacts,
+  //         mainVersion,
+  //         selectedComponentName,
+  //         selectedControlName,
+  //       );
+  //     } else {
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in getVersionList:", error);
 
-      toast.error("Cannot find Events Version list", {
-        position: "bottom-right",
-        autoClose: 2000,
-        theme: darkMode ? "dark" : "light",
-      });
-    }
-  }, [
-    selectedComponentName,
-    selectedControlName,
-    client,
-    project,
-    darkMode,
-    fabrics,
-    mainArtifacts,
-    mainVersion,
-    tKey,
-    getVersionList,
-  ]);
+  //     toast.error("Cannot find Events Version list", {
+  //       position: "bottom-right",
+  //       autoClose: 2000,
+  //       theme: darkMode ? "dark" : "light",
+  //     });
+  //   }
+  // }, [
+  //   selectedComponentName,
+  //   selectedControlName,
+  //   client,
+  //   project,
+  //   darkMode,
+  //   fabrics,
+  //   mainArtifacts,
+  //   mainVersion,
+  //   tKey,
+  //   getVersionList,
+  // ]);
 
-  useEffect(() => {
-    try {
-      if (selectedVersion) {
-        getEventsfromVersion(
-          tKey,
-          client,
-          project,
-          fabrics,
-          mainArtifacts,
-          mainVersion,
-          selectedComponentName,
-          selectedControlName,
-          selectedVersion,
-        ).then((res) => {
-          toast.success(`Events fetched successfully from ${selectedVersion}`, {
-            position: "bottom-right",
-            autoClose: 2000,
-            theme: darkMode ? "dark" : "light",
-          });
-        });
-      } else {
-        return;
-      }
-    } catch (error) {
-      toast.error("Failed to fetch events.", {
-        position: "bottom-right",
-        autoClose: 2000,
-        theme: darkMode ? "dark" : "light",
-      });
+  // useEffect(() => {
+  //   try {
+  //     if (defSelectedVersion) {
+  //       getEventsfromVersion(
+  //         selectedTkey,
+  //         client,
+  //         selectedProject,
+  //         "Nextui",
+  //         selectedArtifact,
+  //         selectedVersion
+  //       ).then((res) => {
+  //         toast.success(
+  //           `Events fetched successfully from ${defSelectedVersion}`,
+  //           {
+  //             position: "bottom-right",
+  //             autoClose: 2000,
+  //             theme: darkMode ? "dark" : "light",
+  //           },
+  //         );
+  //       });
+  //     } else {
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to fetch events.", {
+  //       position: "bottom-right",
+  //       autoClose: 2000,
+  //       theme: darkMode ? "dark" : "light",
+  //     });
 
-      console.error("Error fetching events:", error);
-    }
-  }, [
-    selectedVersion,
-    client,
-    project,
-    darkMode,
-    fabrics,
-    getEventsfromVersion,
-    mainArtifacts,
-    mainVersion,
-    selectedComponentName,
-    selectedControlName,
-    tKey,
-  ]);
+  //     console.error("Error fetching events:", error);
+  //   }
+  // }, [
+  //   defSelectedVersion,
+  //   client,
+  //   project,
+  //   darkMode,
+  //   fabrics,
+  //   mainArtifacts,
+  //   mainVersion,
+  //   selectedComponentName,
+  //   selectedControlName,
+  //   tKey,
+  // ]);
+
+  // useEffect(async () => {
+  //   try {
+  //     const response = await getInitialEvents(
+  //       selectedTkey,
+  //       client,
+  //       selectedProject,
+  //       "Nextui",
+  //       selectedArtifact,
+  //       selectedVersion,
+  //     );
+
+  //     if (response && response.status === 200) {
+  //       if (response && response.data && response.data.length > 0) {
+
+  //       }
+  //     }
+  //   } catch {
+  //     toast.error("Failed to fetch events.", {
+  //       position: "bottom-right",
+  //       autoClose: 2000,
+  //       theme: darkMode ? "dark" : "light",
+  //     });
+  //   }
+  // }, [defSelectedVersion]);
 
   const saveEvents = async (
     tKey,
-
     client,
-
     project,
-
     fabrics,
     mainArtifacts,
-
     mainVersion,
-
     componentName,
-
     controlName,
-
     data,
-
-    type,
   ) => {
     try {
       const res = await handleEvents(
         tKey,
-
         client,
-
         project,
-
         fabrics,
-
         mainArtifacts,
-
         mainVersion,
-
         componentName,
-
         controlName,
-
-
         data,
-
-        type,
       );
 
       if (res && res.status === 200) {
-        if (type === "save" && res && res.data && res.data.length > 0) {
+        if (res && res.data && res.data.length > 0) {
           setVersions(res.data);
-          setSelectedVersion(res.data[res.data.length - 1]);
+          setDefSelectedVersion(res.data[res.data.length - 1]);
         }
 
-        toast.success(`Events is sucessfully ${type}`, {
-          position: "bottom-right",
-
-          autoClose: 2000,
-
-          theme: darkMode ? "dark" : "light",
-        });
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Events saved successfully`,
+            closeButton: false,
+          },
+        );
       }
     } catch (error) {
-      console.error(`Error in ${type} Events:`, error);
+      console.error(`Error in save Events:`, error);
 
-      toast.error("Cannot save Events", {
-        position: "bottom-right",
-
-        autoClose: 2000,
-
-        theme: darkMode ? "dark" : "light",
-      });
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save Events`,
+          closeButton: false,
+        },
+      );
     }
   };
 
@@ -343,7 +294,7 @@ export default function EventNavbar({
 
       setSelectedControlEvents(null);
 
-      setSelectedVersion(null);
+      setDefSelectedVersion(null);
     } catch (e) {
       console.error(e);
     }
@@ -372,9 +323,39 @@ export default function EventNavbar({
 
       setSelectedControlName(selectedControlData?.nodeName);
 
-      setSelectedVersion(null);
+      setDefSelectedVersion(null);
 
       setSelectedControlEvents(selectedControlData);
+
+      getEventsByVersion(
+        selectedTkey,
+        client,
+        selectedProject,
+        "UF",
+        selectedArtifact,
+        selectedVersion,
+        componentName,
+        selectedControlData?.nodeName,
+      ).then((res) => {
+        if (res?.status == 200) {
+          toast(
+            <TorusToast
+              setWordLength={setWordLength}
+              wordLength={wordLength}
+            />,
+            {
+              type: "success",
+              position: "bottom-right",
+              autoClose: 2000,
+              hideProgressBar: true,
+              title: "Success",
+              text: `Events fetched successfully`,
+              closeButton: false,
+            },
+          );
+          sendDataToFabrics(res?.data);
+        }
+      });
     } catch (e) {
       console.error(e);
     }
@@ -413,25 +394,7 @@ export default function EventNavbar({
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      <div className="flex flex-col items-center  bg-white dark:border-[#212121] dark:bg-[#161616] xl:h-[320px] xl:w-[350px] 2xl:h-[580px] 2xl:w-[700px]">
-        <Button
-          onPress={() => {
-            saveEvents(
-              tKey,
-              client,
-              project,
-              fabrics,
-              mainArtifacts,
-              mainVersion,
-              selectedComponentName,
-              selectedControlName,
-              selectedControlEvents,
-              "save",
-            );
-          }}
-        >
-          SAVE
-        </Button>
+      <div className="flex flex-col items-center justify-between  bg-white dark:border-[#212121] dark:bg-[#161616] xl:h-[100%] xl:w-[100%] 2xl:h-[580px] 2xl:w-[700px]">
         <div className="flex flex-col gap-2">
           {componentOptions &&
             componentOptions.length > 0 &&
@@ -581,6 +544,33 @@ export default function EventNavbar({
               /> */}
         </div>
 
+        <div className="flex w-[100%] items-center justify-between p-2 border-t-1 border-gray-300">
+          <div className="flex w-[50%] justify-start">
+            <TorusButton
+              btncolor={"primary"}
+              buttonClassName=" dark:bg-[#0F0F0F] w-[110px] h-[30px]  rounded-md flex justify-center items-center"
+              Children={
+                <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
+                  <p className="text-xs text-white ">Save</p>
+                </div>
+              }
+              onPress={() => {
+                saveEvents(
+                  selectedTkey,
+                  client,
+                  selectedProject,
+                  "UF",
+                  selectedArtifact,
+                  selectedVersion,
+                  selectedComponentName,
+                  selectedControlName,
+                  getDataFromFabrics,
+                );
+              }}
+            />
+          </div>
+        </div>
+
         {/* <div className="flex w-[65%] flex-row items-center pl-[25%]">
             <Button
               size="xs"
@@ -636,21 +626,21 @@ export default function EventNavbar({
                   key={"eversion"}
                   isDisabled={versions && versions.length > 0 ? false : true}
                   title={
-                    (selectedVersion && selectedVersion) || (
+                    (defSelectedVersion && defSelectedVersion) || (
                       <div>
                         <span>{"Version"}</span>
                         {versions && versions.length > 0 && <span>*</span>}
                       </div>
                     )
                   }
-                  selectedKey={new Set([selectedVersion])}
+                  selectedKey={new Set([defSelectedVersion])}
                   DropdownMenuClassName={
                     versions && versions.length > 6
                       ? "h-30 overflow-y-scroll  "
                       : ""
                   }
                   handleSelectedKey={(keys) => {
-                    setSelectedVersion(Array.from(keys)[0]);
+                    setDefSelectedVersion(Array.from(keys)[0]);
                   }}
                   items={
                     versions &&
@@ -670,7 +660,7 @@ export default function EventNavbar({
                 />
 
                 <Button
-                  isDisabled={!selectedVersion}
+                  isDisabled={!defSelectedVersion}
                   size="xs"
                   isIconOnly
                   className=" ml-[-10px] flex w-[30%] flex-row items-center justify-center bg-transparent"
@@ -692,7 +682,7 @@ export default function EventNavbar({
 
                       selectedControlName,
 
-                      selectedVersion,
+                      defSelectedVersion,
 
                       data,
 
@@ -750,7 +740,7 @@ export default function EventNavbar({
 
                         selectedControlName,
 
-                        selectedVersion,
+                        defSelectedVersion,
 
                         data,
 
