@@ -59,7 +59,6 @@ export class EventsService {
     version,
     componentName,
     controlName,
-    eventsVersion,
   ) {
     try {
       let res = {};
@@ -82,8 +81,6 @@ export class EventsService {
               componentName +
               ':' +
               controlName +
-              ':' +
-              eventsVersion +
               ':' +
               'nodes',
           );
@@ -114,8 +111,6 @@ export class EventsService {
               ':' +
               controlName +
               ':' +
-              eventsVersion +
-              ':' +
               'nodeEdges',
           );
           resolve(nodeEdge);
@@ -143,8 +138,6 @@ export class EventsService {
               componentName +
               ':' +
               controlName +
-              ':' +
-              eventsVersion +
               ':' +
               'nodeProperty',
           );
@@ -254,27 +247,133 @@ export class EventsService {
     }
   }
 
-  async getWholeVersion(tenant, appGroup, app, fabrics, artifact, version) {
-    try {
-      const mainJson = JSON.parse(await this.redisService.getJsonData(tenant));
-      console.log(
-        mainJson[tenant]?.[appGroup]?.[app],
-        'newjson',
-        artifact,
-        version,
-      );
-      const eventsWholeVersions =
-        mainJson[tenant]?.[appGroup]?.[app]?.[fabrics]?.[artifact]?.[version]?.[
-          'events'
-        ];
-      return {
-        status: 200,
-        data: eventsWholeVersions || [],
-      };
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  // async getWholeVersion(tenant, appGroup, app, fabrics, artifact, version) {
+  //   try {
+  //     const mainJson = JSON.parse(await this.redisService.getJsonData(tenant));
+  //     console.log(
+  //       mainJson[tenant]?.[appGroup]?.[app],
+  //       'newjson',
+  //       artifact,
+  //       version,
+  //     );
+  //     const eventsWholeVersions =
+  //       mainJson[tenant]?.[appGroup]?.[app]?.[fabrics]?.[artifact]?.[version]?.[
+  //         'events'
+  //       ];
+  //     return {
+  //       status: 200,
+  //       data: eventsWholeVersions || [],
+  //     };
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  // async eventsWholeVersion(tenant, appGroup, app, fabrics, artifact, version) {
+  //   try {
+  //     let mainJson = JSON.parse(await this.redisService.getJsonData(tenant));
+
+  //     let newCcwVersion = 'v1';
+  //     if (mainJson) {
+  //       if (!mainJson.hasOwnProperty(tenant)) {
+  //         mainJson = { ...mainJson, [tenant]: {} };
+  //       }
+  //       if (!mainJson[tenant].hasOwnProperty(appGroup)) {
+  //         mainJson[tenant] = { ...mainJson[tenant], [appGroup]: {} };
+  //       }
+  //       if (!mainJson[tenant][appGroup].hasOwnProperty(app)) {
+  //         mainJson[tenant][appGroup] = {
+  //           ...mainJson[tenant][appGroup],
+  //           [app]: {},
+  //         };
+  //       }
+  //       if (!mainJson[tenant][appGroup][app].hasOwnProperty(fabrics)) {
+  //         mainJson[tenant][appGroup][app] = {
+  //           ...mainJson[tenant][appGroup][app],
+  //           [artifact]: {},
+  //         };
+  //       }
+
+  //       if (
+  //         !mainJson[tenant][appGroup][app][fabrics].hasOwnProperty(artifact)
+  //       ) {
+  //         mainJson[tenant][appGroup][app][fabrics] = {
+  //           ...mainJson[tenant][appGroup][app][fabrics],
+  //           [artifact]: {},
+  //         };
+  //       }
+
+  //       if (
+  //         !mainJson[tenant][appGroup][app][fabrics][artifact].hasOwnProperty(
+  //           version,
+  //         )
+  //       ) {
+  //         mainJson[tenant][appGroup][app][fabrics][artifact] = {
+  //           ...mainJson[tenant][appGroup][app][fabrics][artifact],
+  //           [version]: {},
+  //         };
+  //       }
+  //       if (
+  //         !mainJson[tenant][appGroup][app][fabrics][artifact][
+  //           version
+  //         ].hasOwnProperty('events')
+  //       ) {
+  //         mainJson[tenant][appGroup][app][fabrics][artifact][version] = {
+  //           ...mainJson[tenant][appGroup][app][fabrics][artifact][version],
+  //           ['events']: {},
+  //         };
+  //       }
+
+  //       //Newly added Version for whole Versions
+
+  //       if (
+  //         Object.keys(
+  //           mainJson[tenant][appGroup][app][fabrics][artifact][version][
+  //             'events'
+  //           ],
+  //         ).length > 0
+  //       ) {
+  //         newCcwVersion = `v${
+  //           Object.keys(
+  //             mainJson[tenant][appGroup][app][fabrics][artifact][version][
+  //               'events'
+  //             ],
+  //           ).length + 1
+  //         }`;
+  //         mainJson[tenant][appGroup][app][fabrics][artifact][version][
+  //           'events'
+  //         ] = {
+  //           ...mainJson[tenant][appGroup][app][fabrics][artifact][version][
+  //             'events'
+  //           ],
+  //           [newCcwVersion]: {},
+  //         };
+  //       } else {
+  //         mainJson[tenant][appGroup][app][fabrics][artifact][version][
+  //           'events'
+  //         ] = {
+  //           [newCcwVersion]: {},
+  //         };
+  //       }
+  //     } else
+  //       mainJson[tenant][appGroup][app][fabrics][artifact][version]['events'] =
+  //         {
+  //           [newCcwVersion]: {},
+  //         };
+
+  //     await this.redisService.setJsonData(tenant, JSON.stringify(mainJson));
+
+  //     const savedVersion = Object.keys(
+  //       mainJson[tenant][appGroup][app][fabrics][artifact][version]['events'],
+  //     );
+  //     return {
+  //       status: 200,
+  //       data: savedVersion,
+  //     };
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
   async saveEvents(
     tenant,
@@ -376,111 +475,7 @@ export class EventsService {
     }
   }
 
-  async eventsWholeVersion(tenant, appGroup, app, fabrics, artifact, version) {
-    try {
-      let mainJson = JSON.parse(await this.redisService.getJsonData(tenant));
-
-      let newCcwVersion = 'v1';
-      if (mainJson) {
-        if (!mainJson.hasOwnProperty(tenant)) {
-          mainJson = { ...mainJson, [tenant]: {} };
-        }
-        if (!mainJson[tenant].hasOwnProperty(appGroup)) {
-          mainJson[tenant] = { ...mainJson[tenant], [appGroup]: {} };
-        }
-        if (!mainJson[tenant][appGroup].hasOwnProperty(app)) {
-          mainJson[tenant][appGroup] = {
-            ...mainJson[tenant][appGroup],
-            [app]: {},
-          };
-        }
-        if (!mainJson[tenant][appGroup][app].hasOwnProperty(fabrics)) {
-          mainJson[tenant][appGroup][app] = {
-            ...mainJson[tenant][appGroup][app],
-            [artifact]: {},
-          };
-        }
-
-        if (
-          !mainJson[tenant][appGroup][app][fabrics].hasOwnProperty(artifact)
-        ) {
-          mainJson[tenant][appGroup][app][fabrics] = {
-            ...mainJson[tenant][appGroup][app][fabrics],
-            [artifact]: {},
-          };
-        }
-
-        if (
-          !mainJson[tenant][appGroup][app][fabrics][artifact].hasOwnProperty(
-            version,
-          )
-        ) {
-          mainJson[tenant][appGroup][app][fabrics][artifact] = {
-            ...mainJson[tenant][appGroup][app][fabrics][artifact],
-            [version]: {},
-          };
-        }
-        if (
-          !mainJson[tenant][appGroup][app][fabrics][artifact][
-            version
-          ].hasOwnProperty('events')
-        ) {
-          mainJson[tenant][appGroup][app][fabrics][artifact][version] = {
-            ...mainJson[tenant][appGroup][app][fabrics][artifact][version],
-            ['events']: {},
-          };
-        }
-
-        //Newly added Version for whole Versions
-
-        if (
-          Object.keys(
-            mainJson[tenant][appGroup][app][fabrics][artifact][version][
-              'events'
-            ],
-          ).length > 0
-        ) {
-          newCcwVersion = `v${
-            Object.keys(
-              mainJson[tenant][appGroup][app][fabrics][artifact][version][
-                'events'
-              ],
-            ).length + 1
-          }`;
-          mainJson[tenant][appGroup][app][fabrics][artifact][version][
-            'events'
-          ] = {
-            ...mainJson[tenant][appGroup][app][fabrics][artifact][version][
-              'events'
-            ],
-            [newCcwVersion]: {},
-          };
-        } else {
-          mainJson[tenant][appGroup][app][fabrics][artifact][version][
-            'events'
-          ] = {
-            [newCcwVersion]: {},
-          };
-        }
-      } else
-        mainJson[tenant][appGroup][app][fabrics][artifact][version]['events'] =
-          {
-            [newCcwVersion]: {},
-          };
-
-      await this.redisService.setJsonData(tenant, JSON.stringify(mainJson));
-
-      const savedVersion = Object.keys(
-        mainJson[tenant][appGroup][app][fabrics][artifact][version]['events'],
-      );
-      return {
-        status: 200,
-        data: savedVersion,
-      };
-    } catch (error) {
-      throw error;
-    }
-  }
+  
 
   async deleteEventVersion(
     tenant,
