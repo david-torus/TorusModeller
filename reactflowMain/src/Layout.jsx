@@ -72,7 +72,6 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
-  const [uniqueNames, setUniqueNames] = useState([]);
   const [typesinFlow, setTypesInFlow] = useState([]);
 
   const getTenantPolicy = async (tenant) => {
@@ -187,11 +186,10 @@ export default function Layout({ client }) {
           uniqNameArray.push(node.data.label);
         }
       }
-      setUniqueNames(uniqNameArray);
 
-      getTypesinFlow();
+      return uniqNameArray;
     } else {
-      setTypesInFlow([]);
+      return [];
     }
   }, [nodes]);
 
@@ -331,7 +329,7 @@ export default function Layout({ client }) {
                   };
                 }
               }
-    
+
               return nds;
             })
           );
