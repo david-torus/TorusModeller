@@ -89,7 +89,7 @@ const Treearr = ({ data, parentdata }) => {
         data.map((item, index) => (
           <div
             key={index}
-            className={` mb-2 cursor-grab rounded-md bg-[#F4F5FA] p-2 hover:bg-white  `}
+            className={` mb-2 cursor-grab rounded-md bg-[#F4F5FA] p-2 hover:bg-white dark:bg-[#161616]  `}
           >
             {Object.entries(item) &&
               Object.entries(item).length > 0 &&
@@ -227,7 +227,7 @@ const TreeObj = ({ obj }) => {
 
   return (
     <div
-      className={`mb-2 w-full rounded-md  bg-[#F4F5FA] p-2 text-black  dark:text-white`}
+      className={`mb-2 w-full rounded-md bg-[#F4F5FA] p-2 text-black dark:bg-[#0F0F0F]  dark:text-white`}
     >
       {obj &&
         Object.keys(obj) &&

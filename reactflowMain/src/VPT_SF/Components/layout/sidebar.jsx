@@ -23,7 +23,7 @@ const OrpsSidebar = ({ dropdownJson }) => {
         variant="solid"
         classNames={{
           tabList:
-            " w-full bg-[#F4F5FA]  p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
+            " w-full bg-[#F4F5FA] dark:bg-[#0F0F0F]  p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
 
           tab: !darkMode
             ? " px-0 text-white font-semibold border-none outline-none"
@@ -32,7 +32,7 @@ const OrpsSidebar = ({ dropdownJson }) => {
             ? " border-none rounded-md outline-none"
             : " border-none rounded-md outline-none",
           cursor:
-            "border-white border rounded-md torus-focus:outline-none outline-none",
+            "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none",
           base: "p-2 mt-2",
         }}
         items={
