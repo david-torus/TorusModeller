@@ -1,4 +1,11 @@
-import { useCallback, useState, useRef, createContext, useMemo } from "react";
+import {
+  useCallback,
+  useState,
+  useRef,
+  createContext,
+  useMemo,
+  useEffect,
+} from "react";
 import {
   MiniMap,
   Background,
@@ -69,6 +76,8 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
+  const [uniqueNames, setUniqueNames] = useState([]);
+  const [typesinFlow, setTypesInFlow] = useState([]);
 
   const getTenantPolicy = async (tenant) => {
     try {
@@ -168,19 +177,51 @@ export default function Layout({ client }) {
     },
     [setMenu],
   );
-  const uniqueNames = useMemo(() => {
-    if (nodes.length > 0) {
+
+  const getTypesinFlow = useCallback(() => {
+    try {
+      let typeinFlow = [];
+      for (const node of nodes) {
+        if (!typeinFlow.includes(node.type)) {
+          typeinFlow.push(node.type);
+        }
+      }
+
+      setTypesInFlow(typeinFlow);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [nodes]);
+
+  useEffect(() => {
+    if (nodes && nodes.length > 0) {
       let uniqNameArray = [];
       for (let node of nodes) {
         if (!uniqNameArray.includes(node.data.label)) {
           uniqNameArray.push(node.data.label);
         }
       }
-      return uniqNameArray;
+      setUniqueNames(uniqNameArray);
+
+      getTypesinFlow();
     } else {
-      return [];
+      setTypesInFlow([]);
     }
-  }, [nodes]);
+  }, [nodes, getTypesinFlow]);
+
+  // const uniqueNames = useMemo(() => {
+  //   if (nodes.length > 0) {
+  //     let uniqNameArray = [];
+  //     for (let node of nodes) {
+  //       if (!uniqNameArray.includes(node.data.label)) {
+  //         uniqNameArray.push(node.data.label);
+  //       }
+  //     }
+  //     return uniqNameArray;
+  //   } else {
+  //     return [];
+  //   }
+  // }, [nodes]);
   const updatedNodeConfig = (id, metadata, updatedData) => {
     try {
       setNodes((prev) => {
@@ -243,6 +284,110 @@ export default function Layout({ client }) {
         }
         return prev;
       });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const updateOptions = (data) => {
+    try {
+      setNodes((nds) => {
+        return (
+          nds &&
+          nds.map((node) => {
+            let updatedNode = { ...node };
+            if (node.id === nodePropertyData.id) {
+              updatedNode = {
+                ...updatedNode,
+                data: { ...node.data, ...data },
+              };
+              setNodePropertyData(updatedNode);
+            }
+
+            return updatedNode;
+          })
+        );
+      });
+
+      // setStatus(true);
+
+      // setTimeout(() => {
+      //   setStatus(false);
+      // }, 2000);
+    } catch (error) {
+      console.error(error);
+      // toast.error("Failed to update options.");
+    }
+  };
+
+  const changeNodeProperty = (values) => {
+    try {
+      // takeSnapshot();
+      let key = Object.keys(values)[0];
+      let value = Object.values(values)[0];
+      console.log("values", values, key, value);
+      if (key) {
+        setNodes((nds) => {
+          return (
+            nds &&
+            nds.map((nds) => {
+              if (nds.id == nodePropertyData.id) {
+                if (key == "name") {
+                  return {
+                    ...nds,
+                    data: {
+                      ...nds.data,
+                      label: value,
+                    },
+                    property: {
+                      ...nds.property,
+                      [key]: value,
+                    },
+                  };
+                } else if (key === "layoutFlag") {
+                  return {
+                    ...nds,
+                    [key]: value,
+                  };
+                } else {
+                  return {
+                    ...nds,
+                    property: {
+                      ...nds.property,
+                      [key]: value,
+                    },
+                  };
+                }
+              }
+    
+              return nds;
+            })
+          );
+        });
+
+        setNodePropertyData((prev) => {
+          if (key == "name") {
+            return {
+              ...prev,
+              data: {
+                ...prev.data,
+                label: value,
+              },
+              property: {
+                ...prev.property,
+                [key]: value,
+              },
+            };
+          } else {
+            return {
+              ...prev,
+              property: {
+                ...prev.property,
+                [key]: value,
+              },
+            };
+          }
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -389,7 +534,7 @@ export default function Layout({ client }) {
                   className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} border dark:border-[#212121]  `}
                 >
                   <div
-                    className={`h-full transform   dark:bg-[#161616] bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
+                    className={`h-full transform   bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out dark:bg-[#161616] ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
                   >
                     <div
                       className="top-0 flex w-[100%] cursor-pointer justify-end text-[#161616] dark:text-[#FFFFFF]"
@@ -407,6 +552,10 @@ export default function Layout({ client }) {
                       nodeInfoTabs={nodeInfoTabs}
                       setToggleReactflow={setToggleReactflow}
                       setDenormalizedata={setDenormalizedata}
+                      changeProperty={changeNodeProperty}
+                      uniqueNames={uniqueNames}
+                      nodes={nodes}
+                      changedatavalues={updateOptions}
                     />
                   </div>
                 </div>
