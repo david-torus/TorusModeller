@@ -83,11 +83,8 @@ export const getInitialEvents = async (
 
 export const handleEvents = async (
   tenant,
-
   appGroup,
-
   application,
-
   fabrics,
   mainArtifacts,
 
@@ -96,8 +93,6 @@ export const handleEvents = async (
   componentName,
 
   controlName,
-
-  ccwversion,
 
   data,
 
@@ -110,7 +105,7 @@ export const handleEvents = async (
 
     let body;
 
-    url = `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}&ccwVersion=${ccwversion}`;
+    url = `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}`;
 
     body = {
       type: type,
