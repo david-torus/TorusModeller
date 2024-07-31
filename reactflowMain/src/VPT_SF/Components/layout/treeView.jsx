@@ -264,7 +264,7 @@ const TreeObj = ({ obj }) => {
                         <FaRegUser size={15} />
                       </span>
                       <div
-                        className={`text-md flex  w-[45%] items-center justify-start gap-2 font-medium text-black dark:text-white`}
+                        className={`flex w-[45%]  items-center justify-start gap-2 text-sm font-medium text-black dark:text-white`}
                       >
                         {obj[key]}
                       </div>
