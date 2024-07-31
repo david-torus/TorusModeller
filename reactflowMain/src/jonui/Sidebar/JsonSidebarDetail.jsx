@@ -39,6 +39,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
   const [value, setValue] = useState(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [data, setData] = useState(null);
+  const [bool, setBool] = useState();
 
   console.log(obj, "jk");
   const handleDropdownClick = (event) => {
@@ -56,12 +57,12 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
   // }
 
   useEffect(() => {
-    {
-      obj &&
-        setData(Object.keys(obj).filter((item) => item == "selectedValue"));
+    obj && setData(Object.keys(obj).filter((item) => item == "selectedValue"));
+    if(obj && obj?.type == "boolean"){
+      setBool(obj?.selectedValue);
     }
   }, []);
-
+  
   useEffect(() => {
     if (value) {
       handlejs(
@@ -74,6 +75,11 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
     }
   }, [value]);
 
+  useEffect(() => {
+    if(data !== null && bool !== undefined)
+      handlejs(bool, path + "." + item + "." + data, data, "boolean", showObj);
+  }, [bool]);
+
   const handleDropdownChange = (e) => {
     console.log(e, "st");
     setValue(e);
@@ -85,13 +91,13 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
 
   return (
     <>
-      {obj && obj.type == "dropdown" && (
+      {obj && (obj.type == "dropdown" || obj.type == "boolean") && (
         <>
           {
             <div className="flex w-[100%] flex-col gap-2">
               <div div className="flex w-full flex-col gap-1 ">
                 {/* <p>{obj.label}</p> */}
-                {
+                {obj.type == "dropdown" ? (
                   <TorusDropDown
                     renderEmptyState={() => "No Items..."}
                     classNames={{
@@ -128,8 +134,14 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                     }))}
                     btWidth={"md"}
                   />
-                }
-
+                ) : obj.type == "boolean" ? (
+                  <div className="flex w-[150px]">
+                    <span>{obj?.label}</span>
+                    <TorusSwitch isChecked={bool} setIsChecked={setBool} />
+                  </div>
+                ) : (
+                  <></>
+                )}
                 {/* {
                   <TorusSelector
                     selected={
@@ -217,7 +229,6 @@ const RenderJsonArraySidebarDetail = ({
               close={close}
               handleAddjs={handleAddjs}
               type="arr"
-            
             />
           )}
         />
