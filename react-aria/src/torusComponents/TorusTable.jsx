@@ -313,6 +313,7 @@ export function TorusTable({
   visibleColumns,
   isSkeleton = false,
 }) {
+  console.log("tableData", visibleColumns);
   const [data, setData] = useState([]);
   const [columns, setColumns] = useState(new Set([]));
   const [sortDescriptor, setSortDescriptor] = useState(null);
@@ -445,7 +446,9 @@ export function TorusTable({
         isRowHeader: key == primaryColumn ? true : false,
         allowsSorting: allowsSorting,
       }));
+      console.log("cc", cc, visibleColumns);
       if (visibleColumns && visibleColumns.length > 0) {
+        let newColumns = visibleColumns.filter((key) => key !== primaryColumn);
         setTotalColumns([
           {
             id: primaryColumn,
@@ -455,17 +458,15 @@ export function TorusTable({
             isRowHeader: true,
             allowsSorting: allowsSorting,
           },
-          ...visibleColumns.map((key) => {
-            if (key !== primaryColumn) {
-              return {
-                id: key,
-                name: key,
-                key: key,
-                label: key,
-                isRowHeader: key == primaryColumn ? true : false,
-                allowsSorting: allowsSorting,
-              };
-            }
+          ...newColumns.map((key) => {
+            return {
+              id: key,
+              name: key,
+              key: key,
+              label: key,
+              isRowHeader: key == primaryColumn ? true : false,
+              allowsSorting: allowsSorting,
+            };
           }),
         ]);
       } else {
@@ -477,6 +478,7 @@ export function TorusTable({
       console.error(error);
     }
   };
+  console.log("columns", TotalColumns);
   let [selectedKeys, setSelectedKeys] = React.useState(null);
   useEffect(() => {
     if (Array.isArray(tableData) && !isAsync) {
@@ -586,258 +588,261 @@ export function TorusTable({
         isSkeleton,
       }}
     >
-      {filterColmns.length > 0 && sortDescriptor && totalPages && (
-        <div className="w-full h-screen flex flex-col items-center justify-evenly">
-          <div className="w-full h-[8%] flex justify-center items-center ">
-            <div className="w-[95%] h-full flex justify-between items-center pl-2">
-              <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
-                <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
-                  <div className="w-[100%] h-full bg-transparent">
-                    <div className="grid grid-cols-12 gap-0.5 ">
-                      <div className="col-span-3 flex justify-start items-center">
-                        <div className="w-[100%]">
-                          <span className="text-lg font-medium text-[#101828]">
-                            {heading}
-                          </span>
+      {filterColmns &&
+        filterColmns.length > 0 &&
+        sortDescriptor &&
+        totalPages && (
+          <div className="w-full h-screen flex flex-col items-center justify-evenly">
+            <div className="w-full h-[8%] flex justify-center items-center ">
+              <div className="w-[95%] h-full flex justify-between items-center pl-2">
+                <div className="w-[60%] h-full bg-transparent rounded-md flex justify-start  ">
+                  <div className="w-[100%] h-full bg-transparent gap-1 rounded-md flex flex-col items-center">
+                    <div className="w-[100%] h-full bg-transparent">
+                      <div className="grid grid-cols-12 gap-0.5 ">
+                        <div className="col-span-3 flex justify-start items-center">
+                          <div className="w-[100%]">
+                            <span className="text-lg font-medium text-[#101828]">
+                              {heading}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="col-span-3 flex justify-start items-center">
+                          {length()}
                         </div>
                       </div>
-                      <div className="col-span-3 flex justify-start items-center">
-                        {length()}
+                    </div>
+                    <div className="w-[100%] h-full bg-transparent">
+                      <div className="grid grid-cols-12 gap-0.5 ">
+                        {descriptions(description)}
                       </div>
                     </div>
                   </div>
-                  <div className="w-[100%] h-full bg-transparent">
-                    <div className="grid grid-cols-12 gap-0.5 ">
-                      {descriptions(description)}
-                    </div>
+                </div>
+                <div className="w-[40%] h-full flex flex-row justify-end gap-[0.2rem] items-center">
+                  <div className="w-[20%] flex justify-end items-center py-2">
+                    <TorusButton
+                      Children="Save"
+                      width={"full"}
+                      btncolor={"#FFFFFF"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      borderColor={"2px solid #D0D5DD"}
+                      radius={"lg"}
+                      color={"#000000"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      height={"md"}
+                      fontStyle={"text-sm font-medium text-[#344054]"}
+                      startContent={<CiSaveUp1 size={22} color="#344054" />}
+                      onPress={handleSave}
+                    />
+                  </div>
+                  <div className="w-[20%] flex justify-end items-center py-2">
+                    <TorusButton
+                      Children="Import"
+                      width={"full"}
+                      btncolor={"#FFFFFF"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      borderColor={"2px solid #D0D5DD"}
+                      radius={"lg"}
+                      color={"#000000"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      height={"md"}
+                      fontStyle={"text-sm font-medium text-[#344054]"}
+                      startContent={<ImportIcon />}
+                    />
+                  </div>
+                  <div className="w-[25%] h-[100%] flex bg-transparent rounded-md  items-center">
+                    <TorusDialog
+                      key={"TableDelete"}
+                      triggerElement={
+                        <TorusButton
+                          Children={`Add`}
+                          size={"xs"}
+                          btncolor={"#0736C4"}
+                          outlineColor="torus-hover:ring-[#0736C4]/50"
+                          radius={"lg"}
+                          color={"#ffffff"}
+                          gap={"py-[0.2rem] px-[0.2rem]"}
+                          height={"md"}
+                          borderColor={"3px solid #0736C4"}
+                          startContent={<PlusIcon />}
+                          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                        />
+                      }
+                      classNames={{
+                        dialogClassName: " flex  border-2 flex-col bg-white",
+                      }}
+                      title={"Add"}
+                      message={"Edit"}
+                      children={({ close }) => <AddAction close={close} />}
+                    />
                   </div>
                 </div>
               </div>
-              <div className="w-[40%] h-full flex flex-row justify-end gap-[0.2rem] items-center">
-                <div className="w-[20%] flex justify-end items-center py-2">
-                  <TorusButton
-                    Children="Save"
-                    width={"full"}
-                    btncolor={"#FFFFFF"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    borderColor={"2px solid #D0D5DD"}
-                    radius={"lg"}
-                    color={"#000000"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    height={"md"}
-                    fontStyle={"text-sm font-medium text-[#344054]"}
-                    startContent={<CiSaveUp1 size={22} color="#344054" />}
-                    onPress={handleSave}
-                  />
-                </div>
-                <div className="w-[20%] flex justify-end items-center py-2">
-                  <TorusButton
-                    Children="Import"
-                    width={"full"}
-                    btncolor={"#FFFFFF"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    borderColor={"2px solid #D0D5DD"}
-                    radius={"lg"}
-                    color={"#000000"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    height={"md"}
-                    fontStyle={"text-sm font-medium text-[#344054]"}
-                    startContent={<ImportIcon />}
-                  />
-                </div>
-                <div className="w-[25%] h-[100%] flex bg-transparent rounded-md  items-center">
-                  <TorusDialog
-                    key={"TableDelete"}
-                    triggerElement={
-                      <TorusButton
-                        Children={`Add`}
-                        size={"xs"}
-                        btncolor={"#0736C4"}
-                        outlineColor="torus-hover:ring-[#0736C4]/50"
-                        radius={"lg"}
-                        color={"#ffffff"}
-                        gap={"py-[0.2rem] px-[0.2rem]"}
-                        height={"md"}
-                        borderColor={"3px solid #0736C4"}
-                        startContent={<PlusIcon />}
-                        fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                      />
-                    }
-                    classNames={{
-                      dialogClassName: " flex  border-2 flex-col bg-white",
-                    }}
-                    title={"Add"}
-                    message={"Edit"}
-                    children={({ close }) => <AddAction close={close} />}
-                  />
-                </div>
-              </div>
             </div>
-          </div>
-          <div className="w-full h-[70%] flex flex-col justify-between items-center">
-            <div className="w-[95%] flex items-center justify-center h-[8%]">
-              <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
-                <div className="w-[20%] h-full bg-white rounded-md pl-2">
-                  <Tabs>
-                    <TabList
-                      aria-label="UnIdentified-Tabs"
-                      className={"flex justify-between gap-0 bg-transparent"}
-                    >
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
-                        }
-                        id="FoR"
+            <div className="w-full h-[70%] flex flex-col justify-between items-center">
+              <div className="w-[95%] flex items-center justify-center h-[8%]">
+                <div className="w-[60%] flex  h-full bg-transparent rounded-md ">
+                  <div className="w-[20%] h-full bg-white rounded-md pl-2">
+                    <Tabs>
+                      <TabList
+                        aria-label="UnIdentified-Tabs"
+                        className={"flex justify-between gap-0 bg-transparent"}
                       >
-                        <span className="text-black font-normal text-xs whitespace-nowrap">
-                          view all
-                        </span>
-                      </Tab>
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
-                        }
-                        id="MaR"
-                      >
-                        <span className="text-black font-normal text-xs">
-                          Monitered
-                        </span>
-                      </Tab>
-                      <Tab
-                        className={
-                          "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
-                        }
-                        id="Emp"
-                      >
-                        <span className="text-black font-normal text-xs">
-                          Text
-                        </span>
-                      </Tab>
-                    </TabList>
-                  </Tabs>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] rounded-l-md border-2 border-[#D0D5DD] border-r-transparent "
+                          }
+                          id="FoR"
+                        >
+                          <span className="text-black font-normal text-xs whitespace-nowrap">
+                            view all
+                          </span>
+                        </Tab>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD]  "
+                          }
+                          id="MaR"
+                        >
+                          <span className="text-black font-normal text-xs">
+                            Monitered
+                          </span>
+                        </Tab>
+                        <Tab
+                          className={
+                            "py-[0.2rem]  bg-white torus-focus:outline-none torus-focus:bg-[#F9FAFB] px-[0.5rem] border-2 border-[#D0D5DD] border-l-transparent rounded-r-md "
+                          }
+                          id="Emp"
+                        >
+                          <span className="text-black font-normal text-xs">
+                            Text
+                          </span>
+                        </Tab>
+                      </TabList>
+                    </Tabs>
+                  </div>
                 </div>
-              </div>
-              <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
-                <div className="w-[80%] flex justify-start items-center">
-                  <TorusSearch
-                    variant="bordered"
-                    labelColor="text-[#000000]/50"
-                    borderColor="border-[#000000]/20"
-                    outlineColor="torus-focus:ring-[#000000]/50"
-                    placeholder="search"
-                    onChange={handleSerach}
-                    isDisabled={false}
-                    radius="lg"
-                    textColor="text-[#000000]"
-                    bgColor="bg-[#FFFFFF]"
-                    value={serchValue}
-                    type="text"
-                  />
-                </div>
-                <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
-                  <TorusDropDown
-                    title={"Filter"}
-                    selectionMode="multiple"
-                    selected={columns}
-                    setSelected={setColumns}
-                    dynamicItems={TotalColumns.filter(
-                      (col) => col.name != primaryColumn
-                    )}
-                    btWidth={"full"}
-                    btncolor={"#FFFFFF"}
-                    btheight={"md"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    radius={"lg"}
-                    color={"#000000"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    borderColor={"2px solid #D0D5DD"}
-                    startContent={<FilterIcon />}
-                    fontStyle={"text-sm font-medium text-[#344054]"}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-full h-[90%] overflow-scroll ">
-              <Table
-                selectedKeys={selectedKeys}
-                onSortChange={setSortDescriptor}
-                sortDescriptor={sortDescriptor}
-                onSelectionChange={setSelectedKeys}
-                className={"w-full h-[90%] mt-2"}
-              >
-                {isSkeleton ? (
-                  <>
-                    {children &&
-                      typeof children === "function" &&
-                      children({
-                        selectedKeys,
-                        sortedItems,
-                        filterColmns,
-                        primaryColumn,
-                      })}
-                  </>
-                ) : (
-                  <>
-                    <TorusTableHeader
-                      selectedKeys={selectedKeys}
-                      columns={[
-                        ...filterColmns,
-                        isEditable && {
-                          id: "Actions",
-                          name: "Actions",
-                          key: "Actions",
-                          label: "Actions",
-                          isRowHeader: false,
-                        },
-                      ]}
+                <div className="w-[40%] h-full flex flex-row justify-between gap-2 items-center">
+                  <div className="w-[80%] flex justify-start items-center">
+                    <TorusSearch
+                      variant="bordered"
+                      labelColor="text-[#000000]/50"
+                      borderColor="border-[#000000]/20"
+                      outlineColor="torus-focus:ring-[#000000]/50"
+                      placeholder="search"
+                      onChange={handleSerach}
+                      isDisabled={false}
+                      radius="lg"
+                      textColor="text-[#000000]"
+                      bgColor="bg-[#FFFFFF]"
+                      value={serchValue}
+                      type="text"
                     />
-
-                    <TableBody
-                      renderEmptyState={() => (
-                        <div className="text-center"> No Data </div>
+                  </div>
+                  <div className="w-[20%] h-[100%] flex bg-transparent rounded-md justify-end items-center">
+                    <TorusDropDown
+                      title={"Filter"}
+                      selectionMode="multiple"
+                      selected={columns}
+                      setSelected={setColumns}
+                      dynamicItems={TotalColumns.filter(
+                        (col) => col.name != primaryColumn
                       )}
-                    >
-                      {sortedItems.map((item, index) => (
-                        <>
-                          <TorusRow
-                            key={item[primaryColumn]}
-                            item={item}
-                            id={index}
-                            index={item[primaryColumn]}
-                            columns={[
-                              ...filterColmns,
-                              isEditable && {
-                                id: "Actions",
-                                name: "Actions",
-                                key: "Actions",
-                                label: "Actions",
-                                isRowHeader: false,
-                              },
-                            ]}
-                            selectedKeys={selectedKeys}
-                            className={
-                              "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
-                            }
-                          />
-                        </>
-                      ))}
-                    </TableBody>
-                  </>
-                )}
-              </Table>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
-            <div className="w-[95%] flex justify-between ">
-              <div className="w-[85%] flex justify-start">
-                <span className="text-sm font-medium text-[#344054]">
-                  Page {page} of {totalPages}
-                </span>
+                      btWidth={"full"}
+                      btncolor={"#FFFFFF"}
+                      btheight={"md"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      radius={"lg"}
+                      color={"#000000"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      borderColor={"2px solid #D0D5DD"}
+                      startContent={<FilterIcon />}
+                      fontStyle={"text-sm font-medium text-[#344054]"}
+                    />
+                  </div>
+                </div>
               </div>
+              <div className="w-full h-[90%] overflow-scroll ">
+                <Table
+                  selectedKeys={selectedKeys}
+                  onSortChange={setSortDescriptor}
+                  sortDescriptor={sortDescriptor}
+                  onSelectionChange={setSelectedKeys}
+                  className={"w-full h-[90%] mt-2"}
+                >
+                  {isSkeleton ? (
+                    <>
+                      {children &&
+                        typeof children === "function" &&
+                        children({
+                          selectedKeys,
+                          sortedItems,
+                          filterColmns,
+                          primaryColumn,
+                        })}
+                    </>
+                  ) : (
+                    <>
+                      <TorusTableHeader
+                        selectedKeys={selectedKeys}
+                        columns={[
+                          ...filterColmns,
+                          isEditable && {
+                            id: "Actions",
+                            name: "Actions",
+                            key: "Actions",
+                            label: "Actions",
+                            isRowHeader: false,
+                          },
+                        ]}
+                      />
 
-              <div className="w-[15%] flex items-center justify-end gap-2">
-                {/* <TorusButton
+                      <TableBody
+                        renderEmptyState={() => (
+                          <div className="text-center"> No Data </div>
+                        )}
+                      >
+                        {sortedItems.map((item, index) => (
+                          <>
+                            <TorusRow
+                              key={item[primaryColumn]}
+                              item={item}
+                              id={index}
+                              index={item[primaryColumn]}
+                              columns={[
+                                ...filterColmns,
+                                isEditable && {
+                                  id: "Actions",
+                                  name: "Actions",
+                                  key: "Actions",
+                                  label: "Actions",
+                                  isRowHeader: false,
+                                },
+                              ]}
+                              selectedKeys={selectedKeys}
+                              className={
+                                "border-1 border-b-slate-800 border-t-transparent border-l-transparent border-r-transparent"
+                              }
+                            />
+                          </>
+                        ))}
+                      </TableBody>
+                    </>
+                  )}
+                </Table>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center justify-center pl-2 w-[100%] h-[5%]">
+              <div className="w-[95%] flex justify-between ">
+                <div className="w-[85%] flex justify-start">
+                  <span className="text-sm font-medium text-[#344054]">
+                    Page {page} of {totalPages}
+                  </span>
+                </div>
+
+                <div className="w-[15%] flex items-center justify-end gap-2">
+                  {/* <TorusButton
                   Children={<FaArrowDown  color="white"/>}
                   size={"md"}
                   outlineColor="torus-hover:ring-gray-200/50"
@@ -849,40 +854,40 @@ export function TorusTable({
                   isIconOnly={true}
                 /> */}
 
-                <div className="w-[40%] flex justify-start">
-                  <TorusButton
-                    Children="Previous"
-                    size={"md"}
-                    btncolor={"#FFFFFF"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    borderColor={"2px solid #D0D5DD"}
-                    fontStyle={"text-xs font-normal text-[#344054]"}
-                    radius={"lg"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    // startContent={<GiPreviousButton />}
-                    onPress={() => handlePageChange("prev")}
-                  />
-                </div>
+                  <div className="w-[40%] flex justify-start">
+                    <TorusButton
+                      Children="Previous"
+                      size={"md"}
+                      btncolor={"#FFFFFF"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      borderColor={"2px solid #D0D5DD"}
+                      fontStyle={"text-xs font-normal text-[#344054]"}
+                      radius={"lg"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      // startContent={<GiPreviousButton />}
+                      onPress={() => handlePageChange("prev")}
+                    />
+                  </div>
 
-                <div className="w-[30%] flex justify-end">
-                  <TorusButton
-                    Children={"Next"}
-                    btncolor={"#FFFFFF"}
-                    outlineColor="torus-hover:ring-gray-200/50"
-                    borderColor={"2px solid #D0D5DD"}
-                    fontStyle={"text-xs font-normal text-[#344054]"}
-                    radius={"lg"}
-                    gap={"py-[0.2rem] px-[0.5rem]"}
-                    size={"md"}
-                    // startContent={<GiPreviousButton />}
-                    onPress={() => handlePageChange("next")}
-                  />
+                  <div className="w-[30%] flex justify-end">
+                    <TorusButton
+                      Children={"Next"}
+                      btncolor={"#FFFFFF"}
+                      outlineColor="torus-hover:ring-gray-200/50"
+                      borderColor={"2px solid #D0D5DD"}
+                      fontStyle={"text-xs font-normal text-[#344054]"}
+                      radius={"lg"}
+                      gap={"py-[0.2rem] px-[0.5rem]"}
+                      size={"md"}
+                      // startContent={<GiPreviousButton />}
+                      onPress={() => handlePageChange("next")}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </TableDataContext.Provider>
   );
 }

@@ -55,38 +55,34 @@ export default function TableMain({
   };
   return (
     <div
-      className="transition-all w-full delay-100 flex flex-col justify-center 
-          items-center gap-4 overflow-y-hidden h-full "
+      className="flex h-full w-full flex-col items-center justify-center 
+          gap-4 overflow-y-hidden transition-all delay-100 "
     >
       <div
         className={
-          "  flex flex-row justify-around w-[60%] gap-[0px] text-base items-between rounded-md xl:py-[3px] py-[2px] bg-transparent "
+          "  items-between flex w-[60%] flex-row justify-around gap-[0px] rounded-md bg-transparent py-[2px] text-base xl:py-[3px] "
         }
       >
         <div
           onClick={() => tabvisible(1)}
-          className={`flex flex-row gap-2 capitalize transition-all items-center text-center select-none  
-                 xl:px-[25px] xl:py-[3px] px-[21px] py-[4px]  xl:text-md text-sm
-                  text-slate-600 rounded-md  cursor-pointer text-${darkMode ? "white" : "black"} 
-                 
-                ${tabopen === 1 && `border border-slate-500/50 font-bold `}`}
+          className={`xl:text-md flex cursor-pointer select-none flex-row items-center gap-2 rounded-md  px-[21px] py-[4px] text-center text-sm  capitalize text-slate-600 transition-all  dark:text-white xl:px-[25px] xl:py-[3px]  ${tabopen === 1 && `border border-slate-500/50 font-bold `}`}
         >
           <AiOutlineDatabase className="text-xl" />
           {tableIName}
         </div>
         <div
           onClick={() => tabvisible(2)}
-          className={`flex flex-row xl:gap-2 capitalize transition-all gap-1 items-center text-center 
-                xl:text-md text-sm text-slate-600 select-none  
-                 xl:px-[28px] xl:py-[3px] px-[21px] py-[4px] 
-                  cursor-pointer rounded-md text-${darkMode ? "white" : "black"}
+          className={`xl:text-md flex cursor-pointer select-none flex-row items-center gap-1 rounded-md 
+                px-[21px] py-[4px] text-center text-sm  
+                 capitalize text-slate-600 transition-all dark:text-white 
+                  xl:gap-2 xl:px-[28px] xl:py-[3px]
                   ${tabopen === 2 && `border border-slate-500/50  font-bold `} `}
         >
           <VscSymbolMethod className="text-xl" />
           {tableIIName}
         </div>
       </div>
-      <div className=" shadow-black/40 rounded-xl w-full h-[80%]">
+      <div className=" h-[80%] w-full rounded-xl shadow-black/40">
         <div
           className={
             " h-full w-full  " +

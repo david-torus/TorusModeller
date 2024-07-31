@@ -68,11 +68,11 @@ export default function Sample() {
 
   return (
     <TorusTable
-      isSkeleton={false}
-      isAsync={true}
+      isSkeleton={true}
+      isAsync={false}
       heading="Torus Table"
       description="Records"
-      primaryColumn={"vmsp_id"}
+      primaryColumn={"code"}
       setSelectedRows={setSelectedRows}
       selectedRows={selectedRows}
       tableData={countryCode} //json data
@@ -84,9 +84,9 @@ export default function Sample() {
       onDelete={deleteTableData}
       rowsPerPage={10}
       isEditable={true}
-      visibleColumns={["vmsp_id","bank_code", "created_by"]}
-      editableColumns={["name", "bank_code", "created_by"]}
-      addableColumns={["name", "bank_code", "created_by"]}
+      visibleColumns={["code", "label", "phone", "phoneLength", "specialKey"]}
+      editableColumns={["code", "label", "phone", "phoneLength", "specialKey"]}
+      addableColumns={["code", "label", "phone", "phoneLength", "specialKey"]}
     >
       {({ selectedKeys, filterColmns, sortedItems, primaryColumn }) => (
         <>

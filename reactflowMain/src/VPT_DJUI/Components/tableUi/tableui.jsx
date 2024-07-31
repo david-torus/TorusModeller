@@ -162,7 +162,7 @@ export default function Tableui({
               functionality(
                 "edit",
                 path + "." + key + "." + keys,
-                e.target.value
+                e.target.value,
               );
             }
           });
@@ -258,8 +258,8 @@ export default function Tableui({
             json[parentKey][key]
               .toString()
               .toLowerCase()
-              .includes(search.toString().toLowerCase())
-          )
+              .includes(search.toString().toLowerCase()),
+          ),
         );
         const rowsPerPage = 5;
         const pages = Math.ceil(filteredColumns.length / rowsPerPage);
@@ -299,16 +299,15 @@ export default function Tableui({
   }, [sortDescriptor, items]);
 
   return (
-    <div className="h-full w-[75%] flex flex-col gap-2  items-center  ">
+    <div className="flex h-full w-[75%] flex-col items-center  gap-2  ">
       <Toast ref={toast} />
 
       {json.length > 0 && toogleFunctionality && (
-        <div className="flex flex-row  items-between justify-between w-[100%]  h-[50px]  ">
-          <div className=" flex gap-1 items-center justify-around  rounded-md w-[30%] h-full ">
+        <div className="items-between flex  h-[50px] w-[100%] flex-row  justify-between  ">
+          <div className=" flex h-full w-[30%] items-center  justify-around gap-1 rounded-md ">
             <Button
               className={
-                " rounded-md  flex select-none  text-sm font-bold border  border-slate-500/50 items-center  " +
-                (darkMode ? " bg-[#242424]  text-white" : "text-gray-500 ")
+                " flex  select-none items-center  rounded-md border border-slate-500/50 text-sm  font-bold text-gray-500  dark:bg-[#242424]  dark:text-white"
               }
               onClick={() => {
                 if (json && uniqueColumns.length > 0) handlerow();
@@ -328,26 +327,25 @@ export default function Tableui({
                   <Button
                     size="sm"
                     className={
-                      "rounded-md  flex select-none  text-sm font-bold border  border-slate-500/50  items-center  " +
-                      (darkMode
-                        ? " bg-[#242424]  text-white"
-                        : "text-gray-500 ")
+                      "flex  select-none items-center rounded-md  border border-slate-500/50 text-sm font-bold text-gray-500  dark:bg-[#242424]  dark:text-white  "
                     }
                     isIconOnly={true}
                   >
-                    <FaPlus color={darkMode ? "white" : "#326FD1"} />
+                    <FaPlus
+                      className="text-[#326FD1] dark:text-white "
+                   
+                    />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
                   className={
-                    " h-[60%] p-1 font-bold text-sm text-gray-500  rounded-sm " +
-                    (darkMode ? " bg-[#242424]  text-white" : "text-gray-500 ")
+                    " h-[60%] rounded-sm p-1 text-sm  font-bold  text-gray-500 dark:bg-[#242424]  dark:text-white "
                   }
                   key="keys"
                   aria-label="Keys"
                   title="Add Keys"
                 >
-                  <div className=" flex flex-row justify-center items-center ">
+                  <div className=" flex flex-row items-center justify-center ">
                     <ReusableInput
                       darkMode={darkMode}
                       placeholder="Enter key"
@@ -362,8 +360,7 @@ export default function Tableui({
                         <div className="flex gap-1">
                           <button
                             className={
-                              " rounded-full p-1 " +
-                              (darkMode ? "bg-transparent  " : "bg-white")
+                              " rounded-full bg-white p-1  dark:bg-transparent"
                             }
                             onClick={() => {
                               handlekeyhead(newkey);
@@ -378,8 +375,7 @@ export default function Tableui({
 
                           <button
                             className={
-                              " rounded-full p-1 " +
-                              (darkMode ? "bg-transparent  " : "bg-white")
+                              " rounded-full bg-white p-1  dark:bg-transparent"
                             }
                             onClick={() => {
                               setNewkey("");
@@ -397,14 +393,11 @@ export default function Tableui({
                         classNames: {
                           base: "  w-[100%]",
                           mainWrapper: "h-full ",
-                          input: darkMode
-                            ? "text-white text-small"
-                            : "text-small text-black",
-                          inputWrapper: darkMode
-                            ? "h-[10px] font-normal rounded-md text-white bg-transparent hover:bg-transparent/80 hover:text-gray-700 border border-slate-500/50 "
-                            : "h-[10px] font-normal rounded-md text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50 ",
+                          input: "text-small text-black dark:text-white",
+                          inputWrapper:
+                            "h-[10px] font-normal rounded-md dark:text-white dark:bg-transparent dark:hover:bg-transparent/80 text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50  ",
                         },
-                        className: "shadow-md text-black",
+                        className: "shadow-md text-black ",
                       }}
                     />
                   </div>
@@ -415,7 +408,7 @@ export default function Tableui({
             <div className=" mr-[10px]">{children}</div>
           </div>
 
-          <div className={`transition-all flex justify-end  gap-1  w-[50%]  `}>
+          <div className={`flex w-[50%] justify-end  gap-1  transition-all  `}>
             <ReusableInput
               key={path + "search"}
               darkMode={darkMode}
@@ -423,7 +416,7 @@ export default function Tableui({
               startContent={
                 <FiSearch
                   size={16}
-                  className={darkMode ? "text-[#41425B]" : "text-gray-500"}
+                  className={"text-gray-500 dark:text-[#41425B]"}
                 />
               }
               isClearable={false}
@@ -436,12 +429,9 @@ export default function Tableui({
                 classNames: {
                   base: " w-[50%] h-[30px] ",
 
-                  input: darkMode
-                    ? "text-white text-small"
-                    : "text-small text-black",
-                  inputWrapper: darkMode
-                    ? "h-[10px] font-normal rounded-md text-white bg-transparent hover:bg-transparent/80 hover:text-gray-700 border border-slate-500/50 "
-                    : "h-[10px] font-normal rounded-md text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50 ",
+                  input: "text-small text-black dark:text-white",
+                  inputWrapper:
+                    "h-[10px] font-normal rounded-md dark:text-white dark:bg-transparent dark:hover:bg-transparent/80 text-black bg-[#D9DEE8] hover:bg-[#D9DEE8] hover:text-gray-700 border border-slate-500/50  ",
                 },
                 className: "text-slate-700  shadow-md",
               }}
@@ -451,10 +441,10 @@ export default function Tableui({
                 <Button
                   isIconOnly
                   size="sm"
-                  className={`bg-[${darkMode ? "#41425B" : "#D9DEE8"}] rounded-md border border-slate-500/50 eclipse h-[30px] w-[6%] items-center justify-center flex mr-[-16px]`}
+                  className={` eclipse mr-[-16px] flex h-[30px] w-[6%] items-center justify-center rounded-md border border-slate-500/50 bg-[#D9DEE8] dark:bg-[#41425B]`}
                 >
                   <IoFilterSharp
-                    className={`truncate ${darkMode ? "text-white" : "text-blue-600"}`}
+                    className={`truncate text-blue-600 dark:text-white `}
                     title={selectedColumns.join(",")}
                     size={15}
                     alt="filter"
@@ -487,14 +477,14 @@ export default function Tableui({
                     onClick={() => {
                       if (selectedColumns.includes(item.key)) {
                         setSelectedColumns(
-                          selectedColumns.filter((ele) => ele !== item.key)
+                          selectedColumns.filter((ele) => ele !== item.key),
                         );
                       } else {
                         const newColumns = [...selectedColumns];
                         newColumns.splice(
                           uniqueColumns.indexOf(item.key),
                           0,
-                          item.key
+                          item.key,
                         );
                         setSelectedColumns(newColumns);
                       }
@@ -510,7 +500,7 @@ export default function Tableui({
       )}
 
       {json && uniqueColumns.length > 0 && (
-        <div className="w-full h-full overflow-hidden  flex flex-col justify-space-between gap-2 items-center   ">
+        <div className="justify-space-between flex h-full  w-full flex-col items-center gap-2 overflow-hidden   ">
           <table
             id="table"
             style={{
@@ -519,10 +509,7 @@ export default function Tableui({
               borderRadius: "10px",
             }}
             className={
-              " border-1 border-slate-500/50 " +
-              (darkMode
-                ? "text-[#F4F4F5] bg-[#1D1D1D]"
-                : " bg-[#F1F3F9] text-[#41425B]/85  ")
+              " border-1 border-slate-500/50 bg-[#F1F3F9] text-[#41425B]/85 dark:bg-[#1D1D1D] dark:text-[#F4F4F5] "
             }
           >
             <tr className="  border-b-1  border-b-slate-500/50">
@@ -556,7 +543,7 @@ export default function Tableui({
                           />
                         ) : (
                           <div
-                            className="  flex justify-center items-center gap-1 overflow-hidden "
+                            className="  flex items-center justify-center gap-1 overflow-hidden "
                             onMouseEnter={(e) => {
                               e.preventDefault();
                               sethoverhead(ele);
@@ -567,7 +554,7 @@ export default function Tableui({
                             }}
                           >
                             <span
-                              className=" flex items-center font-semibold justify-center text-center"
+                              className=" flex items-center justify-center text-center font-semibold"
                               onClick={(e) => {
                                 setSelectedhead(ele + index);
                                 setShowhead(true);
@@ -587,17 +574,15 @@ export default function Tableui({
                                     />
                                   }
                                 >
-                                  <div className="flex gap-2 items-center">
+                                  <div className="flex items-center gap-2">
                                     <span>
-                                      <AiOutlineInfoCircle
-                                        color={darkMode ? "white" : "black"}
-                                      />
+                                      <AiOutlineInfoCircle className="text-black dark:text-white" />
                                     </span>
                                   </div>
                                 </Tooltip>
                               )}
                             <span
-                              className="flex content-center cursor-pointer"
+                              className="flex cursor-pointer content-center"
                               title="Delete"
                               style={{
                                 visibility:
@@ -613,9 +598,7 @@ export default function Tableui({
                                 setDeletepop(true);
                               }}
                             >
-                              <RiDeleteBin6Line
-                                color={darkMode ? "white" : "black"}
-                              />
+                              <RiDeleteBin6Line className="text-black dark:text-white" />
                             </span>
                           </div>
                         )}
@@ -636,7 +619,7 @@ export default function Tableui({
                   <tr
                     key={path + "." + parentKey}
                     className={
-                      "transition  ease-in-out duration-300 w-full h-[20%] border-b-1 border-b-slate-500/50 last:border-b-0  "
+                      "h-[20%]  w-full border-b-1 border-b-slate-500/50 transition duration-300 ease-in-out last:border-b-0  "
                     }
                   >
                     {selectedColumns &&
@@ -655,12 +638,12 @@ export default function Tableui({
                               }}
                               key={path + "." + parentKey + "." + key}
                               scope="row"
-                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
-                              overflow-hidden  `}
+                              className={` overflow-hidden whitespace-nowrap bg-[#F1F3F9] 
+                              dark:bg-[#1D1D1D]  `}
                             >
                               <ReusableInput
                                 key={path + "." + parentKey + "." + key}
-                                className={`border-gray-500/30 h-10 ${darkMode ? "text-gray-200" : "text-gray-700"} border rounded-2xl outline-none shadow-none  w-10 bg-transparent`}
+                                className={`h-10 w-10 rounded-2xl border  border-gray-500/30 bg-transparent text-gray-700 shadow-none  outline-none dark:text-gray-200`}
                                 type="text"
                                 defaultValue={json[parentKey][key]}
                                 value={
@@ -696,13 +679,11 @@ export default function Tableui({
                               }}
                               key={path + "." + parentKey + "." + key}
                               scope="row"
-                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
-                              overflow-hidden  `}
+                              className={` overflow-hidden whitespace-nowrap bg-[#F1F3F9] 
+                                dark:bg-[#1D1D1D]  `}
                             >
                               <span
-                                className={`${
-                                  darkMode ? "text-white" : "text-gray-700"
-                                } text-center`}
+                                className={` text-center text-gray-700  dark:text-white`}
                                 title={json[parentKey][key]}
                               >
                                 {json[parentKey][key]}
@@ -721,8 +702,8 @@ export default function Tableui({
                                 width: 100 / selectedColumns.length + "%",
                               }}
                               key={path + "." + parentKey + "." + key}
-                              className={`${darkMode ? "bg-[#1D1D1D]" : "bg-[#F1F3F9]"}  whitespace-nowrap 
-                            overflow-hidden  `}
+                              className={` overflow-hidden whitespace-nowrap bg-[#F1F3F9] 
+                                dark:bg-[#1D1D1D]  `}
                             >
                               <TableUidecider
                                 key={path + "." + parentKey + "." + key}
@@ -742,8 +723,8 @@ export default function Tableui({
                               style={{
                                 width: 100 / selectedColumns.length + "%",
                               }}
-                              className={`${darkMode ? "bg-[#1D1D1D] text-white" : "bg-[#F1F3F9] text-black"}  whitespace-nowrap 
-                        overflow-hidden  `}
+                              className={` overflow-hidden whitespace-nowrap bg-[#F1F3F9] text-white
+                                dark:bg-[#1D1D1D] dark:text-white `}
                             >
                               ---
                             </td>
@@ -774,11 +755,11 @@ export default function Tableui({
         <div className="h-[10%]">
           <Pagination
             classNames={{
-              item: darkMode ? "text-white" : "text-black",
-              next: darkMode ? "text-white" : "text-black",
-              prev: darkMode ? "text-white" : "text-black",
+              item: "dark:text-white text-black",
+              next: "dark:text-white text-black",
+              prev: "dark:text-white text-black",
             }}
-            className={darkMode ? "text-white" : "text-black"}
+            className={"text-black dark:text-white"}
             showControls
             variant="light"
             initialPage={page}

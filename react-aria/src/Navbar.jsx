@@ -112,7 +112,7 @@ export default function Navbar({ color }) {
                   </div>
                 </div>
               }
-              children={
+              children={({ close }) => (
                 <div className="w-[470px] 2xl:w-[700px] 2xl:h-[580px] mt-[3%] ml-[-8%] h-[365px] border border-[#000000]/15 dark:border-[#212121] dark:bg-[#161616] bg-white rounded-lg flex flex-col justify-between">
                   <div className="w-[100%] h-[15%] flex flex-row p-2 border-b border-gray-300 dark:border-[#212121]">
                     <div className="w-[15%] flex items-center justify-start">
@@ -138,7 +138,10 @@ export default function Navbar({ color }) {
                         }}
                       />
                     </div>
-                    <div className="w-[15%] flex items-center justify-end">
+                    <div
+                      onClick={close}
+                      className="w-[15%] flex items-center justify-end"
+                    >
                       <IoCloseOutline />
                     </div>
                   </div>
@@ -319,7 +322,7 @@ export default function Navbar({ color }) {
                     </div>
                   </div>
                 </div>
-              }
+              )}
             />
           </div>
 

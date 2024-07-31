@@ -32,27 +32,22 @@ export default function ReusableInput({
       startContent={startContent}
       endContent={endContent}
       labelPlacement={labelPlacement}
-      style={{
-        color: darkMode ? "white" : "black",
-      }}
-      className="text-gray-700 shadow-md"
+      className="text-gray-700 shadow-md dark:text-black"
       classNames={{
-        base: darkMode ? "w-full text-gray-200" : " w-full text-slate-700",
-        label: darkMode
-          ? ["data-[focused=true]:border-none text-sm font-bold text-white"]
-          : ["data-[focused=true]:border-none text-sm font-bold text-zinc-700"],
+        base: "text-slate-700 w-full dark:text-gray-200",
+        label: [
+          "data-[focused=true]:border-none text-sm font-bold text-zinc-700 dark:text-white",
+        ],
         mainWrapper: "h-full text-slate-700 ",
-        input: darkMode
-          ? ["bg-transparent", "text-white", "placeholder:text-sm text-white "]
-          : ["bg-transparent", "text-black", "placeholder:text-sm text-black "],
-        inputWrapper: darkMode
-          ? [
-              "h-[8px] rounded-md text-slate-700 bg-transparent hover:bg-[#D9DEE8] hover:border-blue-500/50 hover:text-slate-700 border border-slate-500/50 ",
-              "data-[focused=true]:border-pink-500/50",
-            ]
-          : [
-              "h-[8px] rounded-md text-black bg-transparent hover:bg-[#D9DEE8] hover:border-blue-500/50 hover:text-pink-500 border border-slate-500/75 ",
-            ],
+        input: [
+          "bg-transparent",
+          "text-white",
+          "placeholder:text-sm dark:text-white text-black ",
+        ],
+        inputWrapper: [
+          "h-[8px] rounded-md text-slate-700 bg-transparent hover:bg-[#D9DEE8] hover:border-blue-500/50 hover:text-slate-700 border border-slate-500/75 dark:border-slate-500/50 ",
+          "dark:data-[focused=true]:border-pink-500/50",
+        ],
       }}
       {...inputProps}
     />

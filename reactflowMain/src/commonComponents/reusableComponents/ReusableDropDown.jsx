@@ -29,11 +29,9 @@ export default function ReusableDropDown({
           variant="outline"
           className={
             buttonClassName ??
-            `${
-              darkMode
-                ? " border border-slate-400/30 text-[#F4F4F5] "
-                : " border border-slate-400/30 text-black "
-            } w-[100%] `
+            ` w-[100%] border border-slate-400/30 text-black 
+         
+             dark:text-[#F4F4F5] `
           }
           {...buttonProps}
         >
@@ -59,8 +57,7 @@ export default function ReusableDropDown({
           selectedIcon: "w-1 h-1 flex items-center",
         }}
         classNames={{
-          base:` bg-[#1E1E1E] text-white font-bold p-[5px] rounded-lg ${ items && items.length>5 ?"overflow-y-auto h-[200px]":""}  ` ,
-          
+          base: ` bg-[#1E1E1E] text-white font-bold p-[5px] rounded-lg ${items && items.length > 5 ? "overflow-y-auto h-[200px]" : ""}  `,
         }}
         closeOnSelect={closeOnSelect}
         selectionMode={selectionMode}
@@ -78,10 +75,10 @@ export default function ReusableDropDown({
                   onClick={() => {
                     handleDelete(item.key);
                   }}
-                  className="  hover:scale-125 hover:transition bg-transparent
-       hover:ease-in-out duration-200 hover:text-red-500 text-[#616A6B]"
+                  className="  bg-transparent text-[#616A6B] duration-200
+       hover:scale-125 hover:text-red-500 hover:transition hover:ease-in-out"
                 >
-                  <BsTrash3 className=" items-end hover:text-red-500 text-[#616A6B]" />
+                  <BsTrash3 className=" items-end text-[#616A6B] hover:text-red-500" />
                 </div>
               </div>
             ) : (
