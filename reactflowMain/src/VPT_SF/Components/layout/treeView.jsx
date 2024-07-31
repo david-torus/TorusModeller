@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowDown } from "react-icons/io";
 import { ScrollShadow } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { useEffect } from "react";
+import { FaRegUser } from "react-icons/fa";
 
 const Treearr = ({ data, parentdata }) => {
   const { darkMode } = useContext(DarkmodeContext);
@@ -36,12 +37,12 @@ const Treearr = ({ data, parentdata }) => {
           nodeType: nodeType,
           nodeName: nodeName,
           code: item?.orgCode,
-        })
+        }),
       );
 
       event.dataTransfer.setData(
         "application/childparent",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
 
       event.dataTransfer.effectAllowed = "move";
@@ -54,11 +55,11 @@ const Treearr = ({ data, parentdata }) => {
           nodeType: nodeType,
           nodeName: nodeName,
           code: item?.roleCode,
-        })
+        }),
       );
       event.dataTransfer.setData(
         "application/childparent",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
 
       event.dataTransfer.effectAllowed = "move";
@@ -70,11 +71,11 @@ const Treearr = ({ data, parentdata }) => {
           nodeType: nodeType,
           nodeName: nodeName,
           code: item?.psCode,
-        })
+        }),
       );
       event.dataTransfer.setData(
         "application/childparent",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
 
       event.dataTransfer.effectAllowed = "move";
@@ -88,52 +89,31 @@ const Treearr = ({ data, parentdata }) => {
         data.map((item, index) => (
           <div
             key={index}
-            className={` ${darkMode ? "border-gray-300/50 bg-[#313137]" : "border-slate-700 bg-[#f1f3f3]"} border p-1 rounded-sm shadow-md mb-2`}
+            className={` mb-2 cursor-grab rounded-md bg-[#F4F5FA] p-2 hover:bg-white  `}
           >
             {Object.entries(item) &&
               Object.entries(item).length > 0 &&
               Object.entries(item).map(([key, value]) => (
                 <div key={key} className="text-white">
                   {key.includes("Code") ? (
-                    <div className="w-full  gap-1 flex justify-around items-center">
+                    <div className="flex  w-full items-center justify-center gap-1">
                       <div
-                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
-                      >
-                        {key}
-                        <p
-                          className={`${darkMode ? "text-white" : "text-black"}`}
-                        >
-                          :
-                        </p>
-                      </div>
-                      <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
+                        className={` flex w-full items-center justify-start text-sm font-medium text-black dark:text-white xl:pl-[5%] 3xl:pl-[3%] `}
                       >
                         {value}
                       </div>
                     </div>
                   ) : (
-                    <div className="flex gap-1 w-full">
+                    <div className="flex w-full gap-1">
                       <div
-                        className="w-full  gap-3 flex justify-around items-center hover:cursor-grab"
+                        className="flex  w-full items-center justify-center gap-3 hover:cursor-grab"
                         onDragStart={(event) =>
                           onDragStart(event, value, key, filteredObj, item)
                         }
                         draggable
                       >
                         <div
-                          className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
-                        >
-                          {key}
-                          <p
-                            className={`${darkMode ? "text-white" : "text-black"}`}
-                          >
-                            :
-                          </p>
-                        </div>
-
-                        <div
-                          className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
+                          className={` flex w-full items-center  justify-start text-xs text-black/50 dark:text-white xl:pl-[5%] 3xl:pl-[3%]`}
                         >
                           {value}
                         </div>
@@ -190,12 +170,12 @@ const TreeObj = ({ obj }) => {
           obj: obj.orgGrpCode,
           childType: "org",
           parentId: obj.id,
-        })
+        }),
       );
 
       event.dataTransfer.setData(
         "application/parentNode",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
 
       event.dataTransfer.effectAllowed = "move";
@@ -214,11 +194,11 @@ const TreeObj = ({ obj }) => {
           code: "roleCode",
           childType: "roles",
           parentId: obj.id,
-        })
+        }),
       );
       event.dataTransfer.setData(
         "application/parentNode",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
       event.dataTransfer.effectAllowed = "move";
     }
@@ -235,11 +215,11 @@ const TreeObj = ({ obj }) => {
           obj: obj.psGrpCode,
           childType: "ps",
           parentId: obj.id,
-        })
+        }),
       );
       event.dataTransfer.setData(
         "application/parentNode",
-        JSON.stringify(parentnode)
+        JSON.stringify(parentnode),
       );
       event.dataTransfer.effectAllowed = "move";
     }
@@ -247,7 +227,7 @@ const TreeObj = ({ obj }) => {
 
   return (
     <div
-      className={`${darkMode ? "bg-[#1d1c20]" : "bg-[#e9e8e8]"} border-1 ${darkMode ? "border-gray-300/50" : "border-slate-700"}  rounded-md p-2 mb-2 shadow-lg`}
+      className={`mb-2 w-full rounded-md  bg-[#F4F5FA] p-2 text-black  dark:text-white`}
     >
       {obj &&
         Object.keys(obj) &&
@@ -262,66 +242,41 @@ const TreeObj = ({ obj }) => {
           }
           if (typeof obj[key] == "string") {
             return (
-              <div className="flex gap-2 mb-2">
+              <div className="flex items-center justify-center">
                 {key.includes("Code") ? (
                   <>
-                    <div className="w-full  gap-1 flex justify-around items-center ml-[17.2px]">
-                      <div
-                        className={`w-[45%] flex justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
-                      >
-                        {key}
-                        <p
-                          className={`${darkMode ? "text-white" : "text-black"}`}
-                        >
-                          :
-                        </p>
-                      </div>
-
-                      <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
-                      >
-                        {obj[key]}
-                      </div>
+                    <div
+                      className={`flex w-full items-center justify-start gap-2 text-xs text-black/50 dark:text-white xl:pl-[21%] 3xl:pl-[20%]`}
+                    >
+                      {obj[key]}
                     </div>
                   </>
                 ) : key.includes("Name") ? (
-                  <div className="flex gap-1 w-full">
-                    <Button
-                      className="min-w-[5%] min-h-[5%] p-0 bg-transparent border-gray-500/50  flex justify-center items-center"
-                      size="xs"
-                      variant="outline"
-                      onClick={toggleExpansion}
-                    >
-                      <IoIosArrowForward
-                        color={darkMode ? "white" : "black"}
-                        size={15}
-                        className={`transition-all ease-in-out duration-200 delay-75 ${expanded ? "rotate-90" : ""}`}
-                      />
-                    </Button>
-
+                  <div className="flex w-full items-center justify-center gap-1 ">
                     <div
-                      className="w-[95%]  gap-3 flex justify-around items-center hover:cursor-grab"
+                      className="flex   w-[95%] items-center justify-start gap-3 hover:cursor-grab"
                       onDragStart={(event) =>
                         onDragStart(event, obj[key], key, filteredObj)
                       }
                       draggable
                     >
+                      <span className="flex h-[30px] w-[30px] items-center justify-center rounded-md bg-[#0736C4]/15  text-[#0736C4] ">
+                        <FaRegUser size={15} />
+                      </span>
                       <div
-                        className={`w-[45%] flex  justify-around gap-2 items-center text-sm ${darkMode ? "text-white" : "text-black"}`}
-                      >
-                        {key}
-                        <p
-                          className={`${darkMode ? "text-white" : "text-black"}`}
-                        >
-                          :
-                        </p>
-                      </div>
-
-                      <div
-                        className={` w-[45%] flex justify-center items-center text-sm ${darkMode ? "text-white" : "text-black"} `}
+                        className={`text-md flex  w-[45%] items-center justify-start gap-2 font-medium text-black dark:text-white`}
                       >
                         {obj[key]}
                       </div>
+                    </div>
+                    <div
+                      className="flex h-[30px] w-[30px] cursor-pointer items-center justify-end  bg-transparent p-0"
+                      onClick={toggleExpansion}
+                    >
+                      <IoIosArrowDown
+                        size={15}
+                        className={`text-black transition-all  duration-200  dark:text-white ${expanded ? "rotate-180" : ""}`}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -333,7 +288,7 @@ const TreeObj = ({ obj }) => {
 
           if (Array.isArray(obj[key]) && expanded) {
             return (
-              <div className="mt-2 mb-2">
+              <div className="mb-2 mt-2">
                 <Treearr data={obj[key]} parentdata={obj} />
               </div>
             );
@@ -347,7 +302,7 @@ const TreeObj = ({ obj }) => {
 const TreeView = ({ data }) => {
   console.log(data, "sff");
   return (
-    <ScrollShadow className="max-h-[360px] overflow-y-auto p-2">
+    <div className="max-h-[360px] overflow-y-auto p-1">
       {data &&
         data.length > 0 &&
         data.map((item, index) => {
@@ -360,7 +315,7 @@ const TreeView = ({ data }) => {
           }
           return null;
         })}
-    </ScrollShadow>
+    </div>
   );
 };
 

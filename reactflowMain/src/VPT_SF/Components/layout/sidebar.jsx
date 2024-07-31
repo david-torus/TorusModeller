@@ -17,21 +17,23 @@ const OrpsSidebar = ({ dropdownJson }) => {
   const { darkMode } = useContext(DarkmodeContext);
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col ">
       <Tabs
         aria-label="Options"
-        variant="underlined"
+        variant="solid"
         classNames={{
           tabList:
-            "gap-4 w-full relative rounded-none pl-2 border-b border-divider",
-          cursor: !darkMode ? "w-full bg-[#9c9c9c]" : "w-full bg-slate-800",
+            " w-full bg-[#F4F5FA]  p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
+
           tab: !darkMode
-            ? "max-w-fit px-0 h-12 text-white"
-            : "max-w-fit px-0 h-12 text-black",
+            ? " px-0 text-white font-semibold border-none outline-none"
+            : " px-0 text-black font-semibold border-none outline-none",
           tabContent: !darkMode
-            ? "group-data-[selected=true]:text-[#9c9c9c]"
-            : "group-data-[selected=true]:text-[#9c9c9c]",
-          base: "w-full bg-transparent",
+            ? " border-none rounded-md outline-none"
+            : " border-none rounded-md outline-none",
+          cursor:
+            "border-white border rounded-md torus-focus:outline-none outline-none",
+          base: "p-2 mt-2",
         }}
         items={
           fabrics &&
@@ -50,14 +52,15 @@ const OrpsSidebar = ({ dropdownJson }) => {
           <Tab
             key={item.id}
             title={
-              <div className="flex items-center space-x-[2px] hover:text-blue-500">
-                {item.icon}
+              <div className="flex items-center border-none ">
                 <span>{item.label}</span>
               </div>
             }
           >
             {dropdownJson && dropdownJson.hasOwnProperty(item.id) ? (
-              <TreeView data={dropdownJson[item.id]} />
+              <div className="h-40">
+                <TreeView data={dropdownJson[item.id]} />
+              </div>
             ) : (
               <p
                 className={
