@@ -23,7 +23,7 @@ import { MdOutlineEmojiEvents } from "react-icons/md";
 import NodeGallery from "./NodeGallery";
 
 const colors = {
-  home: { dark: "#008080", light: "#008080" },
+  Home: { dark: "#008080", light: "#008080" },
   DF: {
     dark: "#2257f7",
     light: "#244DCB",
