@@ -265,8 +265,6 @@ export default function EventNavbar({
 
     controlName,
 
-    ccwversion,
-
     data,
 
     type,
@@ -289,7 +287,6 @@ export default function EventNavbar({
 
         controlName,
 
-        ccwversion,
 
         data,
 
@@ -417,6 +414,24 @@ export default function EventNavbar({
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="flex flex-col items-center  bg-white dark:border-[#212121] dark:bg-[#161616] xl:h-[320px] xl:w-[350px] 2xl:h-[580px] 2xl:w-[700px]">
+        <Button
+          onPress={() => {
+            saveEvents(
+              tKey,
+              client,
+              project,
+              fabrics,
+              mainArtifacts,
+              mainVersion,
+              selectedComponentName,
+              selectedControlName,
+              selectedControlEvents,
+              "save",
+            );
+          }}
+        >
+          SAVE
+        </Button>
         <div className="flex flex-col gap-2">
           {componentOptions &&
             componentOptions.length > 0 &&
