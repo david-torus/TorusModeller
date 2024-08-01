@@ -14,7 +14,7 @@ const TorusAccordion = memo(
       }
     };
 
-    console.log(items[2].content, "items");
+    // console.log(items[2].content, "items");
 
     return (
       <div id="accordion-open" data-accordion="open">

@@ -63,12 +63,16 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
+        <div>
         <Loop
           color={color}
           selectedFabric={selectedFabric}
           selectedControlEvents={selectedControlEvents}
           sfNodeGalleryData={sfNodeGalleryData}
         />
+
+        </div>
+       
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
