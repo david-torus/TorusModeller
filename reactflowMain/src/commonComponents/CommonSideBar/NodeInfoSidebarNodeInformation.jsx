@@ -22,7 +22,7 @@ export const NodeInfoSidebarNodeInformation = ({
   err,
 }) => {
   return (
-    <>
+    <div className="h-30">
       <Accordion>
         <AccordionItem
           key={"2"}
@@ -30,8 +30,8 @@ export const NodeInfoSidebarNodeInformation = ({
           classNames={{
             titleWrapper: "w-full",
             title: darkMode
-              ? "w-full text-md font-bold text-blue-400"
-              : "w-full text-md font-bold text-blue-700",
+              ? "w-full mt-0 text-md font-bold text-blue-400"
+              : "w-full mt-0 text-md font-bold text-blue-700",
             indicator: darkMode
               ? "text-white font-bolder text-md"
               : "text-black font-bolder text-md",
@@ -39,9 +39,8 @@ export const NodeInfoSidebarNodeInformation = ({
           startContent={
             <IoIosInformationCircle
               className={
-                darkMode
-                  ? "text-blue-400 font-bolder text-lg"
-                  : "text-blue-700 font-bolder text-lg"
+          "      dark:text-blue-400 text-blue-700 font-bolder text-lg"
+           
               }
             />
           }
@@ -73,11 +72,11 @@ export const NodeInfoSidebarNodeInformation = ({
                 <div className="mt-0 px-2 w-full py-2">
                   <Textarea
                     defaultValue={value}
-                    variant={darkMode ? "bordered" : "flat"}
+                    variant={!darkMode ? "bordered" : "flat"}
                     placeholder={key}
                     disableAutosize
                     onValueChange={(e) => changeProperty({ [key]: e })}
-                    isClearable
+                   
                     radius="lg"
                     style={{
                       outline: "none",
@@ -89,7 +88,7 @@ export const NodeInfoSidebarNodeInformation = ({
                       base: " w-full ",
                       label: "text-sm font-bold text-zinc-700",
                       mainWrapper: "h-full text-slate-700 ",
-                      input: darkMode
+                      input: !darkMode
                         ? [
                             "bg-transparent",
                             "text-white",
@@ -104,7 +103,7 @@ export const NodeInfoSidebarNodeInformation = ({
                             "text-sm",
                             "font-bold",
                           ],
-                      inputWrapper: darkMode
+                      inputWrapper: !darkMode
                         ? [
                             "h-[10px]",
                             "rounded-md bg-transparent border border-slate-500/50",
@@ -155,9 +154,9 @@ export const NodeInfoSidebarNodeInformation = ({
                       <span className="">
                         <p
                           className={
-                            darkMode
-                              ? "text-white"
-                              : "text-black text-md font-bold"
+                            !darkMode
+                              ? "text-white font-semibold text-md"
+                              : "text-black font-semibold text-md"
                           }
                         >
                           Select Flag for Layout
@@ -189,6 +188,6 @@ export const NodeInfoSidebarNodeInformation = ({
                 </React.Fragment>}
         </AccordionItem>
       </Accordion>
-    </>
+    </div>
   );
 };

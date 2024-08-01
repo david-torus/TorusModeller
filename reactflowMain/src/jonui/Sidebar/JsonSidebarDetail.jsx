@@ -10,6 +10,7 @@ import { Calendar, Flip, Pencil, PlusIcon, Scan } from "../../SVG_Application";
 import TorusSwitch from "../../torusComponents/TorusSwitch";
 import TorusDialog from "../../commonComponents/torusComponents/TorusDialog";
 import TorusButton from "../../torusComponents/TorusButton";
+import { CiTrash } from "react-icons/ci";
 
 import {
   Modal,
@@ -58,11 +59,11 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
 
   useEffect(() => {
     obj && setData(Object.keys(obj).filter((item) => item == "selectedValue"));
-    if(obj && obj?.type == "boolean"){
+    if (obj && obj?.type == "boolean") {
       setBool(obj?.selectedValue);
     }
   }, []);
-  
+
   useEffect(() => {
     if (value) {
       handlejs(
@@ -76,7 +77,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
   }, [value]);
 
   useEffect(() => {
-    if(data !== null && bool !== undefined)
+    if (data !== null && bool !== undefined)
       handlejs(bool, path + "." + item + "." + data, data, "boolean", showObj);
   }, [bool]);
 
@@ -94,14 +95,21 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
       {obj && (obj.type == "dropdown" || obj.type == "boolean") && (
         <>
           {
-            <div className="flex w-[100%] flex-col gap-2">
-              <div div className="flex w-full flex-col gap-1 ">
-                {/* <p>{obj.label}</p> */}
+            <div className="flex w-full gap-2">
+              <div
+                div
+                className="my-2 flex w-full flex-col gap-1 rounded-lg bg-white"
+              >
+                {obj?.selectedValue.length > 0 && (
+                  <span className="ml-2 mt-2 text-xs text-gray-400">
+                    {obj.label}
+                  </span>
+                )}
                 {obj.type == "dropdown" ? (
                   <TorusDropDown
                     renderEmptyState={() => "No Items..."}
                     classNames={{
-                      buttonClassName: `bg-white dark:bg-[#161616] w-[100%] h-[40px] text-black dark:text-white  mb-2`,
+                      buttonClassName: `bg-white dark:bg-[#161616] w-[105%] h-[40px] text-black dark:text-white mt-2`,
                       listBoxClassName:
                         "bg-white dark:bg-[#161616] text-black dark:text-white",
                     }}
@@ -135,9 +143,11 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                     btWidth={"md"}
                   />
                 ) : obj.type == "boolean" ? (
-                  <div className="flex w-[150px]">
-                    <span>{obj?.label}</span>
-                    <TorusSwitch isChecked={bool} setIsChecked={setBool} />
+                  <div className="flex w-full items-center justify-between p-2 pl-4">
+                    <span className="text-sm text-gray-800">{obj?.label}</span>
+                    <div className="w-1/2">
+                      <TorusSwitch isChecked={bool} setIsChecked={setBool} />
+                    </div>
                   </div>
                 ) : (
                   <></>
@@ -176,6 +186,7 @@ const RenderJsonArraySidebarDetail = ({
   handlejs,
   objs,
   handleAddjs,
+  handleDeletejs
 }) => {
   const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
@@ -208,7 +219,7 @@ const RenderJsonArraySidebarDetail = ({
               btncolor={"#0736C4"}
               radius={"lg"}
               color={"#ffffff"}
-              gap={"py-[0.2rem] px-[0.2rem]"}
+              gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
               height={"md"}
               borderColor={"3px solid #0736C4"}
               startContent={<PlusIcon />}
@@ -217,7 +228,7 @@ const RenderJsonArraySidebarDetail = ({
           }
           classNames={{
             modalClassName:
-              " w-[40%] h-[40%]  flex justify-center items-center  ",
+              " w-[40%] h-[40%] flex justify-center items-center  ",
             dialogClassName: " w-full h-full rounded-lg flex-col bg-white",
           }}
           title={"Add"}
@@ -228,7 +239,7 @@ const RenderJsonArraySidebarDetail = ({
               showObj={showObj}
               close={close}
               handleAddjs={handleAddjs}
-              type="arr"
+              type="arr-0"
             />
           )}
         />
@@ -245,7 +256,7 @@ const RenderJsonArraySidebarDetail = ({
                 }
               >
                 <p
-                  className="flex  cursor-pointer items-center gap-2 p-2 "
+                  className="my-1  flex cursor-pointer items-center gap-2 p-2"
                   onClick={(e) => {
                     setShowAccordianItem(ele);
                     e.stopPropagation();
@@ -265,7 +276,7 @@ const RenderJsonArraySidebarDetail = ({
                 {isExpanded && (
                   <div className="mb-2 p-2">
                     <>
-                      <div className="  flex h-[100%] w-[40%] items-center">
+                      <div className="flex justify-between h-[100%] w-[40%] items-center">
                         <TorusDialog
                           key={"TableDelete"}
                           triggerElement={
@@ -275,7 +286,7 @@ const RenderJsonArraySidebarDetail = ({
                               btncolor={"#0736C4"}
                               radius={"lg"}
                               color={"#ffffff"}
-                              gap={"py-[0.2rem] px-[0.2rem]"}
+                              gap={"py-[0.2rem] px-[0.2rem] mb-[0.5rem]"}
                               height={"md"}
                               borderColor={"3px solid #0736C4"}
                               startContent={<PlusIcon />}
@@ -296,10 +307,23 @@ const RenderJsonArraySidebarDetail = ({
                               showObj={showObj}
                               close={close}
                               handleAddjs={handleAddjs}
-                              type="arr"
+                              type="arr-1"
                               path={index}
                             />
                           )}
+                        />
+                        <TorusButton
+                          Children={`Delete`}
+                          size={"xs"}
+                          btncolor={"#0736C4"}
+                          radius={"lg"}
+                          color={"#f00"}
+                          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                          height={"md"}
+                          borderColor={"3px solid #0736C4"}
+                          startContent={<CiTrash color="white" />}
+                          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                          onPress={() => handleDeletejs(path)}
                         />
                       </div>
                     </>
@@ -442,6 +466,7 @@ export default function JsonSidebarDetail({
   label,
   OgJson,
   handleAddjs,
+  handleDeletejs
 }) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -467,13 +492,14 @@ export default function JsonSidebarDetail({
             save
           </span>
         </span>
-
-        <span className="m-2 mt-1 w-[100%] font-normal text-black dark:text-white">
-          Label :
-          <span className="m-2 w-full font-poppins text-[#6600ff] dark:text-[#c4b707]  ">
-            {label}
+        {label && (
+          <span className="m-2 mt-1 w-[100%] font-normal text-black dark:text-white">
+            Label :
+            <span className="m-2 w-full font-poppins text-[#6600ff] dark:text-[#c4b707]  ">
+              {label}
+            </span>
           </span>
-        </span>
+        )}
       </span>
       <div className="scrollbar-none  overflow-y-scroll">
         {
@@ -621,6 +647,7 @@ export default function JsonSidebarDetail({
                   handlejs={handlejs}
                   objs={obj}
                   handleAddjs={handleAddjs}
+                  handleDeletejs={handleDeletejs}
                 />
               )
               // showObj &&

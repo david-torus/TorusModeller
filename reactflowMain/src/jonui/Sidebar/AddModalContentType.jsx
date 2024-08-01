@@ -4,7 +4,8 @@ import { useState } from "react";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import TorusInput from "../../torusComponents/TorusInput";
 
-const AddTypes = ["input", "Dropdown", "object"];
+const AddObj = ["object"];
+const AddKey = ["input", "boolean", "dropdown"];
 export const AddModalContentType = ({
   close,
   obj,
@@ -21,15 +22,15 @@ export const AddModalContentType = ({
   const handleAdd = (selectedValue) => {
     if (selectedValue == "input" && keyinput && valueinput) {
       handleAddjs(showObj, keyinput, valueinput, type, path,selectedValue);
-
       close();
     }
     if(selectedValue == "object" && keyinput){
       handleAddjs(showObj, keyinput, valueinput, type, path,selectedValue);
+      close();
     }
   };
 
-  console.log(obj, showObj, keyinput, valueinput, path, "df");
+  console.log(obj, showObj, keyinput, valueinput, path, "df", type);
   return (
     <div className="mb-3 flex  h-[100%]  w-[100%] flex-col items-center rounded dark:bg-[#070707]">
       <p className="dark:text-white">Add key-values</p>
@@ -62,7 +63,7 @@ export const AddModalContentType = ({
             selected={value}
             setSelected={setValue}
             selectionMode="single"
-            items={AddTypes.map((ele) => ({
+            items={(type === "obj" || type === "arr-1" ? AddKey : AddObj).map((ele) => ({
               key: ele,
               label: ele,
             }))}

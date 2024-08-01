@@ -1,4 +1,11 @@
-import { useCallback, useState, useRef, createContext, useMemo } from "react";
+import {
+  useCallback,
+  useState,
+  useRef,
+  createContext,
+  useMemo,
+  useEffect,
+} from "react";
 import {
   MiniMap,
   Background,
@@ -65,6 +72,7 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
+  const [typesinFlow, setTypesInFlow] = useState([]);
 
   const getTenantPolicy = async (tenant) => {
     try {
@@ -137,9 +145,12 @@ export default function Layout({ client }) {
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-    setSelectedProject("");
-    setSelectedArtifact("");
-    setSelectedVersion("");
+    if (!fabric === "events") {
+      setSelectedProject("");
+      setSelectedArtifact("");
+      setSelectedVersion("");
+    }
+
     setNodes([]);
     setEdges([]);
 
@@ -178,6 +189,7 @@ export default function Layout({ client }) {
           uniqNameArray.push(node.data.label);
         }
       }
+
       return uniqNameArray;
     } else {
       return [];
@@ -250,6 +262,110 @@ export default function Layout({ client }) {
       console.error(error);
     }
   };
+  const updateOptions = (data) => {
+    try {
+      setNodes((nds) => {
+        return (
+          nds &&
+          nds.map((node) => {
+            let updatedNode = { ...node };
+            if (node.id === nodePropertyData.id) {
+              updatedNode = {
+                ...updatedNode,
+                data: { ...node.data, ...data },
+              };
+              setNodePropertyData(updatedNode);
+            }
+
+            return updatedNode;
+          })
+        );
+      });
+
+      // setStatus(true);
+
+      // setTimeout(() => {
+      //   setStatus(false);
+      // }, 2000);
+    } catch (error) {
+      console.error(error);
+      // toast.error("Failed to update options.");
+    }
+  };
+
+  const changeNodeProperty = (values) => {
+    try {
+      // takeSnapshot();
+      let key = Object.keys(values)[0];
+      let value = Object.values(values)[0];
+      console.log("values", values, key, value);
+      if (key) {
+        setNodes((nds) => {
+          return (
+            nds &&
+            nds.map((nds) => {
+              if (nds.id == nodePropertyData.id) {
+                if (key == "name") {
+                  return {
+                    ...nds,
+                    data: {
+                      ...nds.data,
+                      label: value,
+                    },
+                    property: {
+                      ...nds.property,
+                      [key]: value,
+                    },
+                  };
+                } else if (key === "layoutFlag") {
+                  return {
+                    ...nds,
+                    [key]: value,
+                  };
+                } else {
+                  return {
+                    ...nds,
+                    property: {
+                      ...nds.property,
+                      [key]: value,
+                    },
+                  };
+                }
+              }
+
+              return nds;
+            })
+          );
+        });
+
+        setNodePropertyData((prev) => {
+          if (key == "name") {
+            return {
+              ...prev,
+              data: {
+                ...prev.data,
+                label: value,
+              },
+              property: {
+                ...prev.property,
+                [key]: value,
+              },
+            };
+          } else {
+            return {
+              ...prev,
+              property: {
+                ...prev.property,
+                [key]: value,
+              },
+            };
+          }
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const sendDataToFabrics = useMemo(() => {
     return {
@@ -265,13 +381,16 @@ export default function Layout({ client }) {
     <TorusModellerContext.Provider
       value={{
         ref,
+        setSelectedTkey,
+        selectedTkey,
         client,
+        selectedProject,
+        selectedArtifact,
+        selectedVersion,
         controlJson,
         onPaneClick,
         uniqueNames,
         selectedFabric,
-        selectedTkey,
-        setSelectedTkey,
         handleTabChange,
         eventsNavBarData,
         nodePropertyData,
@@ -280,11 +399,8 @@ export default function Layout({ client }) {
         setSelectedControlName,
         selectedControlName,
         onNodeContextMenu,
-        selectedArtifact,
         setSelectedArtifact,
-        selectedProject,
         setSelectedProject,
-        selectedVersion,
         sfNodeGalleryData,
         setSelectedVersion,
         selectedControlEvents,
@@ -412,6 +528,10 @@ export default function Layout({ client }) {
                       nodeInfoTabs={nodeInfoTabs}
                       setToggleReactflow={setToggleReactflow}
                       setDenormalizedata={setDenormalizedata}
+                      changeProperty={changeNodeProperty}
+                      uniqueNames={uniqueNames}
+                      nodes={nodes}
+                      changedatavalues={updateOptions}
                     />
                   </div>
                 </div>

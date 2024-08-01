@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NodeInfoSidebarTabs } from "../commonComponents/CommonSideBar/NodeInfoSidebarTabs";
 import { RenderData } from "../commonComponents/CommonSideBar/RenderData";
 import { RenderJson } from "./JsonUI";
@@ -11,6 +11,11 @@ import {
 import Builder from "../VPT_DJUI/builder";
 import { AccordianWindow } from "../commonComponents/PropertyWIndow/AccordianWindow";
 import ListWindow from "../commonComponents/PropertyWIndow/ListWindow";
+import { DarkmodeContext } from "../commonComponents/context/DarkmodeContext";
+import { NodeInfoSidebarNodeInformation } from "../commonComponents/CommonSideBar/NodeInfoSidebarNodeInformation";
+import { SideBarDebugandFlag } from "../commonComponents/CommonSideBar/SideBarDebugandFlag";
+import SFSidebar from "../VPT_SF/Components/layout/SFSidebar";
+import TorusInput from "../torusComponents/TorusInput";
 
 const NewNodeInfoSidebar = ({
   showNodeProperty,
@@ -21,6 +26,14 @@ const NewNodeInfoSidebar = ({
   setToggleReactflow,
   setDenormalizedata,
   updatedNodeConfig,
+  changeProperty,
+  uniqueNames,
+  upIdKey,
+  customCodeKey,
+  changedatavalues,
+  setSideT,
+  status,
+  nodes,
 }) => {
   const [activeTab, setActiveTab] = useState("");
   const [sendFabrics, setSendFabrics] = useState(null);
@@ -38,7 +51,30 @@ const NewNodeInfoSidebar = ({
   const [tabopen, seTabopen] = useState(1);
   const [attributes] = useState([]);
   const [methods] = useState([]);
+  const { darkMode } = useContext(DarkmodeContext);
+  const [selectedIPC, setSelectedIPC] = useState("");
+  const [err, setErr] = useState(false);
+  const [request, setRequest] = useState({});
+  const [response, setResponse] = useState(null);
+  const [SIFlag, setSIFlag] = useState("");
 
+  const [sideResponse, setSideResponse] = useState(false);
+
+  const [actionAllowed, setActionAllowed] = useState([]);
+  const [actionDenied, setActionDenied] = useState([]);
+  const [getDisplayNames, setGetDisplayNames] = useState([]);
+  const emptyStatus = false;
+  const valueMsg = false;
+  const options = [
+    { key: "A", label: "A" },
+    { key: "E", label: "E" },
+  ];
+  const [showsfsidebar, setshowsfsidebar] = useState(false);
+
+  const items = [
+    { key: "*", label: "*" },
+    ...(getDisplayNames?.map((item) => ({ key: item, label: item })) || []),
+  ];
   useEffect(() => {
     try {
       if (files) {
@@ -73,9 +109,38 @@ const NewNodeInfoSidebar = ({
     }
   }, [contextMenuVisible, setContextMenuVisible]);
 
+  useEffect(() => {
+    if (currentDrawing === "SF" && sideBarData) {
+      if (sideBarData.data?.hasOwnProperty("children")) {
+        if (nodes && nodes.length > 0) {
+          const displayNames = nodes
+            ?.filter((node) => sideBarData?.data?.children.includes(node.id))
+            ?.map((node) => node?.data?.code);
+
+          setGetDisplayNames((prevDisplayNames) => [
+            ...prevDisplayNames,
+            ...displayNames,
+          ]);
+        }
+      }
+    }
+    return () => {
+      setGetDisplayNames([]);
+    };
+  }, [sideBarData, nodes, currentDrawing]);
+
   const handleOpen = (value) => {
     try {
       setActiveTab(value);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleIPCselection = (e) => {
+    try {
+      setSelectedIPC(e);
+      changeProperty({ IPC_flag: Array.from(e)[0] });
     } catch (error) {
       console.error(error);
     }
@@ -333,7 +398,7 @@ const NewNodeInfoSidebar = ({
   const handleRender = (propw, js, side) => {
     console.log(js, side, js[currentModel], "handle ");
     return (
-      <div className="h-full">
+      <div className="h-[400px]">
         <RenderJson
           json={js}
           nodedata={side}
@@ -343,6 +408,25 @@ const NewNodeInfoSidebar = ({
     );
   };
 
+  const handleSfSidebar = (toggle, setToggle) => {
+    return (
+      <div className="h-full bg-white">
+        {toggle && (
+          <SFSidebar
+            updatedNodeConfig={() => {
+              setToggle(false);
+            }}
+            currentModel={currentModel}
+            setJson={setJson}
+            json={json}
+            sendFabrics={sendFabrics}
+            sidebarVisible={toggle}
+            setSidebarVisible={setToggle}
+          />
+        )}
+      </div>
+    );
+  };
   const handleOpenModal = async (flowType, isDockey = false, flow) => {
     console.log(flowType, isDockey, flow, "flow");
     try {
@@ -432,6 +516,21 @@ const NewNodeInfoSidebar = ({
       console.error(error);
     }
   };
+  const handleNames = (e, key) => {
+    try {
+      if (key === "name") {
+        if (uniqueNames.includes(e.toLowerCase())) {
+          if (e.toLowerCase() === sideBarData.property.name.toLowerCase()) {
+            return;
+          }
+        } else {
+          changeProperty({ [key]: e });
+        }
+      } else changeProperty({ [key]: e });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleContextMenu = (e, value) => {
     try {
@@ -445,25 +544,356 @@ const NewNodeInfoSidebar = ({
       console.error(error);
     }
   };
+
+  const handleDebug = async () => {
+    try {
+      if (upIdKey) {
+        await fetch(`${process.env.REACT_APP_API_URL}pe/debughtrequest`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            role: "Admin",
+          },
+
+          body: JSON.stringify({
+            key: customCodeKey,
+            upId: upIdKey,
+            nodeName: sideBarData?.data?.label,
+            nodeType: sideBarData?.type,
+            nodeId: sideBarData?.id,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.hasOwnProperty("request")) {
+              window.open(
+                `${data.request}?key=${customCodeKey}&upId=${upIdKey}&nodeName=${sideBarData?.data?.label}&nodeType=${sideBarData?.type}&nodeId=${sideBarData?.id}&mode=${data.mode}`,
+                "_blank",
+              );
+            }
+          });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleRequest = async () => {
+    try {
+      if (upIdKey) {
+        const responses = await fetch(
+          `${process.env.REACT_APP_API_URL}pe/debugrequest`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              role: "Admin",
+            },
+            body: JSON.stringify({
+              key: customCodeKey,
+              upId: upIdKey,
+              nodeName: sideBarData.data.label,
+              nodeType: sideBarData.type,
+              nodeId: sideBarData.id,
+            }),
+          },
+        ).then((response) => response.json());
+        setRequest(responses);
+        setSideT(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (upIdKey) {
+        const responses = await fetch(
+          `${process.env.REACT_APP_API_URL}pe/debugnode`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              role: "Admin",
+            },
+            body: JSON.stringify({
+              key: customCodeKey,
+              upId: upIdKey,
+              nodeName: sideBarData.data.label,
+              nodeType: sideBarData.type,
+              nodeId: sideBarData.id,
+              params: request,
+            }),
+          },
+        ).then((response) => response.json());
+        setResponse(responses);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSIFlagselection = (e) => {
+    try {
+      if (Array.from(e)[0]) {
+        setSIFlag(Array.from(e)[0]);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleAAlag = (e) => {
+    try {
+      const selectedItems = Array.from(e);
+      const lastSelectedItem = selectedItems[selectedItems.length - 1];
+      const firstSelectedItem = selectedItems[0];
+      const filterItems = selectedItems.filter((item) => item === "*");
+
+      if (
+        lastSelectedItem === "*" ||
+        firstSelectedItem === "*" ||
+        filterItems.includes("*")
+      ) {
+        setActionAllowed(["*"]);
+      } else if (
+        selectedItems.length == items.length - 1 &&
+        !selectedItems.includes("*")
+      ) {
+        setActionAllowed(["*"]);
+      } else {
+        setActionAllowed(selectedItems);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  console.log(actionAllowed, "actionAllowed");
+  const handleADlag = (e) => {
+    try {
+      const selectedItems = Array.from(e);
+      const lastSelectedItem = selectedItems[selectedItems.length - 1];
+      const firstSelectedItem = selectedItems[0];
+      const filterItems = selectedItems.filter((item) => item === "*");
+
+      if (
+        lastSelectedItem === "*" ||
+        firstSelectedItem === "*" ||
+        filterItems.includes("*")
+      ) {
+        setActionDenied(["*"]);
+      } else if (
+        selectedItems.length == items.length - 1 &&
+        !selectedItems.includes("*")
+      ) {
+        setActionDenied(["*"]);
+      } else {
+        setActionDenied(selectedItems);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSave = () => {
+    if (
+      SIFlag.length > 0 &&
+      actionAllowed.length > 0 &&
+      actionDenied.length > 0
+    ) {
+      const newData = {
+        SIFlag,
+        actionAllowed,
+        actionDenied,
+      };
+
+      if (newData) {
+        changedatavalues(newData);
+      }
+    } else {
+      alert("Please select all the fields");
+    }
+  };
+
   console.log(sideBarData, "sidebardatatabaasa");
 
   return (
     <div className="flex flex-col">
       <div className="h-10 bg-transparent">
-        <NodeInfoSidebarTabs
-          nodeInfoTabs={nodeInfoTabs}
-          currentDrawing={currentDrawing}
-          activeTab={activeTab}
-          handleContextMenu={handleContextMenu}
-          setSendFabrics={setSendFabrics}
-          handleOpen={handleOpen}
-          handleOpenModal={handleOpenModal}
-          setToggleReactflow={setToggleReactflow}
-          setFiles={setFiles}
-          //   darkMode={darkMode}
-          contextMenuVisible={contextMenuVisible}
-          contextMenuPosition={contextMenuPosition}
-        />
+        {currentDrawing &&
+          nodeInfoTabs &&
+          nodeInfoTabs[currentDrawing] &&
+          sideBarData.type !== "orgGrp" &&
+          sideBarData.type !== "roleGrp" &&
+          sideBarData.type !== "org" &&
+          sideBarData.type !== "roles" && (
+            <NodeInfoSidebarTabs
+              nodeInfoTabs={nodeInfoTabs}
+              currentDrawing={currentDrawing}
+              activeTab={activeTab}
+              handleContextMenu={handleContextMenu}
+              setSendFabrics={setSendFabrics}
+              handleOpen={handleOpen}
+              handleOpenModal={handleOpenModal}
+              setToggleReactflow={setToggleReactflow}
+              setFiles={setFiles}
+              //   darkMode={darkMode}
+              contextMenuVisible={contextMenuVisible}
+              contextMenuPosition={contextMenuPosition}
+            />
+          )}
+
+        {!toggle && sideBarData && (
+          <div className="h-40">
+            <div className="grid h-40 w-[100%] grid-cols-4 gap-2">
+              <div
+                className={` flex items-start ${"col-span-4 mt-3 flex flex-col items-start justify-between  px-2 py-2"} `}
+              >
+                <h1
+                  className={`${"mb-2  font-bold   text-black/80 dark:text-[#F4F4F5]"}   cursor-pointer  `}
+                >
+                  nodeID :
+                </h1>
+
+                {sideBarData?.id ? (
+                  <div
+                    className={`${"whitespace-nowrap text-xs font-medium  text-black/80 dark:text-[#F4F4F5]"}`}
+                  >
+                    {sideBarData?.id}
+                  </div>
+                ) : (
+                  <p
+                    className={`${"text-sm font-medium text-black  dark:text-[#F4F4F5] "}`}
+                  >
+                    there is no value in this field
+                  </p>
+                )}
+
+                <div className="mt-4 flex w-full items-center justify-start">
+                  <h1
+                    className={`${"mb-2  font-bold  text-black/80 dark:text-[#F4F4F5] "}cursor-pointer  `}
+                  >
+                    Node Name :{" "}
+                  </h1>
+
+                  {sideBarData?.data?.label ? (
+                    <div
+                      className={`${"whitespace-nowrap pl-3 text-xs font-medium    text-black/80  dark:text-[#F4F4F5]"}`}
+                    >
+                      {sideBarData?.data?.label}
+                    </div>
+                  ) : (
+                    <p
+                      className={`${"pl-3 text-sm font-medium  text-black dark:text-[#F4F4F5]"}`}
+                    >
+                      there is no value in this field
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="col-span-4 w-[100%] ">
+                {sideBarData &&
+                  Object.entries(sideBarData?.property).map(([key, value]) => (
+                    <React.Fragment>
+                      {key === "nodeType" && (
+                        <div className="mt-0 w-[100%] px-2 py-2">
+                          <div className="flex flex-row ">
+                            <h1
+                              className={` font-bold text-black/80  dark:text-white`}
+                            >
+                              nodeType :
+                            </h1>
+                            <span
+                              className={`ml-[5px] font-normal text-black/80 dark:text-white`}
+                            >
+                              {value && value}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+              </div>
+
+              <div className="h-100 col-span-4 w-[100%] ">
+                {currentDrawing !== "SF" && (
+                  <NodeInfoSidebarNodeInformation
+                    sideBarData={sideBarData}
+                    currentDrawing={currentDrawing}
+                    handleNames={handleNames}
+                    darkMode={darkMode}
+                    changeProperty={changeProperty}
+                    selectedIPC={selectedIPC}
+                    handleIPCselection={handleIPCselection}
+                    err={err}
+                  />
+                )}
+
+                {sideBarData && currentDrawing === "SF" && (
+                  <div className="h-10">
+                    <SideBarDebugandFlag
+                      upIdKey={upIdKey}
+                      activeTab={activeTab}
+                      handleDebug={handleDebug}
+                      handleRequest={handleRequest}
+                      handleSubmit={handleSubmit}
+                      setSideResponse={setSideResponse}
+                      sideResponse={sideResponse}
+                      currentDrawing={currentDrawing}
+                      sideBarData={sideBarData}
+                      darkMode={darkMode}
+                      SIFlag={SIFlag}
+                      handleSIFlagselection={handleSIFlagselection}
+                      actionAllowed={actionAllowed}
+                      setActionAllowed={setActionAllowed}
+                      handleAAlag={handleAAlag}
+                      actionDenied={actionDenied}
+                      setActionDenied={setActionDenied}
+                      handleADlag={handleADlag}
+                      handleSave={handleSave}
+                      status={status}
+                      emptyStatus={emptyStatus}
+                      valueMsg={valueMsg}
+                      options={options}
+                      items={items}
+                    />
+                  </div>
+                )}
+
+                {sideBarData && currentDrawing === "PF" && (
+                  <SideBarDebugandFlag
+                    upIdKey={upIdKey}
+                    activeTab={activeTab}
+                    handleDebug={handleDebug}
+                    handleRequest={handleRequest}
+                    handleSubmit={handleSubmit}
+                    setSideResponse={setSideResponse}
+                    sideResponse={sideResponse}
+                    currentDrawing={currentDrawing}
+                    sideBarData={sideBarData}
+                    darkMode={darkMode}
+                    SIFlag={SIFlag}
+                    handleSIFlagselection={handleSIFlagselection}
+                    actionAllowed={actionAllowed}
+                    setActionAllowed={setActionAllowed}
+                    handleAAlag={handleAAlag}
+                    actionDenied={actionDenied}
+                    setActionDenied={setActionDenied}
+                    handleADlag={handleADlag}
+                    handleSave={handleSave}
+                    status={status}
+                    emptyStatus={emptyStatus}
+                    valueMsg={valueMsg}
+                    options={options}
+                    items={items}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className=" h-full  ">
@@ -476,6 +906,8 @@ const NewNodeInfoSidebar = ({
           setToggle={setToggle}
           toggle={toggle}
           handleRender={handleRender}
+          handleSfSidebar={handleSfSidebar}
+          setshowsfsidebar={setshowsfsidebar}
           tabvisible={tabvisible}
           tabopen={tabopen}
           attributes={attributes}

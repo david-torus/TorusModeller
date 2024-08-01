@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import FabricsSideBar from "../sidebars/fabricsSideBar/FabricsSideBar";
-import JsonSidebar from "./Sidebar/JsonSidebar";
-import _, { set } from "lodash";
+import _ from "lodash";
 import { unflatten } from "flat";
 import {
   CustomCode,
@@ -526,6 +525,7 @@ const RenderObject = ({
   nodeInfoTabs,
   setDupJson,
   handleAddjs,
+  handleDeletejs
 }) => {
   return (
     <>
@@ -542,6 +542,7 @@ const RenderObject = ({
           nodeInfoTabs={nodeInfoTabs}
           setDupJson={setDupJson}
           handleAddjs={handleAddjs}
+          handleDeletejs={handleDeletejs}
         />
       }
     </>
@@ -770,7 +771,6 @@ export const RenderJson = memo(
     };
 
     const handlejs = (e, i, key, type, jskey) => {
-
       if (type == "obj") {
         setDupJson((prev) => {
           return {
@@ -782,7 +782,7 @@ export const RenderJson = memo(
           };
         });
       }
-      if (type == "arr") {
+      if (type == "arr-0" || type == "arr-1") {
         if (i) {
           const js = structuredClone(dupJson);
           _.set(js, i, e);
@@ -791,17 +791,7 @@ export const RenderJson = memo(
         }
       }
 
-      if (type == "dropdown") {
-        if (i) {
-          const js = structuredClone(dupJson);
-          _.set(js, i, e);
-          setDupJson(js);
-          console.log(js, "arrjs");
-        }
-      }
-
-      if (type == "boolean") {
-        console.log(i, e, "mmm")
+      if (type == "dropdown" || type == "boolean") {
         if (i) {
           const js = structuredClone(dupJson);
           _.set(js, i, e);
@@ -812,7 +802,7 @@ export const RenderJson = memo(
     };
 
     const handleAddjs = (path, key, value, type, i, selectedType) => {
-      console.log(path, key, value, type,i,selectedType,"handleAddjs");
+      console.log(path, key, value, type, i, selectedType, "handleAddjs");
       if (type == "obj") {
         setDupJson((prev) => {
           return {
@@ -823,35 +813,41 @@ export const RenderJson = memo(
             },
           };
         });
-      }
-      else if (type === "arr" && selectedType === "input") {
-       setDupJson((prev) => {
-         return {
-           ...prev,
-           [path]:prev[path].map((item, index) => {
-             if (index === i) {
-               return {
-                 ...item,
-                 [key]: value,
-               };
-             } else {
-               return item;
-             }
-           }),
-         };
-       })
-      }
-      else if (type === "arr" && selectedType === "object") {
+      } else if (type === "arr-1" && selectedType === "input") {
         setDupJson((prev) => {
           return {
             ...prev,
-            [path]:[...prev[path], {
-              label:key
-            } ],
+            [path]: prev[path].map((item, index) => {
+              if (index === i) {
+                return {
+                  ...item,
+                  [key]: value,
+                };
+              } else {
+                return item;
+              }
+            }),
           };
-        })
-       }
-    }
+        });
+      } else if (type === "arr-0" && selectedType === "object") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: [
+              ...prev[path],
+              {
+                label: key,
+              },
+            ],
+          };
+        });
+      }
+    };
+
+    const handleDeletejs = (path) => {
+      console.log(path, "handleDeletejs");
+      // setDupJson(_.omit(dupJson, path));
+    };
 
     function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
       const copy = JSON.parse(JSON.stringify(obj));
@@ -936,6 +932,7 @@ export const RenderJson = memo(
                   nodeInfoTabs={nodeInfoTabs}
                   setDupJson={setDupJson}
                   handleAddjs={handleAddjs}
+                  handleDeletejs={handleDeletejs}
                 />
               </>
             }
