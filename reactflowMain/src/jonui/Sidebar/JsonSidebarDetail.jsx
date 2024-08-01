@@ -95,7 +95,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
       {obj && (obj.type == "dropdown" || obj.type == "boolean") && (
         <>
           {
-            <div className="flex w-full gap-2">
+            <div className="m-2 flex w-full gap-2 bg-gray-200">
               <div
                 div
                 className="my-2 flex w-full flex-col gap-1 rounded-lg bg-white"
@@ -186,7 +186,7 @@ const RenderJsonArraySidebarDetail = ({
   handlejs,
   objs,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
 }) => {
   const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
@@ -227,8 +227,7 @@ const RenderJsonArraySidebarDetail = ({
             />
           }
           classNames={{
-            modalClassName:
-              " w-[40%] h-[40%] flex justify-center items-center  ",
+            modalClassName: " w-[40%] flex justify-center items-center  ",
             dialogClassName: " w-full h-full rounded-lg flex-col bg-white",
           }}
           title={"Add"}
@@ -243,11 +242,24 @@ const RenderJsonArraySidebarDetail = ({
             />
           )}
         />
+        <TorusButton
+          Children={`Delete`}
+          size={"xs"}
+          btncolor={"#0736C4"}
+          radius={"lg"}
+          color={"#f00"}
+          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+          height={"md"}
+          borderColor={"3px solid #0736C4"}
+          startContent={<CiTrash color="white" />}
+          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+          onPress={() => handleDeletejs(path)}
+        />
       </div>
       <div>
         {obj &&
           obj.map((ele, index) => {
-            const isExpanded = expandedItem.includes(ele.label);
+            const isExpanded = expandedItem.includes(ele?.label);
             return (
               <div
                 key={index}
@@ -260,7 +272,7 @@ const RenderJsonArraySidebarDetail = ({
                   onClick={(e) => {
                     setShowAccordianItem(ele);
                     e.stopPropagation();
-                    toggleKey(ele.label);
+                    toggleKey(ele?.label);
                   }}
                 >
                   <span className="flex justify-end">
@@ -270,13 +282,13 @@ const RenderJsonArraySidebarDetail = ({
                       <IoIosArrowForward color="gray" size={20} />
                     )}
                   </span>
-                  <p>{ele.label} </p>
+                  <p>{ele?.label} </p>
                 </p>
 
                 {isExpanded && (
                   <div className="mb-2  p-2">
                     <>
-                      <div className="flex justify-between h-[100%] w-[40%] items-center">
+                      <div className="flex h-[100%] w-[40%] items-center justify-between">
                         <TorusDialog
                           key={"TableDelete"}
                           triggerElement={
@@ -323,7 +335,7 @@ const RenderJsonArraySidebarDetail = ({
                           borderColor={"3px solid #0736C4"}
                           startContent={<CiTrash color="white" />}
                           fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                          onPress={() => handleDeletejs(path)}
+                          onPress={() => handleDeletejs(path, "arr-1",ele.label)}
                         />
                       </div>
                     </>
@@ -466,7 +478,7 @@ export default function JsonSidebarDetail({
   label,
   OgJson,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
 }) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -578,10 +590,24 @@ export default function JsonSidebarDetail({
                             />
                           )}
                         />
+                        <TorusButton
+                          Children={`Delete`}
+                          size={"xs"}
+                          btncolor={"#0736C4"}
+                          radius={"lg"}
+                          color={"#f00"}
+                          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                          height={"md"}
+                          borderColor={"3px solid #0736C4"}
+                          startContent={<CiTrash color="white" />}
+                          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                          onPress={() => handleDeletejs(path)}
+                        />
                       </div>
                     }
                     <div>
-                      {Object.keys(obj[showObj]).map((ele) => {
+                      {console.log(obj, "ooo")}
+                      {obj && Object.keys(obj[showObj]).map((ele) => {
                         if (
                           !Array.isArray(obj[showObj][ele]) &&
                           typeof obj[showObj][ele] !== "object"
