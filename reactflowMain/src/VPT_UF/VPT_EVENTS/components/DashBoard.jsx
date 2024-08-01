@@ -33,6 +33,9 @@ import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeConte
 import { AnimatePresence, motion } from "framer-motion";
 import { MinimapComponent } from "./ContextMenu/Minimap/Minimap";
 import { TorusModellerContext } from "../../../Layout";
+import useForceLayout from "./UseForceLayout";
+import TorusAccordion from "../../../torusComponents/TorusAccordian";
+import TorusRangeSlider from "../../../torusComponents/TorusRangeSlider";
 
 const proOptions = { account: "paid-pro", hideAttribution: true };
 
@@ -64,15 +67,24 @@ export function EventDashBoard({
   const { ref, onNodeContextMenu, onPaneClick } =
     useContext(TorusModellerContext);
   const [nodeConfig, setNodeConfig] = useState([]);
-  // const [strength, setStrength] = useState(-1000);
-  // const [distance, setDistance] = useState(750);
+  const [strength, setStrength] = useState(-1000);
+  const [distance, setDistance] = useState(750);
   const [menu, setMenu] = useState(null);
 
-  const [uniqueNames, setUniqueNames] = useState([]);
   const [nodeData, setNodeData] = useState(null);
   const [mainSequence, setMainSequence] = useState(0);
   const { darkMode } = useContext(DarkmodeContext);
   const [miniMapOpn, setMinimapOpn] = useState(true);
+  const [strenghtsliderValue, setStrenghtSliderValue] = useState(0);
+  const [distancetsliderValue, setDistanceSliderValue] = useState(0);
+
+  useEffect(() => {
+    console.log(
+      strenghtsliderValue,
+      distancetsliderValue,
+      "Strength & Distance",
+    );
+  }, [strenghtsliderValue, setDistanceSliderValue]);
 
   const NODE_TYPES = useMemo(
     () => ({
@@ -84,7 +96,7 @@ export function EventDashBoard({
     }),
     [],
   );
-
+  useForceLayout({ strength, distance });
   /**
    * Validates the children of a node against an event name.
    *
@@ -217,22 +229,6 @@ export function EventDashBoard({
     },
     [setEdges],
   );
-
-  useEffect(() => {
-    try {
-      if (nodes && nodes?.length > 0) {
-        let uniqNameArray = [];
-        for (let node of nodes) {
-          if (!uniqNameArray.includes(node.data.label)) {
-            uniqNameArray.push(node.data.label);
-          }
-        }
-        setUniqueNames(uniqNameArray);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [nodes]);
 
   /**
    * Handles the dragover event on the component.
@@ -694,200 +690,40 @@ export function EventDashBoard({
         (typeof children === "function"
           ? children({ setSidebar, updatenodeDetails, updatedNodeConfig })
           : children)}
-      {/* <Panel
+      <Panel
         position="top-right"
-        className={darkMode ? "bg-[#323232]" : "bg-[#eeeeee]"}
+        // className={` ${darkMode ? "bg-transparent" : "bg-[#eeeeee]"}`}
+        style={{
+          width: "10%",
+          height: "25%",
+          margin: "10px",
+          backgroundColor: darkMode ? "transparent" : "#eeeeee",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <Accordion
-          variant="shadow"
-          className="flex max-h-[300px] w-full max-w-[200px] flex-col gap-1"
-          itemClasses={{
-            base: "py-0 w-[75%] h-[500px] bg-transparent border-0",
-            title: darkMode
-              ? "font-normal text-small text-black font-bold whitespace-nowrap"
-              : "font-normal text-small text-black font-bold whitespace-nowrap",
-            trigger:
-              "py-0 data-[hover=true]:bg-pink-500 bg-blue-500 rounded-lg h-14 flex items-center",
-            indicator: "text-large",
-            content: "text-small px-1 ml-[-2px] py-0",
-          }}
-          motionProps={{
-            variants: {
-              enter: {
-                y: 0,
-                opacity: 1,
-                height: "auto",
-                transition: {
-                  height: {
-                    type: "spring",
-                    stiffness: 500,
-                    damping: 30,
-                    duration: 1,
-                  },
-                  opacity: {
-                    easings: "ease",
-                    duration: 1,
-                  },
-                },
-              },
-              exit: {
-                y: -10,
-                opacity: 0,
-                height: 0,
-                transition: {
-                  height: {
-                    easings: "ease",
-                    duration: 0.25,
-                  },
-                  opacity: {
-                    easings: "ease",
-                    duration: 0.3,
-                  },
-                },
-              },
-            },
-          }}
-        >
-          <AccordionItem
-            expanded={true}
-            indicator={
-              <GiCircularSaw
-                className="text font-bolder text-xl"
-                color="blue-500"
-              />
-            }
-            title="Strength Distance"
-            classNames={{
-              base: "py-0 w-full ml-[-20px]  bg-pink-500 border-0",
-              heading: "py-0 bg-transparent border-0",
-              trigger:
-                "px-1 py-0 data-[hover=true]:bg-default-200 bg-transparent rounded-lg h-14 flex items-center",
-            }}
-            className="border-0 bg-transparent p-2"
-          >
-            <div className="ml-[-10px] flex w-[200px] flex-col items-center justify-center gap-2">
-              <div className="ml-[-20px] p-2">
-                <Slider
-                  size="sm"
-                  // onChange={(e) => setStrength(e)}
-                  label="Strength"
-                  step={100}
-                  maxValue={0}
-                  minValue={-2000}
-                  defaultValue={-2000}
-                  hideValue={false}
-                  className="w-full"
-                  classNames={{
-                    base: "max-w-sm",
-                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
-                    labelWrapper: "mb-2 ",
-                    label: darkMode
-                      ? "font-medium text-gray-700 text-small"
-                      : "font-small text-gray-700 text-small",
-                    value: darkMode
-                      ? "font-small text-gray-700 text-small"
-                      : "font-small text-gray-700 text-small",
-                    track: "border-1-slate-100",
-                    trackWrapper: "w-[100px]",
-                  }}
-                  showTooltip={true}
-                  showOutline={true}
-                  tooltipProps={{
-                    offset: 10,
-                    placement: "bottom",
-                    classNames: {
-                      base: darkMode
-                        ? [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ]
-                        : [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ],
-                      content: darkMode
-                        ? [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ]
-                        : [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ],
-                    },
-                  }}
-                  renderThumb={(props) => (
-                    <div
-                      {...props}
-                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
-                    >
-                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
-                    </div>
-                  )}
-                />
-              </div>
-              <div className="ml-[-20px] p-2">
-                <Slider
-                  radius="full"
-                  size="sm"
-                  // onChange={(e) => setDistance(e)}
-                  label="Distance"
-                  hideValue={false}
-                  maxValue={1000}
-                  minValue={0}
-                  defaultValue={1000}
-                  className="w-full"
-                  classNames={{
-                    base: "max-w-sm",
-                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
-                    labelWrapper: "mb-2",
-                    label: darkMode
-                      ? "font-medium text-gray-700 text-medium"
-                      : "font-medium text-gray-700 text-medium",
-                    value: darkMode
-                      ? "font-medium text-gray-700 text-small"
-                      : "font-medium text-gray-700 text-medium",
-                    track: "border-1-slate-100",
-                    trackWrapper: "w-[100px]",
-                  }}
-                  showTooltip={true}
-                  showOutline={true}
-                  tooltipProps={{
-                    offset: 10,
-                    placement: "bottom",
-                    classNames: {
-                      base: darkMode
-                        ? [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ]
-                        : [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ],
-                      content: darkMode
-                        ? [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ]
-                        : [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ],
-                    },
-                  }}
-                  renderThumb={(props) => (
-                    <div
-                      {...props}
-                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
-                    >
-                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
-                    </div>
-                  )}
-                />
-              </div>
-            </div>
-          </AccordionItem>
-        </Accordion>
+        <div className="flex h-[100%] w-[100%] justify-between rounded-md border border-slate-300 bg-[#FFFFFF] shadow-sm ">
+          <div className="flex items-center justify-around gap-[0.50rem] p-2">
+            {/* <TorusRangeSlider
+              orientation="vertical"
+              sliderValue={strenghtsliderValue}
+              setSliderValue={setStrenghtSliderValue}
+              keys={"strenght"}
+            /> */}
+
+            <TorusRangeSlider
+              orientation="vertical"
+              sliderValue={distancetsliderValue}
+              setSliderValue={setDistanceSliderValue}
+              keys={"distance"}
+            />
+            {/* <TorusRangeSlider orientation="vertical" /> */}
+          </div>
+        </div>
       </Panel>
 
-      {!miniMapOpn && (
+      {/*  {!miniMapOpn && (
         <Button
           className="absolute bottom-3 right-3 z-50 w-1 rounded-md bg-[#333334]  p-1 "
           onPress={() => setMinimapOpn(true)}

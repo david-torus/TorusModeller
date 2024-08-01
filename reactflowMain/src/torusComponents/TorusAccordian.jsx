@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useState } from "react";
 import { TorusAccordianArrow } from "../SVG_Application";
 
 const TorusAccordion = memo(
@@ -14,7 +14,7 @@ const TorusAccordion = memo(
       }
     };
 
-    console.log(items[2].content, "items");
+    // console.log(items[2].content, "items");
 
     return (
       <div id="accordion-open" data-accordion="open">

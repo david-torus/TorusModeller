@@ -20,6 +20,7 @@ export default function FabricsSideBar({
   nodeInfoTabs,
   setDupJson,
   handleAddjs,
+  handleDeletejs
 }) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
@@ -46,19 +47,20 @@ export default function FabricsSideBar({
 
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
-      <div className="   w-full bg-white dark:bg-[#161616]">
-        <div className="relative h-[480px]   ">
-          {
-            <JsonSidebarDetail
-              showObj={showObj}
-              obj={obj}
-              handlejs={handlejs}
-              path={path}
-              label={label}
-              OgJson={OgJson}
-              handleAddjs={handleAddjs}
-            />
-          }
+      <div className="   max-w-full bg-white dark:bg-[#161616]">
+   
+        <div className="h-[480px] relative   ">
+
+       { <JsonSidebarDetail
+          showObj={showObj}
+          obj={obj}
+          handlejs={handlejs}
+          path={path}
+          label={label}
+          OgJson={OgJson}
+          handleAddjs={handleAddjs}
+          handleDeletejs={handleDeletejs}
+        />}
         </div>
         {/* <FabricsSideBarDetails /> */}
       </div>

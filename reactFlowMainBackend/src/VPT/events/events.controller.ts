@@ -24,6 +24,7 @@ export class EventsController {
       query.version,
       query.componentName,
       query.controlName,
+      query.saveKey,
     );
   }
   @Get('initiate')
@@ -37,6 +38,7 @@ export class EventsController {
       query.fabrics,
       query.artifact,
       query.version,
+      query.saveKey,
     );
   }
 
@@ -70,6 +72,7 @@ export class EventsController {
       query.controlName,
       query.ccwVersion,
       body,
+      query.saveKey,
     );
   }
 

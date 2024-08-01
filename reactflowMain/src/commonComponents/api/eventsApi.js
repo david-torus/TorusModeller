@@ -40,11 +40,12 @@ export const getEventsByVersion = async (
   mainVersion,
   componentName,
   controlName,
+  saveKey,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events/`;
   try {
     const response = await fetch(
-      `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}`,
+      `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}&saveKey=${saveKey}`,
 
       {
         method: "GET",
@@ -69,11 +70,12 @@ export const getInitialEvents = async (
   fabrics,
   mainArtifacts,
   mainVersion,
+  saveKey,
 ) => {
   const BASE_URL = `${process.env.REACT_APP_API_URL}events/initiate/`;
   try {
     const response = await fetch(
-      `${BASE_URL}?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}`,
+      `${BASE_URL}?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&saveKey=${saveKey}`,
     ).then((res) => res.json());
     console.log(response, "response from intiate events");
     return response;
@@ -92,6 +94,7 @@ export const handleEvents = async (
   componentName,
   controlName,
   data,
+  saveKey,
 ) => {
   console.log(data, "bodyyy-->");
 
@@ -102,7 +105,7 @@ export const handleEvents = async (
 
     let body;
 
-    url = `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}`;
+    url = `${BASE_URL}?tenant=${tenant}&appGroup=${appGroup}&app=${application}&fabrics=${fabrics}&artifact=${mainArtifacts}&version=${mainVersion}&componentName=${componentName}&controlName=${controlName}&saveKey=${saveKey}`;
 
     body = {
       data: data,

@@ -232,6 +232,15 @@ export default function EventNavbar({
         componentName,
         controlName,
         data,
+        JSON.stringify([
+          "TCL",
+          tKey,
+          fabrics,
+          project,
+          "pgrp",
+          mainArtifacts,
+          mainVersion,
+        ]),
       );
 
       if (res && res.status === 200) {
@@ -336,6 +345,15 @@ export default function EventNavbar({
         selectedVersion,
         componentName,
         selectedControlData?.nodeName,
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          "UF",
+          selectedProject,
+          "pgrp",
+          selectedArtifact,
+          selectedVersion,
+        ]),
       ).then((res) => {
         if (res?.status == 200) {
           toast(
@@ -544,7 +562,7 @@ export default function EventNavbar({
               /> */}
         </div>
 
-        <div className="flex w-[100%] items-center justify-between p-2 border-t-1 border-gray-300">
+        <div className="flex w-[100%] items-center justify-between border-t-1 border-gray-300 p-2">
           <div className="flex w-[50%] justify-start">
             <TorusButton
               btncolor={"primary"}

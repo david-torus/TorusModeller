@@ -63,12 +63,16 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
+        <div>
         <Loop
           color={color}
           selectedFabric={selectedFabric}
           selectedControlEvents={selectedControlEvents}
           sfNodeGalleryData={sfNodeGalleryData}
         />
+
+        </div>
+       
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
@@ -112,7 +116,7 @@ export default function NodeGallery({
 const Loop = ({ color }) => {
   const { selectedFabric, selectedControlEvents, sfNodeGalleryData } =
     useContext(TorusModellerContext);
-  console.log(sfNodeGalleryData, "sf");
+
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
@@ -120,7 +124,7 @@ const Loop = ({ color }) => {
   return (
     <>
       {selectedFabric !== "events" && selectedFabric !== "SF" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           {EnvSideData[selectedFabric] &&
             EnvSideData[selectedFabric].map((item, index) => (
               <div
@@ -138,14 +142,16 @@ const Loop = ({ color }) => {
                     selectedFabric: selectedFabric,
                   })}
                 </div>
-                <span className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
+                <div className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
                   {item.label}
-                </span>
+                </div>
               </div>
             ))}
         </div>
       ) : selectedFabric == "events" ? (
-        <EventScreen selectedControlEvents={selectedControlEvents} />
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+          <EventScreen selectedControlEvents={selectedControlEvents} />
+        </div>
       ) : (
         selectedFabric === "SF" && (
           <OrpsSidebar
@@ -158,8 +164,6 @@ const Loop = ({ color }) => {
   );
 };
 export const EventScreen = ({ selectedControlEvents }) => {
-  // const { selectedControlEvents } = useContext(TorusModellerContext);
-  console.log("event screen json", selectedControlEvents);
   const onDragStart = (event, eventName, parentNode) => {
     event.dataTransfer.setData(
       "application/parentNode",
@@ -175,9 +179,12 @@ export const EventScreen = ({ selectedControlEvents }) => {
     <>
       {selectedControlEvents && (
         <>
-          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
-            {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
-          </span>
+          <div className="flex flex-row items-center justify-between p-2">
+            <div className={`${!darkMode ? "text-white" : "text-black"} `}>
+              {selectedControlEvents?.nodeName ||
+                selectedControlEvents?.nodeType}
+            </div>
+          </div>
           {selectedControlEvents?.events &&
             selectedControlEvents?.events.length > 0 &&
             selectedControlEvents?.events.map((item) => {
@@ -189,13 +196,16 @@ export const EventScreen = ({ selectedControlEvents }) => {
                   }
                   draggable
                 >
-                  <div className="flex flex-row items-center gap-2">
-                    <span className=" flex h-[30px] w-[30px] items-center justify-center rounded-md bg-[#0736C4]/15 ">
-                      <MdOutlineEmojiEvents color="#0736C4" size={18} />
-                    </span>
-                    <span className={`text-black dark:text-white`}>
+                  <div className="flex w-[100%] flex-row items-center gap-2 py-[0.75rem]">
+                    <div className="flex w-[25%] items-center justify-center">
+                      <span className=" flex h-[30px] w-[30px] items-center justify-center rounded-md bg-[#0736C4]/15 ">
+                        <MdOutlineEmojiEvents color="#0736C4" size={18} />
+                      </span>
+                    </div>
+
+                    <div className={`text-black dark:text-white`}>
                       {item.name}
-                    </span>
+                    </div>
                   </div>
                 </div>
               );
