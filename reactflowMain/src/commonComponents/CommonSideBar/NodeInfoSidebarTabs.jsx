@@ -81,11 +81,26 @@ export const NodeInfoSidebarTabs = ({
                           }));
                         }
 
+                        if (currentDrawing === "SF") {
+                          if (value.label === "PF") {
+                            handleOpenModal(value.modelOpen, false, "", "SFPF");
+                          }
+
+                          if (value.label === "DF") {
+                            handleOpenModal(value.modelOpen, false, "", "SFDF");
+                          }
+
+                          if (value.label === "UF") {
+                            handleOpenModal(value.modelOpen, false, "", "SFUF");
+                          }
+                        }
+
                         if (
                           value.label !== "Mapper" &&
                           value.label !== "Events" &&
                           value.label !== "Rule" &&
-                          value.label !== "CustomCode"
+                          value.label !== "CustomCode" &&
+                          currentDrawing !== "SF"
                         )
                           handleOpenModal(value.modelOpen, false, "");
                       }}

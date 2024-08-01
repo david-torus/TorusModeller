@@ -29,7 +29,9 @@ export const RenderData = ({
   setshowsfsidebar,
   selectedproperty,
   helperjson,
-  handleSfSidebar
+  handleSfSidebar,
+  toggleSFflow,
+          setToggleSFflow
 }) => {
   return (
     <>
@@ -154,8 +156,14 @@ export const RenderData = ({
           </div>
         </Dialog>
       ) : (
-        currentDrawing ==="SF"?(
-          handleSfSidebar(toggle , setToggle) 
+        currentDrawing ==="SF" ?(
+          toggleSFflow.PF ?
+          handleSfSidebar( toggleSFflow.PF, setToggleSFflow, "PF"  ) :
+          toggleSFflow.DF ?
+          handleSfSidebar(toggleSFflow.DF ,setToggleSFflow, "DF") :
+          toggleSFflow.UF ?
+          handleSfSidebar(toggleSFflow.UF ,setToggleSFflow, "UF") :
+          ""
           // <SFSidebar
           //   updatedNodeConfig={() => {
           //     setToggle(false);

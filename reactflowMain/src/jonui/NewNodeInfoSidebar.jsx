@@ -70,6 +70,11 @@ const NewNodeInfoSidebar = ({
     { key: "E", label: "E" },
   ];
   const [showsfsidebar, setshowsfsidebar] = useState(false);
+  const [toggleSFflow, setToggleSFflow] = useState({
+    PF: false,
+    DF: false,
+    UF: false,
+  });
 
   const items = [
     { key: "*", label: "*" },
@@ -398,7 +403,7 @@ const NewNodeInfoSidebar = ({
   const handleRender = (propw, js, side) => {
     console.log(js, side, js[currentModel], "handle ");
     return (
-      <div className="h-[400px]">
+      <div className="h-[500px]">
         <RenderJson
           json={js}
           nodedata={side}
@@ -408,13 +413,33 @@ const NewNodeInfoSidebar = ({
     );
   };
 
-  const handleSfSidebar = (toggle, setToggle) => {
+  const handleSfSidebar = (toggleSFflow , setToggleSFflow , tab) => {
     return (
-      <div className="h-full bg-white">
-        {toggle && (
+      <div className="">
+        {toggleSFflow && (
           <SFSidebar
             updatedNodeConfig={() => {
-              setToggle(false);
+              setToggleSFflow((prev) => {
+                if (tab === "PF") {
+                  return {
+                    ...prev,
+                    PF: false,
+                  };
+                }
+                if (tab === "DF") {
+                  return {
+                    ...prev,
+                    DF: false,
+                  };
+                }
+                if (tab === "UF") {
+                  return {
+                    ...prev,
+                    UF: false,
+                  };
+                }
+                return prev;
+              });
             }}
             currentModel={currentModel}
             setJson={setJson}
@@ -427,8 +452,16 @@ const NewNodeInfoSidebar = ({
       </div>
     );
   };
-  const handleOpenModal = async (flowType, isDockey = false, flow) => {
-    console.log(flowType, isDockey, flow, "flow");
+
+
+  console.log(toggleSFflow , "sfflow")
+  const handleOpenModal = async (
+    flowType,
+    isDockey = false,
+    flow,
+    tabtoOpen,
+  ) => {
+    console.log(flowType, isDockey, flow,tabtoOpen, "flow");
     try {
       setCurrentModel(flowType);
       if (currentDrawing === "DF") {
@@ -488,7 +521,79 @@ const NewNodeInfoSidebar = ({
               sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ?? {},
           }));
         }
-      } else {
+      } 
+      
+      else if (currentDrawing === "SF") {
+        if (tabtoOpen == "SFPF") {
+          setToggleSFflow((prev) => ({
+            ...prev,
+            UF:false,
+            DF: false,
+            PF: !prev.PF,
+          }));
+          setJson((prev) => ({
+            ...prev,
+            [flowType]:
+              prev?.[flowType] ??
+              sideBarData?.data?.nodeProperty?.[flowType] ??
+              {},
+          }));
+          setHelperjson((prev) => ({
+            ...prev,
+            [flowType + ".helper"]:
+              prev?.[flowType + ".helper"] ??
+              sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ??
+              {},
+          }));
+        }
+        if (tabtoOpen == "SFUF") {
+          setToggleSFflow((prev) => ({
+            ...prev,
+            PF:false,
+            DF: false,
+            UF: !prev.UF,
+          }));;
+          setJson((prev) => ({
+            ...prev,
+            [flowType]:
+              prev?.[flowType] ??
+              sideBarData?.data?.nodeProperty?.[flowType] ??
+              {},
+          }));
+          setHelperjson((prev) => ({
+            ...prev,
+            [flowType + ".helper"]:
+              prev?.[flowType + ".helper"] ??
+              sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ??
+              {},
+          }));
+        }
+
+        if (tabtoOpen == "SFDF") {
+          setToggleSFflow((prev) => ({
+            ...prev,
+            PF:false,
+            UF: false,
+            DF: !prev.DF,
+          }));
+          setJson((prev) => ({
+            ...prev,
+            [flowType]:
+              prev?.[flowType] ??
+              sideBarData?.data?.nodeProperty?.[flowType] ??
+              {},
+          }));
+          setHelperjson((prev) => ({
+            ...prev,
+            [flowType + ".helper"]:
+              prev?.[flowType + ".helper"] ??
+              sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ??
+              {},
+          }));
+        }
+      }
+      
+      else {
         setToggle(!toggle);
         setJson((prev) => ({
           ...prev,
@@ -744,7 +849,7 @@ const NewNodeInfoSidebar = ({
             />
           )}
 
-        {!toggle && sideBarData && (
+        {((!toggleSFflow.PF && !toggleSFflow.DF && !toggleSFflow.UF ) && !toggle )&& sideBarData && (
           <div className="h-40">
             <div className="grid h-40 w-[100%] grid-cols-4 gap-2">
               <div
@@ -906,6 +1011,8 @@ const NewNodeInfoSidebar = ({
           setToggle={setToggle}
           toggle={toggle}
           handleRender={handleRender}
+          toggleSFflow={toggleSFflow}
+          setToggleSFflow={setToggleSFflow}
           handleSfSidebar={handleSfSidebar}
           setshowsfsidebar={setshowsfsidebar}
           tabvisible={tabvisible}

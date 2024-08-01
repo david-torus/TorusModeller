@@ -34,6 +34,7 @@ export default function Builder({
   uiPolicy,
   helperJson,
   type = "",
+  height,
 }) {
   const [totalOptions, setTotalOptions] = useState([]);
   const { darkMode } = useContext(DarkmodeContext);
@@ -394,7 +395,7 @@ export default function Builder({
       )}
     >
       <Suspense fallback={<MainpageLoader />}>
-        <div className="w-full h-full flex flex-col items-center">
+        <div style={{ height: height? height  : "100%"}} className="w-full  overflow-y-scroll  flex flex-col items-center">
           <div className="w-full h-[95%]">
             {uiPolicy && (
               <UiDecider
