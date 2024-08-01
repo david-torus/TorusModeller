@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Children } from "react";
 import {
   Button,
   OverlayArrow,
@@ -15,7 +15,8 @@ export default function TorusToolTip({
   fg,
   ele,
   tooltipFor,
-  setLabel
+  setLabel,
+  children,
 }) {
   return (
     <TooltipTrigger className="">
@@ -39,7 +40,11 @@ export default function TorusToolTip({
         className="border-none outline-none"
       >
         {hoverContent}
+    
       </Button>
+      
+      
+      {children? children : null}
       <Tooltip
         style={{ backgroundColor: color }}
         className={

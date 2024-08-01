@@ -7,6 +7,8 @@ import {
   useContext,
 } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { WiStrongWind } from "react-icons/wi";
+import { MdOutlineHorizontalDistribute } from "react-icons/md";
 import ReactFlow, {
   Background,
   Panel,
@@ -67,7 +69,7 @@ export function EventDashBoard({
   const { ref, onNodeContextMenu, onPaneClick } =
     useContext(TorusModellerContext);
   const [nodeConfig, setNodeConfig] = useState([]);
-  const [strength, setStrength] = useState(-1000);
+  const [strength, setStrength] = useState(0);
   const [distance, setDistance] = useState(750);
   const [menu, setMenu] = useState(null);
 
@@ -694,7 +696,7 @@ export function EventDashBoard({
         position="top-right"
         // className={` ${darkMode ? "bg-transparent" : "bg-[#eeeeee]"}`}
         style={{
-          width: "10%",
+          width: "8%",
           height: "25%",
           margin: "10px",
           backgroundColor: darkMode ? "transparent" : "#eeeeee",
@@ -703,22 +705,41 @@ export function EventDashBoard({
           alignItems: "center",
         }}
       >
-        <div className="flex h-[100%] w-[100%] justify-between rounded-md border border-slate-300 bg-[#FFFFFF] shadow-sm ">
-          <div className="flex items-center justify-around gap-[0.50rem] p-2">
-            {/* <TorusRangeSlider
-              orientation="vertical"
-              sliderValue={strenghtsliderValue}
-              setSliderValue={setStrenghtSliderValue}
-              keys={"strenght"}
-            /> */}
+        <div className="flex h-[100%] w-[100%] flex-col justify-between rounded-md border border-slate-300 bg-[#FFFFFF] shadow-sm ">
+          <div className="flex h-[100%] w-[100%] items-center justify-around">
+            <div>
+              
+              <TorusRangeSlider
+                orientation="vertical"
+                sliderValue={strength}
+                setSliderValue={setStrength}
+                keys={"strenght"}
+                min={"-2000"}
+                max={"100"}
+                step={"10"}
+              />
+            </div>
 
-            <TorusRangeSlider
-              orientation="vertical"
-              sliderValue={distancetsliderValue}
-              setSliderValue={setDistanceSliderValue}
-              keys={"distance"}
-            />
-            {/* <TorusRangeSlider orientation="vertical" /> */}
+            <div>
+              <TorusRangeSlider
+                orientation="vertical"
+                sliderValue={distance}
+                setSliderValue={setDistance}
+                keys={"distance"}
+                min={"100"}
+                max={"1000"}
+                step={"50"}
+
+              />
+            </div>
+          </div>
+          <div className="flex h-[10%] w-[100%] items-center justify-center pt-[0.8rem] pb-[1rem]">
+            <div className="flex w-[50%] items-center justify-center">
+              <WiStrongWind color="#0736C4" size={25} />
+            </div>
+            <div className="flex w-[50%] items-center justify-center">
+            <MdOutlineHorizontalDistribute color="#0736C4" size={20} />
+            </div>
           </div>
         </div>
       </Panel>
