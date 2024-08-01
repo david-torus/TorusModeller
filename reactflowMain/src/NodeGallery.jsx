@@ -158,8 +158,6 @@ const Loop = ({ color }) => {
   );
 };
 export const EventScreen = ({ selectedControlEvents }) => {
-  // const { selectedControlEvents } = useContext(TorusModellerContext);
-  console.log("event screen json", selectedControlEvents);
   const onDragStart = (event, eventName, parentNode) => {
     event.dataTransfer.setData(
       "application/parentNode",

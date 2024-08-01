@@ -33,6 +33,7 @@ import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeConte
 import { AnimatePresence, motion } from "framer-motion";
 import { MinimapComponent } from "./ContextMenu/Minimap/Minimap";
 import { TorusModellerContext } from "../../../Layout";
+import useForceLayout from "./UseForceLayout";
 
 const proOptions = { account: "paid-pro", hideAttribution: true };
 
@@ -64,11 +65,10 @@ export function EventDashBoard({
   const { ref, onNodeContextMenu, onPaneClick } =
     useContext(TorusModellerContext);
   const [nodeConfig, setNodeConfig] = useState([]);
-  // const [strength, setStrength] = useState(-1000);
-  // const [distance, setDistance] = useState(750);
+  const [strength, setStrength] = useState(-1000);
+  const [distance, setDistance] = useState(750);
   const [menu, setMenu] = useState(null);
 
-  const [uniqueNames, setUniqueNames] = useState([]);
   const [nodeData, setNodeData] = useState(null);
   const [mainSequence, setMainSequence] = useState(0);
   const { darkMode } = useContext(DarkmodeContext);
@@ -84,7 +84,7 @@ export function EventDashBoard({
     }),
     [],
   );
-
+  useForceLayout({ strength, distance });
   /**
    * Validates the children of a node against an event name.
    *
@@ -217,22 +217,6 @@ export function EventDashBoard({
     },
     [setEdges],
   );
-
-  useEffect(() => {
-    try {
-      if (nodes && nodes?.length > 0) {
-        let uniqNameArray = [];
-        for (let node of nodes) {
-          if (!uniqNameArray.includes(node.data.label)) {
-            uniqNameArray.push(node.data.label);
-          }
-        }
-        setUniqueNames(uniqNameArray);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [nodes]);
 
   /**
    * Handles the dragover event on the component.
@@ -694,7 +678,7 @@ export function EventDashBoard({
         (typeof children === "function"
           ? children({ setSidebar, updatenodeDetails, updatedNodeConfig })
           : children)}
-      {/* <Panel
+      <Panel
         position="top-right"
         className={darkMode ? "bg-[#323232]" : "bg-[#eeeeee]"}
       >
@@ -769,117 +753,125 @@ export function EventDashBoard({
               <div className="ml-[-20px] p-2">
                 <Slider
                   size="sm"
-                  // onChange={(e) => setStrength(e)}
+                  onChange={(e) => setStrength(e)}
                   label="Strength"
                   step={100}
                   maxValue={0}
                   minValue={-2000}
-                  defaultValue={-2000}
+                  value={strength}
                   hideValue={false}
-                  className="w-full"
-                  classNames={{
-                    base: "max-w-sm",
-                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
-                    labelWrapper: "mb-2 ",
-                    label: darkMode
-                      ? "font-medium text-gray-700 text-small"
-                      : "font-small text-gray-700 text-small",
-                    value: darkMode
-                      ? "font-small text-gray-700 text-small"
-                      : "font-small text-gray-700 text-small",
-                    track: "border-1-slate-100",
-                    trackWrapper: "w-[100px]",
-                  }}
+                  // className="w-full"
+                  // classNames={{
+                  //   base: "max-w-sm",
+                  //   filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
+                  //   labelWrapper: "mb-2 ",
+                  //   label: darkMode
+                  //     ? "font-medium text-gray-700 text-small"
+                  //     : "font-small text-gray-700 text-small",
+                  //   value: darkMode
+                  //     ? "font-small text-gray-700 text-small"
+                  //     : "font-small text-gray-700 text-small",
+                  //   track: "border-1-slate-100",
+                  //   trackWrapper: "w-[100px]",
+                  // }}
                   showTooltip={true}
                   showOutline={true}
                   tooltipProps={{
-                    offset: 10,
                     placement: "bottom",
-                    classNames: {
-                      base: darkMode
-                        ? [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ]
-                        : [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ],
-                      content: darkMode
-                        ? [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ]
-                        : [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ],
-                    },
                   }}
-                  renderThumb={(props) => (
-                    <div
-                      {...props}
-                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
-                    >
-                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
-                    </div>
-                  )}
+
+                  // tooltipProps={{
+                  //   offset: 10,
+                  //   placement: "bottom",
+                  //   classNames: {
+                  //     base: darkMode
+                  //       ? [
+                  //           "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
+                  //         ]
+                  //       : [
+                  //           "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
+                  //         ],
+                  //     content: darkMode
+                  //       ? [
+                  //           "py-2 shadow-xl",
+                  //           "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
+                  //         ]
+                  //       : [
+                  //           "py-2 shadow-xl",
+                  //           "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
+                  //         ],
+                  //   },
+                  // }}
+                  // renderThumb={(props) => (
+                  //   <div
+                  //     {...props}
+                  //     className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
+                  //   >
+                  //     <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
+                  //   </div>
+                  // )}
                 />
               </div>
               <div className="ml-[-20px] p-2">
                 <Slider
-                  radius="full"
+                  // radius="full"
                   size="sm"
-                  // onChange={(e) => setDistance(e)}
+                  onChange={(e) => setDistance(e)}
                   label="Distance"
+                  step={100}
                   hideValue={false}
                   maxValue={1000}
                   minValue={0}
-                  defaultValue={1000}
+                  value={distance}
                   className="w-full"
-                  classNames={{
-                    base: "max-w-sm",
-                    filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
-                    labelWrapper: "mb-2",
-                    label: darkMode
-                      ? "font-medium text-gray-700 text-medium"
-                      : "font-medium text-gray-700 text-medium",
-                    value: darkMode
-                      ? "font-medium text-gray-700 text-small"
-                      : "font-medium text-gray-700 text-medium",
-                    track: "border-1-slate-100",
-                    trackWrapper: "w-[100px]",
-                  }}
+                  // classNames={{
+                  //   base: "max-w-sm",
+                  //   filler: darkMode ? "bg-[#5080BC]" : "bg-[#3F8AE5]",
+                  //   labelWrapper: "mb-2",
+                  //   label: darkMode
+                  //     ? "font-medium text-gray-700 text-medium"
+                  //     : "font-medium text-gray-700 text-medium",
+                  //   value: darkMode
+                  //     ? "font-medium text-gray-700 text-small"
+                  //     : "font-medium text-gray-700 text-medium",
+                  //   track: "border-1-slate-100",
+                  //   trackWrapper: "w-[100px]",
+                  // }}
                   showTooltip={true}
                   showOutline={true}
                   tooltipProps={{
-                    offset: 10,
                     placement: "bottom",
-                    classNames: {
-                      base: darkMode
-                        ? [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ]
-                        : [
-                            "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
-                          ],
-                      content: darkMode
-                        ? [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ]
-                        : [
-                            "py-2 shadow-xl",
-                            "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
-                          ],
-                    },
                   }}
-                  renderThumb={(props) => (
-                    <div
-                      {...props}
-                      className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
-                    >
-                      <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
-                    </div>
-                  )}
+                  // tooltipProps={{
+                  //   offset: 10,
+                  //   placement: "bottom",
+                  //   classNames: {
+                  //     base: darkMode
+                  //       ? [
+                  //           "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
+                  //         ]
+                  //       : [
+                  //           "before:bg-gradient-to-r before:from-[#3F8AE5] before:to-[#0000]",
+                  //         ],
+                  //     content: darkMode
+                  //       ? [
+                  //           "py-2 shadow-xl",
+                  //           "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
+                  //         ]
+                  //       : [
+                  //           "py-2 shadow-xl",
+                  //           "text-white bg-gradient-to-r from-[#3F8AE5] to-gray-900",
+                  //         ],
+                  //   },
+                  // }}
+                  // renderThumb={(props) => (
+                  //   <div
+                  //     {...props}
+                  //     className={`group top-1/2  p-[6px] ${darkMode ? "bg-gradient-to-br from-[#3F8AE5] to-slate-500" : "bg-gradient-to-tr from-[#d8dce2] to-slate-50"} border-1 ${darkMode ? "border border-slate-950" : "border border-blue-500"}  cursor-grab rounded-full shadow-medium data-[dragging=true]:cursor-grabbing`}
+                  //   >
+                  //     <span className="block h-4 w-3 rounded-full bg-gradient-to-br from-secondary-100 to-secondary-500 shadow-small transition-transform group-data-[dragging=true]:scale-100" />
+                  //   </div>
+                  // )}
                 />
               </div>
             </div>
@@ -887,7 +879,7 @@ export function EventDashBoard({
         </Accordion>
       </Panel>
 
-      {!miniMapOpn && (
+      {/*  {!miniMapOpn && (
         <Button
           className="absolute bottom-3 right-3 z-50 w-1 rounded-md bg-[#333334]  p-1 "
           onPress={() => setMinimapOpn(true)}
