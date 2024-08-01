@@ -63,12 +63,14 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
-        <Loop
-          color={color}
-          selectedFabric={selectedFabric}
-          selectedControlEvents={selectedControlEvents}
-          sfNodeGalleryData={sfNodeGalleryData}
-        />
+        <div>
+          <Loop
+            color={color}
+            selectedFabric={selectedFabric}
+            selectedControlEvents={selectedControlEvents}
+            sfNodeGalleryData={sfNodeGalleryData}
+          />
+        </div>
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
@@ -138,9 +140,9 @@ const Loop = ({ color }) => {
                     selectedFabric: selectedFabric,
                   })}
                 </div>
-                <span className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
+                <div className="cursor-grab px-2 font-inter font-normal tracking-normal xl:text-sm 2xl:text-base 3xl:text-lg">
                   {item.label}
-                </span>
+                </div>
               </div>
             ))}
         </div>
@@ -175,9 +177,13 @@ export const EventScreen = ({ selectedControlEvents }) => {
     <>
       {selectedControlEvents && (
         <>
-          <span className={`${!darkMode ? "text-white" : "text-black"} `}>
+        <div className="flex flex-row items-center justify-between p-2">
+
+
+          <div className={`${!darkMode ? "text-white" : "text-black"} `}>
             {selectedControlEvents?.nodeName || selectedControlEvents?.nodeType}
-          </span>
+          </div>
+        </div>
           {selectedControlEvents?.events &&
             selectedControlEvents?.events.length > 0 &&
             selectedControlEvents?.events.map((item) => {
@@ -189,13 +195,16 @@ export const EventScreen = ({ selectedControlEvents }) => {
                   }
                   draggable
                 >
-                  <div className="flex flex-row items-center gap-2">
+                  <div className="w-[100%] flex flex-row items-center gap-2 py-[0.75rem]">
+                    <div className="w-[25%] flex justify-center items-center">
                     <span className=" flex h-[30px] w-[30px] items-center justify-center rounded-md bg-[#0736C4]/15 ">
                       <MdOutlineEmojiEvents color="#0736C4" size={18} />
                     </span>
-                    <span className={`text-black dark:text-white`}>
+                    </div>
+                    
+                    <div className={`text-black dark:text-white`}>
                       {item.name}
-                    </span>
+                    </div>
                   </div>
                 </div>
               );
