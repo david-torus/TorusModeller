@@ -67,7 +67,7 @@ export default function TabComponent({
             width: "100%",
             height: "100%",
             padding: "10px",
-            backgroundColor: darkMode ? "#1F2937" : "white",
+            backgroundColor: !darkMode ? "#1F2937" : "white",
           }}
         >
           <section

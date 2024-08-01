@@ -26,6 +26,7 @@ export class UfSldController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
@@ -63,6 +64,20 @@ export class UfSldController {
       query.client,
       query.fabrics,
       query.project,
+      query.saveKey,
+    );
+  }
+
+  @Get('artifactListWithVersion')
+  async getArtifactListWithVersion(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return await this.ufSldService.getArtifactWithVersion(
+      query.tKey,
+      query.client,
+      query.fabrics,
+      query.project,
+      query.saveKey,
     );
   }
   @Get('versionList')
@@ -75,6 +90,7 @@ export class UfSldController {
       query.fabrics,
       query.project,
       query.artifact,
+      query.saveKey,
     );
   }
 
@@ -90,7 +106,6 @@ export class UfSldController {
     @Body() req: any,
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
-
     return await this.ufSldService.saveaWorkFlow(
       req,
       query.type,
@@ -98,6 +113,7 @@ export class UfSldController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 

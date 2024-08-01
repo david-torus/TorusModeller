@@ -67,11 +67,6 @@ export default function Navbar({
   setToggleReactflow,
   getDataFromFabrics,
   setFabricsKey = null,
-  tennant,
-  appgroup,
-  application,
-  artifacts,
-  version,
 }) {
   const {
     client,
@@ -143,7 +138,7 @@ export default function Navbar({
   ${client},
   ${selectedProject},
   ${selectedArtifact},
-  ${selectedVersion}, mkEdit`)
+  ${selectedVersion}, mkEdit`);
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -533,6 +528,13 @@ export default function Navbar({
           selectedProject,
           artifact,
           selectedFabric,
+          JSON.stringify([
+            "TCL",
+            selectedTkey,
+            selectedFabric,
+            "domain",
+            "pgrp",
+          ]),
         );
         if (version && version?.status === 200) setVersions(version?.data);
         else
@@ -737,6 +739,14 @@ export default function Navbar({
             client,
             Array.from(e)[0],
             selectedFabric,
+            JSON.stringify([
+              "TCL",
+              selectedTkey,
+              selectedFabric,
+              selectedProject,
+              "pgrp",
+            ]),
+            true,
           );
 
           if (response && response?.status === 200) {
@@ -786,6 +796,7 @@ export default function Navbar({
         selectedTkey,
         client,
         selectedFabric,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
       );
 
       if (response && response.status === 200) {
@@ -820,6 +831,14 @@ export default function Navbar({
         client,
         applications,
         selectedFabric,
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          applications,
+          "pgrp",
+        ]),
+        true,
       );
       if (response && response?.status === 200) {
         setArtifactsList(response.data);
@@ -902,6 +921,7 @@ export default function Navbar({
         selectedTkey,
         client,
         selectedFabric,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric, "domain", "pgrp"]),
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -993,6 +1013,15 @@ export default function Navbar({
             selectedTkey,
             client,
             selectedFabric,
+            JSON.stringify([
+              "TCL",
+              selectedTkey,
+              selectedFabric,
+              "domain",
+              "pgrp",
+              selectedArtifact,
+              selectedVersion,
+            ]),
           );
 
           if (response && typeof response === "object" && response) {
@@ -1338,7 +1367,7 @@ export default function Navbar({
 
   const handleAccordionToggle = (index, tkey) => {
     console.log("Accordion toggled to index:", index, "tkey:", tkey);
-    // setSelectedTkey(tkey);
+    setSelectedTkey(tkey);
     handleApplicationName("");
     setSelectedArtifact("");
     setSelectedVersion("");
@@ -1910,10 +1939,7 @@ export default function Navbar({
                             <EventNavbar
                               getDataFromFabrics={getDataFromFabrics}
                               sendDataToFabrics={sendDataToFabrics}
-                             
                             />
-
-                            
                           </div>
                         </>
                       )}

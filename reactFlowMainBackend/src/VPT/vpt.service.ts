@@ -1,4 +1,3 @@
-
 import { HttpService } from '@nestjs/axios';
 import { PfdService } from './pfd/pfd.service';
 import { Injectable, BadRequestException } from '@nestjs/common';
@@ -86,8 +85,7 @@ export class VptService {
     errorMessage,
     statusCode,
   ): Promise<any> {
-    try{
-
+    try {
       return await this.CommonService.commonErrorLogs(
         errObj,
         token,
@@ -95,8 +93,7 @@ export class VptService {
         errorMessage,
         statusCode,
       );
-    }
-    catch(error){
+    } catch (error) {
       throw error;
     }
   }
@@ -179,14 +176,19 @@ export class VptService {
     }
   }
 
-  async getApplication(tenant, appGroup): Promise<any> {
+  async getApplication(tenant, appGroup, saveKey): Promise<any> {
     try {
-      const keys = await this.redisService.getKeys(`${tenant}:${appGroup}`);
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      const keys = await this.redisService.getKeys(key);
       let application = new Set([]);
       if (keys && keys.length > 0) {
         for (let i = 0; i < keys.length; i++) {
           const artifacts = keys[i].split(':');
-          application.add(artifacts[2]);
+          application.add(artifacts[3]);
         }
       }
       return {
@@ -418,22 +420,19 @@ export class VptService {
 
   async deleteApplication(tenant, appGroup, application): Promise<any> {
     try {
-
       const res = await this.readReddis(tenant);
       const applications = await JSON.parse(res);
-    
-     
-      if (applications){
-        await this.delete(tenant + ':' + appGroup + ':' + application);
-        const applicationList = await this.getApplication(tenant, appGroup);
-        console.log(applicationList , "req")
-        return {
-          status: 200,
-          data: applicationList.data,
-          message: 'Application Deleted Successfully',
-        };
-        
-      }
+
+      // if (applications) {
+      //   await this.delete(tenant + ':' + appGroup + ':' + application);
+      //   const applicationList = await this.getApplication(tenant, appGroup);
+      //   console.log(applicationList, 'req');
+      //   return {
+      //     status: 200,
+      //     data: applicationList.data,
+      //     message: 'Application Deleted Successfully',
+      //   };
+      // }
     } catch (error) {
       return {
         status: 400,
@@ -451,38 +450,37 @@ export class VptService {
     artifact,
   ): Promise<any> {
     try {
-      await this.delete(
-        tenant +
-          ':' +
-          appGroup +
-          ':' +
-          application +
-          ':' +
-          fabrics +
-          ':' +
-          artifact,
-      );
-
-      const artifactList = await this.pfPfdService.getArtifact(
-        tenant,
-        appGroup,
-        fabrics,
-        application,
-      );
-      console.log(artifactList, 'artifactList');
-      if (artifactList && artifactList.data) {
-        return {
-          status: 200,
-          data: artifactList.data,
-          message: 'Artifact Deleted Successfully',
-        };
-      } else {
-        return {
-          status: 200,
-          data: [],
-          message: 'Artifact Deleted Successfully',
-        };
-      }
+      // await this.delete(
+      //   tenant +
+      //     ':' +
+      //     appGroup +
+      //     ':' +
+      //     application +
+      //     ':' +
+      //     fabrics +
+      //     ':' +
+      //     artifact,
+      // );
+      // const artifactList = await this.pfPfdService.getArtifact(
+      //   tenant,
+      //   appGroup,
+      //   fabrics,
+      //   application,
+      // );
+      // console.log(artifactList, 'artifactList');
+      // if (artifactList && artifactList.data) {
+      //   return {
+      //     status: 200,
+      //     data: artifactList.data,
+      //     message: 'Artifact Deleted Successfully',
+      //   };
+      // } else {
+      //   return {
+      //     status: 200,
+      //     data: [],
+      //     message: 'Artifact Deleted Successfully',
+      //   };
+      // }
     } catch (error) {
       throw error;
     }
@@ -497,40 +495,40 @@ export class VptService {
     version,
   ) {
     try {
-      const res = await this.readReddis(tenant);
-      const applications = await JSON.parse(res);
-      await this.delete(
-        tenant +
-          ':' +
-          appGroup +
-          ':' +
-          application +
-          ':' +
-          fabrics +
-          ':' +
-          artifact +
-          ':' +
-          version,
-      );
-      let versionList = await this.pfPfdService.getVersion(
-        tenant,
-        appGroup,
-        fabrics,
-        application,
-        artifact,
-      );
-      if (versionList && versionList.data) {
-        return {
-          status: 200,
-          data: versionList.data,
-          message: 'Version Deleted Successfully',
-        };
-      } else
-        return {
-          status: 200,
-          data: [],
-          message: 'Version Not Found',
-        };
+      // const res = await this.readReddis(tenant);
+      // const applications = await JSON.parse(res);
+      // await this.delete(
+      //   tenant +
+      //     ':' +
+      //     appGroup +
+      //     ':' +
+      //     application +
+      //     ':' +
+      //     fabrics +
+      //     ':' +
+      //     artifact +
+      //     ':' +
+      //     version,
+      // );
+      // let versionList = await this.pfPfdService.getVersion(
+      //   tenant,
+      //   appGroup,
+      //   fabrics,
+      //   application,
+      //   artifact,
+      // );
+      // if (versionList && versionList.data) {
+      //   return {
+      //     status: 200,
+      //     data: versionList.data,
+      //     message: 'Version Deleted Successfully',
+      //   };
+      // } else
+      //   return {
+      //     status: 200,
+      //     data: [],
+      //     message: 'Version Not Found',
+      //   };
     } catch (error) {
       throw error;
     }

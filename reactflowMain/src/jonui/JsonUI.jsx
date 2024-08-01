@@ -913,11 +913,11 @@ export const RenderJson = memo(
 
     return (
       <div
-        className="  "
+        className="h-full overflow-y-scroll scrollbar-hide"  
         // style={{ display: showNodeProperty ? "block" : "none" }}
       >
         {dupJson && Object.keys(dupJson).length > 0 && (
-          <div className="">
+          <div className="h-full overflow-y-scroll scrollbar-hide ">
             {
               <>
                 <RenderObject

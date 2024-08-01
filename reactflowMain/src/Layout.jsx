@@ -135,6 +135,15 @@ export default function Layout({ client }) {
           "UF",
           selectedArtifact,
           selectedVersion,
+          JSON.stringify([
+            "TCL",
+            selectedTkey,
+            "UF",
+            selectedProject,
+            "pgrp",
+            selectedArtifact,
+            selectedVersion,
+          ]),
         ).then((res) => {
           if (res?.status == 200) {
             setEventsNavBarData(res?.data?.navBarData ?? []);
@@ -408,7 +417,7 @@ export default function Layout({ client }) {
       }}
     >
       <div
-        className={`  flex  h-full   w-full flex-col   max-md:gap-3  lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
+        className={`  flex h-full w-full flex-col max-md:gap-3 lg:max-xl:gap-0 xl:max-3xl:gap-0 xl:max-3xl:bg-gray-600 `}
       >
         {toggleReactflow.flow ? (
           <>

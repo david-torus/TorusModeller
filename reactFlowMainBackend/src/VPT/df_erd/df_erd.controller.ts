@@ -28,6 +28,7 @@ export class DfErdController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
@@ -65,6 +66,7 @@ export class DfErdController {
       query.client,
       query.fabrics,
       query.project,
+      query.saveKey,
     );
   }
 
@@ -78,6 +80,19 @@ export class DfErdController {
       query.fabrics,
       query.project,
       query.artifact,
+      query.saveKey,
+    );
+  }
+  @Get('artifactListWithVersion')
+  async getArtifactListWithVersion(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return await this.dfErdService.getArtifactWithVersion(
+      query.tKey,
+      query.client,
+      query.fabrics,
+      query.project,
+      query.saveKey,
     );
   }
 
@@ -93,6 +108,7 @@ export class DfErdController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 

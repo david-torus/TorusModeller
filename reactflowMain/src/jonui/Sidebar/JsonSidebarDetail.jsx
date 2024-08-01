@@ -274,7 +274,7 @@ const RenderJsonArraySidebarDetail = ({
                 </p>
 
                 {isExpanded && (
-                  <div className="mb-2 p-2">
+                  <div className="mb-2  p-2">
                     <>
                       <div className="flex justify-between h-[100%] w-[40%] items-center">
                         <TorusDialog
@@ -481,13 +481,13 @@ export default function JsonSidebarDetail({
   };
 
   return (
-    <div className="relative mt-3 flex max-h-[100%] w-[240px]   flex-col gap-3 p-2 text-sm  font-semibold">
-      <span className="flex flex-col ">
+    <div className="relative mt-3 flex h-[100%]  flex-col gap-3 p-2 text-sm  font-semibold">
+      <span className="flex flex-col  h-[20%]">
         <span className="flex justify-between">
           <p className="mt-2 p-2  text-black dark:text-white"> Properties</p>
           <span
             onClick={() => OgJson()}
-            className="mb-2 mt-2 w-[20%] cursor-pointer rounded-lg bg-[#0736C4] px-1  py-2 text-white active:scale-95"
+            className="mb-2 mt-2  cursor-pointer rounded-lg bg-[#0736C4] px-1  py-2 text-white active:scale-95"
           >
             save
           </span>
@@ -501,7 +501,9 @@ export default function JsonSidebarDetail({
           </span>
         )}
       </span>
-      <div className="scrollbar-none  overflow-y-scroll">
+      <div style={{
+        height:"inherit",
+      }} className="scrollbar-none  overflow-y-auto">
         {
           <div className="">
             {

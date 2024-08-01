@@ -28,15 +28,22 @@ export default function FabricsSideBar({
   const [path, setPath] = useState(null);
   return (
     <div className="flex h-[100%]   w-full max-w-full flex-row overflow-hidden ">
-      <div className="max-w-[40%] h-[510px] relative border-r   bg-white  dark:border-[#212121]">
-       { <JsonSidebarIcon
-          key={"iconBar"}
-          showObj={showObj}
-          setShowObj={setShowObj}
-          obj={obj}
-          setPath={setPath}
-          setLabel={setLabel}
-        />}
+      <div
+        style={{
+          height: "inherit",
+        }}
+        className="relative   max-w-[40%] border-r   bg-white  dark:border-[#212121]"
+      >
+        {
+          <JsonSidebarIcon
+            key={"iconBar"}
+            showObj={showObj}
+            setShowObj={setShowObj}
+            obj={obj}
+            setPath={setPath}
+            setLabel={setLabel}
+          />
+        }
 
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
