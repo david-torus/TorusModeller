@@ -302,7 +302,7 @@ const TreeObj = ({ obj }) => {
 const TreeView = ({ data }) => {
   console.log(data, "sff");
   return (
-    <div className="max-h-[360px] overflow-y-auto p-1">
+    <div className="max-h-[270px] overflow-y-auto p-1">
       {data &&
         data.length > 0 &&
         data.map((item, index) => {
