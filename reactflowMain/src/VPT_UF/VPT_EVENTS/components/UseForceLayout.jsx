@@ -64,7 +64,7 @@ function useForceLayout({ strength = -1000, distance = 150 }) {
               simulationNodes[i].fy = node.position.y;
             }
 
-            return { ...node, position: { x: x ?? 0, y: y ?? 0 } };
+            return { ...node, position: { x: x ?? 100, y: y ?? 100 } };
           }),
         );
       });

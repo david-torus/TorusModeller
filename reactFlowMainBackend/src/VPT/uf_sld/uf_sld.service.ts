@@ -13,26 +13,18 @@ export class UfSldService {
     tKey,
     client,
     fabrics,
+    saveKey,
   ): Promise<any> {
     try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
       let res = {};
       const nodes: Promise<any> = new Promise((resolve, reject) => {
         try {
-          const node = this.readReddis(
-            [tKey] +
-              ':' +
-              [client] +
-              ':' +
-              [project] +
-              ':' +
-              [fabrics] +
-              ':' +
-              [artifact] +
-              ':' +
-              [version] +
-              ':' +
-              'nodes',
-          );
+          const node = this.readReddis(key + ':' + 'nodes');
           resolve(node);
         } catch (error) {
           reject(error);
@@ -41,21 +33,7 @@ export class UfSldService {
 
       const nodeEdges: Promise<any> = new Promise((resolve, reject) => {
         try {
-          const nodeEdge = this.readReddis(
-            [tKey] +
-              ':' +
-              [client] +
-              ':' +
-              [project] +
-              ':' +
-              [fabrics] +
-              ':' +
-              [artifact] +
-              ':' +
-              [version] +
-              ':' +
-              'nodeEdges',
-          );
+          const nodeEdge = this.readReddis(key + ':' + 'nodeEdges');
           resolve(nodeEdge);
         } catch (error) {
           reject(error);
@@ -64,21 +42,7 @@ export class UfSldService {
 
       const nodeProperty: Promise<any> = new Promise((resolve, reject) => {
         try {
-          const property = this.readReddis(
-            [tKey] +
-              ':' +
-              [client] +
-              ':' +
-              [project] +
-              ':' +
-              [fabrics] +
-              ':' +
-              [artifact] +
-              ':' +
-              [version] +
-              ':' +
-              'nodeProperty',
-          );
+          const property = this.readReddis(key + ':' + 'nodeProperty');
           resolve(property);
         } catch (error) {
           reject(error);
@@ -256,17 +220,51 @@ export class UfSldService {
       throw error;
     }
   }
-  async getArtifact(tKey, client, fabrics, project): Promise<any> {
+  async getArtifact(tKey, client, fabrics, project, saveKey): Promise<any> {
     try {
-      const keys = await this.redisService.getKeys(
-        `${tKey}:${client}:${project}:${fabrics}`,
-      );
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      const keys = await this.redisService.getKeys(key);
 
       let aritfact = new Set([]);
       if (keys && keys.length > 0) {
         for (let i = 0; i < keys.length; i++) {
           const artifacts = keys[i].split(':');
-          if (artifacts.length == 7 && artifacts[4]) aritfact.add(artifacts[4]);
+          if (artifacts.length == 8 && artifacts[5]) aritfact.add(artifacts[5]);
+        }
+      }
+
+      return {
+        data: Array.from(aritfact),
+        status: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getArtifactWithVersion(
+    tKey,
+    client,
+    fabrics,
+    project,
+    saveKey,
+  ): Promise<any> {
+    try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      const keys = await this.redisService.getKeys(key);
+
+      let aritfact = new Set([]);
+      if (keys && keys.length > 0) {
+        for (let i = 0; i < keys.length; i++) {
+          const artifacts = keys[i].split(':');
+          if (artifacts.length == 8 && artifacts[5]) aritfact.add(artifacts[5]);
         }
       }
       let response = [];
@@ -280,6 +278,7 @@ export class UfSldService {
             fabrics,
             project,
             artifact,
+            saveKey,
           ).then((res) => res.data),
         });
       }
@@ -293,17 +292,28 @@ export class UfSldService {
     }
   }
 
-  async getVersion(tKey, client, fabrics, project, artifact): Promise<any> {
+  async getVersion(
+    tKey,
+    client,
+    fabrics,
+    project,
+    artifact,
+    saveKey,
+  ): Promise<any> {
     try {
-      const keys = await this.redisService.getKeys(
-        `${tKey}:${client}:${project}:${fabrics}:${artifact}`,
-      );
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+
+      const keys = await this.redisService.getKeys(`${key}:${artifact}`);
 
       let version = new Set([]);
       if (keys && keys.length > 0) {
         for (let i = 0; i < keys.length; i++) {
           const versions = keys[i].split(':');
-          if (versions.length == 7 && versions[5]) version.add(versions[5]);
+          if (versions.length == 8 && versions[6]) version.add(versions[6]);
         }
       }
 
@@ -323,8 +333,14 @@ export class UfSldService {
     tKey: string,
     client: string,
     fabrics: string,
+    saveKey: string,
   ): Promise<any> {
     try {
+      let arrKey = JSON.parse(saveKey);
+      let keys = '';
+      if (arrKey.length > 0) {
+        keys = arrKey.join(':');
+      }
       console.log(req, 'req.flow');
 
       let updateResult = {};
@@ -372,6 +388,7 @@ export class UfSldService {
           fabrics,
           req.project,
           req.artifact,
+          saveKey,
         );
         if (
           versionList &&
@@ -387,19 +404,7 @@ export class UfSldService {
 
       Object.keys(result).forEach(async (key) => {
         await this.writeReddis(
-          tKey +
-            ':' +
-            client +
-            ':' +
-            req.project +
-            ':' +
-            fabrics +
-            ':' +
-            req.artifact +
-            ':' +
-            newVersion +
-            ':' +
-            key,
+          keys + ':' + req.artifact + ':' + newVersion + ':' + key,
           result[key],
         );
       });
@@ -410,6 +415,7 @@ export class UfSldService {
           fabrics,
           req.project,
           req.artifact,
+          saveKey,
         );
         if (versions && versions.status === 200) {
           return {

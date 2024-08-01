@@ -20,12 +20,13 @@ export class SFController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
     return await this.sfService.getJson(
-      query.applicationName,
+      query.project,
       query.version,
       query.artifact,
-      query.tenant,
-      query.appGroup,
+      query.tKey,
+      query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
@@ -33,14 +34,14 @@ export class SFController {
   async getAppGroupList(
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
-    return await this.sfService.getAppGroup(query.tenant);
+    return await this.sfService.getAppGroup(query.tKey);
   }
 
   @Get('applicationList')
   async getApplicationList(
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
-    return await this.sfService.getApplication(query.tenant, query.appGroup);
+    return await this.sfService.getApplication(query.tKey, query.client);
   }
 
   @Get('fabricsList')
@@ -48,9 +49,9 @@ export class SFController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ) {
     return await this.sfService.getFabrics(
-      query.tenant,
-      query.appGroup,
-      query.applicationName,
+      query.tKey,
+      query.client,
+      query.project,
     );
   }
 
@@ -59,10 +60,24 @@ export class SFController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ) {
     return await this.sfService.getArtifact(
-      query.tenant,
-      query.appGroup,
+      query.tKey,
+      query.client,
       query.fabrics,
-      query.applicationName,
+      query.project,
+      query.saveKey,
+    );
+  }
+
+  @Get('artifactListWithVersion')
+  async getArtifactListWithVersion(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return await this.sfService.getArtifactWithVersion(
+      query.tKey,
+      query.client,
+      query.fabrics,
+      query.project,
+      query.saveKey,
     );
   }
   @Get('versionList')
@@ -70,11 +85,12 @@ export class SFController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ) {
     return await this.sfService.getVersion(
-      query.tenant,
-      query.appGroup,
+      query.tKey,
+      query.client,
       query.fabrics,
-      query.applicationName,
+      query.project,
       query.artifact,
+      query.saveKey,
     );
   }
 
@@ -94,9 +110,10 @@ export class SFController {
       req,
       query.type,
       query.version,
-      query.tenant,
-      query.appGroup,
+      query.tKey,
+      query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
@@ -105,9 +122,9 @@ export class SFController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
     return this.sfService.deleteApplication(
-      query.applicationName,
-      query.tenant,
-      query.appGroup,
+      query.project,
+      query.tKey,
+      query.client,
       query.fabrics,
     );
   }

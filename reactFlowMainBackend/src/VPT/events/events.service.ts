@@ -4,47 +4,45 @@ import { RedisService } from 'src/redisService';
 @Injectable()
 export class EventsService {
   constructor(private readonly redisService: RedisService) {}
-  async getIniateEventsData(tKey, client, project, fabrics, artifact, version) {
+  async getIniateEventsData(
+    tKey,
+    client,
+    project,
+    fabrics,
+    artifact,
+    version,
+    saveKey,
+  ) {
+    let arrKey = JSON.parse(saveKey);
+    let key = '';
+    if (arrKey.length > 0) {
+      key = arrKey.join(':');
+    }
     try {
       let res = {};
-      await this.redisService
-        .getJsonData(
-          tKey +
-            ':' +
-            client +
-            ':' +
-            project +
-            ':' +
-            fabrics +
-            ':' +
-            artifact +
-            ':' +
-            version +
-            ':nodes',
-        )
-        .then((data) => {
-          let node = JSON.parse(data);
-          console.log(node, 'node');
-          if (node) {
-            let navBarData = this.gettingValues(node) ?? [];
-            let controlJson = this.transformNodesToProps(node) ?? {};
-            res = {
-              status: 200,
-              data: {
-                navBarData: navBarData,
-                controlJson: controlJson,
-              },
-            };
-          } else {
-            res = {
-              status: 200,
-              data: {
-                navBarData: [],
-                controlJson: {},
-              },
-            };
-          }
-        });
+      await this.redisService.getJsonData(key + ':nodes').then((data) => {
+        let node = JSON.parse(data);
+        console.log(node, 'node');
+        if (node) {
+          let navBarData = this.gettingValues(node) ?? [];
+          let controlJson = this.transformNodesToProps(node) ?? {};
+          res = {
+            status: 200,
+            data: {
+              navBarData: navBarData,
+              controlJson: controlJson,
+            },
+          };
+        } else {
+          res = {
+            status: 200,
+            data: {
+              navBarData: [],
+              controlJson: {},
+            },
+          };
+        }
+      });
       return res;
     } catch (error) {
       console.error(error);
@@ -59,10 +57,16 @@ export class EventsService {
     version,
     componentName,
     controlName,
+    saveKey,
   ) {
     try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
       let res = {};
-      let key = `${tenant}:${appGroup}:${app}:${fabrics}:${artifact}:${version}:events`;
+      key = key + ':events';
 
       const nodes: Promise<any> = new Promise((resolve, reject) => {
         try {
@@ -342,12 +346,20 @@ export class EventsService {
     componentName,
     controlName,
     eventsVersion,
+
     resquestBody,
+
+    saveKey,
   ) {
     try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
       let data = resquestBody.data;
 
-      const key = `${tenant}:${appGroup}:${app}:${fabrics}:${artifact}:${version}:events`;
+      key = key + `:events`;
       const type = resquestBody.type;
       console.log(resquestBody, 'dsb', resquestBody.data, 'fds');
 

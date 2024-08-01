@@ -6,15 +6,16 @@ export const getJson = async (
   artifact,
   tKey,
   client,
-  fabrics
+  fabrics,
+  saveKey,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
+      `${BASE_URL}/?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`,
       {
         method: "GET",
-      }
+      },
     );
 
     const data = await response.json();
@@ -48,15 +49,16 @@ export const saveWorkFlow = async (
   version,
   tKey,
   client,
-  fabrics
+  fabrics,
+  saveKey,
 ) => {
   try {
     console.log(resquestBody, "resquestBody");
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const URL =
       type === "create"
-        ? `${BASE_URL}/?type=${type}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`
-        : `${BASE_URL}/?type=${type}&version=${version}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`;
+        ? `${BASE_URL}/?type=${type}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`
+        : `${BASE_URL}/?type=${type}&version=${version}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`;
     const response = await fetch(URL, {
       method: "POST",
       headers: {
@@ -90,15 +92,22 @@ export const saveWorkFlow = async (
   }
 };
 
-export const artifactList = async (tKey, client, project, fabrics) => {
+export const artifactList = async (
+  tKey,
+  client,
+  project,
+  fabrics,
+  saveKey,
+  wantVersionList = false,
+) => {
   try {
-    console.log(project ,"app");
+    console.log(project, "app");
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/artifactList?project=${project}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
+      `${BASE_URL}/${wantVersionList ? "artifactListWithVersion" : "artifactList"}?project=${project}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`,
       {
         method: "GET",
-      }
+      },
     );
     const data = await response.json();
     // toast.dismiss(loadingToastId);
@@ -112,14 +121,14 @@ export const artifactList = async (tKey, client, project, fabrics) => {
   }
 };
 
-export const applicationLists = async (tKey, client, fabrics) => {
+export const applicationLists = async (tKey, client, fabrics, saveKey) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/applicationList/?tKey=${tKey}&client=${client}`,
+      `${BASE_URL}/applicationList/?tKey=${tKey}&client=${client}&saveKey=${saveKey}`,
       {
         method: "GET",
-      }
+      },
     );
 
     const data = await response.json();
@@ -154,7 +163,7 @@ export const getLatestVersion = async (source, domain, fabrics, artifact) => {
       `${BASE_URL}/defaultVersion?source=${source}&domain=${domain}&fabrics=${fabrics}&artifact=${artifact}`,
       {
         method: "GET",
-      }
+      },
     );
 
     const data = await response.json();
@@ -185,15 +194,16 @@ export const versionList = async (
   client,
   project,
   artifact,
-  fabrics
+  fabrics,
+  saveKey,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}${fabrics === "PF" ? "pf-pfd" : fabrics === "DF" ? "df-erd" : fabrics === "UF" ? "uf-sld" : "sf"}`;
     const response = await fetch(
-      `${BASE_URL}/versionList?project=${project}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
+      `${BASE_URL}/versionList?project=${project}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`,
       {
         method: "GET",
-      }
+      },
     );
 
     const data = await response.json();
@@ -226,7 +236,7 @@ export const deleteArtifact = async (
   client,
   project,
   fabrics,
-  artifact
+  artifact,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
@@ -234,7 +244,7 @@ export const deleteArtifact = async (
       `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}`,
       {
         method: "DELETE",
-      }
+      },
     );
 
     const data = await response.json();
@@ -267,7 +277,7 @@ export const getWholeVersion = async (
   client,
   project,
   version,
-  artifacts
+  artifacts,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}events`;
@@ -275,7 +285,7 @@ export const getWholeVersion = async (
       `${BASE_URL}/?tKey=${tKey}&client=${client}&app=${project}&artifact=${artifacts}&version=${version}&events`,
       {
         method: "GET",
-      }
+      },
     );
 
     const data = await response.json();
@@ -308,7 +318,7 @@ export const saveWholeVersion = async (
   client,
   project,
   version,
-  artifacts
+  artifacts,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}events/wholeVersion`;
@@ -316,7 +326,7 @@ export const saveWholeVersion = async (
       `${BASE_URL}/?tKey=${tKey}&client=${client}&app=${project}&artifact=${artifacts}&version=${version}&events`,
       {
         method: "POST",
-      }
+      },
     );
 
     const data = await response.json();
@@ -350,7 +360,7 @@ export const getNodeList = async (
   artifact,
   tKey,
   client,
-  fabrics
+  fabrics,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
@@ -358,7 +368,7 @@ export const getNodeList = async (
       `${BASE_URL}/getNodeList?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
       {
         method: "GET",
-      }
+      },
     );
     const data = await response.json();
     // toast.dismiss(loadingToastId);

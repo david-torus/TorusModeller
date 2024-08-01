@@ -135,6 +135,15 @@ export default function Layout({ client }) {
           "UF",
           selectedArtifact,
           selectedVersion,
+          JSON.stringify([
+            "TCL",
+            selectedTkey,
+            "UF",
+            selectedProject,
+            "pgrp",
+            selectedArtifact,
+            selectedVersion,
+          ]),
         ).then((res) => {
           if (res?.status == 200) {
             setEventsNavBarData(res?.data?.navBarData ?? []);

@@ -29,6 +29,7 @@ export class PfPfdController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
@@ -66,6 +67,19 @@ export class PfPfdController {
       query.client,
       query.fabrics,
       query.project,
+      query.saveKey,
+    );
+  }
+  @Get('artifactListWithVersion')
+  async getArtifactListWithVersion(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return await this.pfPfdService.getArtifactWithVersion(
+      query.tKey,
+      query.client,
+      query.fabrics,
+      query.project,
+      query.saveKey,
     );
   }
 
@@ -79,6 +93,7 @@ export class PfPfdController {
       query.fabrics,
       query.project,
       query.artifact,
+      query.saveKey,
     );
   }
   @Post()
@@ -93,6 +108,7 @@ export class PfPfdController {
       query.tKey,
       query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 
