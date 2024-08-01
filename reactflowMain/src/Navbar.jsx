@@ -57,8 +57,6 @@ import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 
 export default function Navbar({
-  tKey,
-  color,
   project,
   setdomain,
   setartifact,
@@ -88,7 +86,7 @@ export default function Navbar({
   const [selectedArtifactText, setSelectedArtifactText] = useState(false);
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
-  const [projectList, setApplicationList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
 
   // const [selectedArtifact, setSelectedArtifact] = useState("");
 
@@ -133,12 +131,6 @@ export default function Navbar({
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
   };
-
-  console.log(`${selectedTkey},
-  ${client},
-  ${selectedProject},
-  ${selectedArtifact},
-  ${selectedVersion}, mkEdit`);
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -800,7 +792,7 @@ export default function Navbar({
       );
 
       if (response && response.status === 200) {
-        setApplicationList(response.data);
+        setProjectList(response.data);
       }
     } catch (error) {
       toast(
@@ -1003,13 +995,15 @@ export default function Navbar({
   };
 
   const getProcessFlowApi = useCallback(
-    async (event) => {
+    async (artiFact, version) => {
       try {
-        if (selectedVersion) {
+        if ((artiFact, version)) {
+          setSelectedArtifact(artiFact);
+          setSelectedVersion(version);
           const response = await getJson(
             selectedProject,
-            selectedVersion,
-            selectedArtifact,
+            version,
+            artiFact,
             selectedTkey,
             client,
             selectedFabric,
@@ -1019,8 +1013,8 @@ export default function Navbar({
               selectedFabric,
               "domain",
               "pgrp",
-              selectedArtifact,
-              selectedVersion,
+              artiFact,
+              version,
             ]),
           );
 
@@ -1063,15 +1057,7 @@ export default function Navbar({
         );
       }
     },
-    [
-      selectedFabric,
-      client,
-      selectedProject,
-      selectedArtifact,
-      selectedVersion,
-      sendDataToFabrics,
-      selectedTkey,
-    ],
+    [selectedFabric, client, selectedProject, sendDataToFabrics, selectedTkey],
   );
 
   const openmodal = (type) => {
@@ -1118,7 +1104,7 @@ export default function Navbar({
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
-        setApplicationList(response.data);
+        setProjectList(response.data);
         setSelectedProject("");
         setSelectedArtifact("");
         setVersions([]);
@@ -1235,89 +1221,89 @@ export default function Navbar({
     }
   };
 
-  useEffect(() => {
-    try {
-      getDomainList(selectedsource)
-        .then((domain) => {
-          if (domain) setDomainList(domain.data);
-        })
-        .catch((err) => {
-          throw err;
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedsource]);
+  // useEffect(() => {
+  //   try {
+  //     getDomainList(selectedsource)
+  //       .then((domain) => {
+  //         if (domain) setDomainList(domain.data);
+  //       })
+  //       .catch((err) => {
+  //         throw err;
+  //       });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [selectedsource]);
 
-  useEffect(() => {
-    try {
-      if (selectedDomainLIst) {
-        getartifactList(
-          selectedsource,
-          Array.from(selectedDomainLIst)[0],
-          selectedFabric,
-        )
-          .then((artifacts) => {
-            if (artifacts) setDefaultArtifactList(artifacts.data);
-          })
-          .catch((err) => {
-            throw err;
-          });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedsource, selectedDomainLIst]);
+  // useEffect(() => {
+  //   try {
+  //     if (selectedDomainLIst) {
+  //       getartifactList(
+  //         selectedsource,
+  //         Array.from(selectedDomainLIst)[0],
+  //         selectedFabric,
+  //       )
+  //         .then((artifacts) => {
+  //           if (artifacts) setDefaultArtifactList(artifacts.data);
+  //         })
+  //         .catch((err) => {
+  //           throw err;
+  //         });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [selectedsource, selectedDomainLIst]);
 
-  useEffect(() => {
-    try {
-      if (selectedDefaultArtifacts) {
-        getVersionList(
-          selectedsource,
-          Array.from(selectedDomainLIst)[0],
-          selectedFabric,
-          Array.from(selectedDefaultArtifacts)[0],
-        )
-          .then((res) => {
-            if (res) setDefaultVersionList(res.data.version);
-          })
-          .catch((err) => {
-            throw err;
-          });
-      }
-    } catch (error) {}
-  }, [
-    selectedsource,
-    selectedDomainLIst,
-    selectedDefaultArtifacts,
-    selectedFabric,
-  ]);
+  // useEffect(() => {
+  //   try {
+  //     if (selectedDefaultArtifacts) {
+  //       getVersionList(
+  //         selectedsource,
+  //         Array.from(selectedDomainLIst)[0],
+  //         selectedFabric,
+  //         Array.from(selectedDefaultArtifacts)[0],
+  //       )
+  //         .then((res) => {
+  //           if (res) setDefaultVersionList(res.data.version);
+  //         })
+  //         .catch((err) => {
+  //           throw err;
+  //         });
+  //     }
+  //   } catch (error) {}
+  // }, [
+  //   selectedsource,
+  //   selectedDomainLIst,
+  //   selectedDefaultArtifacts,
+  //   selectedFabric,
+  // ]);
 
-  useEffect(() => {
-    try {
-      if (!selectedVersion) return;
-      const version = [...selectedVersion][0];
-      const artifact = [...selectedArtifact][0];
+  // useEffect(() => {
+  //   try {
+  //     if (!selectedVersion) return;
+  //     const version = [...selectedVersion][0];
+  //     const artifact = [...selectedArtifact][0];
 
-      if (setFabricsKey)
-        setFabricsKey(
-          `${selectedTkey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
-        );
-      getProcessFlowApi(selectedVersion).catch((err) => {
-        throw err;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [
-    selectedVersion,
-    selectedArtifact,
-    selectedProject,
-    selectedFabric,
-    client,
-    setFabricsKey,
-    selectedTkey,
-  ]);
+  //     if (setFabricsKey)
+  //       setFabricsKey(
+  //         `${selectedTkey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
+  //       );
+  //     getProcessFlowApi(selectedVersion).catch((err) => {
+  //       throw err;
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [
+  //   selectedVersion,
+  //   selectedArtifact,
+  //   selectedProject,
+  //   selectedFabric,
+  //   client,
+  //   setFabricsKey,
+  //   selectedTkey,
+  // ]);
 
   // useEffect(() => {
   //   try {
@@ -1353,21 +1339,12 @@ export default function Navbar({
   //   }
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
-  useEffect(() => {
-    try {
-      handleGetApplications(selectedTkey, client, selectedFabric).catch(
-        (err) => {
-          throw err;
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedFabric, client, selectedTkey]);
-
   const handleAccordionToggle = (index, tkey) => {
-    console.log("Accordion toggled to index:", index, "tkey:", tkey);
     setSelectedTkey(tkey);
+    handleGetApplications(tkey, client, selectedFabric).catch((err) => {
+      throw err;
+    });
+
     handleApplicationName("");
     setSelectedArtifact("");
     setSelectedVersion("");
@@ -1582,7 +1559,10 @@ export default function Navbar({
                                             newArtifactValue,
                                             "v1",
                                             getDataFromFabrics,
-                                          ).then(() => setNewArtifact(false))
+                                          ).then(() => {
+                                            setNewArtifactValue("");
+                                            setNewArtifact(false);
+                                          })
                                         }
                                         Children={"Create"}
                                       />
@@ -1679,12 +1659,11 @@ export default function Navbar({
                                                     : new Set([])
                                                 }
                                                 setSelected={(e) => {
-                                                  setSelectedArtifact(
+                                                  getProcessFlowApi(
                                                     obj?.artifact,
-                                                  );
-                                                  setSelectedVersion(
                                                     Array.from(e)[0],
                                                   );
+
                                                   setArtifactCollectionName(
                                                     obj?.artifact,
                                                   );

@@ -154,7 +154,7 @@ export default function Layout({ client }) {
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-    if (!fabric === "events") {
+    if (fabric !== "events") {
       setSelectedProject("");
       setSelectedArtifact("");
       setSelectedVersion("");
