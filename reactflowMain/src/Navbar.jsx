@@ -1559,7 +1559,10 @@ export default function Navbar({
                                             newArtifactValue,
                                             "v1",
                                             getDataFromFabrics,
-                                          ).then(() => setNewArtifact(false))
+                                          ).then(() => {
+                                            setNewArtifactValue("");
+                                            setNewArtifact(false);
+                                          })
                                         }
                                         Children={"Create"}
                                       />
