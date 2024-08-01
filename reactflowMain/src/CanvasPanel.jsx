@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Panel, useReactFlow, MiniMap, useViewport  } from "reactflow";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Panel, useReactFlow, MiniMap, useViewport } from "reactflow";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusInput from "./torusComponents/TorusInput";
 import {
@@ -12,10 +12,10 @@ import {
   ZoomOut,
 } from "./SVG_Application";
 
-export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
+export default function CanvasPanel({ undo, redo, canUndo, canRedo }) {
   const { zoomIn, zoomOut, fitView } = useReactFlow();
   const { zoom } = useViewport();
-  const zoomPercentage = (zoom * 100).toFixed(2);
+  const zoomPercentage = useMemo(() => Math.round(zoom * 50), [zoom]);
 
   const handleZoom = (type) => {
     if (type === "In") {
@@ -55,22 +55,14 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
             key={"undo"}
             buttonClassName={`w-1/2 ${!canUndo ? "cursor-pointer" : "cursor-not-allowed"}`}
             fontStyle={"flex items-center justify-center"}
-            Children={
-              <Undo
-                className={"stroke-[#1C274C] dark:stroke-white"}
-              />
-            }
+            Children={<Undo className={"stroke-[#1C274C] dark:stroke-white"} />}
             onPress={() => !canUndo && undo()}
           />
           <TorusButton
             key={"redo"}
             buttonClassName={`w-1/2 ${!canRedo ? "cursor-pointer" : "cursor-not-allowed"}`}
             fontStyle={"flex items-center justify-center"}
-            Children={
-              <Redo
-                className={"stroke-[#1C274C] dark:stroke-white"}
-              />
-            }
+            Children={<Redo className={"stroke-[#1C274C] dark:stroke-white"} />}
             onPress={() => !canRedo && redo()}
           />
         </div>
@@ -79,9 +71,7 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
             <TorusButton
               key={"FullScreen"}
               Children={
-                <div
-                  className="flex items-center justify-center   p-1"
-                >
+                <div className="flex items-center justify-center   p-1">
                   <FullScreen
                     className={"stroke-[#1C274C] dark:stroke-white"}
                   />
@@ -108,7 +98,7 @@ export default function CanvasPanel({ undo, redo, canUndo, canRedo,}) {
               onPress={() => handleZoom("Out")}
             />
             <span className="flex items-center justify-center   p-1 font-inter text-xs font-bold text-[#1C274C] dark:text-white">
-            {Number(zoomPercentage)}%
+              {Number(zoomPercentage)}%
             </span>
             <TorusButton
               key={"zoomIn"}

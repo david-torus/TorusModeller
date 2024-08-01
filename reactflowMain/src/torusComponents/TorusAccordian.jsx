@@ -59,7 +59,7 @@ const TorusAccordion = memo(
             >
               <div className="pl-[1.10rem]">
                 <div
-                  className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1 py-2 pl-[1.10rem] transition-[max-height] duration-300 ease-in-out ${
+                  className={`overflow-hidden border-b-0 border-l-1.5 border-r-0 border-t-0 border-[#00000026] px-1  py-2 pl-[1.10rem] transition-[max-height] duration-300 ease-in-out dark:border-gray-300 ${
                     openIndex === index
                       ? "max-h-96 opacity-100"
                       : "max-h-0 opacity-0"
@@ -86,7 +86,7 @@ const TorusAccordion = memo(
                         }`}
                       >
                         {typeof contentItem === "string" ? (
-                          <p className="w-[100%] text-sm">{contentItem}</p>
+                          <p className="w-[100%] text-xs">{contentItem}</p>
                         ) : React.isValidElement(contentItem) ? (
                           contentItem
                         ) : null}

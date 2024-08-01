@@ -53,7 +53,7 @@ import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
-import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
+
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 
 export default function Navbar({
@@ -1940,37 +1940,42 @@ export default function Navbar({
             )}
           </div>
 
-          <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
-            <div className=" col-span-4 flex items-center justify-center">
-              <div className="flex items-center justify-around gap-[0.8rem] ">
-                <div className="flex w-[30%] items-center justify-center">
-                  <Debugger className={"stroke-black dark:stroke-white"} />
-                </div>
-                <div className="flex w-[30%] items-center justify-center">
-                  <Preview className={"stroke-black dark:stroke-white"} />
-                </div>
-                <div className="flex w-[30%] items-center justify-center">
-                  <Shared className={"stroke-black dark:stroke-white"} />
+          {selectedFabric !== "Home" && (
+            <div
+              style={{ display: selectedFabric == "Home" && "none" }}
+              className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent "
+            >
+              <div className=" col-span-4 flex items-center justify-center">
+                <div className="flex items-center justify-around gap-[0.8rem] ">
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Debugger className={"stroke-black dark:stroke-white"} />
+                  </div>
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Preview className={"stroke-black dark:stroke-white"} />
+                  </div>
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Shared className={"stroke-black dark:stroke-white"} />
+                  </div>
                 </div>
               </div>
+              <div className=" col-span-1 flex items-center justify-center">
+                <VerticalLine className={"stroke-black dark:stroke-white"} />
+              </div>
+              <div className=" col-span-3">
+                <TorusButton
+                  Children="Publish"
+                  size={"md"}
+                  btncolor={"#0736C4"}
+                  outlineColor="torus-hover:ring-blue-500/50"
+                  radius={"lg"}
+                  fontStyle={
+                    "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
+                  }
+                  color={"white"}
+                />
+              </div>
             </div>
-            <div className=" col-span-1 flex items-center justify-center">
-              <VerticalLine className={"stroke-black dark:stroke-white"} />
-            </div>
-            <div className=" col-span-3">
-              <TorusButton
-                Children="Publish"
-                size={"md"}
-                btncolor={"#0736C4"}
-                outlineColor="torus-hover:ring-blue-500/50"
-                radius={"lg"}
-                fontStyle={
-                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
-                }
-                color={"white"}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
