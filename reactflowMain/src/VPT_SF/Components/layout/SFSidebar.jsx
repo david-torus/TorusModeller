@@ -76,7 +76,7 @@ const SFSidebar = ({
         tenant,
         group,
         selectedApplicationss,
-        sendFabrics
+        sendFabrics,
       );
       if (response && response.data) {
         setArtifactsList(response.data);
@@ -99,7 +99,7 @@ const SFSidebar = ({
         group,
         Array.from(selectedapplication)[0],
         selectedArtifacts,
-        sendFabrics
+        sendFabrics,
       );
       if (response && response.data) {
         setVersionList(response.data);
@@ -179,7 +179,7 @@ const SFSidebar = ({
         Array.from(selectedArtifacts)[0],
         tenant,
         group,
-        sendFabrics
+        sendFabrics,
       )
         .then((response) => {
           if (response && response.data) {
@@ -268,7 +268,7 @@ const SFSidebar = ({
         if (nodeIds && nodeIds.length > 0) {
           if (js.nodeDetails.length > 0) {
             js.nodeDetails = js.nodeDetails.filter((item) =>
-              nodeIds.includes(item.id)
+              nodeIds.includes(item.id),
             );
             if (js.nodeDetails.length !== nodeIds.length) {
               let jsIds = js?.nodeDetails?.forEach((item) => item.id);
@@ -295,7 +295,7 @@ const SFSidebar = ({
                   ...handleFabricsOptions(
                     js,
                     [...js.nodeDetails, ...ds],
-                    "nodeDetails"
+                    "nodeDetails",
                   ),
                 };
               }
@@ -304,7 +304,7 @@ const SFSidebar = ({
                 ...handleFabricsOptions(
                   js,
                   js.nodeDetails || [],
-                  "nodeDetails"
+                  "nodeDetails",
                 ),
               };
             }
@@ -345,10 +345,10 @@ const SFSidebar = ({
         if (nodeIds && nodeIds.length > 0) {
           if (js.tableDetails.length > 0 || js.apiDetails.length > 0) {
             js.tableDetails = js.tableDetails.filter((item) =>
-              nodeIds.includes(item.id)
+              nodeIds.includes(item.id),
             );
             js.apiDetails = js.apiDetails.filter((item) =>
-              nodeIds.includes(item.id)
+              nodeIds.includes(item.id),
             );
             if (
               js.tableDetails.length !== nodeIds.length ||
@@ -377,14 +377,14 @@ const SFSidebar = ({
                   ...handleFabricsOptions(
                     js,
                     [...js.tableDetails, ...ds],
-                    "tableDetails"
+                    "tableDetails",
                   ),
                 };
                 js = {
                   ...handleFabricsOptions(
                     js,
                     [...js.apiDetails, ...ds],
-                    "apiDetails"
+                    "apiDetails",
                   ),
                 };
               }
@@ -417,14 +417,14 @@ const SFSidebar = ({
               ...handleFabricsOptions(
                 js,
                 [...js.tableDetails, ...ds],
-                "tableDetails"
+                "tableDetails",
               ),
             };
             js = {
               ...handleFabricsOptions(
                 js,
                 [...js.apiDetails, ...ds],
-                "apiDetails"
+                "apiDetails",
               ),
             };
           }
@@ -444,7 +444,7 @@ const SFSidebar = ({
         if (nodeIds && nodeIds.length > 0) {
           if (js.componentDetails.length > 0) {
             js.componentDetails = js.componentDetails.filter((item) =>
-              nodeIds.includes(item.id)
+              nodeIds.includes(item.id),
             );
             if (js.componentDetails.length !== nodeIds.length) {
               let jsIds = js.componentDetails?.map((item) => item.id);
@@ -469,7 +469,7 @@ const SFSidebar = ({
                         },
                       },
                       handleControl(item.control),
-                      "controlDetails"
+                      "controlDetails",
                     ),
                   };
                 });
@@ -477,7 +477,7 @@ const SFSidebar = ({
                   ...handleFabricsOptions(
                     js,
                     [...js.componentDetails, ...dts],
-                    "componentDetails"
+                    "componentDetails",
                   ),
                 };
               }
@@ -486,7 +486,7 @@ const SFSidebar = ({
                 ...handleFabricsOptions(
                   js,
                   js?.componentDetails,
-                  "componentDetails"
+                  "componentDetails",
                 ),
               };
             }
@@ -509,7 +509,7 @@ const SFSidebar = ({
                     },
                   },
                   handleControl(item.control),
-                  "controlDetails"
+                  "controlDetails",
                 ),
               };
             });
@@ -517,7 +517,7 @@ const SFSidebar = ({
               ...handleFabricsOptions(
                 js,
                 [...js.componentDetails, ...dts],
-                "componentDetails"
+                "componentDetails",
               ),
             };
           }
@@ -590,8 +590,8 @@ const SFSidebar = ({
               new Set(
                 selectedJsons?.map((item) => {
                   return item.id;
-                })
-              )
+                }),
+              ),
             );
           }
         } else {
@@ -906,326 +906,321 @@ const SFSidebar = ({
   };
 
   return (
-    <Sidebar
-      visible={sidebarVisible}
-      className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
-      position="right"
-      style={{ height: "100%", width: "30vw" }}
-      onHide={() => {
-        updatedNodeConfig();
-        setSelectionNodeId(null);
-        setGettingNodes([]);
-        setSelectedJson({});
-        setSelectedApplication(null);
-        setSelectedVerison(null);
-        setSelectedArtifacts(null);
-        setSelectedNode(null);
-      }}
-    >
+    // <Sidebar
+    //   visible={sidebarVisible}
+    //   className={darkMode ? "bg-[#242424]" : "bg-[#fff]"}
+    //   position="right"
+    //   style={{ height: "100%", width: "30vw" }}
+    //   onHide={() => {
+    //     updatedNodeConfig();
+    //     setSelectionNodeId(null);
+    //     setGettingNodes([]);
+    //     setSelectedJson({});
+    //     setSelectedApplication(null);
+    //     setSelectedVerison(null);
+    //     setSelectedArtifacts(null);
+    //     setSelectedNode(null);
+    //   }}
+    // >
+
+    // </Sidebar>
+    <div className="h-full  w-full ">
+      {/**Artifacts & Version Secetions based on the seleceted fabric  */}
       <div>
-        {/**Artifacts & Version Secetions based on the seleceted fabric  */}
-        <div
-          className=" p-sidebar-header "
-          style={{
-            position: "absolute",
-            top: "4px",
+        <Button
+          variant="outline"
+          className={`${
+            darkMode
+              ? "right-5 w-full rounded-md border  border-slate-600 bg-[#368289] text-[#F4F4F5] "
+              : "right-5 w-full border border-slate-400/30 bg-[#023F8A] text-white "
+          }`}
+          size="sm"
+          onClick={() => {
+            setJson((prev) => {
+              return {
+                ...prev,
+                [currentModel]:
+                  prev?.[currentModel] && Array.isArray(prev[currentModel])
+                    ? [
+                        ...prev[currentModel].filter(
+                          (item) => item.resource !== selectedJson.resource,
+                        ),
+                        selectedJson,
+                      ]
+                    : [selectedJson],
+              };
+              // if (Array.isArray(prev)) {
+              //   return [
+              //     ...prev.filter(
+              //       (item) => item.resource !== selectedJson.resource
+              //     ),
+              //     selectedJson,
+              //   ];
+              // }
+              //  else {
+              //   return [selectedJson];
+              // }
+            });
+
+            toast.success("Data saved successfully!", {
+              position: "bottom-right",
+              theme: darkMode ? "dark" : "light",
+              autoClose: 1000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
           }}
         >
-          <Button
-            variant="outline"
-            className={`${
-              darkMode
-                ? "w-full border border-slate-600 right-5  bg-[#368289] rounded-md text-[#F4F4F5] "
-                : "w-full border border-slate-400/30 right-5 bg-[#023F8A] text-white "
-            }`}
-            size="sm"
-            onClick={() => {
-              setJson((prev) => {
-                return {
-                  ...prev,
-                  [currentModel]:
-                    prev?.[currentModel] && Array.isArray(prev[currentModel])
-                      ? [
-                          ...prev[currentModel].filter(
-                            (item) => item.resource !== selectedJson.resource
-                          ),
-                          selectedJson,
-                        ]
-                      : [selectedJson],
-                };
-                // if (Array.isArray(prev)) {
-                //   return [
-                //     ...prev.filter(
-                //       (item) => item.resource !== selectedJson.resource
-                //     ),
-                //     selectedJson,
-                //   ];
-                // }
-                //  else {
-                //   return [selectedJson];
-                // }
-              });
+          Save Data
+        </Button>
+      </div>
 
-              toast.success("Data saved successfully!", {
-                position: "bottom-right",
-                theme: darkMode ? "dark" : "light",
-                autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-              });
-            }}
-          >
-            Save Data
-          </Button>
+      <div className="mt-3 grid h-[20%] w-full grid-cols-6 gap-1 px-2 py-2">
+        <div className="col-span-3">
+          {/** Application Secetions based on the seleceted fabrics  */}
+          <ReusableDropDown
+            isDisabled={
+              applicationList && applicationList.length < 0 ? true : false
+            }
+            darkMode={darkMode}
+            key={"sfApplication"}
+            title={
+              (selectedapplication && Array.from(selectedapplication)[0]) ||
+              "Application"
+            }
+            selectedKey={selectedapplication}
+            DropdownMenuClassName={
+              applicationList && applicationList.length > 6
+                ? "h-56 overflow-y-scroll"
+                : ""
+            }
+            handleSelectedKey={handleApplicationChange}
+            items={
+              applicationList &&
+              applicationList?.map((item, index) => {
+                return {
+                  key: item,
+                  label: item,
+                };
+              })
+            }
+          />
+
+          {applicationList && applicationList.length > 0 && (
+            <div>
+              {applicationList.length > 0 && (
+                <div className="flex items-center justify-center text-xs text-gray-400">
+                  {applicationList &&
+                    applicationList.length > 0 &&
+                    applicationList?.forEach((obj) => {
+                      <p>{obj}</p>;
+                    })}
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
-        <div className="w-full h-[20%] py-2 px-2 grid grid-cols-6 gap-1 mt-3">
-          <div className="col-span-3">
-            {/** Application Secetions based on the seleceted fabrics  */}
-            <ReusableDropDown
-              isDisabled={
-                applicationList && applicationList.length < 0 ? true : false
-              }
-              darkMode={darkMode}
-              key={"sfApplication"}
-              title={
-                (selectedapplication && Array.from(selectedapplication)[0]) ||
-                "Application"
-              }
-              selectedKey={selectedapplication}
-              DropdownMenuClassName={
-                applicationList && applicationList.length > 6
-                  ? "h-56 overflow-y-scroll"
-                  : ""
-              }
-              handleSelectedKey={handleApplicationChange}
-              items={
-                applicationList &&
-                applicationList?.map((item, index) => {
-                  return {
-                    key: item,
-                    label: item,
-                  };
-                })
-              }
-            />
+        <div className="col-span-3">
+          {/** Artifacts Secetions based on the seleceted fabrics  */}
+          <ReusableDropDown
+            isDisabled={
+              artifactsList && artifactsList.length < 0 ? true : false
+            }
+            darkMode={darkMode}
+            key={"sfArtifact"}
+            title={
+              (selectedArtifacts && Array.from(selectedArtifacts)[0]) ||
+              "Artifacts"
+            }
+            selectedKey={selectedArtifacts}
+            DropdownMenuClassName={
+              artifactsList && artifactsList.length > 6
+                ? "h-56 overflow-y-scroll"
+                : ""
+            }
+            handleSelectedKey={handleArtifactsChange}
+            items={
+              artifactsList &&
+              artifactsList?.map((item, index) => {
+                return {
+                  key: item,
+                  label: item,
+                };
+              })
+            }
+          />
 
-            {applicationList && applicationList.length > 0 && (
-              <div>
-                {applicationList.length > 0 && (
-                  <div className="flex items-center justify-center text-xs text-gray-400">
-                    {applicationList &&
-                      applicationList.length > 0 &&
-                      applicationList?.forEach((obj) => {
-                        <p>{obj}</p>;
-                      })}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+          {artifactsList && artifactsList.length > 0 && (
+            <div>
+              {artifactsList.length > 0 && (
+                <div className="flex items-center justify-center text-xs text-gray-400">
+                  {artifactsList &&
+                    artifactsList.length > 0 &&
+                    artifactsList?.forEach((obj) => {
+                      <p>{obj}</p>;
+                    })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
 
-          <div className="col-span-3">
-            {/** Artifacts Secetions based on the seleceted fabrics  */}
-            <ReusableDropDown
-              isDisabled={
-                artifactsList && artifactsList.length < 0 ? true : false
-              }
-              darkMode={darkMode}
-              key={"sfArtifact"}
-              title={
-                (selectedArtifacts && Array.from(selectedArtifacts)[0]) ||
-                "Artifacts"
-              }
-              selectedKey={selectedArtifacts}
-              DropdownMenuClassName={
-                artifactsList && artifactsList.length > 6
-                  ? "h-56 overflow-y-scroll"
-                  : ""
-              }
-              handleSelectedKey={handleArtifactsChange}
-              items={
-                artifactsList &&
-                artifactsList?.map((item, index) => {
-                  return {
-                    key: item,
-                    label: item,
-                  };
-                })
-              }
-            />
+        <div className="col-span-3">
+          {/** Versions Secetions based on the seleceted fabrics  */}
+          <ReusableDropDown
+            darkMode={darkMode}
+            key={"sfversion"}
+            title={
+              (selectedVerison && Array.from(selectedVerison)[0]) || "Version"
+            }
+            selectedKey={selectedVerison}
+            DropdownMenuClassName={
+              versionsList && versionsList.length > 6
+                ? "h-30 overflow-y-scroll  "
+                : ""
+            }
+            handleSelectedKey={setSelectedVerison}
+            items={
+              versionsList &&
+              versionsList?.map((item, index) => {
+                return {
+                  key: item,
+                  label: item,
+                };
+              })
+            }
+          />
+        </div>
 
-            {artifactsList && artifactsList.length > 0 && (
-              <div>
-                {artifactsList.length > 0 && (
-                  <div className="flex items-center justify-center text-xs text-gray-400">
-                    {artifactsList &&
-                      artifactsList.length > 0 &&
-                      artifactsList?.forEach((obj) => {
-                        <p>{obj}</p>;
-                      })}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="col-span-3">
-            {/** Versions Secetions based on the seleceted fabrics  */}
-            <ReusableDropDown
-              darkMode={darkMode}
-              key={"sfversion"}
-              title={
-                (selectedVerison && Array.from(selectedVerison)[0]) || "Version"
-              }
-              selectedKey={selectedVerison}
-              DropdownMenuClassName={
-                versionsList && versionsList.length > 6
+        {console.log(gettingNodes, "get")}
+        {/*Node name and node id have to dispaly on this Selection*/}
+        <div className="col-span-6">
+          <Dropdown
+            classNames={{
+              base: "w-full",
+              content: "w-full p-1 ",
+            }}
+          >
+            <DropdownTrigger asChild>
+              <Button
+                size="sm"
+                variant="outline"
+                className={`${
+                  darkMode
+                    ? "w-full border border-slate-400/30 text-[#F4F4F5] "
+                    : "w-full border border-slate-400/30 text-black "
+                }`}
+              >
+                <span
+                  className="truncate "
+                  title={
+                    (selectedNode && Array.from(selectedNode).join(",")) ||
+                    "Node"
+                  }
+                >
+                  {(selectedNode && Array.from(selectedNode).join(",")) ||
+                    "Node"}
+                </span>
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              variant="faded"
+              className={
+                gettingNodes && gettingNodes.length > 6
                   ? "h-30 overflow-y-scroll  "
                   : ""
               }
-              handleSelectedKey={setSelectedVerison}
+              itemClasses={{
+                base: [
+                  "rounded-md",
+                  "text-white font-bold",
+                  "transition-opacity",
+                  "data-[hover=true]:text-pink-500 font-bold",
+                  "data-[hover=true]:bg-gray-600/40 ",
+                  "dark:data-[hover=true]:bg-[#1E1E1E]",
+                  "data-[selectable=true]:focus:bg-gray-600/40",
+                  "data-[pressed=true]:opacity-70",
+                  "data-[focus-visible=true]:ring-default-500",
+                ],
+                selectedIcon: "w-1 h-1 flex items-center",
+              }}
+              classNames={{
+                base: "bg-[#1E1E1E] text-white font-bold p-[5px] rounded-lg ",
+              }}
+              closeOnSelect={false}
+              selectionMode="multiple"
+              selectedKeys={selectionNodeId}
+              onSelectionChange={(key) => {
+                setSelectionNodeId(key);
+              }}
               items={
-                versionsList &&
-                versionsList?.map((item, index) => {
+                gettingNodes &&
+                gettingNodes?.map((obj, index) => {
                   return {
-                    key: item,
-                    label: item,
+                    key: obj.nodeId,
+                    label: obj.nodeName || obj.nodeType,
+                    type: obj.nodeType,
                   };
                 })
               }
-            />
-          </div>
-
-          {console.log(gettingNodes, "get")}
-          {/*Node name and node id have to dispaly on this Selection*/}
-          <div className="col-span-6">
-            <Dropdown
-              classNames={{
-                base: "w-full",
-                content: "w-full p-1 ",
-              }}
             >
-              <DropdownTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className={`${
-                    darkMode
-                      ? "w-full border border-slate-400/30 text-[#F4F4F5] "
-                      : "w-full border border-slate-400/30 text-black "
-                  }`}
+              {(item, index) => (
+                <DropdownItem
+                  key={item.key}
+                  color={item.key === "delete" ? "danger" : "default"}
+                  className={item.key === "delete" ? "text-danger" : ""}
                 >
-                  <span
-                    className="truncate "
-                    title={
-                      (selectedNode && Array.from(selectedNode).join(",")) ||
-                      "Node"
-                    }
-                  >
-                    {(selectedNode && Array.from(selectedNode).join(",")) ||
-                      "Node"}
-                  </span>
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                variant="faded"
-                className={
-                  gettingNodes && gettingNodes.length > 6
-                    ? "h-30 overflow-y-scroll  "
-                    : ""
-                }
-                itemClasses={{
-                  base: [
-                    "rounded-md",
-                    "text-white font-bold",
-                    "transition-opacity",
-                    "data-[hover=true]:text-pink-500 font-bold",
-                    "data-[hover=true]:bg-gray-600/40 ",
-                    "dark:data-[hover=true]:bg-[#1E1E1E]",
-                    "data-[selectable=true]:focus:bg-gray-600/40",
-                    "data-[pressed=true]:opacity-70",
-                    "data-[focus-visible=true]:ring-default-500",
-                  ],
-                  selectedIcon: "w-1 h-1 flex items-center",
-                }}
-                classNames={{
-                  base: "bg-[#1E1E1E] text-white font-bold p-[5px] rounded-lg ",
-                }}
-                closeOnSelect={false}
-                selectionMode="multiple"
-                selectedKeys={selectionNodeId}
-                onSelectionChange={(key) => {
-                  setSelectionNodeId(key);
-                }}
-                items={
-                  gettingNodes &&
-                  gettingNodes?.map((obj, index) => {
-                    return {
-                      key: obj.nodeId,
-                      label: obj.nodeName || obj.nodeType,
-                      type: obj.nodeType,
-                    };
-                  })
-                }
-              >
-                {(item, index) => (
-                  <DropdownItem
-                    key={item.key}
-                    color={item.key === "delete" ? "danger" : "default"}
-                    className={item.key === "delete" ? "text-danger" : ""}
-                  >
-                    <div className="w-[100%] flex gap-2 items-center">
-                      <Avatar
-                        alt={item.label}
-                        className="w-[20%] flex-shrink-0"
-                        size="sm"
-                        name={item.type}
-                      />
-                      <div className="flex flex-col w-[80%]">
-                        <span className="text-small text-slate-200">
-                          {item.label === ""
-                            ? "Node name is not available"
-                            : item.label}
-                        </span>
-                        <span className="text-tiny text-slate-400">
-                          {item.key}
-                        </span>
-                      </div>
+                  <div className="flex w-[100%] items-center gap-2">
+                    <Avatar
+                      alt={item.label}
+                      className="w-[20%] flex-shrink-0"
+                      size="sm"
+                      name={item.type}
+                    />
+                    <div className="flex w-[80%] flex-col">
+                      <span className="text-small text-slate-200">
+                        {item.label === ""
+                          ? "Node name is not available"
+                          : item.label}
+                      </span>
+                      <span className="text-tiny text-slate-400">
+                        {item.key}
+                      </span>
                     </div>
-                  </DropdownItem>
-                )}
-              </DropdownMenu>
-            </Dropdown>
-          </div>
-
-          {/* SI Flag selction */}
-          <div className="grid grid-cols-6 gap-2">
-            <div className="flex items-center justify-between"></div>
-          </div>
+                  </div>
+                </DropdownItem>
+              )}
+            </DropdownMenu>
+          </Dropdown>
         </div>
 
-        {selectedJson && (
-          <Builder
-            key={"MT"}
-            uiPolicy={cardUIPolicy}
-            keys={"MT"}
-            defaultJSOn={selectedJson}
-            updatedNodeConfig={updateselectedJson}
-            isAdmin={{
-              canAdd: true,
-              canDelete: true,
-              canEdit: true,
-            }}
-            controlPolicy={controlPolicy}
-            colorPolicy={colorPolicy}
-          />
-        )}
+        {/* SI Flag selction */}
+        <div className="grid grid-cols-6 gap-2">
+          <div className="flex items-center justify-between"></div>
+        </div>
       </div>
-    </Sidebar>
+
+      {selectedJson && (
+        <Builder
+          key={"MT"}
+          uiPolicy={cardUIPolicy}
+          keys={"MT"}
+          defaultJSOn={selectedJson}
+          updatedNodeConfig={updateselectedJson}
+          isAdmin={{
+            canAdd: true,
+            canDelete: true,
+            canEdit: true,
+          }}
+          controlPolicy={controlPolicy}
+          colorPolicy={colorPolicy}
+        />
+      )}
+    </div>
   );
 };
 

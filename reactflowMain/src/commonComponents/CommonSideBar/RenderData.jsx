@@ -26,9 +26,10 @@ export const RenderData = ({
   group,
   application,
   darkMode,
-
+  setshowsfsidebar,
   selectedproperty,
   helperjson,
+  handleSfSidebar
 }) => {
   return (
     <>
@@ -153,22 +154,23 @@ export const RenderData = ({
           </div>
         </Dialog>
       ) : (
-        currentDrawing === "SF" && (
-          <SFSidebar
-            updatedNodeConfig={() => {
-              setToggle(false);
-            }}
-            currentModel={currentModel}
-            setJson={setJson}
-            json={json}
-            sendFabrics={sendFabrics}
-            sidebarVisible={toggle}
-            setSidebarVisible={setToggle}
-            tenant={tenant}
-            group={group}
-            application={application}
-          />
-        )
+        currentDrawing ==="SF"?(
+          handleSfSidebar(toggle , setToggle) 
+          // <SFSidebar
+          //   updatedNodeConfig={() => {
+          //     setToggle(false);
+          //   }}
+          //   currentModel={currentModel}
+          //   setJson={setJson}
+          //   json={json}
+          //   sendFabrics={sendFabrics}
+          //   sidebarVisible={toggle}
+          //   setSidebarVisible={setToggle}
+          //   tenant={tenant}
+          //   group={group}
+          //   application={application}
+          // />
+        ):""
       )}
     </>
   );

@@ -27,7 +27,7 @@ export default function ReusableInput({
       isInvalid={isinvalid}
       type={type}
       isClearable={isClearable}
-      radius="lg"
+      radius="sm"
       label={label}
       startContent={startContent}
       endContent={endContent}
