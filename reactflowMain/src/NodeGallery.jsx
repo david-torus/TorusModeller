@@ -61,7 +61,7 @@ export default function NodeGallery({
         </div>
       </div>
       <div
-        className={`  flex h-[91.5%]  w-[100%] flex-col justify-around  transition-opacity duration-700 ease-in-out`}
+        className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
 
         <Loop
@@ -177,9 +177,9 @@ export const EventScreen = ({ selectedControlEvents }) => {
   return (
     <>
       {selectedControlEvents && (
-        <>
+        <div>
           <div className="flex flex-row items-center justify-between p-2">
-            <div className={`${!darkMode ? "text-white" : "text-black"} `}>
+            <div className={`${!darkMode ? "text-black" : "text-black"} `}>
               {selectedControlEvents?.nodeName ||
                 selectedControlEvents?.nodeType}
             </div>
@@ -209,7 +209,7 @@ export const EventScreen = ({ selectedControlEvents }) => {
                 </div>
               );
             })}
-        </>
+        </div>
       )}
     </>
   );
