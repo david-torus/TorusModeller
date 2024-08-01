@@ -124,7 +124,7 @@ const Loop = ({ color }) => {
   return (
     <>
       {selectedFabric !== "events" && selectedFabric !== "SF" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           {EnvSideData[selectedFabric] &&
             EnvSideData[selectedFabric].map((item, index) => (
               <div
@@ -149,7 +149,9 @@ const Loop = ({ color }) => {
             ))}
         </div>
       ) : selectedFabric == "events" ? (
-        <EventScreen selectedControlEvents={selectedControlEvents} />
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+          <EventScreen selectedControlEvents={selectedControlEvents} />
+        </div>
       ) : (
         selectedFabric === "SF" && (
           <OrpsSidebar
