@@ -698,7 +698,6 @@ export function EventDashBoard({
         style={{
           width: "8%",
           height: "25%",
-          margin: "10px",
           backgroundColor: darkMode ? "transparent" : "#eeeeee",
           display: "flex",
           justifyContent: "center",
