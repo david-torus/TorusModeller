@@ -1340,6 +1340,7 @@ export default function Navbar({
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   const handleAccordionToggle = (index, tkey) => {
+    if (selectedTkey === tkey) return;
     setSelectedTkey(tkey);
     handleGetApplications(tkey, client, selectedFabric).catch((err) => {
       throw err;
