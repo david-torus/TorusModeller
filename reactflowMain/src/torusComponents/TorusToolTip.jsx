@@ -15,7 +15,10 @@ export default function TorusToolTip({
   fg,
   ele,
   tooltipFor,
-  setLabel
+  setLabel,
+  setCheckActivestatus,
+  obj,
+  setExpandedItem
 }) {
   return (
     <TooltipTrigger className="">
@@ -26,6 +29,8 @@ export default function TorusToolTip({
             setActiveTab(fg);
             setPath(fg);
             setLabel(tooltipContent)
+            setCheckActivestatus(obj)
+            setExpandedItem([])
         } else if (tooltipFor === "obj") {
             setShowObj(ele);
             setActiveTab(ele);

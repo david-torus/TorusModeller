@@ -785,32 +785,24 @@ export class VptService {
   }
 
   async getNodeList(
-    applicationName,
-    version,
+    project,
+    verion,
     artifact,
-    tenant,
-    appGroup,
+    tKey,
+    client,
     fabrics,
+    saveKey,
   ): Promise<any> {
     try {
       let res;
       const nodes: Promise<any> = new Promise((resolve, reject) => {
+        let arrKey = JSON.parse(saveKey);
+        let key = '';
+        if (arrKey.length > 0) {
+          key = arrKey.join(':') + ':' + 'nodes';
+        }
         try {
-          const node = this.readReddis(
-            [tenant] +
-              ':' +
-              [appGroup] +
-              ':' +
-              [applicationName] +
-              ':' +
-              [fabrics] +
-              ':' +
-              [artifact] +
-              ':' +
-              [version] +
-              ':' +
-              'nodes',
-          );
+          const node = this.readReddis(key);
           resolve(node);
         } catch (error) {
           reject(error);

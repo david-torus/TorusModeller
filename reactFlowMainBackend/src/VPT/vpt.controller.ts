@@ -203,12 +203,13 @@ export class VptController {
   @Get(`getNodeList`)
   async getNodeList(@Query() query): Promise<any> {
     return await this.vptService.getNodeList(
-      query.applicationName,
-      query.version,
+      query.project,
+      query.verion,
       query.artifact,
-      query.tenant,
-      query.appGroup,
+      query.tKey,
+      query.client,
       query.fabrics,
+      query.saveKey,
     );
   }
 }

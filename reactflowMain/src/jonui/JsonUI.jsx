@@ -711,6 +711,7 @@ export const RenderJson = memo(
     json,
     updatedNodeConfig,
     nodedata,
+
   }) => {
     const [dupJson, setDupJson] = useState(null);
 
@@ -768,6 +769,8 @@ export const RenderJson = memo(
           ...newjs,
         },
       );
+
+      // setJson(newjs);
     };
 
     const handlejs = (e, i, key, type, jskey) => {

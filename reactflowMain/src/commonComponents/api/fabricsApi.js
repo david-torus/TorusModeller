@@ -361,11 +361,12 @@ export const getNodeList = async (
   tKey,
   client,
   fabrics,
+  saveKey,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/getNodeList?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}`,
+      `${BASE_URL}/getNodeList?project=${project}&version=${version}&artifact=${artifact}&tKey=${tKey}&client=${client}&fabrics=${fabrics}&saveKey=${saveKey}`,
       {
         method: "GET",
       },
