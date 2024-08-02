@@ -1531,6 +1531,12 @@ export default function Navbar({
                                               <IoIosArrowForward />
                                             </Link>
                                           </Breadcrumb>
+                                          <Breadcrumb>
+                                            <Link className="flex flex-row items-center justify-center gap-1">
+                                              {selectedArtifactGroup}
+                                              <IoIosArrowForward />
+                                            </Link>
+                                          </Breadcrumb>
                                           {selectedArtifact && (
                                             <Breadcrumb>
                                               <Link className="flex flex-row items-center justify-center gap-1">
