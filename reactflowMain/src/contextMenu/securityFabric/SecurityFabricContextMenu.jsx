@@ -12,7 +12,8 @@ export default function SecurityFabricContextMenu({
   bottom,
   ...props
 }) {
-  const { getNode, setNodes, addNodes, setEdges, getNodes } = useReactFlow();
+  const { getNode, setNodes, addNodes, getEdges, setEdges, getNodes } =
+    useReactFlow();
   const { cut, copy, paste, bufferedNodes } = useCopyPaste();
   const canCopy = getNodes().some(({ selected }) => selected);
   const node = getNode(id);
@@ -31,11 +32,64 @@ export default function SecurityFabricContextMenu({
       position,
     });
   }, [id, getNode, addNodes]);
-
-  const deleteNode = useCallback(() => {
-    setNodes((nodes) => nodes.filter((node) => node.id !== id));
-    setEdges((edges) => edges.filter((edge) => edge.source !== id));
-  }, [id, setNodes, setEdges]);
+  const deleteNode = () => {
+    try {
+      const getChildIds = (parentId, nodes) => {
+        const childIds = [];
+        const stack = [parentId];
+        while (stack.length > 0) {
+          const currentNodeId = stack.pop();
+          const currentNode = nodes.find((node) => node.id === currentNodeId);
+          if (currentNode) {
+            childIds.push(currentNodeId);
+            if (currentNode.data.children) {
+              stack.push(...currentNode.data.children);
+            }
+          }
+        }
+        return childIds;
+      };
+      const nodeToDelete = getNodes().find((node) => node.id === id);
+      if (!nodeToDelete) {
+        return;
+      }
+      const childIds = getChildIds(id, getNodes());
+      const updatedNodes = getNodes().filter(
+        (node) => !childIds.includes(node.id),
+      );
+      if (
+        updatedNodes &&
+        Array.isArray(updatedNodes) &&
+        updatedNodes.length > 0
+      ) {
+        const rmvChildFrmPrnt = updatedNodes.map((node) => {
+          if (node.data.children && node.data.children.includes(id)) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                children: node.data.children.filter(
+                  (childId) => childId !== id,
+                ),
+              },
+            };
+          }
+          return node;
+        });
+        setNodes(rmvChildFrmPrnt);
+      } else {
+        setNodes([]);
+      }
+      const updatedEdges = getEdges().filter(
+        (edge) =>
+          !childIds.includes(edge.source) && !childIds.includes(edge.target),
+      );
+      setEdges(updatedEdges);
+      // takeSnapshot();
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
