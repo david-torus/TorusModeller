@@ -7,6 +7,9 @@ import {
   useContext,
 } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { WiStrongWind } from "react-icons/wi";
+import { MdOutlineHorizontalDistribute } from "react-icons/md";
+import { TfiSettings } from "react-icons/tfi";
 import ReactFlow, {
   Background,
   Panel,
@@ -20,7 +23,7 @@ import "reactflow/dist/style.css";
 import { PiMapTrifoldBold } from "react-icons/pi";
 import { GiCircularSaw } from "react-icons/gi";
 import styles from "./styles.module.css";
-import { Accordion, AccordionItem, Button, Slider } from "@nextui-org/react";
+
 import {
   GroupNode,
   ControlNode,
@@ -36,6 +39,8 @@ import { TorusModellerContext } from "../../../Layout";
 import useForceLayout from "./UseForceLayout";
 import TorusAccordion from "../../../torusComponents/TorusAccordian";
 import TorusRangeSlider from "../../../torusComponents/TorusRangeSlider";
+import TorusButton from "../../../torusComponents/TorusButton";
+import { Button } from "react-aria-components";
 
 const proOptions = { account: "paid-pro", hideAttribution: true };
 
@@ -67,7 +72,7 @@ export function EventDashBoard({
   const { ref, onNodeContextMenu, onPaneClick } =
     useContext(TorusModellerContext);
   const [nodeConfig, setNodeConfig] = useState([]);
-  const [strength, setStrength] = useState(-1000);
+  const [strength, setStrength] = useState(0);
   const [distance, setDistance] = useState(750);
   const [menu, setMenu] = useState(null);
 
@@ -75,16 +80,8 @@ export function EventDashBoard({
   const [mainSequence, setMainSequence] = useState(0);
   const { darkMode } = useContext(DarkmodeContext);
   const [miniMapOpn, setMinimapOpn] = useState(true);
-  const [strenghtsliderValue, setStrenghtSliderValue] = useState(0);
+  const [panelOPen, setpanelOPen] = useState(false);
   const [distancetsliderValue, setDistanceSliderValue] = useState(0);
-
-  useEffect(() => {
-    console.log(
-      strenghtsliderValue,
-      distancetsliderValue,
-      "Strength & Distance",
-    );
-  }, [strenghtsliderValue, setDistanceSliderValue]);
 
   const NODE_TYPES = useMemo(
     () => ({
@@ -669,6 +666,10 @@ export function EventDashBoard({
     }
   };
 
+  const togglePanel = () => {
+    setpanelOPen((prev) => !prev);
+  };
+
   return (
     <ReactFlow
       ref={ref}
@@ -690,38 +691,76 @@ export function EventDashBoard({
         (typeof children === "function"
           ? children({ setSidebar, updatenodeDetails, updatedNodeConfig })
           : children)}
-      <Panel
-        position="top-right"
-        // className={` ${darkMode ? "bg-transparent" : "bg-[#eeeeee]"}`}
-        style={{
-          width: "10%",
-          height: "25%",
-          margin: "10px",
-          backgroundColor: darkMode ? "transparent" : "#eeeeee",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div className="flex h-[100%] w-[100%] justify-between rounded-md border border-slate-300 bg-[#FFFFFF] shadow-sm ">
-          <div className="flex items-center justify-around gap-[0.50rem] p-2">
-            {/* <TorusRangeSlider
-              orientation="vertical"
-              sliderValue={strenghtsliderValue}
-              setSliderValue={setStrenghtSliderValue}
-              keys={"strenght"}
-            /> */}
 
-            <TorusRangeSlider
-              orientation="vertical"
-              sliderValue={distancetsliderValue}
-              setSliderValue={setDistanceSliderValue}
-              keys={"distance"}
-            />
-            {/* <TorusRangeSlider orientation="vertical" /> */}
+      <div>
+        <Panel
+          position="top-right"
+          className="transition-all duration-100 ease-in-out"
+          style={{
+            width: "8%",
+            height: "30%",
+            backgroundColor: darkMode ? "transparent" : "transparent",
+            display: "flex",
+            justifyContent: panelOPen ? "center" : "start",
+            alignItems: panelOPen ? "center" : "start",
+            flexDirection: "column",
+          }}
+        >
+          <div className="flex h-[15%] w-[100%] items-center justify-end py-2">
+            <span
+              onClick={togglePanel}
+              className={`cursor-pointer transition-all duration-400 ease-in-out ${panelOPen ? "rotate-[260deg]" : "rotate-[-260deg] "}`}
+            >
+              <TfiSettings size={20} />
+            </span>
           </div>
-        </div>
-      </Panel>
+
+          <div
+            className={`transform transition-transform duration-400 ease-in-out 
+              ${
+                panelOPen
+                  ? "translate-y-0 opacity-100"
+                  : "-translate-y-4 opacity-0"
+              } 
+            mt-2 flex h-[100%] w-[100%] flex-col justify-between rounded-md border 
+            border-slate-300 bg-white shadow-sm`}
+          >
+            <div className="flex h-[100%] w-[100%] items-center justify-around">
+              <div>
+                <TorusRangeSlider
+                  orientation="vertical"
+                  sliderValue={strength}
+                  setSliderValue={setStrength}
+                  keys={"strenght"}
+                  min={"-2000"}
+                  max={"100"}
+                  step={"10"}
+                />
+              </div>
+
+              <div>
+                <TorusRangeSlider
+                  orientation="vertical"
+                  sliderValue={distance}
+                  setSliderValue={setDistance}
+                  keys={"distance"}
+                  min={"100"}
+                  max={"1000"}
+                  step={"50"}
+                />
+              </div>
+            </div>
+            <div className="flex h-[10%] w-[100%] items-center justify-center pb-[1rem] pt-[0.8rem]">
+              <div className="flex w-[50%] items-center justify-center">
+                <WiStrongWind color="#0736C4" size={25} />
+              </div>
+              <div className="flex w-[50%] items-center justify-center">
+                <MdOutlineHorizontalDistribute color="#0736C4" size={20} />
+              </div>
+            </div>
+          </div>
+        </Panel>
+      </div>
 
       {/*  {!miniMapOpn && (
         <Button

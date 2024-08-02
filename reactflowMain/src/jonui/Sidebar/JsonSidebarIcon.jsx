@@ -72,7 +72,7 @@ const RenderJsonArraySidebarIcon = memo(
               
             }
             tooltipFor="arr"
-            tooltipContent={obj.map((ele) => ele.label ? ele.label : fg)}
+            tooltipContent={obj.map((ele) => ele?.label ? ele?.label : fg)}
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}

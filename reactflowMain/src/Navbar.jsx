@@ -53,12 +53,10 @@ import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
-import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
+
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 
 export default function Navbar({
-  tKey,
-  color,
   project,
   setdomain,
   setartifact,
@@ -70,6 +68,8 @@ export default function Navbar({
 }) {
   const {
     client,
+    selectedArtifactGroup,
+    setSelectedArtifactGroup,
     selectedTkey,
     setSelectedTkey,
     handleTabChange,
@@ -88,7 +88,7 @@ export default function Navbar({
   const [selectedArtifactText, setSelectedArtifactText] = useState(false);
   const [artifactsList, setArtifactsList] = useState([]);
   const [applicationArtifactsName, setApplicationArtifactsName] = useState([]);
-  const [projectList, setApplicationList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
 
   // const [selectedArtifact, setSelectedArtifact] = useState("");
 
@@ -133,12 +133,6 @@ export default function Navbar({
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
   };
-
-  console.log(`${selectedTkey},
-  ${client},
-  ${selectedProject},
-  ${selectedArtifact},
-  ${selectedVersion}, mkEdit`);
 
   const handleArtifactSubmit = async (e, erDatas, type = "") => {
     try {
@@ -532,8 +526,8 @@ export default function Navbar({
             "TCL",
             selectedTkey,
             selectedFabric,
-            "domain",
-            "pgrp",
+            selectedProject,
+            selectedArtifactGroup,
           ]),
         );
         if (version && version?.status === 200) setVersions(version?.data);
@@ -744,7 +738,7 @@ export default function Navbar({
               selectedTkey,
               selectedFabric,
               selectedProject,
-              "pgrp",
+              selectedArtifactGroup,
             ]),
             true,
           );
@@ -800,7 +794,7 @@ export default function Navbar({
       );
 
       if (response && response.status === 200) {
-        setApplicationList(response.data);
+        setProjectList(response.data);
       }
     } catch (error) {
       toast(
@@ -836,7 +830,7 @@ export default function Navbar({
           selectedTkey,
           selectedFabric,
           applications,
-          "pgrp",
+          selectedArtifactGroup,
         ]),
         true,
       );
@@ -921,7 +915,13 @@ export default function Navbar({
         selectedTkey,
         client,
         selectedFabric,
-        JSON.stringify(["TCL", selectedTkey, selectedFabric, "domain", "pgrp"]),
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          "domain",
+          selectedArtifactGroup,
+        ]),
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -1003,13 +1003,15 @@ export default function Navbar({
   };
 
   const getProcessFlowApi = useCallback(
-    async (event) => {
+    async (artiFact, version) => {
       try {
-        if (selectedVersion) {
+        if ((artiFact, version)) {
+          setSelectedArtifact(artiFact);
+          setSelectedVersion(version);
           const response = await getJson(
             selectedProject,
-            selectedVersion,
-            selectedArtifact,
+            version,
+            artiFact,
             selectedTkey,
             client,
             selectedFabric,
@@ -1017,10 +1019,10 @@ export default function Navbar({
               "TCL",
               selectedTkey,
               selectedFabric,
-              "domain",
-              "pgrp",
-              selectedArtifact,
-              selectedVersion,
+              selectedProject,
+              selectedArtifactGroup,
+              artiFact,
+              version,
             ]),
           );
 
@@ -1063,15 +1065,7 @@ export default function Navbar({
         );
       }
     },
-    [
-      selectedFabric,
-      client,
-      selectedProject,
-      selectedArtifact,
-      selectedVersion,
-      sendDataToFabrics,
-      selectedTkey,
-    ],
+    [selectedFabric, client, selectedProject, sendDataToFabrics, selectedTkey],
   );
 
   const openmodal = (type) => {
@@ -1118,7 +1112,7 @@ export default function Navbar({
       ).then((res) => res.json());
 
       if (response && response.status === 200) {
-        setApplicationList(response.data);
+        setProjectList(response.data);
         setSelectedProject("");
         setSelectedArtifact("");
         setVersions([]);
@@ -1235,89 +1229,89 @@ export default function Navbar({
     }
   };
 
-  useEffect(() => {
-    try {
-      getDomainList(selectedsource)
-        .then((domain) => {
-          if (domain) setDomainList(domain.data);
-        })
-        .catch((err) => {
-          throw err;
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedsource]);
+  // useEffect(() => {
+  //   try {
+  //     getDomainList(selectedsource)
+  //       .then((domain) => {
+  //         if (domain) setDomainList(domain.data);
+  //       })
+  //       .catch((err) => {
+  //         throw err;
+  //       });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [selectedsource]);
 
-  useEffect(() => {
-    try {
-      if (selectedDomainLIst) {
-        getartifactList(
-          selectedsource,
-          Array.from(selectedDomainLIst)[0],
-          selectedFabric,
-        )
-          .then((artifacts) => {
-            if (artifacts) setDefaultArtifactList(artifacts.data);
-          })
-          .catch((err) => {
-            throw err;
-          });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedsource, selectedDomainLIst]);
+  // useEffect(() => {
+  //   try {
+  //     if (selectedDomainLIst) {
+  //       getartifactList(
+  //         selectedsource,
+  //         Array.from(selectedDomainLIst)[0],
+  //         selectedFabric,
+  //       )
+  //         .then((artifacts) => {
+  //           if (artifacts) setDefaultArtifactList(artifacts.data);
+  //         })
+  //         .catch((err) => {
+  //           throw err;
+  //         });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [selectedsource, selectedDomainLIst]);
 
-  useEffect(() => {
-    try {
-      if (selectedDefaultArtifacts) {
-        getVersionList(
-          selectedsource,
-          Array.from(selectedDomainLIst)[0],
-          selectedFabric,
-          Array.from(selectedDefaultArtifacts)[0],
-        )
-          .then((res) => {
-            if (res) setDefaultVersionList(res.data.version);
-          })
-          .catch((err) => {
-            throw err;
-          });
-      }
-    } catch (error) {}
-  }, [
-    selectedsource,
-    selectedDomainLIst,
-    selectedDefaultArtifacts,
-    selectedFabric,
-  ]);
+  // useEffect(() => {
+  //   try {
+  //     if (selectedDefaultArtifacts) {
+  //       getVersionList(
+  //         selectedsource,
+  //         Array.from(selectedDomainLIst)[0],
+  //         selectedFabric,
+  //         Array.from(selectedDefaultArtifacts)[0],
+  //       )
+  //         .then((res) => {
+  //           if (res) setDefaultVersionList(res.data.version);
+  //         })
+  //         .catch((err) => {
+  //           throw err;
+  //         });
+  //     }
+  //   } catch (error) {}
+  // }, [
+  //   selectedsource,
+  //   selectedDomainLIst,
+  //   selectedDefaultArtifacts,
+  //   selectedFabric,
+  // ]);
 
-  useEffect(() => {
-    try {
-      if (!selectedVersion) return;
-      const version = [...selectedVersion][0];
-      const artifact = [...selectedArtifact][0];
+  // useEffect(() => {
+  //   try {
+  //     if (!selectedVersion) return;
+  //     const version = [...selectedVersion][0];
+  //     const artifact = [...selectedArtifact][0];
 
-      if (setFabricsKey)
-        setFabricsKey(
-          `${selectedTkey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
-        );
-      getProcessFlowApi(selectedVersion).catch((err) => {
-        throw err;
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [
-    selectedVersion,
-    selectedArtifact,
-    selectedProject,
-    selectedFabric,
-    client,
-    setFabricsKey,
-    selectedTkey,
-  ]);
+  //     if (setFabricsKey)
+  //       setFabricsKey(
+  //         `${selectedTkey}:${client}:${selectedProject}:${selectedFabric}:${artifact}:${version}:`,
+  //       );
+  //     getProcessFlowApi(selectedVersion).catch((err) => {
+  //       throw err;
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, [
+  //   selectedVersion,
+  //   selectedArtifact,
+  //   selectedProject,
+  //   selectedFabric,
+  //   client,
+  //   setFabricsKey,
+  //   selectedTkey,
+  // ]);
 
   // useEffect(() => {
   //   try {
@@ -1353,21 +1347,13 @@ export default function Navbar({
   //   }
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
-  useEffect(() => {
-    try {
-      handleGetApplications(selectedTkey, client, selectedFabric).catch(
-        (err) => {
-          throw err;
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }, [selectedFabric, client, selectedTkey]);
-
   const handleAccordionToggle = (index, tkey) => {
-    console.log("Accordion toggled to index:", index, "tkey:", tkey);
+    if (selectedTkey === tkey && projectList.length !== 0) return;
     setSelectedTkey(tkey);
+    handleGetApplications(tkey, client, selectedFabric).catch((err) => {
+      throw err;
+    });
+
     handleApplicationName("");
     setSelectedArtifact("");
     setSelectedVersion("");
@@ -1582,7 +1568,10 @@ export default function Navbar({
                                             newArtifactValue,
                                             "v1",
                                             getDataFromFabrics,
-                                          ).then(() => setNewArtifact(false))
+                                          ).then(() => {
+                                            setNewArtifactValue("");
+                                            setNewArtifact(false);
+                                          })
                                         }
                                         Children={"Create"}
                                       />
@@ -1679,12 +1668,11 @@ export default function Navbar({
                                                     : new Set([])
                                                 }
                                                 setSelected={(e) => {
-                                                  setSelectedArtifact(
+                                                  getProcessFlowApi(
                                                     obj?.artifact,
-                                                  );
-                                                  setSelectedVersion(
                                                     Array.from(e)[0],
                                                   );
+
                                                   setArtifactCollectionName(
                                                     obj?.artifact,
                                                   );
@@ -1960,37 +1948,42 @@ export default function Navbar({
             )}
           </div>
 
-          <div className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent ">
-            <div className=" col-span-4 flex items-center justify-center">
-              <div className="flex items-center justify-around gap-[0.8rem] ">
-                <div className="flex w-[30%] items-center justify-center">
-                  <Debugger className={"stroke-black dark:stroke-white"} />
-                </div>
-                <div className="flex w-[30%] items-center justify-center">
-                  <Preview className={"stroke-black dark:stroke-white"} />
-                </div>
-                <div className="flex w-[30%] items-center justify-center">
-                  <Shared className={"stroke-black dark:stroke-white"} />
+          {selectedFabric !== "Home" && (
+            <div
+              style={{ display: selectedFabric == "Home" && "none" }}
+              className="flex h-full w-1/3 items-center justify-end gap-3 bg-transparent "
+            >
+              <div className=" col-span-4 flex items-center justify-center">
+                <div className="flex items-center justify-around gap-[0.8rem] ">
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Debugger className={"stroke-black dark:stroke-white"} />
+                  </div>
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Preview className={"stroke-black dark:stroke-white"} />
+                  </div>
+                  <div className="flex w-[30%] items-center justify-center">
+                    <Shared className={"stroke-black dark:stroke-white"} />
+                  </div>
                 </div>
               </div>
+              <div className=" col-span-1 flex items-center justify-center">
+                <VerticalLine className={"stroke-black dark:stroke-white"} />
+              </div>
+              <div className=" col-span-3">
+                <TorusButton
+                  Children="Publish"
+                  size={"md"}
+                  btncolor={"#0736C4"}
+                  outlineColor="torus-hover:ring-blue-500/50"
+                  radius={"lg"}
+                  fontStyle={
+                    "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
+                  }
+                  color={"white"}
+                />
+              </div>
             </div>
-            <div className=" col-span-1 flex items-center justify-center">
-              <VerticalLine className={"stroke-black dark:stroke-white"} />
-            </div>
-            <div className=" col-span-3">
-              <TorusButton
-                Children="Publish"
-                size={"md"}
-                btncolor={"#0736C4"}
-                outlineColor="torus-hover:ring-blue-500/50"
-                radius={"lg"}
-                fontStyle={
-                  "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[2.25rem] py-2"
-                }
-                color={"white"}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

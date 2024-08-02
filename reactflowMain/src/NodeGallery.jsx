@@ -63,15 +63,14 @@ export default function NodeGallery({
       <div
         className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
       >
-        <div>
+
         <Loop
           color={color}
           selectedFabric={selectedFabric}
           selectedControlEvents={selectedControlEvents}
           sfNodeGalleryData={sfNodeGalleryData}
         />
-
-        </div>
+     
        
 
         <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
@@ -124,7 +123,7 @@ const Loop = ({ color }) => {
   return (
     <>
       {selectedFabric !== "events" && selectedFabric !== "SF" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[50%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           {EnvSideData[selectedFabric] &&
             EnvSideData[selectedFabric].map((item, index) => (
               <div
@@ -149,7 +148,7 @@ const Loop = ({ color }) => {
             ))}
         </div>
       ) : selectedFabric == "events" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[88%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[100%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
           <EventScreen selectedControlEvents={selectedControlEvents} />
         </div>
       ) : (
@@ -178,9 +177,9 @@ export const EventScreen = ({ selectedControlEvents }) => {
   return (
     <>
       {selectedControlEvents && (
-        <>
+        <div>
           <div className="flex flex-row items-center justify-between p-2">
-            <div className={`${!darkMode ? "text-white" : "text-black"} `}>
+            <div className={`${!darkMode ? "text-black" : "text-black"} `}>
               {selectedControlEvents?.nodeName ||
                 selectedControlEvents?.nodeType}
             </div>
@@ -210,7 +209,7 @@ export const EventScreen = ({ selectedControlEvents }) => {
                 </div>
               );
             })}
-        </>
+        </div>
       )}
     </>
   );

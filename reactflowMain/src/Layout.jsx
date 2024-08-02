@@ -48,6 +48,7 @@ export default function Layout({ client }) {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
   const [selectedTkey, setSelectedTkey] = useState("FRK");
+  const [selectedArtifactGroup, setSelectedArtifactGroup] = useState("pgrp");
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedComponentName, setSelectedComponentName] = useState(null);
   const [selectedControlName, setSelectedControlName] = useState(null);
@@ -56,7 +57,6 @@ export default function Layout({ client }) {
   const [showNodeProperty, setShowNodeProperty] = useState(false);
   const [showFabricSideBar, setShowFabricSideBar] = useState(true);
   const [menu, setMenu] = useState(null);
-
   const [sfNodeGalleryData, setSfNodeGalleryData] = useState(null);
   const [selectedControlEvents, setSelectedControlEvents] = useState(null);
   const [recentClicked, setrecentClicked] = useState(false);
@@ -72,7 +72,6 @@ export default function Layout({ client }) {
     mapper: false,
     code: false,
   });
-  const [typesinFlow, setTypesInFlow] = useState([]);
 
   const getTenantPolicy = async (tenant) => {
     try {
@@ -140,7 +139,7 @@ export default function Layout({ client }) {
             selectedTkey,
             "UF",
             selectedProject,
-            "pgrp",
+            selectedArtifactGroup,
             selectedArtifact,
             selectedVersion,
           ]),
@@ -154,7 +153,7 @@ export default function Layout({ client }) {
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-    if (!fabric === "events") {
+    if (fabric !== "events") {
       setSelectedProject("");
       setSelectedArtifact("");
       setSelectedVersion("");
@@ -271,6 +270,7 @@ export default function Layout({ client }) {
       console.error(error);
     }
   };
+
   const updateOptions = (data) => {
     try {
       setNodes((nds) => {
@@ -403,6 +403,8 @@ export default function Layout({ client }) {
         handleTabChange,
         eventsNavBarData,
         nodePropertyData,
+        selectedArtifactGroup,
+        setSelectedArtifactGroup,
         setSelectedComponentName,
         selectedComponentName,
         setSelectedControlName,
