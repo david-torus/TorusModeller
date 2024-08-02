@@ -26,6 +26,7 @@ import { toast } from "react-toastify";
 import ReusableDropDown from "../../../commonComponents/reusableComponents/ReusableDropDown";
 import { handleErrorLog } from "../../../commonComponents/api/errorlogApi";
 import { RenderJson } from "../../../jonui/JsonUI";
+import { TorusModellerContext } from "../../../Layout";
 const js = {
   orgGrp: [
     {
@@ -542,6 +543,21 @@ const SFSidebar = ({
   const [selectionNodeId, setSelectionNodeId] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [fabricsOptions, setFabricsOptions] = useState({});
+  const[fabricsList,setFabricsList]=useState(null);
+
+  const {
+    client,
+    selectedTkey,
+    setSelectedTkey,
+    handleTabChange,
+    selectedFabric,
+    selectedArtifact,
+    setSelectedArtifact,
+    selectedVersion,
+    setSelectedVersion,
+    selectedProject,
+    setSelectedProject,
+  } = useContext(TorusModellerContext);
   {
     console.log(json, "sd");
   }
@@ -566,12 +582,20 @@ const SFSidebar = ({
   const getArtifacts = async (selectedApplicationss) => {
     try {
       const response = await artifactList(
-        tenant,
-        group,
+        selectedTkey,
+        client,
         selectedApplicationss,
         sendFabrics,
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          sendFabrics,
+          selectedApplicationss,
+          "pgrp",
+        ]),
+        false,
       );
-      if (response && response.data) {
+      if (response && response?.status === 200) {
         setArtifactsList(response.data);
       }
     } catch (error) {
@@ -593,6 +617,13 @@ const SFSidebar = ({
         Array.from(selectedapplication)[0],
         selectedArtifacts,
         sendFabrics,
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          sendFabrics,
+          Array.from(selectedapplication)[0],
+          "pgrp",
+        ]),
       );
       if (response && response.data) {
         setVersionList(response.data);
@@ -670,8 +701,18 @@ const SFSidebar = ({
         Array.from(selectedapplication)[0],
         Array.from(selectedVerison)[0],
         Array.from(selectedArtifacts)[0],
-        tenant,
-        group,
+        selectedTkey,
+        "TCL",
+        sendFabrics,
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          sendFabrics,
+          Array.from(selectedapplication)[0],
+          "pgrp",
+          Array.from(selectedArtifacts)[0],
+          Array.from(selectedVerison)[0],
+        ]),
         sendFabrics,
       )
         .then((response) => {
@@ -1053,11 +1094,15 @@ const SFSidebar = ({
         let filterJson = json?.[currentModel].filter((item) => {
           return (
             item.resource ===
-            tenant +
+            "TCL" +
               ":" +
-              group +
+              selectedTkey +
+              ":" +
+              sendFabrics +
               ":" +
               Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
               ":" +
               Array.from(selectedArtifacts)[0] +
               ":" +
@@ -1092,15 +1137,19 @@ const SFSidebar = ({
             updateselectedJson({
               resourceType: "ProcessFlow",
               resource:
-                tenant +
-                ":" +
-                group +
-                ":" +
-                Array.from(selectedapplication)[0] +
-                ":" +
-                Array.from(selectedArtifacts)[0] +
-                ":" +
-                Array.from(selectedVerison)[0],
+              "TCL" +
+              ":" +
+              selectedTkey +
+              ":" +
+              sendFabrics +
+              ":" +
+              Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
+              ":" +
+              Array.from(selectedArtifacts)[0] +
+              ":" +
+              Array.from(selectedVerison)[0],
               SIFlag: {
                 type: "dropdown",
                 selectedValue: "A",
@@ -1114,15 +1163,19 @@ const SFSidebar = ({
             updateselectedJson({
               resourceType: "tables",
               resource:
-                tenant +
-                ":" +
-                group +
-                ":" +
-                Array.from(selectedapplication)[0] +
-                ":" +
-                Array.from(selectedArtifacts)[0] +
-                ":" +
-                Array.from(selectedVerison)[0],
+              "TCL" +
+              ":" +
+              selectedTkey +
+              ":" +
+              sendFabrics +
+              ":" +
+              Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
+              ":" +
+              Array.from(selectedArtifacts)[0] +
+              ":" +
+              Array.from(selectedVerison)[0],
 
               tableDetails: [],
               apiDetails: [],
@@ -1132,15 +1185,19 @@ const SFSidebar = ({
             updateselectedJson({
               resourceType: "Page",
               resource:
-                tenant +
-                ":" +
-                group +
-                ":" +
-                Array.from(selectedapplication)[0] +
-                ":" +
-                Array.from(selectedArtifacts)[0] +
-                ":" +
-                Array.from(selectedVerison)[0],
+                "TCL" +
+              ":" +
+              selectedTkey +
+              ":" +
+              sendFabrics +
+              ":" +
+              Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
+              ":" +
+              Array.from(selectedArtifacts)[0] +
+              ":" +
+              Array.from(selectedVerison)[0],
               SIFlag: {
                 type: "dropdown",
                 selectedValue: "A",
@@ -1156,11 +1213,15 @@ const SFSidebar = ({
           updateselectedJson({
             resourceType: "ProcessFlow",
             resource:
-              tenant +
+             "TCL" +
               ":" +
-              group +
+              selectedTkey +
+              ":" +
+              sendFabrics +
               ":" +
               Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
               ":" +
               Array.from(selectedArtifacts)[0] +
               ":" +
@@ -1178,16 +1239,19 @@ const SFSidebar = ({
           updateselectedJson({
             resourceType: "tables",
             resource:
-              tenant +
+            "TCL" +
               ":" +
-              group +
+              selectedTkey +
+              ":" +
+              sendFabrics +
               ":" +
               Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
               ":" +
               Array.from(selectedArtifacts)[0] +
               ":" +
               Array.from(selectedVerison)[0],
-
             tableDetails: [],
             apiDetails: [],
           });
@@ -1196,11 +1260,15 @@ const SFSidebar = ({
           updateselectedJson({
             resourceType: "Page",
             resource:
-              tenant +
+             "TCL" +
               ":" +
-              group +
+              selectedTkey +
+              ":" +
+              sendFabrics +
               ":" +
               Array.from(selectedapplication)[0] +
+              ":" +
+              "pgrp" +
               ":" +
               Array.from(selectedArtifacts)[0] +
               ":" +
@@ -1230,6 +1298,7 @@ const SFSidebar = ({
     json,
   ]);
 
+  console.log(json[currentModel], "jsoncg");
   useEffect(() => {
     try {
       let options = {
@@ -1325,14 +1394,26 @@ const SFSidebar = ({
   //     };
   //   }
   // }, [tenant, group,selectedapplication, sendFabrics]); // Add dependencies if necessary
+  const getapplicationList = async () => {
+    try {
+      const response = await applicationLists(
+        selectedTkey,
+        client,
+        selectedFabric,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+      );
+
+      if (response && response.status === 200) {
+        setApplicationList(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     try {
-      applicationLists(tenant, group, sendFabrics).then((response) => {
-        if (response && response.data) {
-          setApplicationList(response.data);
-        }
-      });
+      getapplicationList();
     } catch (error) {
       const errObj = {
         tname: "TM",
@@ -1424,8 +1505,8 @@ const SFSidebar = ({
           variant="outline"
           className={`${
             !darkMode
-              ? "top-2 left-2 w-15 px-2  rounded-md border  border-slate-600 bg-[#368289] text-[#F4F4F5] "
-              : " top-2 left-2 w-15 px-2  rounded-md border-slate-400/30 bg-[#023F8A] text-white "
+              ? "w-15 left-2 top-2 rounded-md  border border-slate-600  bg-[#368289] px-2 text-[#F4F4F5] "
+              : " w-15 left-2 top-2 rounded-md  border-slate-400/30 bg-[#023F8A] px-2 text-white "
           }`}
           size="sm"
           onClick={() => {
@@ -1692,14 +1773,12 @@ const SFSidebar = ({
         </div>
 
         {/* SI Flag selction */}
-      
       </div>
-
+{console.log(selectedJson, "sdelectedJson")}
       {selectedJson && (
-        <div className="dark:bg-[#161616] h-96  overflow-y-scroll">
-
-        <RenderJson json={js} />
-         {/* <Builder
+        <div className="h-96 overflow-y-scroll  dark:bg-[#161616]">
+          {/* <RenderJson json={selectedJson} setJson={updateselectedJson}  updatedNodeConfig={setFabricsList} /> */}
+          {/* <Builder
           key={"MT"}
           uiPolicy={cardUIPolicy}
           keys={"MT"}

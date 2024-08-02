@@ -44,6 +44,9 @@ const RenderJsonArraySidebarIcon = memo(
     setActiveTab,
     setLabel,
     shuffledIcons,
+    setCheckActivestatus,
+    setExpandedItem
+
   }) => {
     return (
       <>
@@ -66,6 +69,7 @@ const RenderJsonArraySidebarIcon = memo(
                   color: activeTab === fg ? "#6600ff" : "#B2BABB",
                 }
               )
+              
             }
             tooltipFor="arr"
             tooltipContent={obj.map((ele) => ele?.label ? ele?.label : fg)}
@@ -74,7 +78,10 @@ const RenderJsonArraySidebarIcon = memo(
             setActiveTab={setActiveTab}
             setPath={setPath}
             fg={fg}
+            obj={obj}
             setLabel={setLabel}
+            setCheckActivestatus={setCheckActivestatus}
+            setExpandedItem={setExpandedItem}
           />
         </div>
       </>
@@ -83,7 +90,7 @@ const RenderJsonArraySidebarIcon = memo(
 );
 
 export const JsonSidebarIcon = memo(
-  ({ obj, setShowObj, setPath, setLabel }) => {
+  ({ obj, setShowObj, setPath, setLabel, checkActivestatus,setCheckActivestatus,setExpandedItem }) => {
     const [activeTab, setActiveTab] = useState(null);
 
     return (
@@ -105,8 +112,13 @@ export const JsonSidebarIcon = memo(
                         setShowObj(ele);
                         setPath(ele);
                         setActiveTab(ele);
+                        setCheckActivestatus(obj[activeTab])
                       }}
+                      
+                      
+                      
                     >
+                      
                       <TorusToolTip
                         hoverContent={
                           iconArray.length > 0 &&
@@ -145,6 +157,9 @@ export const JsonSidebarIcon = memo(
                     setPath={setPath}
                     setLabel={setLabel}
                     shuffledIcons={iconArray}
+                    setCheckActivestatus={setCheckActivestatus}
+                    setExpandedItem={setExpandedItem}
+          
                   />
                 );
               }

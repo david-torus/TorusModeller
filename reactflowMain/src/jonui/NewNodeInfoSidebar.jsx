@@ -447,6 +447,7 @@ const NewNodeInfoSidebar = ({
             sendFabrics={sendFabrics}
             sidebarVisible={toggle}
             setSidebarVisible={setToggle}
+
           />
         )}
       </div>

@@ -187,8 +187,10 @@ const RenderJsonArraySidebarDetail = ({
   objs,
   handleAddjs,
   handleDeletejs,
+  expandedItem,
+  setExpandedItem,
 }) => {
-  const [expandedItem, setExpandedItem] = useState([]);
+
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const [value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
@@ -200,6 +202,8 @@ const RenderJsonArraySidebarDetail = ({
   };
 
   const toggleKey = (key) => {
+
+
     if (expandedItem.includes(key)) {
       setExpandedItem(expandedItem.filter((k) => k !== key));
     } else {
@@ -272,6 +276,7 @@ const RenderJsonArraySidebarDetail = ({
                   onClick={(e) => {
                     setShowAccordianItem(ele);
                     e.stopPropagation();
+                    e.preventDefault();
                     toggleKey(ele?.label);
                   }}
                 >
@@ -479,6 +484,9 @@ export default function JsonSidebarDetail({
   OgJson,
   handleAddjs,
   handleDeletejs,
+  checkActivestatus,
+  expandedItem,
+  setExpandedItem,
 }) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -606,8 +614,7 @@ export default function JsonSidebarDetail({
                       </div>
                     }
                     <div>
-                      {console.log(obj, "ooo")}
-                      {obj && Object.keys(obj[showObj]).map((ele) => {
+                      {obj && showObj && Object.keys(obj[showObj]).map((ele) => {
                         if (
                           !Array.isArray(obj[showObj][ele]) &&
                           typeof obj[showObj][ele] !== "object"
@@ -676,6 +683,9 @@ export default function JsonSidebarDetail({
                   objs={obj}
                   handleAddjs={handleAddjs}
                   handleDeletejs={handleDeletejs}
+                  checkActivestatus={checkActivestatus} 
+                  setExpandedItem={setExpandedItem}
+                  expandedItem={expandedItem}
                 />
               )
               // showObj &&
