@@ -36,6 +36,7 @@ export default function EventNavbar({
   mainVersion,
 }) {
   const {
+    selectedArtifactGroup,
     selectedControlEvents,
     eventsNavBarData,
     setSelectedControlEvents,
@@ -237,7 +238,7 @@ export default function EventNavbar({
           tKey,
           fabrics,
           project,
-          "pgrp",
+          selectedArtifactGroup,
           mainArtifacts,
           mainVersion,
         ]),
@@ -350,7 +351,7 @@ export default function EventNavbar({
           selectedTkey,
           "UF",
           selectedProject,
-          "pgrp",
+          selectedArtifactGroup,
           selectedArtifact,
           selectedVersion,
         ]),

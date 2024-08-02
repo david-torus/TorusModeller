@@ -68,6 +68,8 @@ export default function Navbar({
 }) {
   const {
     client,
+    selectedArtifactGroup,
+    setSelectedArtifactGroup,
     selectedTkey,
     setSelectedTkey,
     handleTabChange,
@@ -524,8 +526,8 @@ export default function Navbar({
             "TCL",
             selectedTkey,
             selectedFabric,
-            "domain",
-            "pgrp",
+            selectedProject,
+            selectedArtifactGroup,
           ]),
         );
         if (version && version?.status === 200) setVersions(version?.data);
@@ -736,7 +738,7 @@ export default function Navbar({
               selectedTkey,
               selectedFabric,
               selectedProject,
-              "pgrp",
+              selectedArtifactGroup,
             ]),
             true,
           );
@@ -828,7 +830,7 @@ export default function Navbar({
           selectedTkey,
           selectedFabric,
           applications,
-          "pgrp",
+          selectedArtifactGroup,
         ]),
         true,
       );
@@ -913,7 +915,13 @@ export default function Navbar({
         selectedTkey,
         client,
         selectedFabric,
-        JSON.stringify(["TCL", selectedTkey, selectedFabric, "domain", "pgrp"]),
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          "domain",
+          selectedArtifactGroup,
+        ]),
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -1011,8 +1019,8 @@ export default function Navbar({
               "TCL",
               selectedTkey,
               selectedFabric,
-              "domain",
-              "pgrp",
+              selectedProject,
+              selectedArtifactGroup,
               artiFact,
               version,
             ]),
@@ -1340,7 +1348,7 @@ export default function Navbar({
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   const handleAccordionToggle = (index, tkey) => {
-    if (selectedTkey === tkey) return;
+    if (selectedTkey === tkey && projectList.length !== 0) return;
     setSelectedTkey(tkey);
     handleGetApplications(tkey, client, selectedFabric).catch((err) => {
       throw err;
