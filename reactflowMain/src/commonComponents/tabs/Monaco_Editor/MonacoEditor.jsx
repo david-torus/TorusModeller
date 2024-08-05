@@ -65,11 +65,7 @@ function MonacoEditor({
       },
     );
 
-    setToggleReactflow((prev) => ({
-      ...prev,
-      flow: true,
-      code: false,
-    }));
+    setToggleReactflow("fabrics");
   };
 
   return (

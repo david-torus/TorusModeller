@@ -43,11 +43,7 @@ export const Mapper = ({
       },
     );
 
-    setToggleReactflow((prev) => ({
-      ...prev,
-      flow: true,
-      mapper: false,
-    }));
+    setToggleReactflow("fabrics");
   };
 
   return (
