@@ -525,7 +525,7 @@ const RenderObject = ({
   nodeInfoTabs,
   setDupJson,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
 }) => {
   return (
     <>
@@ -710,6 +710,7 @@ export const RenderJson = memo(
     setToggleReactflow,
     json,
     updatedNodeConfig,
+    setJson,
     nodedata,
   }) => {
     const [dupJson, setDupJson] = useState(null);
@@ -756,7 +757,6 @@ export const RenderJson = memo(
       let newjs = unflatten(jss);
       console.log(newjs, nodedata, "new");
 
-      setConvertedJson(newjs);
       updatedNodeConfig(
         nodedata?.id,
         {
@@ -768,9 +768,17 @@ export const RenderJson = memo(
           ...newjs,
         },
       );
+      setConvertedJson(newjs);
     };
 
+    useEffect(() => {
+      if (convertedJson) {
+        setJson(convertedJson);
+      }
+    }, []);
+
     const handlejs = (e, i, key, type, jskey) => {
+      console.log(e, i, key, type, jskey, "--->rendertype");
       if (type == "obj") {
         setDupJson((prev) => {
           return {
@@ -782,7 +790,7 @@ export const RenderJson = memo(
           };
         });
       }
-      if (type == "arr-0" || type == "arr-1") {
+      if (type == "arr-0" || type == "arr-1" || type == "arr") {
         if (i) {
           const js = structuredClone(dupJson);
           _.set(js, i, e);
@@ -803,13 +811,46 @@ export const RenderJson = memo(
 
     const handleAddjs = (path, key, value, type, i, selectedType) => {
       console.log(path, key, value, type, i, selectedType, "handleAddjs");
-      if (type == "obj") {
+      if (type == "obj" && selectedType === "input") {
         setDupJson((prev) => {
           return {
             ...prev,
             [path]: {
               ...prev[path],
               [key]: value,
+            },
+          };
+        });
+      }
+      
+      
+      else if (type == "obj" && selectedType === "boolean") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: {
+              ...prev[path],
+              [key]: {
+                label: key,
+                type: "boolean",
+                selectedValue: false,
+                selectionList: [true, false],
+              },
+            },
+          };
+        });
+      } else if (type == "obj" && selectedType === "dropdown") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: {
+              ...prev[path],
+              [key]: {
+                label: key,
+                type: "dropdown",
+                selectedValue: "",
+                selectionList: value,
+              },
             },
           };
         });
@@ -822,6 +863,48 @@ export const RenderJson = memo(
                 return {
                   ...item,
                   [key]: value,
+                };
+              } else {
+                return item;
+              }
+            }),
+          };
+        });
+      } else if (type === "arr-1" && selectedType === "boolean") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: prev[path].map((item, index) => {
+              if (index === i) {
+                return {
+                  ...item,
+                  [key]: {
+                    label: key,
+                    type: "boolean",
+                    selectedValue: false,
+                    selectionList: [true, false],
+                  },
+                };
+              } else {
+                return item;
+              }
+            }),
+          };
+        });
+      } else if (type == "arr-1" && selectedType === "dropdown") {
+        setDupJson((prev) => {
+          return {
+            ...prev,
+            [path]: prev[path].map((item, index) => {
+              if (index === i) {
+                return {
+                  ...item,
+                  [key]: {
+                    label: key,
+                    type: "dropdown",
+                    selectedValue: "",
+                    selectionList: value,
+                  },
                 };
               } else {
                 return item;
@@ -844,10 +927,24 @@ export const RenderJson = memo(
       }
     };
 
-    const handleDeletejs = (path) => {
-      console.log(path, "handleDeletejs");
-      // setDupJson(_.omit(dupJson, path));
+    const handleDeletejs = (path, type, label) => {
+      if (type === "arr-1") {
+        setDupJson((prev) => {
+          const updatedObj = _.cloneDeep(prev);
+          const events = _.get(updatedObj, path);
+          _.remove(events, (event) => event.label === label);
+          return updatedObj;
+        });
+      } else {
+        console.log(path, dupJson, "bef");
+        setDupJson((prev) => {
+          // const updatedObj = _.cloneDeep(prev);
+          _.unset(prev, path);
+          return prev;
+        });
+      }
     };
+    console.log(dupJson, "aft");
 
     function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
       const copy = JSON.parse(JSON.stringify(obj));
@@ -913,7 +1010,7 @@ export const RenderJson = memo(
 
     return (
       <div
-        className="h-full overflow-y-scroll scrollbar-hide"  
+        className="h-full overflow-y-scroll scrollbar-hide"
         // style={{ display: showNodeProperty ? "block" : "none" }}
       >
         {dupJson && Object.keys(dupJson).length > 0 && (

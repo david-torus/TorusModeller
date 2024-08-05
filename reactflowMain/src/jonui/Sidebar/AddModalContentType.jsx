@@ -18,14 +18,23 @@ export const AddModalContentType = ({
 
   const [keyinput, setkeyinput] = useState(null);
   const [valueinput, setvalueinput] = useState(null);
+  const [dropdownValues, setdropdownValues] = useState([""]);
 
   const handleAdd = (selectedValue) => {
     if (selectedValue == "input" && keyinput && valueinput) {
-      handleAddjs(showObj, keyinput, valueinput, type, path,selectedValue);
+      handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
       close();
     }
-    if(selectedValue == "object" && keyinput){
-      handleAddjs(showObj, keyinput, valueinput, type, path,selectedValue);
+    if (selectedValue == "object" && keyinput) {
+      handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
+      close();
+    }
+    if (selectedValue === "boolean") {
+      handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
+      close();
+    }
+    if (selectedValue === "dropdown") {
+      handleAddjs(showObj, keyinput, dropdownValues, type, path, selectedValue);
       close();
     }
   };
@@ -63,57 +72,101 @@ export const AddModalContentType = ({
             selected={value}
             setSelected={setValue}
             selectionMode="single"
-            items={(type === "obj" || type === "arr-1" ? AddKey : AddObj).map((ele) => ({
-              key: ele,
-              label: ele,
-            }))}
+            items={(type === "obj" || type === "arr-1" ? AddKey : AddObj).map(
+              (ele) => ({
+                key: ele,
+                label: ele,
+              }),
+            )}
             btWidth={"md"}
           />
         </div>
 
-        <div
-          className=""
-          style={{
-            display:
-              value && Array.from(value)[0] === "input" ? "block" : "none",
-          }}
-        >
-          <TorusInput
-            label="Key"
-            variant="fade"
-            labelColor="text-[#000000]/50"
-            borderColor="[#000000]/50"
-            isDisabled={false}
-            onChange={(e) => {
-              setkeyinput(e);
+        <div>
+          <div
+            style={{
+              display:
+                value && Array.from(value)[0] !== "object" ? "block" : "none",
             }}
-            radius="lg"
-            width="md"
-            height="md"
-            textColor="text-[#000000] dark:text-[#FFFFFF]"
-            bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-            value={keyinput}
-          />
-
-          <TorusInput
-            label="Value"
-            variant="fade"
-            labelColor="text-[#000000]/50"
-            borderColor="[#000000]/50"
-            placeholder=""
-            isDisabled={false}
-            onChange={(e) => {
-              setvalueinput(e);
+          >
+            <TorusInput
+              label="Key"
+              variant="fade"
+              labelColor="text-[#000000]/50"
+              borderColor="[#000000]/50"
+              isDisabled={false}
+              onChange={(e) => {
+                setkeyinput(e);
+              }}
+              radius="lg"
+              width="md"
+              height="md"
+              textColor="text-[#000000] dark:text-[#FFFFFF]"
+              bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+              value={keyinput}
+            />
+          </div>
+          <div
+            style={{
+              display:
+                value && Array.from(value)[0] === "input" ? "block" : "none",
             }}
-            radius="lg"
-            width="md"
-            height="md"
-            textColor="text-[#000000] dark:text-[#FFFFFF]"
-            bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-            value={valueinput}
-          />
+          >
+            <TorusInput
+              label="Value"
+              variant="fade"
+              labelColor="text-[#000000]/50"
+              borderColor="[#000000]/50"
+              placeholder=""
+              isDisabled={false}
+              onChange={(e) => {
+                setvalueinput(e);
+              }}
+              radius="lg"
+              width="md"
+              height="md"
+              textColor="text-[#000000] dark:text-[#FFFFFF]"
+              bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+              value={valueinput}
+            />
+          </div>
+          <div
+            style={{
+              display:
+                value && Array.from(value)[0] === "dropdown" ? "block" : "none",
+            }}
+          >
+            {console.log(dropdownValues, "ddd")}
+            <button onClick={() => dropdownValues[dropdownValues.length - 1] !== "" && setdropdownValues([...dropdownValues, ""])}>
+              Add Field
+            </button>
+            <div className="h-[100px] overflow-y-scroll">
+              {dropdownValues.map((item, i) => {
+                return (
+                  <TorusInput
+                    label={`Item ${i + 1}`}
+                    variant="fade"
+                    labelColor="text-[#000000]/50"
+                    borderColor="[#000000]/50"
+                    placeholder=""
+                    isDisabled={false}
+                    onChange={(e) => {
+                      setdropdownValues((prev) =>
+                        prev.map((item, index) => (index === i ? e : item)),
+                      );
+                    }}
+                    radius="lg"
+                    width="md"
+                    height="md"
+                    textColor="text-[#000000] dark:text-[#FFFFFF]"
+                    bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+                    value={item}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
-
         <div
           className=""
           style={{
@@ -137,8 +190,6 @@ export const AddModalContentType = ({
             bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
             value={keyinput}
           />
-
-         
         </div>
       </div>
       <div className=" flex h-[20%] w-[100%] justify-around ">

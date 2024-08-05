@@ -24,8 +24,11 @@ export default function FabricsSideBar({
 }) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
+  const[checkActivestatus , setCheckActivestatus] = useState(null)
+  const [expandedItem, setExpandedItem] = useState([]);
 
   const [path, setPath] = useState(null);
+  
   return (
     <div className="flex h-[100%]   w-full max-w-full flex-row overflow-hidden ">
       <div
@@ -42,6 +45,9 @@ export default function FabricsSideBar({
             obj={obj}
             setPath={setPath}
             setLabel={setLabel}
+            setCheckActivestatus={setCheckActivestatus}
+            checkActivestatus={checkActivestatus}
+            setExpandedItem={setExpandedItem}
           />
         }
 
@@ -60,6 +66,9 @@ export default function FabricsSideBar({
           OgJson={OgJson}
           handleAddjs={handleAddjs}
           handleDeletejs={handleDeletejs}
+          checkActivestatus={checkActivestatus}
+          setExpandedItem={setExpandedItem}
+          expandedItem={expandedItem}
         />}
         </div>
         {/* <FabricsSideBarDetails /> */}

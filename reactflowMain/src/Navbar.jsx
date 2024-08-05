@@ -35,6 +35,7 @@ import {
   artifactList,
   saveWorkFlow,
   applicationLists,
+  renameArtifact,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -54,7 +55,7 @@ import { RiHome5Line } from "react-icons/ri";
 import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
-import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
+
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
@@ -71,6 +72,8 @@ export default function Navbar({
 }) {
   const {
     client,
+    selectedArtifactGroup,
+    setSelectedArtifactGroup,
     selectedTkey,
     setSelectedTkey,
     handleTabChange,
@@ -130,6 +133,9 @@ export default function Navbar({
   const [wordLength, setWordLength] = useState(0);
   const [newArtifact, setNewArtifact] = useState(false);
   const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const DeleteAction = ({ id, close }) => {};
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
@@ -527,8 +533,8 @@ export default function Navbar({
             "TCL",
             selectedTkey,
             selectedFabric,
-            "domain",
-            "pgrp",
+            selectedProject,
+            selectedArtifactGroup,
           ]),
         );
         if (version && version?.status === 200) setVersions(version?.data);
@@ -591,9 +597,39 @@ export default function Navbar({
     }
   };
 
-  const handleArtifactsNameChange = (e) => {
+  const handleArtifactsNameChange = (oldName, newName) => {
     try {
-      setSelectedArtifactsname(e);
+      console.log(oldName, newName, "oldName, newName");
+      if (oldName === newName) return;
+      renameArtifact(
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          selectedProject,
+          selectedArtifactGroup,
+          oldName,
+        ]),
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          selectedProject,
+          selectedArtifactGroup,
+          newName,
+        ]),
+      )
+        .then((data) => {
+          console.log(data, "data");
+          if (data && data?.status === 200) {
+            setSelectedArtifact(newName);
+            setSelectedVersion("");
+            setArtifactsList(data?.data);
+          }
+        })
+        .finally(() => {
+          setInputchange(null);
+        });
     } catch (err) {
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
@@ -739,7 +775,7 @@ export default function Navbar({
               selectedTkey,
               selectedFabric,
               selectedProject,
-              "pgrp",
+              selectedArtifactGroup,
             ]),
             true,
           );
@@ -831,7 +867,7 @@ export default function Navbar({
           selectedTkey,
           selectedFabric,
           applications,
-          "pgrp",
+          selectedArtifactGroup,
         ]),
         true,
       );
@@ -916,7 +952,13 @@ export default function Navbar({
         selectedTkey,
         client,
         selectedFabric,
-        JSON.stringify(["TCL", selectedTkey, selectedFabric, "domain", "pgrp"]),
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          "domain",
+          selectedArtifactGroup,
+        ]),
       );
       if (response && response.status === 200) {
         if (type === "create") {
@@ -1014,8 +1056,8 @@ export default function Navbar({
               "TCL",
               selectedTkey,
               selectedFabric,
-              "domain",
-              "pgrp",
+              selectedProject,
+              selectedArtifactGroup,
               artiFact,
               version,
             ]),
@@ -1343,6 +1385,7 @@ export default function Navbar({
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   const handleAccordionToggle = (index, tkey) => {
+    if (selectedTkey === tkey && projectList.length !== 0) return;
     setSelectedTkey(tkey);
     handleGetApplications(tkey, client, selectedFabric).catch((err) => {
       throw err;
@@ -1379,7 +1422,7 @@ export default function Navbar({
         title: "Shared with Me",
 
         content: projectList,
-        id: "TRK",
+        id: "TFRK",
       },
     ];
   }, [projectList]);
@@ -1503,7 +1546,7 @@ export default function Navbar({
               <>
                 <TorusPopOver
                   parentHeading={
-                    <div className="flex w-[100%] flex-row items-center justify-center gap-2">
+                    <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
                       <div className="text-sm font-semibold text-black dark:text-white">
                         {(selectedArtifact && selectedArtifact) ||
                           "Select Artifacts"}
@@ -1628,6 +1671,12 @@ export default function Navbar({
                                               <IoIosArrowForward />
                                             </Link>
                                           </Breadcrumb>
+                                          <Breadcrumb>
+                                            <Link className="flex flex-row items-center justify-center gap-1">
+                                              {selectedArtifactGroup}
+                                              <IoIosArrowForward />
+                                            </Link>
+                                          </Breadcrumb>
                                           {selectedArtifact && (
                                             <Breadcrumb>
                                               <Link className="flex flex-row items-center justify-center gap-1">
@@ -1711,17 +1760,32 @@ export default function Navbar({
                                                           size={13}
                                                         />
                                                       </span>
-                                                      <span
+                                                      {/* <span
                                                         className="cursor-pointer"
-                                                        onClick={() =>
-                                                          setInputValue("")
-                                                        }
+                                                        onClick={setDeleteOpen(
+                                                          true,
+                                                        )}
                                                       >
                                                         <BsTrash3
                                                           color="red"
                                                           size={13}
                                                         />
-                                                      </span>
+                                                      </span> */}
+                                                      <TorusDialog
+                                                        key={"DeleteArtifact"}
+                                                        className="z-[1000] bg-red-200"
+                                                        triggerElement={
+                                                          <TorusButton
+                                                            Children={
+                                                              <BsTrash3
+                                                                color="red"
+                                                                size={13}
+                                                              />
+                                                            }
+                                                          />
+                                                        }
+                                                        children={"hi"}
+                                                      />
                                                     </div>
                                                   </div>
                                                 ) : (
@@ -1734,7 +1798,10 @@ export default function Navbar({
                                                       className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white "
                                                       onKeyDown={(e) => {
                                                         if (e.key === "Enter") {
-                                                          setInputchange(null);
+                                                          handleArtifactsNameChange(
+                                                            obj?.artifact,
+                                                            e.target.value,
+                                                          );
                                                         }
                                                       }}
                                                       onChange={(e) => {

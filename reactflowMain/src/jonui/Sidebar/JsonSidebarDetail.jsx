@@ -95,7 +95,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
       {obj && (obj.type == "dropdown" || obj.type == "boolean") && (
         <>
           {
-            <div className="flex w-full gap-2">
+            <div className="m-2 flex w-full gap-2 bg-gray-200">
               <div
                 div
                 className="my-2 flex w-full flex-col gap-1 rounded-lg bg-white"
@@ -107,6 +107,7 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                 )}
                 {obj.type == "dropdown" ? (
                   <TorusDropDown
+                  key={ path + "." + item + "." + data}
                     renderEmptyState={() => "No Items..."}
                     classNames={{
                       buttonClassName: `bg-white dark:bg-[#161616] w-[105%] h-[40px] text-black dark:text-white mt-2`,
@@ -145,8 +146,12 @@ const RenderDropdown = ({ obj, path, handlejs, item, showObj }) => {
                 ) : obj.type == "boolean" ? (
                   <div className="flex w-full items-center justify-between p-2 pl-4">
                     <span className="text-sm text-gray-800">{obj?.label}</span>
-                    <div className="w-1/2">
-                      <TorusSwitch isChecked={bool} setIsChecked={setBool} />
+                    <div className="">
+                      <TorusSwitch
+                        skey={path + "." + item + "." + data}
+                        isChecked={bool}
+                        setIsChecked={setBool}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -186,9 +191,10 @@ const RenderJsonArraySidebarDetail = ({
   handlejs,
   objs,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
+  expandedItem,
+  setExpandedItem,
 }) => {
-  const [expandedItem, setExpandedItem] = useState([]);
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const [value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
@@ -198,6 +204,8 @@ const RenderJsonArraySidebarDetail = ({
       handlejs(e, i, key, type, showObj);
     }
   };
+
+  console.log(obj , "dropdown-->")
 
   const toggleKey = (key) => {
     if (expandedItem.includes(key)) {
@@ -227,8 +235,7 @@ const RenderJsonArraySidebarDetail = ({
             />
           }
           classNames={{
-            modalClassName:
-              " w-[40%] h-[40%] flex justify-center items-center  ",
+            modalClassName: " w-[40%] flex justify-center items-center  ",
             dialogClassName: " w-full h-full rounded-lg flex-col bg-white",
           }}
           title={"Add"}
@@ -243,11 +250,24 @@ const RenderJsonArraySidebarDetail = ({
             />
           )}
         />
+        <TorusButton
+          Children={`Delete`}
+          size={"xs"}
+          btncolor={"#0736C4"}
+          radius={"lg"}
+          color={"#f00"}
+          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+          height={"md"}
+          borderColor={"3px solid #0736C4"}
+          startContent={<CiTrash color="white" />}
+          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+          onPress={() => handleDeletejs(path)}
+        />
       </div>
       <div>
         {obj &&
           obj.map((ele, index) => {
-            const isExpanded = expandedItem.includes(ele.label);
+            const isExpanded = expandedItem.includes(ele?.label);
             return (
               <div
                 key={index}
@@ -260,7 +280,8 @@ const RenderJsonArraySidebarDetail = ({
                   onClick={(e) => {
                     setShowAccordianItem(ele);
                     e.stopPropagation();
-                    toggleKey(ele.label);
+                    e.preventDefault();
+                    toggleKey(ele?.label);
                   }}
                 >
                   <span className="flex justify-end">
@@ -270,13 +291,13 @@ const RenderJsonArraySidebarDetail = ({
                       <IoIosArrowForward color="gray" size={20} />
                     )}
                   </span>
-                  <p>{ele.label} </p>
+                  <p>{ele?.label} </p>
                 </p>
 
                 {isExpanded && (
                   <div className="mb-2  p-2">
                     <>
-                      <div className="flex justify-between h-[100%] w-[40%] items-center">
+                      <div className="flex h-[100%] w-[40%] items-center justify-between">
                         <TorusDialog
                           key={"TableDelete"}
                           triggerElement={
@@ -323,7 +344,9 @@ const RenderJsonArraySidebarDetail = ({
                           borderColor={"3px solid #0736C4"}
                           startContent={<CiTrash color="white" />}
                           fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                          onPress={() => handleDeletejs(path)}
+                          onPress={() =>
+                            handleDeletejs(path, "arr-1", ele.label)
+                          }
                         />
                       </div>
                     </>
@@ -340,6 +363,7 @@ const RenderJsonArraySidebarDetail = ({
                             return (
                               <p className="mt-[-25px] flex  flex-col ">
                                 <TorusInput
+                                  key={inds}
                                   variant="bordered"
                                   label={item}
                                   labelColor="text-[#000000]/50"
@@ -466,7 +490,10 @@ export default function JsonSidebarDetail({
   label,
   OgJson,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
+  checkActivestatus,
+  expandedItem,
+  setExpandedItem,
 }) {
   const [value, setValue] = useState(null);
   const [selectedTab, setselectedTab] = useState("Tabs");
@@ -482,7 +509,7 @@ export default function JsonSidebarDetail({
 
   return (
     <div className="relative mt-3 flex h-[100%]  flex-col gap-3 p-2 text-sm  font-semibold">
-      <span className="flex flex-col  h-[20%]">
+      <span className="flex h-[20%]  flex-col">
         <span className="flex justify-between">
           <p className="mt-2 p-2  text-black dark:text-white"> Properties</p>
           <span
@@ -501,9 +528,12 @@ export default function JsonSidebarDetail({
           </span>
         )}
       </span>
-      <div style={{
-        height:"inherit",
-      }} className="scrollbar-none  overflow-y-auto">
+      <div
+        style={{
+          height: "inherit",
+        }}
+        className="scrollbar-none  overflow-y-auto"
+      >
         {
           <div className="">
             {
@@ -578,41 +608,59 @@ export default function JsonSidebarDetail({
                             />
                           )}
                         />
+                        <TorusButton
+                          Children={`Delete`}
+                          size={"xs"}
+                          btncolor={"#0736C4"}
+                          radius={"lg"}
+                          color={"#f00"}
+                          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                          height={"md"}
+                          borderColor={"3px solid #0736C4"}
+                          startContent={<CiTrash color="white" />}
+                          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                          onPress={() => handleDeletejs(path)}
+                        />
                       </div>
                     }
                     <div>
-                      {Object.keys(obj[showObj]).map((ele) => {
-                        if (
-                          !Array.isArray(obj[showObj][ele]) &&
-                          typeof obj[showObj][ele] !== "object"
-                        ) {
-                          return (
-                            <p
-                              style={{ display: ele === "label" ? "none" : "" }}
-                              className="rounded-lg bg-[#F4F5FA]  px-2 dark:bg-[#0F0F0F] "
-                            >
-                              <div className="w-[100%]">
-                                <TorusInput
-                                  variant="bordered"
-                                  label={ele}
-                                  labelColor="text-[#000000]/50"
-                                  borderColor="[#000000]/50"
-                                  outlineColor="torus-focus:ring-[#000000]/50"
-                                  placeholder=""
-                                  isDisabled={false}
-                                  onChange={(e) =>
-                                    handleInput(e, path, ele, "obj")
-                                  }
-                                  radius="lg"
-                                  width="xl"
-                                  height="xl"
-                                  textColor="text-[#000000] dark:text-[#FFFFFF]"
-                                  bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-                                  value={obj[showObj][ele]}
-                                />
-                              </div>
+                      {obj &&
+                        showObj &&
+                        Object.keys(obj[showObj]).map((ele) => {
+                          if (
+                            !Array.isArray(obj[showObj][ele]) &&
+                            typeof obj[showObj][ele] !== "object"
+                          ) {
+                            return (
+                              <p
+                                style={{
+                                  display: ele === "label" ? "none" : "",
+                                }}
+                                className="rounded-lg bg-[#F4F5FA]  px-2 dark:bg-[#0F0F0F] "
+                              >
+                                <div className="w-[100%]">
+                                  <TorusInput
+                                    key={path}
+                                    variant="bordered"
+                                    label={ele}
+                                    labelColor="text-[#000000]/50"
+                                    borderColor="[#000000]/50"
+                                    outlineColor="torus-focus:ring-[#000000]/50"
+                                    placeholder=""
+                                    isDisabled={false}
+                                    onChange={(e) =>
+                                      handleInput(e, path, ele, "obj")
+                                    }
+                                    radius="lg"
+                                    width="xl"
+                                    height="xl"
+                                    textColor="text-[#000000] dark:text-[#FFFFFF]"
+                                    bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+                                    value={obj[showObj][ele]}
+                                  />
+                                </div>
 
-                              {/* <input
+                                {/* <input
                                className="border text-orange-500 "
                                type="text"
                                value={obj[showObj][ele]}
@@ -620,24 +668,24 @@ export default function JsonSidebarDetail({
                                  handleInput(e.target.value, path, ele, "obj")
                                }
                              /> */}
-                            </p>
-                          );
-                        }
-                        if (
-                          Array.isArray(obj[showObj][ele]) ||
-                          typeof obj[showObj][ele] === "object"
-                        ) {
-                          return (
-                            <RenderDropdown
-                              obj={obj[showObj][ele]}
-                              item={ele}
-                              path={path}
-                              handlejs={handlejs}
-                              showObj={showObj}
-                            />
-                          );
-                        }
-                      })}
+                              </p>
+                            );
+                          }
+                          if (
+                            Array.isArray(obj[showObj][ele]) ||
+                            typeof obj[showObj][ele] === "object"
+                          ) {
+                            return (
+                              <RenderDropdown
+                                obj={obj[showObj][ele]}
+                                item={ele}
+                                path={path}
+                                handlejs={handlejs}
+                                showObj={showObj}
+                              />
+                            );
+                          }
+                        })}
                     </div>
                   </div>
                 )
@@ -650,6 +698,9 @@ export default function JsonSidebarDetail({
                   objs={obj}
                   handleAddjs={handleAddjs}
                   handleDeletejs={handleDeletejs}
+                  checkActivestatus={checkActivestatus}
+                  setExpandedItem={setExpandedItem}
+                  expandedItem={expandedItem}
                 />
               )
               // showObj &&

@@ -44,7 +44,11 @@ const RenderJsonArraySidebarIcon = memo(
     setActiveTab,
     setLabel,
     shuffledIcons,
+    setCheckActivestatus,
+    setExpandedItem
+
   }) => {
+    
     return (
       <>
         <div
@@ -52,29 +56,25 @@ const RenderJsonArraySidebarIcon = memo(
             "w-[100%]  flex z-50 items-center gap-4 cursor-pointer" +
             (activeTab == fg
               ? "text-xs  cursor-pointer text-[#6600ff]"
-              : " text-black cursor-pointer")
+              : " text-gray-800 cursor-pointer")
           }
         >
          
           <TorusToolTip
             hoverContent={
-              shuffledIcons.length > 0 &&
-              createElement(
-                shuffledIcons[Math.floor(Math.random() * shuffledIcons.length)],
-                {
-                  size: 20,
-                  color: activeTab === fg ? "#6600ff" : "#B2BABB",
-                }
-              )
+              <MdOutlineDataArray size={20}   />
             }
             tooltipFor="arr"
-            tooltipContent={obj.map((ele) => ele.label ? ele.label : fg)}
+            tooltipContent={obj.map((ele) => ele?.label ? ele?.label : fg)}
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
             setPath={setPath}
             fg={fg}
+            obj={obj}
             setLabel={setLabel}
+            setCheckActivestatus={setCheckActivestatus}
+            setExpandedItem={setExpandedItem}
           />
         </div>
       </>
@@ -83,7 +83,7 @@ const RenderJsonArraySidebarIcon = memo(
 );
 
 export const JsonSidebarIcon = memo(
-  ({ obj, setShowObj, setPath, setLabel }) => {
+  ({ obj, setShowObj, setPath, setLabel, checkActivestatus,setCheckActivestatus,setExpandedItem }) => {
     const [activeTab, setActiveTab] = useState(null);
 
     return (
@@ -99,26 +99,22 @@ export const JsonSidebarIcon = memo(
                         " flex items-center z-50 text-xs cursor-pointer gap-4" +
                         (activeTab === ele
                           ? " cursor-pointer  text-xs text-[#0073e6]"
-                          : "text-black cursor-pointer")
+                          : "text-gray-100 cursor-pointer")
                       }
                       onClick={() => {
                         setShowObj(ele);
                         setPath(ele);
                         setActiveTab(ele);
+                        setCheckActivestatus(obj[activeTab])
                       }}
+                      
+                      
+                      
                     >
+                      
                       <TorusToolTip
                         hoverContent={
-                          iconArray.length > 0 &&
-                          createElement(
-                            iconArray[
-                              Math.floor(Math.random() * iconArray.length)
-                            ],
-                            {
-                              size: 20,
-                              color: activeTab === ele ? "#E74C3C" : "#B2BABB",
-                            }
-                          )
+                          <MdDataObject size={20} />
                         }
                         tooltipFor="obj"
                         tooltipContent={obj[ele].label ? obj[ele].label : ele}
@@ -145,6 +141,9 @@ export const JsonSidebarIcon = memo(
                     setPath={setPath}
                     setLabel={setLabel}
                     shuffledIcons={iconArray}
+                    setCheckActivestatus={setCheckActivestatus}
+                    setExpandedItem={setExpandedItem}
+          
                   />
                 );
               }

@@ -486,6 +486,43 @@ export class VptService {
     }
   }
 
+  async renameArtifacts(oldKey, newKey) {
+    try {
+      let arrOlKey = JSON.parse(oldKey);
+      let arrNewKey = JSON.parse(newKey);
+      if (
+        arrOlKey &&
+        arrNewKey &&
+        arrOlKey.length &&
+        arrNewKey.length &&
+        arrOlKey.length === arrNewKey.length
+      ) {
+        let olKey = arrOlKey.join(':');
+        let neKey = arrNewKey.join(':');
+        const allKeys = await this.redisService.getKeys(olKey);
+        if (allKeys.length > 0) {
+          allKeys.forEach(async (key) => {
+            const response = await this.redisService.renameKey(
+              key,
+              `${neKey}${key.replace(olKey, '')}`,
+            );
+            return response;
+          }),
+            arrOlKey.pop();
+          return await this.pfPfdService.getArtifactWithVersion(
+            '',
+            '',
+            '',
+            '',
+            JSON.stringify(arrOlKey),
+          );
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteFlowVersion(
     tenant,
     appGroup,
@@ -785,32 +822,24 @@ export class VptService {
   }
 
   async getNodeList(
-    applicationName,
-    version,
+    project,
+    verion,
     artifact,
-    tenant,
-    appGroup,
+    tKey,
+    client,
     fabrics,
+    saveKey,
   ): Promise<any> {
     try {
       let res;
       const nodes: Promise<any> = new Promise((resolve, reject) => {
+        let arrKey = JSON.parse(saveKey);
+        let key = '';
+        if (arrKey.length > 0) {
+          key = arrKey.join(':') + ':' + 'nodes';
+        }
         try {
-          const node = this.readReddis(
-            [tenant] +
-              ':' +
-              [appGroup] +
-              ':' +
-              [applicationName] +
-              ':' +
-              [fabrics] +
-              ':' +
-              [artifact] +
-              ':' +
-              [version] +
-              ':' +
-              'nodes',
-          );
+          const node = this.readReddis(key);
           resolve(node);
         } catch (error) {
           reject(error);
