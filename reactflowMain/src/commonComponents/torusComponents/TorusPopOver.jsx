@@ -16,7 +16,6 @@ export default function TorusPopOver({
         Children={parentHeading}
         startContent={popOverContent}
         buttonClassName={popbuttonClassNames}
-        
       />
       <Popover>
         <Dialog className="rounded-lg outline-none ">{children}</Dialog>
