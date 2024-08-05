@@ -165,6 +165,12 @@ export class VptController {
       query.version,
     );
   }
+  @Get('renameArtifacts')
+  async artifactNameEdit(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.renameArtifacts(query.oldKey, query.newKey);
+  }
 
   @Get('treeFabrics')
   async getTreeFabrics(

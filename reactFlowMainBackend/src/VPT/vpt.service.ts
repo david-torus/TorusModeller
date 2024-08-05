@@ -486,6 +486,43 @@ export class VptService {
     }
   }
 
+  async renameArtifacts(oldKey, newKey) {
+    try {
+      let arrOlKey = JSON.parse(oldKey);
+      let arrNewKey = JSON.parse(newKey);
+      if (
+        arrOlKey &&
+        arrNewKey &&
+        arrOlKey.length &&
+        arrNewKey.length &&
+        arrOlKey.length === arrNewKey.length
+      ) {
+        let olKey = arrOlKey.join(':');
+        let neKey = arrNewKey.join(':');
+        const allKeys = await this.redisService.getKeys(olKey);
+        if (allKeys.length > 0) {
+          allKeys.forEach(async (key) => {
+            const response = await this.redisService.renameKey(
+              key,
+              `${neKey}${key.replace(olKey, '')}`,
+            );
+            return response;
+          }),
+            arrOlKey.pop();
+          return await this.pfPfdService.getArtifactWithVersion(
+            '',
+            '',
+            '',
+            '',
+            JSON.stringify(arrOlKey),
+          );
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteFlowVersion(
     tenant,
     appGroup,
