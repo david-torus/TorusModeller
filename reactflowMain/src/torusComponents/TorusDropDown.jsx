@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Button,
   Dialog,
@@ -56,7 +56,22 @@ export default function TorusDropDown({
   gap,
   borderColor,
   startContent,
+  isDropDown = false,
+  className,
+  onPress,
 }) {
+  const listBoxRefItem = useRef(null);
+
+  const closeFn = () => {
+    console.log(listBoxRefItem.current.parentNode, "listparentItem-->");
+    console.log(listBoxRefItem.current.id, "listBox-->");
+
+    const parentNode = listBoxRefItem.current.parentNode;
+    if(parentNode) {
+    parentNode.style.display= "none";
+    }
+  };
+
   return (
     <DialogTrigger>
       {/* <label>{label}</label> */}
@@ -64,7 +79,7 @@ export default function TorusDropDown({
         Children={title}
         buttonClassName={merger(
           defaultTropdownClassNames.buttonClassName,
-          classNames?.buttonClassName
+          classNames?.buttonClassName,
         )}
         // title={label}
         height={btheight}
@@ -78,20 +93,22 @@ export default function TorusDropDown({
         borderColor={borderColor}
         startContent={startContent ? startContent : ""}
         endContent={endContent ? endContent : ""}
+        isDropDown={isDropDown}
+        onPress={onPress}
       />
 
       <Popover
         placement="bottom"
         className={merger(
           defaultTropdownClassNames.popoverClassName,
-          classNames?.popoverClassName
+          classNames?.popoverClassName,
         )}
         {...popOverProps}
       >
         <Dialog
           className={merger(
             defaultTropdownClassNames.dialogClassName,
-            classNames?.dialogClassName
+            classNames?.dialogClassName,
           )}
         >
           {({ close }) => (
@@ -99,14 +116,13 @@ export default function TorusDropDown({
               renderEmptyState={renderEmptyState}
               className={merger(
                 defaultTropdownClassNames.listBoxClassName,
-                classNames?.listBoxClassName
+                classNames?.listBoxClassName,
               )}
               selectionMode={selectionMode}
               onSelectionChange={(keys) => {
                 setSelected(keys);
-                // if (selectionMode === "single") {
-                //   close();
-                // }
+                // closeFn();
+                console.log(close,"list");
               }}
               selectedKeys={selected}
               items={items}
@@ -117,11 +133,12 @@ export default function TorusDropDown({
                   key={item.key}
                   className={merger(
                     defaultTropdownClassNames.listBoxItemClassName,
-                    classNames?.listBoxItemClassName
+                    classNames?.listBoxItemClassName,
                   )}
+                  ref={listBoxRefItem}
                 >
                   {({ isSelected }) => (
-                    <div className="w-full flex justify-between items-center">
+                    <div className="flex w-full items-center justify-between">
                       <Heading className=" text-xs  font-normal tracking-normal">
                         {item.label}
                       </Heading>
