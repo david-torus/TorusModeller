@@ -43,7 +43,7 @@ const colors = {
 
   SF: { dark: "#FFc723", light: "#FFBE00" },
 };
-export default function Layout({ client }) {
+export default function Layout({ client, currentArtifactKey = null }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
@@ -73,7 +73,10 @@ export default function Layout({ client }) {
   //   mapper: false,
   //   code: false,
   // }
-
+  const loadArtifact = useMemo(() => {
+    if (!currentArtifactKey) return null;
+    return currentArtifactKey.split(":");
+  }, [currentArtifactKey]);
   const getTenantPolicy = async (tenant) => {
     try {
       const response = await fetch(
@@ -552,6 +555,7 @@ export default function Layout({ client }) {
     <TorusModellerContext.Provider
       value={{
         ref,
+        loadArtifact,
         setSelectedTkey,
         selectedTkey,
         client,

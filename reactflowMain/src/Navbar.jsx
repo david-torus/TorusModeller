@@ -16,6 +16,7 @@ import {
   PushToBuild,
   Shared,
   TorusLogo,
+  TorusModelDelete,
   VerticalLine,
 } from "./SVG_Application";
 import TorusDropDown from "./torusComponents/TorusDropDown";
@@ -60,6 +61,7 @@ import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
+import TorusModel from "./torusComponents/TorusModel.jsx";
 
 export default function Navbar({
   project,
@@ -73,6 +75,7 @@ export default function Navbar({
 }) {
   const {
     client,
+    loadArtifact,
     selectedArtifactGroup,
     setSelectedArtifactGroup,
     selectedTkey,
@@ -1053,15 +1056,17 @@ export default function Navbar({
             selectedTkey,
             client,
             selectedFabric,
-            JSON.stringify([
-              "TCL",
-              selectedTkey,
-              selectedFabric,
-              selectedProject,
-              selectedArtifactGroup,
-              artiFact,
-              version,
-            ]),
+            loadArtifact && loadArtifact.length > 0
+              ? JSON.stringify(loadArtifact)
+              : JSON.stringify([
+                  "TCL",
+                  selectedTkey,
+                  selectedFabric,
+                  selectedProject,
+                  selectedArtifactGroup,
+                  artiFact,
+                  version,
+                ]),
           );
 
           if (response && typeof response === "object" && response) {
@@ -1783,7 +1788,7 @@ export default function Navbar({
                                                           size={13}
                                                         />
                                                       </span> */}
-                                                          <TorusDialog
+                                                          {/* <TorusDialog
                                                             key={
                                                               "DeleteArtifact"
                                                             }
@@ -1799,6 +1804,34 @@ export default function Navbar({
                                                               />
                                                             }
                                                             children={"hi"}
+                                                          /> */}
+
+                                                          <TorusModel
+                                                            body="Are you sure you want to delete Artifact Name?"
+                                                            title={
+                                                              <div className="flex w-[50%] justify-around gap-[0.525rem]">
+                                                                <div className="flex w-[10%] items-center justify-end">
+                                                                  <BsTrash3
+                                                                    color="red"
+                                                                    size={13}
+                                                                  />
+                                                                </div>
+                                                                <div className="flex w-[90%] items-center justify-start">
+                                                                  Delete
+                                                                  Artifacts
+                                                                </div>
+                                                              </div>
+                                                            }
+                                                            triggerButton={
+                                                              <BsTrash3
+                                                                color="red"
+                                                                size={13}
+                                                              />
+                                                            }
+                                                            triggerButtonStyle={
+                                                              "cursor-pointer bg=transparent"
+                                                            }
+                                                            titleStyle="text-red-500"
                                                           />
                                                         </div>
                                                       </div>
