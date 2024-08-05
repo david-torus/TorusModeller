@@ -110,7 +110,7 @@ const DropDownButton: React.FC<DropDownButtonProps> = (props) => {
     (props.startContent || props.endContent) &&
     "flex justify-center items-center"
   } ${radiusClasses[props.radius || "rounded-lg"]}`;
-  const contentClass = sizeClasses[props.size || "px-2.5 py-1.5"];
+  const contentClass = sizeClasses[props.size || ""];
 
   return (
     <Button
