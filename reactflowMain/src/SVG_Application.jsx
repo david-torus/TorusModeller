@@ -1794,6 +1794,33 @@ const TorusAccordianArrow = () => {
   );
 };
 
+const PushToBuild = ({ className }) => {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M6 9.99976C7.65685 9.99976 9 8.65661 9 6.99976C9 5.34291 7.65685 3.99976 6 3.99976C4.34315 3.99976 3 5.34291 3 6.99976C3 8.65661 4.34315 9.99976 6 9.99976ZM6 9.99976V19.9998"
+        className={className}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M17.999 14.0002C16.3421 14.0002 14.999 15.3433 14.999 17.0002C14.999 18.6571 16.3421 20.0002 17.999 20.0002C19.6559 20.0002 20.999 18.6571 20.999 17.0002C20.999 15.3433 19.6559 14.0002 17.999 14.0002ZM17.999 14.0002V9.00024C17.999 7.89567 17.1036 7.00024 15.999 7.00024H14.999M14.999 7.00024V5.00024L12.999 7.00024M14.999 7.00024H12.999M14.999 7.00024V9.00024L12.999 7.00024"
+        className={className}
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+};
+
 export {
   Data,
   Wire,
@@ -1859,4 +1886,5 @@ export {
   TorusInformation,
   TorusAccordianArrow,
   ToastClose,
+  PushToBuild,
 };

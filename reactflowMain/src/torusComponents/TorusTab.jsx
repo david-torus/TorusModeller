@@ -24,10 +24,12 @@ export default function TorusTab({
       className={merger(defaultTabsClassNames.tabs, classNames?.tabs)}
       defaultSelectedKey={defaultSelectedKey}
       onSelectionChange={onSelectionChange}
+      
     >
       <TabList
         aria-label={ariaLabel}
         className={`flex ${orientation === "vertical" ? "flex-col" : "flex-row"} items-start justify-between xl:gap-1 2xl:gap-1.5 3xl:gap-2 4xl:gap-3`}
+        
       >
         {tabs &&
           tabs.map((tab, index) => (

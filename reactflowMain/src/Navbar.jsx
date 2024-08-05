@@ -13,6 +13,7 @@ import {
   Debugger,
   Home,
   Preview,
+  PushToBuild,
   Shared,
   TorusLogo,
   VerticalLine,
@@ -55,6 +56,8 @@ import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 import TorusAccordian from "./torusComponents/TorusAccordian.jsx";
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
+import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
+import Builder from "./pushToBuild.jsx";
 
 export default function Navbar({
   project,
@@ -1381,6 +1384,109 @@ export default function Navbar({
     ];
   }, [projectList]);
 
+  const mappedTeamItems = useMemo(() => {
+    return [
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+
+        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
+        text: ["Equity Bank ", " South Sudan", " IPS"],
+        timeStamp: "June 26, 2023 2:20PM",
+      },
+    ];
+  }, []);
+
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
       <div className="flex h-[90%] w-[100%] flex-col items-center justify-center">
@@ -1949,7 +2055,47 @@ export default function Navbar({
                   <Preview className={"stroke-black dark:stroke-white"} />
                 </div>
                 <div className="flex w-[30%] items-center justify-center">
-                  <Shared className={"stroke-black dark:stroke-white"} />
+                  <TorusPopOver
+                    parentHeading={
+                      <div className="flex w-[100%] flex-row items-center justify-center gap-2">
+                        <Shared className={"stroke-black dark:stroke-white"} />
+                      </div>
+                    }
+                    popbuttonClassNames={selectedFabric === "events" && "w-1/3"}
+                    children={({ close }) => (
+                      <div
+                        className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
+                      >
+                        {selectedFabric !== "events" ? (
+                          <Builder mappedTeamItems={mappedTeamItems} />
+                        ) : (
+                          <>
+                            <div className="flex h-[12%] w-[100%] flex-row border-b border-[#E5E9EB] p-2 dark:border-[#212121]">
+                              <div className="flex w-full items-center justify-start">
+                                <p className="px-2 text-start text-sm font-medium text-black dark:text-white">
+                                  Events
+                                </p>
+                              </div>
+                              <span
+                                className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
+                                onClick={() => {
+                                  close(), setNewArtifact(false);
+                                }}
+                              >
+                                <IoCloseOutline className="text-black dark:text-white" />
+                              </span>
+                            </div>
+                            <div className="flex h-[87%] w-[100%]">
+                              <EventNavbar
+                                getDataFromFabrics={getDataFromFabrics}
+                                sendDataToFabrics={sendDataToFabrics}
+                              />
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
             </div>
