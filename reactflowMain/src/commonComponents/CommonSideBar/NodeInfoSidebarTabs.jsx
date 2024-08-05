@@ -19,13 +19,19 @@ export const NodeInfoSidebarTabs = ({
     <>
       <Tabs
         aria-label="Options"
-        color={darkMode ? "transparent" : "transparent"}
-        variant="underlined"
+        variant="solid"
         classNames={{
-          tabList: "gap-1 w-[280px]  rounded-none bg-transparent",
-          cursor: "w-full bg-transparent",
-          base: "w-full relative",
-          tab: "max-w-fit px-0 h-8",
+          tabList:
+            " w-full  h-[40px] bg-[#F4F5FA] dark:bg-[#0F0F0F]   p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
+
+          tab: !darkMode
+            ? " px-0 text-white font-semibold border-none outline-none w-[35px] h-[38px] "
+            : " px-0 text-black font-semibold border-none outline-none w-[35px] h-[38px] ",
+          tabContent: !darkMode
+            ? " border-none rounded-md outline-none"
+            : " border-none rounded-md outline-none",
+          cursor:
+            "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none torus-focus-within:outline-none",
         }}
         defaultSelectedKey={""}
       >
@@ -36,15 +42,6 @@ export const NodeInfoSidebarTabs = ({
                 title={
                   <Tooltip content={value.label} color={"secondary"}>
                     <span
-                      className={
-                        darkMode
-                          ? `h-[35px] w-[35px] rounded-md hover:bg-blue-500 hover:shadow-lg 
-                                              ${activeTab === value.label ? "bg-[#009BC9] text-slate-100" : ""}  
-                                              flex cursor-pointer items-center justify-center px-[3px] shadow-md`
-                          : `h-[35px] w-[35px] rounded-md hover:bg-blue-500 hover:shadow-lg 
-                                              ${activeTab === value.label ? "bg-[#009BC9] " : "bg-slate-800/50"}  
-                                               flex cursor-pointer items-center justify-center px-[3px] shadow-md`
-                      }
                       onContextMenu={(e) =>
                         handleContextMenu(e, value.modelOpen)
                       }

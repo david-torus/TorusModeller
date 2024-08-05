@@ -56,6 +56,7 @@ import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
+import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 
 export default function Navbar({
   project,
@@ -130,6 +131,9 @@ export default function Navbar({
   const [wordLength, setWordLength] = useState(0);
   const [newArtifact, setNewArtifact] = useState(false);
   const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const DeleteAction = ({ id, close }) => {};
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
@@ -1437,7 +1441,7 @@ export default function Navbar({
               <>
                 <TorusPopOver
                   parentHeading={
-                    <div className="flex w-[100%] flex-row items-center justify-center gap-2">
+                    <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
                       <div className="text-sm font-semibold text-black dark:text-white">
                         {(selectedArtifact && selectedArtifact) ||
                           "Select Artifacts"}
@@ -1651,17 +1655,32 @@ export default function Navbar({
                                                           size={13}
                                                         />
                                                       </span>
-                                                      <span
+                                                      {/* <span
                                                         className="cursor-pointer"
-                                                        onClick={() =>
-                                                          setInputValue("")
-                                                        }
+                                                        onClick={setDeleteOpen(
+                                                          true,
+                                                        )}
                                                       >
                                                         <BsTrash3
                                                           color="red"
                                                           size={13}
                                                         />
-                                                      </span>
+                                                      </span> */}
+                                                      <TorusDialog
+                                                        key={"DeleteArtifact"}
+                                                        className="z-[1000] bg-red-200"
+                                                        triggerElement={
+                                                          <TorusButton
+                                                            Children={
+                                                              <BsTrash3
+                                                                color="red"
+                                                                size={13}
+                                                              />
+                                                            }
+                                                          />
+                                                        }
+                                                        children={"hi"}
+                                                      />
                                                     </div>
                                                   </div>
                                                 ) : (
