@@ -569,7 +569,7 @@ const SFSidebar = ({
    * @param {string} name - The name of the JSON object.
    * @return {void} This function does not return a value.
    */
-  const updateselectedJson = (e, name) => {
+  const updateselectedJson = (e) => {
     try {
       if (Object.keys(e).length > 0) {
         setSelectedJson(e);
@@ -1777,7 +1777,7 @@ const SFSidebar = ({
 {console.log(selectedJson, "sdelectedJson")}
       {selectedJson && (
         <div className="h-96 overflow-y-scroll  dark:bg-[#161616]">
-          {/* <RenderJson json={selectedJson} setJson={updateselectedJson}  updatedNodeConfig={setFabricsList} /> */}
+          <RenderJson json={selectedJson} setJson={updateselectedJson}  updatedNodeConfig={setFabricsList} />
           {/* <Builder
           key={"MT"}
           uiPolicy={cardUIPolicy}

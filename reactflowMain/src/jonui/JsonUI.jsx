@@ -710,8 +710,8 @@ export const RenderJson = memo(
     setToggleReactflow,
     json,
     updatedNodeConfig,
+    setJson,
     nodedata,
-
   }) => {
     const [dupJson, setDupJson] = useState(null);
 
@@ -757,7 +757,6 @@ export const RenderJson = memo(
       let newjs = unflatten(jss);
       console.log(newjs, nodedata, "new");
 
-      setConvertedJson(newjs);
       updatedNodeConfig(
         nodedata?.id,
         {
@@ -769,11 +768,17 @@ export const RenderJson = memo(
           ...newjs,
         },
       );
-
-      // setJson(newjs);
+      setConvertedJson(newjs);
     };
 
+    useEffect(() => {
+      if (convertedJson) {
+        setJson(convertedJson);
+      }
+    }, []);
+
     const handlejs = (e, i, key, type, jskey) => {
+      console.log(e, i, key, type, jskey, "--->rendertype");
       if (type == "obj") {
         setDupJson((prev) => {
           return {
@@ -816,7 +821,10 @@ export const RenderJson = memo(
             },
           };
         });
-      } else if (type == "obj" && selectedType === "boolean") {
+      }
+      
+      
+      else if (type == "obj" && selectedType === "boolean") {
         setDupJson((prev) => {
           return {
             ...prev,
@@ -1002,7 +1010,7 @@ export const RenderJson = memo(
 
     return (
       <div
-        className="h-full overflow-y-scroll scrollbar-hide"  
+        className="h-full overflow-y-scroll scrollbar-hide"
         // style={{ display: showNodeProperty ? "block" : "none" }}
       >
         {dupJson && Object.keys(dupJson).length > 0 && (

@@ -48,6 +48,7 @@ const RenderJsonArraySidebarIcon = memo(
     setExpandedItem
 
   }) => {
+    
     return (
       <>
         <div
@@ -55,21 +56,13 @@ const RenderJsonArraySidebarIcon = memo(
             "w-[100%]  flex z-50 items-center gap-4 cursor-pointer" +
             (activeTab == fg
               ? "text-xs  cursor-pointer text-[#6600ff]"
-              : " text-black cursor-pointer")
+              : " text-gray-800 cursor-pointer")
           }
         >
          
           <TorusToolTip
             hoverContent={
-              shuffledIcons.length > 0 &&
-              createElement(
-                shuffledIcons[Math.floor(Math.random() * shuffledIcons.length)],
-                {
-                  size: 20,
-                  color: activeTab === fg ? "#6600ff" : "#B2BABB",
-                }
-              )
-              
+              <MdOutlineDataArray size={20}   />
             }
             tooltipFor="arr"
             tooltipContent={obj.map((ele) => ele?.label ? ele?.label : fg)}
@@ -106,7 +99,7 @@ export const JsonSidebarIcon = memo(
                         " flex items-center z-50 text-xs cursor-pointer gap-4" +
                         (activeTab === ele
                           ? " cursor-pointer  text-xs text-[#0073e6]"
-                          : "text-black cursor-pointer")
+                          : "text-gray-100 cursor-pointer")
                       }
                       onClick={() => {
                         setShowObj(ele);
@@ -121,16 +114,7 @@ export const JsonSidebarIcon = memo(
                       
                       <TorusToolTip
                         hoverContent={
-                          iconArray.length > 0 &&
-                          createElement(
-                            iconArray[
-                              Math.floor(Math.random() * iconArray.length)
-                            ],
-                            {
-                              size: 20,
-                              color: activeTab === ele ? "#E74C3C" : "#B2BABB",
-                            }
-                          )
+                          <MdDataObject size={20} />
                         }
                         tooltipFor="obj"
                         tooltipContent={obj[ele].label ? obj[ele].label : ele}
