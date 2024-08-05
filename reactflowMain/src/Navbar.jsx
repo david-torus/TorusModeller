@@ -73,6 +73,7 @@ export default function Navbar({
 }) {
   const {
     client,
+    loadArtifact,
     selectedArtifactGroup,
     setSelectedArtifactGroup,
     selectedTkey,
@@ -1053,15 +1054,17 @@ export default function Navbar({
             selectedTkey,
             client,
             selectedFabric,
-            JSON.stringify([
-              "TCL",
-              selectedTkey,
-              selectedFabric,
-              selectedProject,
-              selectedArtifactGroup,
-              artiFact,
-              version,
-            ]),
+            loadArtifact && loadArtifact.length > 0
+              ? JSON.stringify(loadArtifact)
+              : JSON.stringify([
+                  "TCL",
+                  selectedTkey,
+                  selectedFabric,
+                  selectedProject,
+                  selectedArtifactGroup,
+                  artiFact,
+                  version,
+                ]),
           );
 
           if (response && typeof response === "object" && response) {
