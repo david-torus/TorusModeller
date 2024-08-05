@@ -88,7 +88,7 @@ export default function UserFabricContextMenu({
       {node && (
         <div
           style={{ top, left, right, bottom }}
-          className="absolute z-50 flex cursor-default flex-col rounded-md bg-white    shadow-md dark:border dark:border-[#212121] dark:bg-[#161616] xl:h-56 xl:w-52 3xl:h-72 3xl:w-72  "
+          className="absolute z-50 flex cursor-default flex-col rounded-md bg-white    shadow-md dark:border dark:border-[#212121] dark:bg-[#161616] xl:h-64 xl:w-52 3xl:h-72 3xl:w-72  "
           {...props}
         >
           <div className=" h-[40px] w-full border-b p-3  py-1  dark:border-[#212121]  ">
