@@ -29,7 +29,7 @@ export default function NodeGallery({
       className={` 
     ${
       showFabricSideBar
-        ? ` h-[552px] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[13.5%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
+        ? ` h-[95%] rounded-lg border border-slate-300 bg-white  dark:border-[#212121]  dark:bg-[#161616]  md:w-4/12  lg:w-2/12  ${showNodeProperty ? "xl:w-[18.0%] 3xl:w-[16%] " : "xl:w-[13.5%] 3xl:w-[12%]"}  3xl:w-[12%] 4xl:w-4/12`
         : "hidden"
     }
     ${selectedFabric === "SF" ? " xl:w-[17.5%] 3xl:w-[15%]" : ""}
@@ -61,9 +61,9 @@ export default function NodeGallery({
         </div>
       </div>
       <div
-        className={`  flex h-[500px] w-[100%] flex-col justify-between transition-opacity duration-700 ease-in-out`}
+        className={`  flex h-[90%] w-[100%] flex-col justify-between transition-opacity duration-700 ease-in-out`}
       >
-        <div className="flex h-4/6  w-[100%]  ">
+        <div className="item-start flex  h-[65%] w-[100%] justify-center ">
           <Loop
             color={color}
             selectedFabric={selectedFabric}
@@ -72,7 +72,7 @@ export default function NodeGallery({
           />
         </div>
 
-        <div className="flex h-2/6 w-[100%] items-center justify-center ">
+        <div className="flex h-[35%] w-[100%] items-end justify-center ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
             <Text className=" xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
