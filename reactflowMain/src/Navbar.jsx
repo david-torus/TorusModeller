@@ -59,6 +59,7 @@ import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
 import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
+import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 
 export default function Navbar({
   project,
