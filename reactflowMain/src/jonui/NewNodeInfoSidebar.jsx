@@ -947,8 +947,8 @@ const NewNodeInfoSidebar = ({
   console.log(sideBarData, "sidebardatatabaasa");
 
   return (
-    <div className="flex flex-col">
-      <div className="h-10 bg-transparent">
+    <div className="flex w-full flex-col">
+      <div className="h-10 w-full items-center justify-center bg-transparent">
         {currentDrawing &&
           nodeInfoTabs &&
           currentDrawing !== "events" &&

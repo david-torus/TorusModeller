@@ -1,10 +1,20 @@
-import React, { useCallback, useContext } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useReactFlow } from "reactflow";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 import TorusButton from "../../torusComponents/TorusButton";
-import { Text } from "react-aria-components";
+import { Label, Tag, TagGroup, TagList, Text } from "react-aria-components";
 import useCopyPaste from "../../commonComponents/react-flow-pro/useCopyPaste";
 import { DarkmodeContext } from "../../commonComponents/context/DarkmodeContext";
+import { MdDataArray, MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
+import { CustomCode, MapperIcon, RulesIcon } from "../../asset/SvgsApplication";
+import TorusToolTip from "../../torusComponents/TorusToolTip";
+import { TorusModellerContext } from "../../Layout";
 export default function ProcessFabricContextMenu({
   id,
   top,
@@ -52,13 +62,66 @@ export default function ProcessFabricContextMenu({
               {node?.data?.label}
             </Text>
           </div>
+          <div className=" flex h-[40px] w-full items-center justify-center border-b p-3  py-1  dark:border-[#212121]  ">
+            <div className={"flex w-full items-center  justify-between gap-1"}>
+              <TorusToolTip
+                placement="top"
+                triggerElement={
+                  <TorusButton
+                    id={"pf_rule"}
+                    buttonClassName={"w-1/3"}
+                    isIconOnly={true}
+                    onPress={() => {
+                      props?.onEdit(id, "rule");
+                    }}
+                    Children={<RulesIcon />}
+                  />
+                }
+                color={"#ccc"}
+                tooltipFor={"pf_rule"}
+                tooltipContent={"rule"}
+              />
+              <TorusToolTip
+                placement="top"
+                triggerElement={
+                  <TorusButton
+                    id={"pf_customCode"}
+                    buttonClassName={"w-1/3"}
+                    isIconOnly={true}
+                    onPress={() => {
+                      props?.onEdit(id, "code");
+                    }}
+                    Children={<CustomCode />}
+                  />
+                }
+                color={"#ccc"}
+                tooltipFor={"pf_customCode"}
+                tooltipContent={"code"}
+              />
+
+              <TorusToolTip
+                placement="top"
+                triggerElement={
+                  <TorusButton
+                    id={"pf_mapper"}
+                    buttonClassName={"w-1/3"}
+                    onPress={() => {
+                      props?.onEdit(id, "mapper");
+                    }}
+                    isIconOnly={true}
+                    Children={<MapperIcon />}
+                  />
+                }
+                color={"#ccc"}
+                tooltipFor={"pf_mapper"}
+                tooltipContent={"mapper"}
+              />
+            </div>
+          </div>
 
           <div className="flex flex-col gap-[6px]">
             <TorusButton
               key={"pf_edit"}
-              // buttonClassName={
-              //   "   flex   justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => props?.onEdit(id)}
               Children={
                 <div className="mt-1 flex h-[30px]  w-full cursor-pointer flex-row   items-center p-2">
@@ -70,11 +133,11 @@ export default function ProcessFabricContextMenu({
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 rounded-sm  w-5 items-center  justify-center bg-[#F2F3F8] text-xs
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center  rounded-sm bg-[#F2F3F8] text-xs
 text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                     ></div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 rounded-sm w-5 items-center  justify-center bg-[#F2F3F8] text-xs
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center justify-center  rounded-sm bg-[#F2F3F8] text-xs
 text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                     >
                       E
@@ -86,9 +149,6 @@ text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
             <TorusButton
               key={"pf_cut"}
               isDisabled={!canCopy}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => cut(id)}
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center    p-2">
@@ -100,13 +160,13 @@ text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       ⌘
                     </div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  rounded-sm items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       X
@@ -119,9 +179,6 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
               key={"pf_copy"}
               isDisabled={!canCopy}
               onPress={() => copy(id)}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center   p-2">
                   <div className="flex w-[70%] items-center justify-start">
@@ -132,48 +189,16 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       ⌘
                     </div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  rounded-sm items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       C
-                    </div>
-                  </div>
-                </div>
-              }
-            />
-            <TorusButton
-              key={"pf_paste"}
-              isDisabled={!canPaste}
-              onPress={() => paste()}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
-              Children={
-                <div className="flex h-[30px] w-full  cursor-pointer flex-row  items-center    p-2">
-                  <div className="flex w-[70%] items-center justify-start">
-                    <div className=" ml-[10px] flex items-center justify-center gap-3  text-sm text-black dark:text-white">
-                      <Paste className={"stroke-black dark:stroke-white "} />
-                      Paste
-                    </div>
-                  </div>
-                  <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
-                    <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
-dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
-                    >
-                      ⌘
-                    </div>
-                    <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
-dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
-                    >
-                      V
                     </div>
                   </div>
                 </div>
@@ -196,7 +221,7 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%]  items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 rounded-sm  h-5 w-8  bg-[#F2F3F8] text-sm text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 h-5  w-8 rounded-sm  bg-[#F2F3F8] text-sm text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       Del

@@ -17,13 +17,12 @@ export default function TorusPopOver({
         startContent={popOverContent}
         buttonClassName={popbuttonClassNames}
       />
-
       <Popover
-        className={
-          "bg-[#F4F5FA] w-[200px] rounded-lg border-2  border-[#D0D5DD] text-black text-sm "
-        }
+      style={{
+        zIndex: 999,
+      }}
       >
-        <Dialog className="outline-none rounded-lg ">{children}</Dialog>
+        <Dialog className="rounded-lg outline-none ">{children}</Dialog>
       </Popover>
     </DialogTrigger>
   );

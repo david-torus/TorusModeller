@@ -52,11 +52,7 @@ export const Gorule = ({
         },
       );
 
-      setToggleReactflow((prev) => ({
-        ...prev,
-        rule: false,
-        flow: true,
-      }));
+      setToggleReactflow("fabrics");
     } catch (err) {
       console.error(err);
     }

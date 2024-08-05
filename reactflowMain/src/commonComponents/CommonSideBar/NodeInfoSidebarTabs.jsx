@@ -22,13 +22,20 @@ export const NodeInfoSidebarTabs = ({
       {currentDrawing !== "events" && (
         <Tabs
           aria-label="Options"
-          color={darkMode ? "transparent" : "transparent"}
-          variant="underlined"
+        
+          variant="solid"
           classNames={{
-            tabList: "gap-1 w-[280px]  rounded-none bg-transparent",
-            cursor: "w-full bg-transparent",
-            base: "w-full relative",
-            tab: "max-w-fit px-0 h-8",
+            tabList:
+              " w-full items-center justify-center  h-[37px] bg-[#F4F5FA] dark:bg-[#0F0F0F]   p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
+  
+            tab: !darkMode
+              ? " px-0 text-white font-semibold border-none outline-none w-[50px] h-[35px] "
+              : " px-0 text-black font-semibold border-none outline-none w-[50px] h-[35px] ",
+            tabContent: !darkMode
+              ? " border-none rounded-md outline-none"
+              : " border-none rounded-md outline-none",
+            cursor:
+              "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none torus-focus-within:outline-none",
           }}
           defaultSelectedKey={""}
         >

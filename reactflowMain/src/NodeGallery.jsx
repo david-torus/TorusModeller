@@ -36,7 +36,7 @@ export default function NodeGallery({
     `}
     >
       <div
-        className={`flex h-full  w-full items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white lg:h-[7%] xl:h-[9%] 2xl:h-[9%] 3xl:h-[7%]`}
+        className={`flex h-[50px] w-full items-center justify-between border-b border-slate-300 p-2 font-medium dark:border-[#212121]  dark:text-white `}
       >
         <div className="felx-col flex w-[100%] justify-between">
           <div className="flex w-[70%] items-center justify-start">
@@ -61,28 +61,27 @@ export default function NodeGallery({
         </div>
       </div>
       <div
-        className={`  flex h-[91.5%]  w-[100%] flex-col justify-between  transition-opacity duration-700 ease-in-out`}
+        className={`  flex h-[90%] w-[100%] flex-col justify-between transition-opacity duration-700 ease-in-out`}
       >
+        <div className="item-start flex  h-[65%] w-[100%] justify-center ">
+          <Loop
+            color={color}
+            selectedFabric={selectedFabric}
+            selectedControlEvents={selectedControlEvents}
+            sfNodeGalleryData={sfNodeGalleryData}
+          />
+        </div>
 
-        <Loop
-          color={color}
-          selectedFabric={selectedFabric}
-          selectedControlEvents={selectedControlEvents}
-          sfNodeGalleryData={sfNodeGalleryData}
-        />
-     
-       
-
-        <div className="flex w-[100%] items-center justify-center xl:max-h-[7.3%] xl:min-h-[33.5%] 2xl:min-h-[25%] ">
+        <div className="flex h-[35%] w-[100%] items-end justify-center ">
           <div className=" w-[95%] rounded-lg bg-[#F4F5FA] p-3 dark:bg-[#0F0F0F] dark:text-white   ">
-            <Text className="font-inter tracking-normal xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
+            <Text className=" xl:text-sm xl:font-semibold 3xl:text-sm 3xl:font-semibold">
               Upgrade to unlock more features
             </Text>
 
             <br />
             <p
               slot="description"
-              className=" font-inter   tracking-normal xl:text-xs xl:leading-[1.0rem] 2xl:pr-[18px] 2xl:text-sm 2xl:leading-[0.8rem] 3xl:pr-[20px] 3xl:text-sm 3xl:leading-[1.0rem] "
+              className=" font-inter   tracking-normal xl:text-xs xl:leading-[1.0rem] 2xl:pr-[18px] 2xl:text-sm 2xl:leading-[0.8rem] 3xl:pr-[20px] 3xl:text-sm  "
             >
               Enjoy unlimited space for fabrics, applets, extra security
               features & more.
@@ -123,7 +122,7 @@ const Loop = ({ color }) => {
   return (
     <>
       {selectedFabric !== "events" && selectedFabric !== "SF" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[50%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex h-full w-full flex-col items-start justify-evenly overflow-y-scroll p-1 ">
           {EnvSideData[selectedFabric] &&
             EnvSideData[selectedFabric].map((item, index) => (
               <div
@@ -133,7 +132,7 @@ const Loop = ({ color }) => {
                 onDragStart={(event) => onDragStart(event, item.nodeType)}
               >
                 <div
-                  className={` flex  cursor-grab  items-center justify-center rounded-lg  bg-gray-100 dark:bg-[#0736C4]/15 dark:text-white xl:h-7 xl:w-7 3xl:h-10 3xl:w-10`}
+                  className={` flex  cursor-grab  items-center justify-center rounded-lg  bg-gray-100 dark:bg-[#0736C4]/15 dark:text-white   xl:h-7 xl:w-7 3xl:h-10 3xl:w-10`}
                 >
                   {React.createElement(item.icon, {
                     color: color ? color : "#0736C4",
@@ -148,7 +147,7 @@ const Loop = ({ color }) => {
             ))}
         </div>
       ) : selectedFabric == "events" ? (
-        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide xl:max-h-[100%] xl:min-h-[30%] 2xl:max-h-[75%] 2xl:min-h-[35%] ">
+        <div className="flex w-full flex-col items-start justify-between overflow-y-scroll p-1  scrollbar-hide ">
           <EventScreen selectedControlEvents={selectedControlEvents} />
         </div>
       ) : (

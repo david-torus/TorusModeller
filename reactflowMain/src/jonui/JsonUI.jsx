@@ -556,21 +556,21 @@ export const nodeInfoTabs = {
       icon: <SourceIcon />,
       modelOpen: "data",
     },
-    {
-      label: "Mapper",
-      icon: <MapperIcon />,
-      modelOpen: "mapper",
-    },
-    {
-      label: "Rule",
-      icon: <RulesIcon />,
-      modelOpen: "rule",
-    },
-    {
-      label: "CustomCode",
-      icon: <CustomCode />,
-      modelOpen: "customCode",
-    },
+    // {
+    //   label: "Mapper",
+    //   icon: <MapperIcon />,
+    //   modelOpen: "mapper",
+    // },
+    // {
+    //   label: "Rule",
+    //   icon: <RulesIcon />,
+    //   modelOpen: "rule",
+    // },
+    // {
+    //   label: "CustomCode",
+    //   icon: <CustomCode />,
+    //   modelOpen: "customCode",
+    // },
     {
       label: "Validation",
       icon: <Validation />,
