@@ -383,3 +383,23 @@ export const getNodeList = async (
     console.error(error);
   }
 };
+
+export const renameArtifact = async (oldKey, newKey) => {
+  try {
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
+    const response = await fetch(
+      `${BASE_URL}/renameArtifacts?oldKey=${oldKey}&newKey=${newKey}`,
+      {
+        method: "GET",
+      },
+    );
+    const data = await response.json();
+    if (response.ok && data) {
+      return data;
+    } else {
+      //throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

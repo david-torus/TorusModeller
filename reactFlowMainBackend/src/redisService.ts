@@ -18,28 +18,27 @@ export class RedisService {
       var request: any = await redis.call('JSON.GET', key);
       return request;
     } catch (error) {
-      throw error
-    } 
+      throw error;
+    }
   }
 
-  async exist(key){
+  async exist(key) {
     try {
-      var request = await redis.call('EXISTS', key)     
-      return request
+      var request = await redis.call('EXISTS', key);
+      return request;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   //Retrieves JSON data from Redis with specified path
-  async getJsonDataWithPath(key: string, path: string) {  
+  async getJsonDataWithPath(key: string, path: string) {
     try {
       var request = await redis.call('JSON.GET', key, path);
       return request;
     } catch (error) {
-      throw error
+      throw error;
     }
-   
   }
 
   //To store JSON data in redis
@@ -53,9 +52,8 @@ export class RedisService {
       await redis.call('JSON.SET', key, defpath, value);
       return 'Value Stored';
     } catch (error) {
-      throw error
+      throw error;
     }
-   
   }
 
   //To store Stream data in redis
@@ -77,7 +75,7 @@ export class RedisService {
       throw error;
     }
   }
-  async getStreamRange(streamName){
+  async getStreamRange(streamName) {
     try {
       var messages = await redis.call('XRANGE', streamName, '-', '+');
       return messages;
@@ -87,8 +85,14 @@ export class RedisService {
   }
 
   async getStreamRevRange(streamName, count) {
-    try {      
-      var messages =  await redis.xrevrange(streamName, '+', '-', 'COUNT', count);
+    try {
+      var messages = await redis.xrevrange(
+        streamName,
+        '+',
+        '-',
+        'COUNT',
+        count,
+      );
       return messages;
     } catch (error) {
       throw error;
@@ -97,7 +101,13 @@ export class RedisService {
   //Retrieves stream data from Redis with count
   async getStreamDatawithCount(count, streamName) {
     try {
-      var messages = await redis.xread('COUNT',count,'STREAMS',streamName,0);
+      var messages = await redis.xread(
+        'COUNT',
+        count,
+        'STREAMS',
+        streamName,
+        0,
+      );
       return messages;
     } catch (error) {
       throw error;
@@ -107,17 +117,22 @@ export class RedisService {
   //To create a consumer group for a given stream in Redis
   async createConsumerGroup(streamName, groupName) {
     try {
-      await redis.xgroup('CREATE',streamName,groupName,'0','MKSTREAM');
+      await redis.xgroup('CREATE', streamName, groupName, '0', 'MKSTREAM');
       return `consumerGroup was created as ${groupName}`;
     } catch (error) {
-      throw error
-    }   
+      throw error;
+    }
   }
 
   //To create a consumer within a consumer group in Redis
   async createConsumer(streamName, groupName, consumerName) {
     try {
-      var result = await redis.xgroup('CREATECONSUMER',streamName,groupName,consumerName);
+      var result = await redis.xgroup(
+        'CREATECONSUMER',
+        streamName,
+        groupName,
+        consumerName,
+      );
       return result;
     } catch (error) {
       throw error;
@@ -129,18 +144,25 @@ export class RedisService {
     try {
       var msgId1: string;
       var res = [];
-      var result = await redis.xreadgroup('GROUP',groupName,consumerName,'STREAMS',streamName,'>');
+      var result = await redis.xreadgroup(
+        'GROUP',
+        groupName,
+        consumerName,
+        'STREAMS',
+        streamName,
+        '>',
+      );
       //console.log(result)
       if (result) {
         result.forEach(([key, message]) => {
           message.forEach(([messageId, data]) => {
             msgId1 = messageId;
-            var obj = {}
-            obj['msgid']=messageId
-            obj['data'] = data           
+            var obj = {};
+            obj['msgid'] = messageId;
+            obj['data'] = data;
             res.push(obj);
           });
-        });       
+        });
         return res;
       } else {
         return 'No Data available to read';
@@ -155,17 +177,17 @@ export class RedisService {
       let result = await redis.xack(streamName, groupName, msgId);
       return result;
     } catch (error) {
-      throw error
-    } 
+      throw error;
+    }
   }
 
-  async getInfoGrp(groupName){
-    try {     
-      let result = await redis.xinfo('GROUPS', groupName);   
-      return result
+  async getInfoGrp(groupName) {
+    try {
+      let result = await redis.xinfo('GROUPS', groupName);
+      return result;
     } catch (error) {
-      throw error
-    } 
+      throw error;
+    }
   }
 
   //To acknowledge a message in a Redis stream
@@ -186,12 +208,21 @@ export class RedisService {
     }
   }
 
-  async expire(key, seconds){
+  async expire(key, seconds) {
     try {
-      var result = await redis.call('EXPIRE', key , seconds)
-      return result
+      var result = await redis.call('EXPIRE', key, seconds);
+      return result;
     } catch (error) {
-      throw error
-    }   
+      throw error;
+    }
+  }
+
+  async renameKey(oldKey, newKey) {
+    try {
+      var result = await redis.call('RENAME', oldKey, newKey);
+      return result;
+    } catch (error) {
+      throw error;
+    }
   }
 }

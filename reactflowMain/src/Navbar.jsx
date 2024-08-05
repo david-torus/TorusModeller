@@ -34,6 +34,7 @@ import {
   artifactList,
   saveWorkFlow,
   applicationLists,
+  renameArtifact,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -590,9 +591,39 @@ export default function Navbar({
     }
   };
 
-  const handleArtifactsNameChange = (e) => {
+  const handleArtifactsNameChange = (oldName, newName) => {
     try {
-      setSelectedArtifactsname(e);
+      console.log(oldName, newName, "oldName, newName");
+      if (oldName === newName) return;
+      renameArtifact(
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          selectedProject,
+          selectedArtifactGroup,
+          oldName,
+        ]),
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          selectedProject,
+          selectedArtifactGroup,
+          newName,
+        ]),
+      )
+        .then((data) => {
+          console.log(data, "data");
+          if (data && data?.status === 200) {
+            setSelectedArtifact(newName);
+            setSelectedVersion("");
+            setArtifactsList(data?.data);
+          }
+        })
+        .finally(() => {
+          setInputchange(null);
+        });
     } catch (err) {
       toast(
         <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
@@ -1385,7 +1416,7 @@ export default function Navbar({
         title: "Shared with Me",
 
         content: projectList,
-        id: "TRK",
+        id: "TFRK",
       },
     ];
   }, [projectList]);
@@ -1643,7 +1674,10 @@ export default function Navbar({
                                                       className="flex h-[30px] w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white "
                                                       onKeyDown={(e) => {
                                                         if (e.key === "Enter") {
-                                                          setInputchange(null);
+                                                          handleArtifactsNameChange(
+                                                            obj?.artifact,
+                                                            e.target.value,
+                                                          );
                                                         }
                                                       }}
                                                       onChange={(e) => {
