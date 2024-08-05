@@ -718,62 +718,60 @@ export const nodeInfoTabs = {
   ],
 };
 
-export const RenderJson = memo(
-  ({
-    showNodeProperty,
-    sideBarData,
-    currentDrawing,
-    setShowNodeProperty,
-    setToggleReactflow,
-    json,
-    updatedNodeConfig,
-    setJson,
-    nodedata,
+export const RenderJson = ({
+  showNodeProperty,
+  sideBarData,
+  currentDrawing,
+  setShowNodeProperty,
+  setToggleReactflow,
+  json,
+  updatedNodeConfig,
+  setJson,
+  nodedata,
     cm,
-  }) => {
-    const [dupJson, setDupJson] = useState(null);
+}) => {
+  const [dupJson, setDupJson] = useState(null);
+  const [convertedJson, setConvertedJson] = useState(null);
 
-    const [convertedJson, setConvertedJson] = useState(null);
-
-    function convertJson(obj) {
-      const converted = {};
-      for (let key in obj) {
-        if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
-          converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
-        } else if (Array.isArray(obj[key])) {
-          converted[key.replace(/\//g, ".")] = obj[key];
-        } else {
-          converted[key.replace(/\//g, ".")] = obj[key];
-        }
-      }
-      console.log(converted, "ctct");
-
-      return converted;
-    }
-
-    function replaceKeys(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map((item) => replaceKeys(item));
-      } else if (typeof obj === "object" && obj !== null) {
-        let newObj = {};
-        for (let key in obj) {
-          if (obj.hasOwnProperty(key)) {
-            let newKey = key.replace(/\//g, ".");
-            newObj[newKey] = replaceKeys(obj[key]);
-          }
-        }
-        return newObj;
+  function convertJson(obj) {
+    const converted = {};
+    for (let key in obj) {
+      if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
+        converted[key.replace(/\//g, ".")] = convertJson(obj[key]);
+      } else if (Array.isArray(obj[key])) {
+        converted[key.replace(/\//g, ".")] = obj[key];
       } else {
-        return obj;
+        converted[key.replace(/\//g, ".")] = obj[key];
       }
     }
+    console.log(converted, "ctct");
 
-    const OgJson = () => {
-      const jss = convertJson(dupJson);
-      const newjson = JSON.stringify(jss, null, 2);
+    return converted;
+  }
 
-      let newjs = unflatten(jss);
-      console.log(newjs, nodedata, "new");
+  function replaceKeys(obj) {
+    if (Array.isArray(obj)) {
+      return obj.map((item) => replaceKeys(item));
+    } else if (typeof obj === "object" && obj !== null) {
+      let newObj = {};
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          let newKey = key.replace(/\//g, ".");
+          newObj[newKey] = replaceKeys(obj[key]);
+        }
+      }
+      return newObj;
+    } else {
+      return obj;
+    }
+  }
+
+  const OgJson = () => {
+    const jss = convertJson(dupJson);
+    const newjson = JSON.stringify(jss, null, 2);
+
+    let newjs = unflatten(jss);
+    console.log(newjs, nodedata, "new");
 
       updatedNodeConfig(
         nodedata?.id,
@@ -828,15 +826,15 @@ export const RenderJson = memo(
         }
       }
 
-      if (type == "dropdown" || type == "boolean") {
-        if (i) {
-          const js = structuredClone(dupJson);
-          _.set(js, i, e);
-          setDupJson(js);
-          console.log(js, "arrjs");
-        }
+    if (type == "dropdown" || type == "boolean") {
+      if (i) {
+        const js = structuredClone(dupJson);
+        _.set(js, i, e);
+        setDupJson(js);
+        console.log(js, "arrjs");
       }
-    };
+    }
+  };
 
     const handleAddjs = (path, key, value, type, i, selectedType) => {
       console.log(path, key, value, type, i, selectedType, "handleAddjs");
@@ -953,116 +951,117 @@ export const RenderJson = memo(
       }
     };
 
-    const handleDeletejs = (path, type, label) => {
-      if (type === "arr-1") {
-        setDupJson((prev) => {
-          const updatedObj = _.cloneDeep(prev);
-          const events = _.get(updatedObj, path);
-          _.remove(events, (event) => event.label === label);
-          return updatedObj;
-        });
-      } else {
-        console.log(path, dupJson, "bef");
-        setDupJson((prev) => {
-          // const updatedObj = _.cloneDeep(prev);
-          _.unset(prev, path);
-          return prev;
-        });
-      }
-    };
+  const handleDeletejs = (path, type, label) => {
+    if (type === "arr-1") {
+      setDupJson((prev) => {
+        const updatedObj = _.cloneDeep(prev);
+        const events = _.get(updatedObj, path);
+        _.remove(events, (event) => event.label === label);
+        return updatedObj;
+      });
+    } else if (type === "obj") {
+      console.log(path, "bjp")
+      const js = structuredClone(dupJson);
+      _.unset(js, path);
+      setDupJson(js);
+    } else {
+      const js = structuredClone(dupJson);
+      const pathsToDelete = Object.keys(js).filter(
+        (key) => key == path || key.startsWith(path + "/"),
+      );
+      pathsToDelete.forEach((key) => {
+        _.unset(js, key);
+      });
+      setDupJson(js);
+    }
+  };
 
-    console.log(dupJson, "aft");
-
-    function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
-      const copy = JSON.parse(JSON.stringify(obj));
-      for (let key in copy) {
-        if (copy.hasOwnProperty(key)) {
-          let newKey = prefix ? `${prefix}/${key}` : key;
+  function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
+    const copy = JSON.parse(JSON.stringify(obj));
+    for (let key in copy) {
+      if (copy.hasOwnProperty(key)) {
+        let newKey = prefix ? `${prefix}/${key}` : key;
+        if (
+          typeof copy[key] === "object" &&
+          copy[key] !== null &&
+          !Array.isArray(copy[key])
+        ) {
           if (
-            typeof copy[key] === "object" &&
-            copy[key] !== null &&
-            !Array.isArray(copy[key])
+            !(
+              copy[key].hasOwnProperty("type") &&
+              (copy[key].type === "dropdown" || copy[key].type === "boolean")
+            )
           ) {
-            if (
-              !(
-                copy[key].hasOwnProperty("type") &&
-                (copy[key].type === "dropdown" || copy[key].type === "boolean")
-              )
-            ) {
-              if (copy[key] === originalObj) {
-                return result; // Return early if the object being processed is the same as the original object
-              }
-              result[newKey] = copy[key];
-              denormalizeJson(copy[key], newKey, result, originalObj);
-              delete copy[key];
+            if (copy[key] === originalObj) {
+              return result; // Return early if the object being processed is the same as the original object
             }
-          } else if (
-            Array.isArray(copy[key]) &&
-            typeof copy[key][0] === "object"
-          ) {
             result[newKey] = copy[key];
-            copy[key].forEach((item, index) => {
-              if (typeof item === "object" && item !== null) {
-                const nestedKey = `${newKey}/${index}`;
-                denormalizeJson(item, nestedKey, result, originalObj);
-              } else {
-                result[newKey][index] = item;
-              }
-            });
+            denormalizeJson(copy[key], newKey, result, originalObj);
             delete copy[key];
-          } else {
-            if (!prefix) {
-              result[copy["label"]] = copy;
+          }
+        } else if (
+          Array.isArray(copy[key]) &&
+          typeof copy[key][0] === "object"
+        ) {
+          result[newKey] = copy[key];
+          copy[key].forEach((item, index) => {
+            if (typeof item === "object" && item !== null) {
+              const nestedKey = `${newKey}/${index}`;
+              denormalizeJson(item, nestedKey, result, originalObj);
+            } else {
+              result[newKey][index] = item;
             }
+          });
+          delete copy[key];
+        } else {
+          if (!prefix) {
+            result[copy["label"]] = copy;
           }
         }
       }
-      return result;
     }
+    return result;
+  }
 
-    const haandledenormalize = () => {
-      if (json) {
-        const denormalized = denormalizeJson(json);
-        console.log(denormalized, "denormalized");
-        setDupJson(structuredClone(denormalized));
-      }
-    };
+  const haandledenormalize = () => {
+    if (json) {
+      const denormalized = denormalizeJson(json);
+      console.log(denormalized, "denormalized");
+      setDupJson(structuredClone(denormalized));
+    }
+  };
 
-    useEffect(() => {
-      haandledenormalize();
-    }, [json]);
+  useEffect(() => {
+    haandledenormalize();
+  }, [json]);
 
-    console.log(convertedJson, nodedata, "convertedJson");
-    console.log(json, nodedata, "rrenderjs");
+  console.log(convertedJson, nodedata, "convertedJson");
+  console.log(json, nodedata, "rrenderjs");
 
-    return (
-      <div
-        className="h-full overflow-y-scroll scrollbar-hide"
-        // style={{ display: showNodeProperty ? "block" : "none" }}
-      >
-        {dupJson && Object.keys(dupJson).length > 0 && (
-          <div className="h-full overflow-y-scroll scrollbar-hide ">
-            {
-              <>
-                <RenderObject
-                  obj={dupJson}
-                  handlejs={handlejs}
-                  OgJson={OgJson}
-                  showNodeProperty={showNodeProperty}
-                  sideBarData={sideBarData}
-                  currentDrawing={currentDrawing}
-                  setShowNodeProperty={setShowNodeProperty}
-                  setToggleReactflow={setToggleReactflow}
-                  nodeInfoTabs={nodeInfoTabs}
-                  setDupJson={setDupJson}
-                  handleAddjs={handleAddjs}
-                  handleDeletejs={handleDeletejs}
-                />
-              </>
-            }
-          </div>
-        )}
-      </div>
-    );
-  },
-);
+  return (
+    <div className="h-full overflow-y-scroll scrollbar-hide">
+      {dupJson && Object.keys(dupJson).length > 0 && (
+        <div className="h-full overflow-y-scroll scrollbar-hide ">
+          {
+            <>
+              <RenderObject
+                obj={dupJson}
+                handlejs={handlejs}
+                OgJson={OgJson}
+                showNodeProperty={showNodeProperty}
+                sideBarData={sideBarData}
+                currentDrawing={currentDrawing}
+                setShowNodeProperty={setShowNodeProperty}
+                setToggleReactflow={setToggleReactflow}
+                nodeInfoTabs={nodeInfoTabs}
+                setDupJson={setDupJson}
+                handleAddjs={handleAddjs}
+                handleDeletejs={handleDeletejs}
+              />
+            </>
+          }
+        </div>
+      )}
+    </div>
+  );
+};
