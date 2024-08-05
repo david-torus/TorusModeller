@@ -413,7 +413,7 @@ const NewNodeInfoSidebar = ({
     );
   };
 
-  const handleSfSidebar = (toggleSFflow , setToggleSFflow , tab) => {
+  const handleSfSidebar = (toggleSFflow, setToggleSFflow, tab) => {
     return (
       <div className="">
         {toggleSFflow && (
@@ -447,22 +447,20 @@ const NewNodeInfoSidebar = ({
             sendFabrics={sendFabrics}
             sidebarVisible={toggle}
             setSidebarVisible={setToggle}
-
           />
         )}
       </div>
     );
   };
 
-
-  console.log(toggleSFflow , "sfflow")
+  console.log(toggleSFflow, "sfflow");
   const handleOpenModal = async (
     flowType,
     isDockey = false,
     flow,
     tabtoOpen,
   ) => {
-    console.log(flowType, isDockey, flow,tabtoOpen, "flow");
+    console.log(flowType, isDockey, flow, tabtoOpen, "flow");
     try {
       setCurrentModel(flowType);
       if (currentDrawing === "DF") {
@@ -522,13 +520,11 @@ const NewNodeInfoSidebar = ({
               sideBarData?.data?.nodeProperty?.[flowType + ".helper"] ?? {},
           }));
         }
-      } 
-      
-      else if (currentDrawing === "SF") {
+      } else if (currentDrawing === "SF") {
         if (tabtoOpen == "SFPF") {
           setToggleSFflow((prev) => ({
             ...prev,
-            UF:false,
+            UF: false,
             DF: false,
             PF: !prev.PF,
           }));
@@ -550,10 +546,10 @@ const NewNodeInfoSidebar = ({
         if (tabtoOpen == "SFUF") {
           setToggleSFflow((prev) => ({
             ...prev,
-            PF:false,
+            PF: false,
             DF: false,
             UF: !prev.UF,
-          }));;
+          }));
           setJson((prev) => ({
             ...prev,
             [flowType]:
@@ -573,7 +569,7 @@ const NewNodeInfoSidebar = ({
         if (tabtoOpen == "SFDF") {
           setToggleSFflow((prev) => ({
             ...prev,
-            PF:false,
+            PF: false,
             UF: false,
             DF: !prev.DF,
           }));
@@ -592,9 +588,7 @@ const NewNodeInfoSidebar = ({
               {},
           }));
         }
-      }
-      
-      else {
+      } else {
         setToggle(!toggle);
         setJson((prev) => ({
           ...prev,
@@ -825,8 +819,8 @@ const NewNodeInfoSidebar = ({
   console.log(sideBarData, "sidebardatatabaasa");
 
   return (
-    <div className="flex flex-col">
-      <div className="h-10 bg-transparent">
+    <div className="flex w-full flex-col">
+      <div className="h-10 w-full items-center justify-center bg-transparent">
         {currentDrawing &&
           nodeInfoTabs &&
           nodeInfoTabs[currentDrawing] &&
@@ -850,95 +844,131 @@ const NewNodeInfoSidebar = ({
             />
           )}
 
-        {((!toggleSFflow.PF && !toggleSFflow.DF && !toggleSFflow.UF ) && !toggle )&& sideBarData && (
-          <div className="h-40">
-            <div className="grid h-40 w-[100%] grid-cols-4 gap-2">
-              <div
-                className={` flex items-start ${"col-span-4 mt-3 flex flex-col items-start justify-between  px-2 py-2"} `}
-              >
-                <h1
-                  className={`${"mb-2  font-bold   text-black/80 dark:text-[#F4F4F5]"}   cursor-pointer  `}
+        {!toggleSFflow.PF &&
+          !toggleSFflow.DF &&
+          !toggleSFflow.UF &&
+          !toggle &&
+          sideBarData && (
+            <div className="h-40">
+              <div className="grid h-40 w-[100%] grid-cols-4 gap-2">
+                <div
+                  className={` flex items-start ${"col-span-4 mt-3 flex flex-col items-start justify-between  px-2 py-2"} `}
                 >
-                  nodeID :
-                </h1>
-
-                {sideBarData?.id ? (
-                  <div
-                    className={`${"whitespace-nowrap text-xs font-medium  text-black/80 dark:text-[#F4F4F5]"}`}
-                  >
-                    {sideBarData?.id}
-                  </div>
-                ) : (
-                  <p
-                    className={`${"text-sm font-medium text-black  dark:text-[#F4F4F5] "}`}
-                  >
-                    there is no value in this field
-                  </p>
-                )}
-
-                <div className="mt-4 flex w-full items-center justify-start">
                   <h1
-                    className={`${"mb-2  font-bold  text-black/80 dark:text-[#F4F4F5] "}cursor-pointer  `}
+                    className={`${"mb-2  font-bold   text-black/80 dark:text-[#F4F4F5]"}   cursor-pointer  `}
                   >
-                    Node Name :{" "}
+                    nodeID :
                   </h1>
 
-                  {sideBarData?.data?.label ? (
+                  {sideBarData?.id ? (
                     <div
-                      className={`${"whitespace-nowrap pl-3 text-xs font-medium    text-black/80  dark:text-[#F4F4F5]"}`}
+                      className={`${"whitespace-nowrap text-xs font-medium  text-black/80 dark:text-[#F4F4F5]"}`}
                     >
-                      {sideBarData?.data?.label}
+                      {sideBarData?.id}
                     </div>
                   ) : (
                     <p
-                      className={`${"pl-3 text-sm font-medium  text-black dark:text-[#F4F4F5]"}`}
+                      className={`${"text-sm font-medium text-black  dark:text-[#F4F4F5] "}`}
                     >
                       there is no value in this field
                     </p>
                   )}
+
+                  <div className="mt-4 flex w-full items-center justify-start">
+                    <h1
+                      className={`${"mb-2  font-bold  text-black/80 dark:text-[#F4F4F5] "}cursor-pointer  `}
+                    >
+                      Node Name :{" "}
+                    </h1>
+
+                    {sideBarData?.data?.label ? (
+                      <div
+                        className={`${"whitespace-nowrap pl-3 text-xs font-medium    text-black/80  dark:text-[#F4F4F5]"}`}
+                      >
+                        {sideBarData?.data?.label}
+                      </div>
+                    ) : (
+                      <p
+                        className={`${"pl-3 text-sm font-medium  text-black dark:text-[#F4F4F5]"}`}
+                      >
+                        there is no value in this field
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="col-span-4 w-[100%] ">
-                {sideBarData &&
-                  Object.entries(sideBarData?.property).map(([key, value]) => (
-                    <React.Fragment>
-                      {key === "nodeType" && (
-                        <div className="mt-0 w-[100%] px-2 py-2">
-                          <div className="flex flex-row ">
-                            <h1
-                              className={` font-bold text-black/80  dark:text-white`}
-                            >
-                              nodeType :
-                            </h1>
-                            <span
-                              className={`ml-[5px] font-normal text-black/80 dark:text-white`}
-                            >
-                              {value && value}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-              </div>
+                <div className="col-span-4 w-[100%] ">
+                  {sideBarData &&
+                    Object.entries(sideBarData?.property).map(
+                      ([key, value]) => (
+                        <React.Fragment>
+                          {key === "nodeType" && (
+                            <div className="mt-0 w-[100%] px-2 py-2">
+                              <div className="flex flex-row ">
+                                <h1
+                                  className={` font-bold text-black/80  dark:text-white`}
+                                >
+                                  nodeType :
+                                </h1>
+                                <span
+                                  className={`ml-[5px] font-normal text-black/80 dark:text-white`}
+                                >
+                                  {value && value}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </React.Fragment>
+                      ),
+                    )}
+                </div>
 
-              <div className="h-100 col-span-4 w-[100%] ">
-                {currentDrawing !== "SF" && (
-                  <NodeInfoSidebarNodeInformation
-                    sideBarData={sideBarData}
-                    currentDrawing={currentDrawing}
-                    handleNames={handleNames}
-                    darkMode={darkMode}
-                    changeProperty={changeProperty}
-                    selectedIPC={selectedIPC}
-                    handleIPCselection={handleIPCselection}
-                    err={err}
-                  />
-                )}
+                <div className="h-100 col-span-4 w-[100%] ">
+                  {currentDrawing !== "SF" && (
+                    <NodeInfoSidebarNodeInformation
+                      sideBarData={sideBarData}
+                      currentDrawing={currentDrawing}
+                      handleNames={handleNames}
+                      darkMode={darkMode}
+                      changeProperty={changeProperty}
+                      selectedIPC={selectedIPC}
+                      handleIPCselection={handleIPCselection}
+                      err={err}
+                    />
+                  )}
 
-                {sideBarData && currentDrawing === "SF" && (
-                  <div className="h-10">
+                  {sideBarData && currentDrawing === "SF" && (
+                    <div className="h-10">
+                      <SideBarDebugandFlag
+                        upIdKey={upIdKey}
+                        activeTab={activeTab}
+                        handleDebug={handleDebug}
+                        handleRequest={handleRequest}
+                        handleSubmit={handleSubmit}
+                        setSideResponse={setSideResponse}
+                        sideResponse={sideResponse}
+                        currentDrawing={currentDrawing}
+                        sideBarData={sideBarData}
+                        darkMode={darkMode}
+                        SIFlag={SIFlag}
+                        handleSIFlagselection={handleSIFlagselection}
+                        actionAllowed={actionAllowed}
+                        setActionAllowed={setActionAllowed}
+                        handleAAlag={handleAAlag}
+                        actionDenied={actionDenied}
+                        setActionDenied={setActionDenied}
+                        handleADlag={handleADlag}
+                        handleSave={handleSave}
+                        status={status}
+                        emptyStatus={emptyStatus}
+                        valueMsg={valueMsg}
+                        options={options}
+                        items={items}
+                      />
+                    </div>
+                  )}
+
+                  {sideBarData && currentDrawing === "PF" && (
                     <SideBarDebugandFlag
                       upIdKey={upIdKey}
                       activeTab={activeTab}
@@ -965,41 +995,11 @@ const NewNodeInfoSidebar = ({
                       options={options}
                       items={items}
                     />
-                  </div>
-                )}
-
-                {sideBarData && currentDrawing === "PF" && (
-                  <SideBarDebugandFlag
-                    upIdKey={upIdKey}
-                    activeTab={activeTab}
-                    handleDebug={handleDebug}
-                    handleRequest={handleRequest}
-                    handleSubmit={handleSubmit}
-                    setSideResponse={setSideResponse}
-                    sideResponse={sideResponse}
-                    currentDrawing={currentDrawing}
-                    sideBarData={sideBarData}
-                    darkMode={darkMode}
-                    SIFlag={SIFlag}
-                    handleSIFlagselection={handleSIFlagselection}
-                    actionAllowed={actionAllowed}
-                    setActionAllowed={setActionAllowed}
-                    handleAAlag={handleAAlag}
-                    actionDenied={actionDenied}
-                    setActionDenied={setActionDenied}
-                    handleADlag={handleADlag}
-                    handleSave={handleSave}
-                    status={status}
-                    emptyStatus={emptyStatus}
-                    valueMsg={valueMsg}
-                    options={options}
-                    items={items}
-                  />
-                )}
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
       <div className=" h-full  ">

@@ -22,11 +22,11 @@ export const NodeInfoSidebarTabs = ({
         variant="solid"
         classNames={{
           tabList:
-            " w-full  h-[40px] bg-[#F4F5FA] dark:bg-[#0F0F0F]   p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
+            " w-full items-center justify-center  h-[37px] bg-[#F4F5FA] dark:bg-[#0F0F0F]   p-[2px] gap-0 border-none outline-none rounded-md flex items-center justify-center  ",
 
           tab: !darkMode
-            ? " px-0 text-white font-semibold border-none outline-none w-[35px] h-[38px] "
-            : " px-0 text-black font-semibold border-none outline-none w-[35px] h-[38px] ",
+            ? " px-0 text-white font-semibold border-none outline-none w-[50px] h-[35px] "
+            : " px-0 text-black font-semibold border-none outline-none w-[50px] h-[35px] ",
           tabContent: !darkMode
             ? " border-none rounded-md outline-none"
             : " border-none rounded-md outline-none",
