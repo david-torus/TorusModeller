@@ -35,11 +35,13 @@ export const RenderData = ({
 }) => {
   return (
     <>
+
+
       {sideBarData &&
       currentModel &&
       currentModel !== "entities" &&
-      currentDrawing !== "SF" && toggle ? (
-         handleRender(currentModel + ".pw", json, sideBarData)
+      currentDrawing !== "SF" &&  currentDrawing!=="events"&& toggle ? (
+         handleRender(currentModel , json, sideBarData)
         // <Sidebar
         //   className={"bg-[#242424]" }
         //   position="right"
@@ -157,12 +159,12 @@ export const RenderData = ({
         </Dialog>
       ) : (
         currentDrawing ==="SF" ?(
-          toggleSFflow.PF ?
-          handleSfSidebar( toggleSFflow.PF, setToggleSFflow, "PF"  ) :
-          toggleSFflow.DF ?
-          handleSfSidebar(toggleSFflow.DF ,setToggleSFflow, "DF") :
-          toggleSFflow.UF ?
-          handleSfSidebar(toggleSFflow.UF ,setToggleSFflow, "UF") :
+          toggleSFflow.SF.PF ?
+          handleSfSidebar( toggleSFflow.SF.PF, setToggleSFflow, "PF"  ) :
+          toggleSFflow.SF.DF ?
+          handleSfSidebar(toggleSFflow.SF.DF ,setToggleSFflow, "DF") :
+          toggleSFflow.SF.UF ?
+          handleSfSidebar(toggleSFflow.SF.UF ,setToggleSFflow, "UF") :
           ""
           // <SFSidebar
           //   updatedNodeConfig={() => {
@@ -178,6 +180,17 @@ export const RenderData = ({
           //   group={group}
           //   application={application}
           // />
+        ): currentDrawing ==="events" ?(
+        
+        <>
+         {  toggleSFflow.events.eventParams ?
+         handleRender(currentModel , json, sideBarData) :
+          toggleSFflow.events.eventSTT ?
+          handleRender(currentModel , json, sideBarData) :
+          toggleSFflow.events.eventSTS ?
+          handleRender(currentModel , json, sideBarData) :
+          ""}
+        </>
         ):""
       )}
     </>

@@ -699,6 +699,23 @@ export const nodeInfoTabs = {
       modelOpen: "portel",
     },
   ],
+  events: [
+    {
+      label: "Params",
+      icon: <ElementInfo />,
+      modelOpen: "Params",
+    },
+    {
+      label: "StateTransitionTable",
+      icon: <SourceIcon />,
+      modelOpen: "STT",
+    },
+    {
+      label: "StateTransitionStreams",
+      icon: <SourceIcon />,
+      modelOpen: "STS",
+    },
+  ],
 };
 
 export const RenderJson = memo(
@@ -712,6 +729,7 @@ export const RenderJson = memo(
     updatedNodeConfig,
     setJson,
     nodedata,
+    cm,
   }) => {
     const [dupJson, setDupJson] = useState(null);
 
@@ -765,17 +783,27 @@ export const RenderJson = memo(
           nodeType: nodedata?.type,
         },
         {
-          ...newjs,
+          [cm]: {
+            ...newjs,
+          },
         },
       );
       setConvertedJson(newjs);
+      setJson((prev) => {
+        return {
+          ...prev,
+          [cm]: {
+            ...newjs,
+          },
+        };
+      });
     };
 
-    useEffect(() => {
-      if (convertedJson) {
-        setJson(convertedJson);
-      }
-    }, []);
+    // useEffect(() => {
+    //   if (convertedJson) {
+    //     setJson(convertedJson);
+    //   }
+    // }, []);
 
     const handlejs = (e, i, key, type, jskey) => {
       console.log(e, i, key, type, jskey, "--->rendertype");
@@ -790,6 +818,7 @@ export const RenderJson = memo(
           };
         });
       }
+
       if (type == "arr-0" || type == "arr-1" || type == "arr") {
         if (i) {
           const js = structuredClone(dupJson);
@@ -821,10 +850,7 @@ export const RenderJson = memo(
             },
           };
         });
-      }
-      
-      
-      else if (type == "obj" && selectedType === "boolean") {
+      } else if (type == "obj" && selectedType === "boolean") {
         setDupJson((prev) => {
           return {
             ...prev,
@@ -944,6 +970,7 @@ export const RenderJson = memo(
         });
       }
     };
+
     console.log(dupJson, "aft");
 
     function denormalizeJson(obj, prefix = "", result = {}, originalObj) {

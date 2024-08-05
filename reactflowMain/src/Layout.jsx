@@ -205,6 +205,7 @@ export default function Layout({ client }) {
   }, [nodes]);
 
   const updatedNodeConfig = (id, metadata, updatedData) => {
+    console.log(id, metadata, updatedData, "upateconfg");
     try {
       setNodes((prev) => {
         return prev?.map((node) => {
@@ -271,6 +272,8 @@ export default function Layout({ client }) {
     }
   };
 
+  console.log(nodes, "nodes", nodePropertyData, "nodePropertyData");
+
   const updateOptions = (data) => {
     try {
       setNodes((nds) => {
@@ -326,6 +329,14 @@ export default function Layout({ client }) {
                       [key]: value,
                     },
                   };
+                } else if (key === "label") {
+                  return {
+                    ...nds,
+                    data: {
+                      ...nds.data,
+                      label: value,
+                    },
+                  };
                 } else if (key === "layoutFlag") {
                   return {
                     ...nds,
@@ -358,6 +369,14 @@ export default function Layout({ client }) {
               property: {
                 ...prev.property,
                 [key]: value,
+              },
+            };
+          } else if (key == "label") {
+            return {
+              ...prev,
+              data: {
+                ...prev.data,
+                label: value,
               },
             };
           } else {
