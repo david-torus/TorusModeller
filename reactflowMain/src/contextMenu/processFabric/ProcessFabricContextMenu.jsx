@@ -56,9 +56,6 @@ export default function ProcessFabricContextMenu({
           <div className="flex flex-col gap-[6px]">
             <TorusButton
               key={"pf_edit"}
-              // buttonClassName={
-              //   "   flex   justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => props?.onEdit(id)}
               Children={
                 <div className="mt-1 flex h-[30px]  w-full cursor-pointer flex-row   items-center p-2">
@@ -70,11 +67,11 @@ export default function ProcessFabricContextMenu({
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 rounded-sm  w-5 items-center  justify-center bg-[#F2F3F8] text-xs
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center  rounded-sm bg-[#F2F3F8] text-xs
 text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                     ></div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 rounded-sm w-5 items-center  justify-center bg-[#F2F3F8] text-xs
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center justify-center  rounded-sm bg-[#F2F3F8] text-xs
 text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                     >
                       E
@@ -86,9 +83,6 @@ text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
             <TorusButton
               key={"pf_cut"}
               isDisabled={!canCopy}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => cut(id)}
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center    p-2">
@@ -100,13 +94,13 @@ text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       ⌘
                     </div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  rounded-sm items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       X
@@ -119,9 +113,6 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
               key={"pf_copy"}
               isDisabled={!canCopy}
               onPress={() => copy(id)}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center   p-2">
                   <div className="flex w-[70%] items-center justify-start">
@@ -132,13 +123,13 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       ⌘
                     </div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  rounded-sm items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       C
@@ -151,9 +142,6 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
               key={"pf_paste"}
               isDisabled={!canPaste}
               onPress={() => paste()}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row  items-center    p-2">
                   <div className="flex w-[70%] items-center justify-start">
@@ -164,13 +152,13 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       ⌘
                     </div>
                     <div
-                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 rounded-sm  items-center justify-center  bg-[#F2F3F8] text-xs text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       V
@@ -196,7 +184,7 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                   </div>
                   <div className="flex w-[30%]  items-center justify-end gap-2 p-1">
                     <div
-                      className=" darktext-[ #FFFFFF]/35 rounded-sm  h-5 w-8  bg-[#F2F3F8] text-sm text-[#020202]/35
+                      className=" darktext-[ #FFFFFF]/35 h-5  w-8 rounded-sm  bg-[#F2F3F8] text-sm text-[#020202]/35
 dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
                     >
                       Del

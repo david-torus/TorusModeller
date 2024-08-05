@@ -1,10 +1,14 @@
 import React, { useCallback, useContext } from "react";
-import { useReactFlow } from "reactflow";
+import { useReactFlow, useStore, useStoreApi } from "reactflow";
 import { Text } from "react-aria-components";
 import { Copy, Cut, Delete, EditNode, Paste } from "../../SVG_Application";
 import TorusButton from "../../torusComponents/TorusButton";
 import useCopyPaste from "../../commonComponents/react-flow-pro/useCopyPaste";
 import { DarkmodeContext } from "../../commonComponents/context/DarkmodeContext";
+import useDetachNodes from "../../commonComponents/react-flow-pro/dynamicGrouping/useDetachNodes";
+import { FaRegObjectUngroup } from "react-icons/fa";
+import { GrDetach } from "react-icons/gr";
+import { getRelativeNodesBounds } from "../../commonComponents/react-flow-pro/dynamicGrouping/utils";
 export default function UserFabricContextMenu({
   id,
   top,
@@ -13,7 +17,9 @@ export default function UserFabricContextMenu({
   bottom,
   ...props
 }) {
-  const { getNode, setNodes, addNodes, setEdges, getNodes } = useReactFlow();
+  const { getNode, setNodes, addNodes, setEdges, getNodes, deleteElements } =
+    useReactFlow();
+  const detachNodes = useDetachNodes();
   const node = getNode(id);
   const { darkMode } = useContext(DarkmodeContext);
   const { cut, copy, paste, bufferedNodes } = useCopyPaste();
@@ -33,6 +39,45 @@ export default function UserFabricContextMenu({
       position,
     });
   }, [id, getNode, addNodes]);
+
+  const onunGroup = () => {
+    const childNodeIds = Array.from(store.getState().nodeInternals.values())
+      .filter((n) => n.parentNode === id)
+      .map((n) => n.id);
+    detachNodes(childNodeIds, id);
+  };
+  const store = useStoreApi();
+  const { hasChildNodes } = useStore((store) => {
+    const childNodes = Array.from(store.nodeInternals.values()).filter(
+      (n) => n.parentNode === id,
+    );
+    const rect = getRelativeNodesBounds(childNodes);
+    return {
+      minWidth: rect.x + rect.width,
+      minHeight: rect.y + rect.height,
+      hasChildNodes: childNodes.length > 0,
+    };
+  }, isEqual);
+
+  /**
+   * A function that checks if the properties of two objects are equal.
+   *
+   * @param {object} prev - The previous object to compare.
+   * @param {object} next - The next object to compare.
+   * @return {boolean} Returns true if the properties are equal, false otherwise.
+   */
+  function isEqual(prev, next) {
+    return (
+      prev.minWidth === next.minWidth &&
+      prev.minHeight === next.minHeight &&
+      prev.hasChildNodes === next.hasChildNodes
+    );
+  }
+
+  const hasParent = useStore(
+    (store) => !!store.nodeInternals.get(id)?.parentNode,
+  );
+  const onDetach = () => detachNodes([id]);
 
   const deleteNode = useCallback(() => {
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
@@ -55,9 +100,6 @@ export default function UserFabricContextMenu({
           <div className="flex flex-col gap-[6px]">
             <TorusButton
               key={"uf_edit"}
-              // buttonClassName={
-              //   "   flex   justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => props?.onEdit(id)}
               Children={
                 <div className="mt-1 flex h-[30px]  w-full cursor-pointer flex-row   items-center p-2">
@@ -82,12 +124,78 @@ text-[#020202]/35 dark:bg-[#0F0F0F]  dark:text-[#FFFFFF]/35"
                 </div>
               }
             />
+            {node.type === "group" && hasChildNodes && (
+              <TorusButton
+                key={"uf_ungroup"}
+                onPress={() => {
+                  onunGroup();
+
+                  props.onClick();
+                }}
+                Children={
+                  <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center    p-2">
+                    <div className="flex w-[70%] items-center justify-start">
+                      <div className=" ml-[10px] flex items-center justify-center gap-3  text-sm text-black dark:text-white">
+                        <FaRegObjectUngroup
+                          className={"text-black dark:text-white "}
+                        />
+                        Ungroup
+                      </div>
+                    </div>
+                    <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
+                      <div
+                        className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
+dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
+                      >
+                        ⌘
+                      </div>
+                      <div
+                        className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
+dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
+                      >
+                        X
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            )}
+            {node.type !== "group" && hasParent && (
+              <TorusButton
+                key={"uf_Detach"}
+                onPress={() => {
+                  onDetach();
+                  props.onClick();
+                }}
+                Children={
+                  <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center    p-2">
+                    <div className="flex w-[70%] items-center justify-start">
+                      <div className=" ml-[10px] flex items-center justify-center gap-3  text-sm text-black dark:text-white">
+                        <GrDetach className={"text-black dark:text-white "} />
+                        Detach
+                      </div>
+                    </div>
+                    <div className="flex w-[30%] flex-row items-center justify-end gap-2 p-1">
+                      <div
+                        className=" darktext-[ #FFFFFF]/35 flex h-5 w-5 items-center  justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
+dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
+                      >
+                        ⌘
+                      </div>
+                      <div
+                        className=" darktext-[ #FFFFFF]/35 flex h-5 w-5  items-center justify-center rounded-sm  bg-[#F2F3F8] text-xs text-[#020202]/35
+dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
+                      >
+                        X
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            )}
             <TorusButton
               key={"uf_cut"}
               isDisabled={!canCopy}
-              // buttonClassName={
-              //   "p-1 m-0 w-full h-full flex justify-start torus-pressed:animate-none torus-hover:outline-none torus-hover:scale-100 torus-hover:bg-gray-300/60"
-              // }
               onPress={() => cut(id)}
               Children={
                 <div className="flex h-[30px] w-full  cursor-pointer flex-row items-center    p-2">
@@ -182,7 +290,7 @@ dark:bg-[#0F0F0F] dark:text-[#FFFFFF]/35"
             <TorusButton
               key={"uf_delete"}
               onPress={() => {
-                deleteNode();
+                deleteElements({ nodes: [{ id }] });
                 props.onClick();
               }}
               Children={
