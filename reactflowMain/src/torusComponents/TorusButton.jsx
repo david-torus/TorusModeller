@@ -21,6 +21,7 @@ const TorusButton = ({
   endContent,
   startContent,
   borderColor,
+  id,
   isIconOnly = false,
 }) => {
   const outlineFn = () => {
@@ -58,6 +59,7 @@ const TorusButton = ({
 
   return (
     <Button
+      id={id}
       style={{
         background: btncolor,
         border: borderColor ? borderColor : "",
