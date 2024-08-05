@@ -415,6 +415,7 @@ export default function Layout({ client }) {
         sfNodeGalleryData,
         setSelectedVersion,
         selectedControlEvents,
+
         setSelectedControlEvents,
       }}
     >
@@ -501,9 +502,15 @@ export default function Layout({ client }) {
                               }}
                               onClose={onPaneClick}
                               fabric={selectedFabric}
-                              onEdit={(id) => {
+                              onEdit={(id, type = null) => {
                                 setNodePropertyData(getNode(id));
-                                setShowNodeProperty(!showNodeProperty);
+                                if (type) {
+                                  setToggleReactflow((prev) => ({
+                                    ...prev,
+                                    flow: false,
+                                    [type]: true,
+                                  }));
+                                } else setShowNodeProperty(!showNodeProperty);
                               }}
                               {...menu}
                             />

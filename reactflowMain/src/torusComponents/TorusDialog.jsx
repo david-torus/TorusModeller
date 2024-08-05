@@ -9,6 +9,8 @@ import {
 import { merger } from "../utils/utils";
 
 export default function TorusDialog({ triggerElement, children, classNames }) {
+
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <DialogTrigger>
       {triggerElement}

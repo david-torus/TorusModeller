@@ -19,45 +19,52 @@ export default function TorusToolTip({
   setCheckActivestatus,
   obj,
   setExpandedItem,
+  placement = "top",
+  triggerElement = null,
   children,
 }) {
   return (
-    <TooltipTrigger className="">
-      <Button
-        onPress={()=>{
-          if (tooltipFor === "arr") {
-            setShowObj(fg);
-            setActiveTab(fg);
-            setPath(fg);
-            setLabel(tooltipContent)
-            setCheckActivestatus(obj)
-            setExpandedItem([])
-        } else if (tooltipFor === "obj") {
-            setShowObj(ele);
-            setActiveTab(ele);
-            setPath(ele);
-            setLabel(tooltipContent)
-        }
+    <TooltipTrigger delay={0}>
+      {triggerElement ? (
+        <>{triggerElement}</>
+      ) : (
+        <Button
+          onPress={() => {
+            if (tooltipFor === "arr") {
+              setShowObj(fg);
+              setActiveTab(fg);
+              setPath(fg);
+              setLabel(tooltipContent);
+              setCheckActivestatus(obj);
+              setExpandedItem([]);
+            } else if (tooltipFor === "obj") {
+              setShowObj(ele);
+              setActiveTab(ele);
+              setPath(ele);
+              setLabel(tooltipContent);
+            }
+          }}
+          className="border-none outline-none"
+        >
+          {hoverContent}
+        </Button>
+      )}
 
-        }
-         
-        }
-        className="border-none outline-none"
-      >
-        {hoverContent}
-    
-      </Button>
-      
-      
-      {children? children : null}
+      {children ? children : null}
       <Tooltip
         style={{ backgroundColor: color }}
         className={
-          " px-3 py-1   rounded-lg shadow-sm mb-2 text-white font-bold"
+          "  items-center justify-center rounded-lg  px-3 py-1 font-bold shadow-sm dark:text-white"
         }
+        placement={placement}
       >
         <OverlayArrow>
-          <svg width={8} height={8} viewBox="0 0 8 8">
+          <svg
+            width={8}
+            height={8}
+            transform={`rotate(${placement === "top" ? 0 : placement === "bottom" ? 180 : placement === "right" ? 90 : 270})`}
+            viewBox="0 0 8 8"
+          >
             <path d="M0 0 L4 4 L8 0" fill={color} />
           </svg>
         </OverlayArrow>

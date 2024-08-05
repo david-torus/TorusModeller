@@ -1,6 +1,9 @@
 import { Button } from "react-aria-components";
 import PropTypes from "prop-types";
 import { merger } from "../commonComponents/utils/utils";
+import { TorusAccordianArrow } from "../SVG_Application";
+import { useRef } from "react";
+import { useState } from "react";
 
 const TorusButton = ({
   value,
@@ -21,8 +24,12 @@ const TorusButton = ({
   endContent,
   startContent,
   borderColor,
+  id,
   isIconOnly = false,
+  isDropDown = false,
 }) => {
+  const btnRef = useRef(null);
+  const [rotateState, setRotateState] = useState(false);
   const outlineFn = () => {
     if (outlineColor) {
       return ` torus-hover:ring-2 torus-hover:ring-offset-4  ${outlineColor}`;
@@ -54,10 +61,11 @@ const TorusButton = ({
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
 
-  const contentClass = sizeClasses[size] || "px-2.5 py-1.5";
+  const contentClass = sizeClasses[size] || "";
 
   return (
     <Button
+      id={id}
       style={{
         background: btncolor,
         border: borderColor ? borderColor : "",
@@ -66,7 +74,16 @@ const TorusButton = ({
       value={value}
       isDisabled={isDisabled}
       autoFocus={autoFocus}
-      onPress={onPress}
+      onPress={() => {
+        if (onPress) onPress();
+      }}
+      onFocus={() => {
+        setRotateState(true);
+      }}
+      onBlur={() => {
+        setRotateState(true);
+      }}
+      ref={btnRef}
     >
       {isIconOnly ? (
         <div className={`${contentClass} flex items-center justify-center`}>
@@ -95,7 +112,27 @@ const TorusButton = ({
           </div>
         </div>
       ) : (
-        <p className={`${fontStyle}`}>{Children}</p>
+        <>
+          {isDropDown ? (
+            <div
+              className={`${contentClass} flex w-[100%] items-center justify-between gap-[0.5rem]`}
+            >
+              <p className={`w-[80%] ${fontStyle}`}>{Children}</p>
+              <div className="flex w-[20%] items-center justify-center">
+                <span
+                  className={`transition duration-300 ease-in-out 
+                    
+                    ${rotateState ? "rotate-[-90deg]" : "rotate-[0deg]"}
+                    `}
+                >
+                  <TorusAccordianArrow />
+                </span>
+              </div>
+            </div>
+          ) : (
+            <p className={`${fontStyle}`}>{Children}</p>
+          )}
+        </>
       )}
     </Button>
   );

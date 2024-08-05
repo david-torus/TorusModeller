@@ -58,7 +58,7 @@ const TorusButton = ({
     (startContent || endContent) && "flex justify-center items-center"
   } ${radiusClasses[radius] || "rounded-lg"}`;
 
-  const contentClass = sizeClasses[size] || "px-2.5 py-1.5";
+  const contentClass = sizeClasses[size] || "";
 
   return (
     <Button
