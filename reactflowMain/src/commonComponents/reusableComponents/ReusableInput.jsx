@@ -32,7 +32,7 @@ export default function ReusableInput({
       startContent={startContent}
       endContent={endContent}
       labelPlacement={labelPlacement}
-      className="text-gray-700 shadow-md dark:text-black"
+      className="text-gray-700  dark:text-black"
       classNames={{
         base: "text-slate-700 w-full dark:text-gray-200",
         label: [

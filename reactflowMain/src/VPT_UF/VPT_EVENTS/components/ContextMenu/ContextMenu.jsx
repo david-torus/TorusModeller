@@ -35,6 +35,7 @@ import {
 import ReusableDropDown from "../../../../commonComponents/reusableComponents/ReusableDropDown";
 import ReusableInput from "../../../../commonComponents/reusableComponents/ReusableInput";
 import { TorusModellerContext } from "../../../../Layout";
+import { Sidebar } from "primereact/sidebar";
 export default function ContextMenuEvents({
   id,
   top,
@@ -89,31 +90,31 @@ export default function ContextMenuEvents({
   const nodes = getNodes();
   const edges = getEdges();
 
-  useEffect(() => {
-    setNodeInfo({
-      nodeInfoTabs: {
-        PF: [],
-        UF: [
-          {
-            label: "Params",
-            icon: <ElementInfo />,
-            modelOpen: "Params",
-          },
-          {
-            label: "StateTransitionTable",
-            icon: <SourceIcon />,
-            modelOpen: "STT",
-          },
-          {
-            label: "StateTransitionStreams",
-            icon: <SourceIcon />,
-            modelOpen: "STS",
-          },
-        ],
-        DF: [],
-      },
-    });
-  }, []);
+  // useEffect(() => {
+  //   setNodeInfo({
+  //     nodeInfoTabs: {
+  //       PF: [],
+  //       UF: [
+  //         {
+  //           label: "Params",
+  //           icon: <ElementInfo />,
+  //           modelOpen: "Params",
+  //         },
+  //         {
+  //           label: "StateTransitionTable",
+  //           icon: <SourceIcon />,
+  //           modelOpen: "STT",
+  //         },
+  //         {
+  //           label: "StateTransitionStreams",
+  //           icon: <SourceIcon />,
+  //           modelOpen: "STS",
+  //         },
+  //       ],
+  //       DF: [],
+  //     },
+  //   });
+  // }, []);
 
   // useEffect(() => {
   //   try {
@@ -143,21 +144,21 @@ export default function ContextMenuEvents({
   //   updatedNodeConfig,
   // ]);
 
-  useEffect(() => {
-    const handleOutsideClick = () => {
-      setContextMenuVisible(false);
-    };
+  // useEffect(() => {
+  //   const handleOutsideClick = () => {
+  //     setContextMenuVisible(false);
+  //   };
 
-    if (contextMenuVisible) {
-      document.addEventListener("click", handleOutsideClick);
-    } else {
-      document.removeEventListener("click", handleOutsideClick);
-    }
+  //   if (contextMenuVisible) {
+  //     document.addEventListener("click", handleOutsideClick);
+  //   } else {
+  //     document.removeEventListener("click", handleOutsideClick);
+  //   }
 
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [contextMenuVisible, node.data.label, node.id, node.type, rendervalue]);
+  //   return () => {
+  //     document.removeEventListener("click", handleOutsideClick);
+  //   };
+  // }, [contextMenuVisible, node.data.label, node.id, node.type, rendervalue]);
 
   /**
    * Handles the context menu event and sets the context menu position.
@@ -174,39 +175,39 @@ export default function ContextMenuEvents({
     setContextMenuVisible(true);
   };
 
-  // /**
-  //  * Handles the opening of a modal based on the provided flow type.
-  //  *
-  //  * @param {string} flowType - The type of flow to open the modal for.
-  //  * @param {boolean} [isDockey=false] - Indicates whether the flow is a docky flow.
-  //  * @param {Object} [flow] - The flow object to use.
-  //  * @return {Promise<void>} A promise that resolves when the modal is opened.
-  //  */
-  // const handleOpenModal = async (flowType, isDockey = false, flow) => {
-  //   try {
-  //     setCurrentModel(flowType);
-  //     if (currentDrawing !== "DF") {
-  //       if (nodeData) {
-  //         if (nodeData.data.nodeProperty.hasOwnProperty(flowType)) {
-  //           setOpensideTab(true);
-  //           setJson(nodeData.data.nodeProperty[flowType]);
-  //         } else {
-  //           setOpensideTab(true);
-  //           setJson(nodeData.data.nodeProperty[flowType]);
-  //         }
-  //       }
+  /**
+   * Handles the opening of a modal based on the provided flow type.
+   *
+   * @param {string} flowType - The type of flow to open the modal for.
+   * @param {boolean} [isDockey=false] - Indicates whether the flow is a docky flow.
+   * @param {Object} [flow] - The flow object to use.
+   * @return {Promise<void>} A promise that resolves when the modal is opened.
+   */
+  const handleOpenModal = async (flowType, isDockey = false, flow) => {
+    try {
+      setCurrentModel(flowType);
+      if (currentDrawing !== "DF") {
+        if (nodeData) {
+          if (nodeData.data.nodeProperty.hasOwnProperty(flowType)) {
+            setOpensideTab(true);
+            setJson(nodeData.data.nodeProperty[flowType]);
+          } else {
+            setOpensideTab(true);
+            setJson(nodeData.data.nodeProperty[flowType]);
+          }
+        }
 
-  //       // if (nodeConfig && nodeConfig.hasOwnProperty(id)) {
-  //       //   if (nodeConfig[id].hasOwnProperty(flowType)) {
-  //       //     setToggle(!toggle);
-  //       //     setJson(nodeConfig[id][flowType]);
-  //       //   }
-  //       // }
-  //     }
-  //   } catch (error) {
-  //     console.error("error in Loading handleopenjson");
-  //   }
-  // };
+        // if (nodeConfig && nodeConfig.hasOwnProperty(id)) {
+        //   if (nodeConfig[id].hasOwnProperty(flowType)) {
+        //     setToggle(!toggle);
+        //     setJson(nodeConfig[id][flowType]);
+        //   }
+        // }
+      }
+    } catch (error) {
+      console.error("error in Loading handleopenjson");
+    }
+  };
 
   console.log(opensideTab, "opensideTab");
 
@@ -232,42 +233,42 @@ export default function ContextMenuEvents({
   //  * @param {Object} js - The JSON object used as the default configuration for the Builder component.
   //  * @return {JSX.Element|null} The rendered Builder component or null if an error occurred.
   //  */
-  // const handleRender = (propw, model, js) => {
-  //   try {
-  //     let ConfigToRender;
-  //     if (model) {
-  //       ConfigToRender = (
-  //         <Builder
-  //           key={model}
-  //           isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-  //           defaultJSOn={js}
-  //           controlPolicy={controlPolicy}
-  //           colorPolicy={colorPolicy}
-  //           updatedNodeConfig={updatejson}
-  //           uiPolicy={cardUIPolicy}
-  //           showError={showError}
-  //           helperJson={{}}
-  //         />
-  //       );
-  //     } else {
-  //       ConfigToRender = (
-  //         <Builder
-  //           isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
-  //           defaultJSOn={js}
-  //           controlPolicy={controlPolicy}
-  //           colorPolicy={colorPolicy}
-  //           updatedNodeConfig={updatejson}
-  //           uiPolicy={cardUIPolicy}
-  //           showError={showError}
-  //           helperJson={{}}
-  //         />
-  //       );
-  //     }
-  //     return ConfigToRender;
-  //   } catch (error) {
-  //     console.error("Something went wrong on handle render");
-  //   }
-  // };
+  const handleRender = (propw, model, js) => {
+    try {
+      let ConfigToRender;
+      if (model) {
+        ConfigToRender = (
+          <Builder
+            key={model}
+            isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
+            defaultJSOn={js}
+            controlPolicy={controlPolicy}
+            colorPolicy={colorPolicy}
+            updatedNodeConfig={updatejson}
+            uiPolicy={cardUIPolicy}
+            showError={showError}
+            helperJson={{}}
+          />
+        );
+      } else {
+        ConfigToRender = (
+          <Builder
+            isAdmin={{ canAdd: true, canDelete: true, canEdit: true }}
+            defaultJSOn={js}
+            controlPolicy={controlPolicy}
+            colorPolicy={colorPolicy}
+            updatedNodeConfig={updatejson}
+            uiPolicy={cardUIPolicy}
+            showError={showError}
+            helperJson={{}}
+          />
+        );
+      }
+      return ConfigToRender;
+    } catch (error) {
+      console.error("Something went wrong on handle render");
+    }
+  };
 
   //function used to
   const risenode = useCallback(
@@ -1391,8 +1392,8 @@ export default function ContextMenuEvents({
         {/*Edit node */}
         <button
           onClick={() => {
-            onEdit();
-            setVisible({ bool: true, type: "rise" });
+            onEdit(id);
+            // setVisible({ bool: true, type: "rise" });
           }}
           className={
             darkMode
@@ -1400,7 +1401,7 @@ export default function ContextMenuEvents({
               : "w-full rounded-md bg-transparent py-1 font-bold text-slate-950"
           }
         >
-          Edit Node
+          Edited Node
         </button>
 
         {/*Delete node */}
@@ -1580,7 +1581,7 @@ export default function ContextMenuEvents({
           </div>
         </Dialog>
 
-        {/* <Sidebar
+        <Sidebar
           visible={visible.bool}
           onHide={() => {
             setVisible({ ...visible, bool: false });
@@ -1604,11 +1605,14 @@ export default function ContextMenuEvents({
                       tab: "max-w-fit px-0 h-12",
                     }}
                   >
+               
                     {Object.entries(nodeInfo) &&
                       Object.entries(nodeInfo).length > 0 &&
+                     
                       Object.entries(nodeInfo)?.map(([key, value]) => {
                         if (key === "nodeInfoTabs") {
-                          return Object.entries(value[currentDrawing]).map(
+                        
+                          return Object.entries(value["UF"]).map(
                             ([key, value]) => {
                               return (
                                 <Tab
@@ -1780,9 +1784,8 @@ export default function ContextMenuEvents({
                 ))}
             </div>
           </div>
-        </Sidebar> */}
-
-        {/* <Sidebar
+        </Sidebar> 
+       <Sidebar
           className={"bg-[#242424]"}
           position="right"
           visible={opensideTab}
@@ -1813,7 +1816,7 @@ export default function ContextMenuEvents({
               : currentDrawing && currentModel === "STT"
                 ? handleRender("", currentModel, json)
                 : ""}
-        </Sidebar> */}
+        </Sidebar> 
       </div>
     </>
   );

@@ -65,7 +65,7 @@ const RenderJsonArraySidebarIcon = memo(
               <MdOutlineDataArray size={20}   />
             }
             tooltipFor="arr"
-            tooltipContent={obj.map((ele) => ele?.label ? ele?.label : fg)}
+            tooltipContent={ fg} // obj.map((ele) => ele?.label ? ele?.label : fg
             color={activeTab == fg ? "#6600ff" : "#09254D"}
             setShowObj={setShowObj}
             setActiveTab={setActiveTab}
@@ -117,7 +117,7 @@ export const JsonSidebarIcon = memo(
                           <MdDataObject size={20} />
                         }
                         tooltipFor="obj"
-                        tooltipContent={obj[ele].label ? obj[ele].label : ele}
+                        tooltipContent={ele} // obj.map((ele) => ele?.label ? ele?.label : fg
                         color={activeTab == ele ? "#6600ff" : "#09254D"}
                         setShowObj={setShowObj}
                         setActiveTab={setActiveTab}

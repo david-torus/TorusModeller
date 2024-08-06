@@ -154,7 +154,7 @@ export const NodeInfoSidebarNodeInformation = ({
                       <span className="">
                         <p
                           className={
-                            !darkMode
+                            darkMode
                               ? "text-white font-semibold text-md"
                               : "text-black font-semibold text-md"
                           }
