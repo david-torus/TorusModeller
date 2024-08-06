@@ -137,9 +137,8 @@ export default function Navbar({
   const [wordLength, setWordLength] = useState(0);
   const [newArtifact, setNewArtifact] = useState(false);
   const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
-  const [deleteOpen, setDeleteOpen] = useState(false);
-
-  const DeleteAction = ({ id, close }) => {};
+  const [newArtifactNameValidation, setNewArtifactNameValidation] =
+    useState(false);
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
@@ -1536,6 +1535,26 @@ export default function Navbar({
     ];
   }, []);
 
+  const handleNewArtifactValidation = () => {
+    const foundArtifact = artifactsList.find(
+      (obj) => obj.artifact === newArtifactValue,
+    );
+    if (!foundArtifact) {
+      saveProcessFlow(
+        "create",
+        selectedProject,
+        newArtifactValue,
+        "v1",
+        getDataFromFabrics,
+      ).then(() => {
+        setNewArtifactValue("");
+        setNewArtifact(false);
+      });
+    } else {
+      setNewArtifactsNameValidation(true);
+    }
+  };
+
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
       <div className="flex h-[90%] w-[100%] flex-col items-center justify-center">
@@ -1614,7 +1633,10 @@ export default function Navbar({
                                       close();
                                       setProjectCollectionName(null);
                                       setArtifactCollectionName(null);
-                                      setNewArtifact(false);
+                                      setNewArtifactValue("");
+                                      setNewArtifactNameValidation(
+                                        !newArtifactNameValidation,
+                                      );
                                     }}
                                   >
                                     <IoCloseOutline className="text-black dark:text-white" />
@@ -1705,36 +1727,41 @@ export default function Navbar({
 
                                   <div className="flex h-[90%] w-full flex-col items-center justify-center transition-all duration-300 ">
                                     {newArtifact === true ? (
-                                      <div className="flex h-[30%] w-full items-center justify-center border-b border-t border-[#E5E9EB] dark:border-[#212121]  ">
-                                        <div className="flex  h-full w-[65%] flex-row items-center justify-center p-2">
-                                          <Input
-                                            defaultValue={newArtifactValue}
-                                            placeholder="Enter artifact name"
-                                            className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
-                                            onChange={(e) => {
-                                              setNewArtifactValue(
-                                                e.target.value,
-                                              );
-                                            }}
-                                          />
+                                      <div className="flex h-[26%] w-full flex-col items-center justify-center border-b border-t border-[#E5E9EB]  p-3 dark:border-[#212121]  ">
+                                        <div className="flex w-full flex-row items-start justify-center gap-2 ">
+                                          <div className="flex h-full w-[65%] items-center justify-center ">
+                                            <Input
+                                              defaultValue={newArtifactValue}
+                                              placeholder="Enter artifact name"
+                                              className="flex h-[30px]  w-full items-center justify-center rounded-md bg-[#F4F5FA] p-2 text-sm text-black dark:bg-[#0F0F0F] dark:text-white"
+                                              onChange={(e) => {
+                                                setNewArtifactValue(
+                                                  e.target.value,
+                                                );
+                                                newArtifactNameValidation &&
+                                                  setNewArtifactNameValidation(
+                                                    false,
+                                                  );
+                                              }}
+                                            />
+                                          </div>
+                                          <div className="flex h-full w-[25%] items-center justify-center">
+                                            <TorusButton
+                                              buttonClassName="text-black w-[80px] dark:text-white bg-[#F4F5FA] hover:bg-[#e1e2e8]  transition-all duration-200 dark:bg-[#0F0F0F]  h-[30px] rounded-md  text-xs  flex justify-center items-center"
+                                              onPress={() =>
+                                                handleNewArtifactValidation()
+                                              }
+                                              Children={"Create"}
+                                            />
+                                          </div>
                                         </div>
-                                        <div className="flex h-full w-[25%] items-center justify-center">
-                                          <TorusButton
-                                            buttonClassName="text-black w-[80px] dark:text-white bg-[#F4F5FA] hover:bg-[#e1e2e8]  transition-all duration-200 dark:bg-[#0F0F0F]  h-[30px] rounded-md  text-xs  flex justify-center items-center"
-                                            onPress={() =>
-                                              saveProcessFlow(
-                                                "create",
-                                                selectedProject,
-                                                newArtifactValue,
-                                                "v1",
-                                                getDataFromFabrics,
-                                              ).then(() => {
-                                                setNewArtifactValue("");
-                                                setNewArtifact(false);
-                                              })
-                                            }
-                                            Children={"Create"}
-                                          />
+                                        <div className="flex h-full w-full items-end justify-center">
+                                          <small
+                                            className={`${newArtifactsNameValidation && "text-red-500"} flex w-[90%] items-center justify-start text-xs`}
+                                          >
+                                            {newArtifactsNameValidation &&
+                                              "Entered artifact name already exists"}
+                                          </small>
                                         </div>
                                       </div>
                                     ) : null}
@@ -1747,7 +1774,7 @@ export default function Navbar({
                                           {artifactsList.map((obj, index) => {
                                             return (
                                               <div
-                                                className={`justify-center" flex h-[{${artifactsList.length / 100}%] w-full items-center`}
+                                                className={`flex justify-center h-[{${artifactsList.length / 100}%] w-full items-center`}
                                               >
                                                 <div className="flex h-full w-[65%] flex-row items-center justify-center p-2">
                                                   <>
@@ -2057,7 +2084,10 @@ export default function Navbar({
                                 <div className="flex w-1/3 items-center justify-start">
                                   <TorusButton
                                     btncolor={"primary"}
-                                    onPress={() => handleNewArtifact()}
+                                    onPress={() => {
+                                      handleNewArtifact(),
+                                        setNewArtifactNameValidation(false);
+                                    }}
                                     buttonClassName={`${newArtifact ? "bg-red-200 dark:bg-red-500/30 w-[80px] h-[30px] text-red-500 dark:text-red-400" : "text-black dark:text-white bg-[#F4F5FA] dark:bg-[#0F0F0F] w-[110px] h-[30px]"}   rounded-md flex justify-center items-center`}
                                     Children={
                                       <div className="flex h-full w-[100%] flex-row items-center justify-center gap-1">
@@ -2134,7 +2164,9 @@ export default function Navbar({
                                 <span
                                   className="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md p-[5px] transition-all duration-200 hover:border hover:border-red-400 hover:bg-red-200"
                                   onClick={() => {
-                                    close(), setNewArtifact(false);
+                                    close(),
+                                      setNewArtifact(false),
+                                      setNewArtifact;
                                   }}
                                 >
                                   <IoCloseOutline className="text-black dark:text-white" />
