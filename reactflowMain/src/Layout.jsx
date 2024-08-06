@@ -43,7 +43,7 @@ const colors = {
 
   SF: { dark: "#FFc723", light: "#FFBE00" },
 };
-export default function Layout({ client }) {
+export default function Layout({ client, clientLoginId }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [selectedFabric, setSelectedFabric] = useState("Home");
@@ -399,6 +399,7 @@ export default function Layout({ client }) {
                   setNodes(data?.nodes ?? []);
                 }}
                 getDataFromFabrics={sendDataToFabrics}
+                clientLoginId={clientLoginId}
               />
             </div>
 

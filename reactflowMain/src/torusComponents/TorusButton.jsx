@@ -95,8 +95,8 @@ const TorusButton = ({
             <div className="flex w-[20%] items-center justify-center">
               {startContent}
             </div>
-            <div className={`${fontStyle} flex w-[80%] justify-center pr-1`}>
-              {Children}
+            <div className={`${fontStyle} flex w-[80%] justify-center `}>
+              <p>{Children}</p>
             </div>
           </div>
         </div>
@@ -104,7 +104,7 @@ const TorusButton = ({
         <div className={`${contentClass} flex items-center justify-center`}>
           <div className="flex w-[100%] justify-evenly gap-1">
             <div className={`${fontStyle} flex w-[80%] justify-start pr-1`}>
-              {Children}
+              <p>{Children}</p>
             </div>
             <div className="flex w-[20%] items-center justify-center">
               {endContent}

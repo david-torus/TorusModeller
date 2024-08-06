@@ -72,6 +72,7 @@ export default function Navbar({
   setToggleReactflow,
   getDataFromFabrics,
   setFabricsKey = null,
+  clientLoginId
 }) {
   const {
     client,
@@ -88,6 +89,12 @@ export default function Navbar({
     selectedProject,
     setSelectedProject,
   } = useContext(TorusModellerContext);
+
+  console.log(
+    `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
+    "NEW API",
+  );
+
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
   const [openSaveAsArtifacts, setOpenSaveAsArtifacts] = useState(false);
@@ -1430,108 +1437,66 @@ export default function Navbar({
     ];
   }, [projectList]);
 
-  const mappedTeamItems = useMemo(() => {
-    return [
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
+  const mappedTeamItems = [
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-05T13:23:40.195Z"
+    },
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-05T13:25:19.117Z"
+    },
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-05T14:22:12.040Z"
+    },         
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-05T14:26:43.661Z"
+    },
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-05T14:26:44.489Z"
+    },
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-06T04:17:38.810Z"
+    },
+    {
+      "artifactName": "bankmaster",
+      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      "version": "v2",
+      "loginId": "test",
+      "timestamp": "2024-08-06T04:18:07.534Z"
+    }
+  ];
 
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
 
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-      {
-        src: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80",
-
-        heading: "Balaji Eswar pushed the Process Fabric of Bank Master v2.0",
-        text: ["Equity Bank ", " South Sudan", " IPS"],
-        timeStamp: "June 26, 2023 2:20PM",
-      },
-    ];
-  }, []);
 
   return (
     <div className="flex h-full w-full items-center justify-center border-b border-slate-300 bg-white dark:border-none dark:bg-[#161616]">
@@ -2188,7 +2153,7 @@ export default function Navbar({
                             className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
                           >
                             {selectedFabric !== "events" && (
-                              <Builder mappedTeamItems={mappedTeamItems} />
+                              <Builder mappedTeamItems={mappedTeamItems} clientLoginId={clientLoginId} />
                             )}
                           </div>
                         )}
