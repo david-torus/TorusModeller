@@ -2158,7 +2158,8 @@ export default function Navbar({
 
                                 <div className="flex w-2/3 items-center justify-end gap-2">
                                   <TorusButton
-                                    buttonClassName=" bg-[#4CAF50]/15  w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs  flex justify-center items-center"
+                                    isDisabled={newArtifact ? true : false}
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#4CAF50]/15 text-[#4CAF50] cursor-pointer"}   w-[70px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     onPress={() =>
                                       saveProcessFlow(
                                         "update",
@@ -2171,7 +2172,7 @@ export default function Navbar({
                                     Children={"Update"}
                                   />
                                   <TorusButton
-                                    buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]/15 dark:text-[#3063FF] text-[#0736C4] cursor-pointer"}   w-[70px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     onPress={() => {
                                       saveProcessFlow(
                                         "create",
@@ -2184,7 +2185,7 @@ export default function Navbar({
                                     Children={"Save"}
                                   />
                                   <TorusButton
-                                    buttonClassName=" bg-[#0736C4] dark:bg-[#3063FF] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]  text-white cursor-pointer"}  w-[80px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     Children={"Save as"}
                                   />
                                 </div>
