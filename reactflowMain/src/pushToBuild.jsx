@@ -2,12 +2,38 @@ import React, { useEffect, useState } from "react";
 import TorusButton from "./torusComponents/TorusButton";
 import TorusDropDown from "./torusComponents/TorusDropDown";
 import TorusTab from "./torusComponents/TorusTab";
-import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi";
-import { PushToBuild } from "./SVG_Application";
+import {
+  getDataPushToBuild,
+  postDataPushToBuild,
+} from "./commonComponents/api/pushToBuildApi";
+import {
+  PushToBuild,
+  TorusPushToBuildFail,
+  TorusPushToBuildSucess,
+} from "./SVG_Application";
 import TorusAvatar from "./torusComponents/TorusAvatar";
+import { useContext } from "react";
+import { TorusModellerContext } from "./Layout";
+import { toast, ToastContainer } from "react-toastify";
+import TorusToast from "./torusComponents/TorusToaster/TorusToast";
 
-export default function Builder(mappedTeamItems) {
+export default function Builder({ mappedTeamItems, clientLoginId }) {
   console.log("mappedTeamItems", mappedTeamItems);
+  const {
+    selectedArtifactGroup,
+    selectedTkey,
+    selectedFabric,
+    selectedArtifact,
+    selectedVersion,
+    selectedProject,
+    client,
+  } = useContext(TorusModellerContext);
+
+  console.log(
+    `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
+    clientLoginId,
+    "NEW API======>><<<",
+  );
 
   const [selectedTab, setSelectedTab] = useState("me");
   const [pushToBuildData, setPushToBuildData] = useState(null);
@@ -17,6 +43,10 @@ export default function Builder(mappedTeamItems) {
   const [appGroups, setAppGroups] = useState(null);
   const [apps, setApps] = useState(null);
   const [selectedApp, setSelectedApp] = useState("");
+  const [notificationDetails, setNotificationDetails] = useState(null);
+  const [wordLength, setWordLength] = useState(0);
+  const [sucessBtn, setSucessBtn] = useState(false);
+  const [failureBtn, setFailureBtn] = useState(false);
 
   const getTenants = (data) => {
     return data?.map((item) => ({
@@ -57,7 +87,7 @@ export default function Builder(mappedTeamItems) {
 
       const res = await getDataPushToBuild(token);
       if (res) {
-        console.log(res, "Response");
+        console.log(res, "ResponseonPUSHBUILD");
         setPushToBuildData(res);
       }
     } catch (error) {
@@ -65,9 +95,141 @@ export default function Builder(mappedTeamItems) {
     }
   };
 
+  function denormalizeFn1(data) {
+    return (
+      data?.map(
+        ({
+          artifactKeyPrefix,
+          buildKeyPrefix,
+          artifactName,
+          timestamp,
+          version,
+          loginId,
+        }) => {
+          const [, , fabrics] = artifactKeyPrefix.split(":");
+          const [, , , tennant, app] = buildKeyPrefix.split(":");
+
+          const pathArr = [tennant, app];
+
+          const fabricsNameFn = (fab) => {
+            switch (fab) {
+              case "PF":
+                return "PROCESS FABRIC";
+              case "UF":
+                return "USER FABRIC";
+              case "SF":
+                return "SECURITY FABRIC";
+              case "DF":
+                return "DATA FABRIC";
+              default:
+                return fab;
+            }
+          };
+
+          const versionFn = (ver) => `${ver}.0`;
+
+          const dateConverter = (ver) => {
+            const date = new Date(ver);
+
+            const options = {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            };
+
+            let dateTime = date.toLocaleString("en-US", options);
+
+            var timeStamp = dateTime.replace("at", " ");
+
+            return timeStamp;
+          };
+
+          const firstLetterUpperCase = (str) => {
+            const firstLetter = str.charAt(0).toUpperCase() + str.slice(1);
+            return firstLetter;
+          };
+
+          return {
+            artifactsName: artifactName,
+            artifactsKeyArr: artifactKeyPrefix.split(":"),
+            fabrics,
+            fabricsName: fabricsNameFn(fabrics),
+            buildKeyPrefixArr: buildKeyPrefix.split(":"),
+            tennant,
+            app,
+            timeStamp: dateConverter(timestamp),
+            loginId,
+            updatedVersion: versionFn(version),
+            text: pathArr.join(" > "),
+            heading: `${firstLetterUpperCase(loginId)} pushed the ${fabricsNameFn(fabrics).toLowerCase()} of ${tennant} ${versionFn(version)}`,
+          };
+        },
+      ) || []
+    );
+  }
+
   useEffect(() => {
     handlePushToBuild();
-  }, []);
+
+    if (mappedTeamItems && mappedTeamItems.length > 0) {
+      setNotificationDetails(denormalizeFn1(mappedTeamItems));
+    }
+  }, [mappedTeamItems]);
+
+  const handelbuldPush = async () => {
+    try {
+      const res = await postDataPushToBuild({
+        artifactKeyPrefix: `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
+        loginId: clientLoginId,
+        tenant: selectedTenant,
+        app: selectedApp,
+      });
+
+      console.log(res, "ResponseonPUSHBUILD");
+
+      if (res === "error") {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Error found during push to build`,
+            closeButton: false,
+          },
+        );
+        setFailureBtn(true);
+        setTimeout(() => {
+          setFailureBtn(false);
+        }, 3000);
+      } else {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Pushed to build successfully`,
+            closeButton: false,
+          },
+        );
+
+        setSucessBtn(true);
+        setTimeout(() => {
+          setSucessBtn(false);
+        }, 3000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (pushToBuildData && pushToBuildData.length > 0) {
@@ -98,10 +260,7 @@ export default function Builder(mappedTeamItems) {
 
   const finalValue = () => {
     if (selectedTenant && selectedAppGroup && selectedApp) {
-      console.log(
-        { selectedTenant, selectedAppGroup, selectedApp },
-        "fields",
-      );
+      console.log({ selectedTenant, selectedAppGroup, selectedApp }, "fields");
     } else {
       console.log("Please select all the fields");
     }
@@ -109,6 +268,13 @@ export default function Builder(mappedTeamItems) {
 
   return (
     <>
+      <ToastContainer
+        newestOnTop
+        icon={false}
+        pauseOnHover={false}
+        hideProgressBar={true}
+        className={`z-[999] flex min-h-11 min-w-[0%] max-w-[85%] flex-col items-center justify-end`}
+      />
       <div className="flex h-[13%] w-[100%] flex-row border border-b-[#E5E9EB]  p-2 dark:border-[#212121]">
         <div className="flex w-full items-center justify-start">
           <div className="flex w-[95%] items-center justify-start">
@@ -125,17 +291,54 @@ export default function Builder(mappedTeamItems) {
 
         <div className="flex w-full flex-row  items-center justify-end gap-2 ">
           <div className="flex w-[60%] items-center justify-end">
-            <TorusButton
-              Children="Push Artifact"
-              size={"md"}
-              btncolor={"#0736C4"}
-              outlineColor="torus-hover:ring-blue-500/50"
-              radius={"lg"}
-              fontStyle={
-                "font-sfpros text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[1rem] py-2"
-              }
-              color={"white"}
-            />
+            {!sucessBtn && !failureBtn ? (
+              <TorusButton
+                Children="Push Artifact"
+                size={"md"}
+                btncolor={"#0736C4"}
+                outlineColor="torus-hover:ring-blue-500/50"
+                radius={"lg"}
+                fontStyle={
+                  "font-inter text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[1rem] py-2"
+                }
+                color={"white"}
+                onPress={() => {
+                  handelbuldPush();
+                }}
+              />
+            ) : sucessBtn && !failureBtn ? (
+              <>
+                <TorusButton
+                  Children="Sucess"
+                  btncolor={"#4CAF50"}
+                  outlineColor="torus-hover:ring-[#4CAF50]/50"
+                  radius={"lg"}
+                  fontStyle={
+                    "font-inter text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[1rem] "
+                  }
+                  color={"white"}
+                  startContent={
+                    <TorusPushToBuildSucess className={"fill-[#FFFFFF]"} />
+                  }
+                />
+              </>
+            ) : !sucessBtn && failureBtn ? (
+              <>
+                <TorusButton
+                  Children="Failed"
+                  btncolor={"#F14336"}
+                  outlineColor="torus-hover:ring-[#F14336]/50"
+                  radius={"lg"}
+                  fontStyle={
+                    "font-inter text-white text-xs 3xl:text-base font-medium xl:text-sm xl:font-semibold tracking-tighter px-[1rem] "
+                  }
+                  color={"white"}
+                  startContent={
+                    <TorusPushToBuildFail className={"fill-[#FFFFFF]"} />
+                  }
+                />
+              </>
+            ) : null}
           </div>
         </div>
       </div>
@@ -157,11 +360,15 @@ export default function Builder(mappedTeamItems) {
 
                     popoverClassName: "w-[70px] max-h-[100px] min-h-[50px]",
                     listBoxClassName:
-                      " min-h-[35px] max-h-[100px] overflow-y-auto",
+                      " min-h-[35px] max-h-[100px] overflow-y-auto max-w-[9rem] min-w-[6.8rem] absolute right-0",
                     listBoxItemClassName: "flex text-sm justify-between",
                   }}
                   isDropDown={true}
                   items={tenants}
+                  onPress={() => {
+                    setSelectedAppGroup("");
+                    setSelectedApp(null);
+                  }}
                 />
               </div>
               <div className="col-span-3  ">
@@ -178,11 +385,14 @@ export default function Builder(mappedTeamItems) {
 
                     popoverClassName: "w-[70px] max-h-[100px] min-h-[50px]",
                     listBoxClassName:
-                      " min-h-[35px] max-h-[100px] overflow-y-auto",
+                      " min-h-[35px] max-h-[100px] overflow-y-auto max-w-[9rem] min-w-[6.8rem] absolute right-0",
                     listBoxItemClassName: "flex text-sm justify-between",
                   }}
                   isDropDown={true}
                   items={appGroups}
+                  onPress={() => {
+                    setSelectedApp(null);
+                  }}
                 />
               </div>
               <div className="col-span-3  ">
@@ -200,7 +410,7 @@ export default function Builder(mappedTeamItems) {
 
                     popoverClassName: "w-[70px] max-h-[100px] min-h-[50px]",
                     listBoxClassName:
-                      " min-h-[35px] max-h-[100px] overflow-y-auto",
+                      " min-h-[35px] max-h-[100px] overflow-y-auto max-w-[9rem] min-w-[6.8rem] absolute right-0",
                     listBoxItemClassName: "flex text-sm justify-between",
                   }}
                   isDropDown={true}
@@ -222,6 +432,7 @@ export default function Builder(mappedTeamItems) {
                   defaultSelectedKey={selectedTab}
                   key="TorusTab"
                   orientation="horizontal"
+                  onSelectionChange={(e) => setSelectedTab(e)}
                   classNames={{
                     tabs: "cursor-pointer w-[100%] rounded-lg bg-[#F4F5FA] dark:bg-[#0F0F0F]",
                     tabList:
@@ -258,10 +469,10 @@ export default function Builder(mappedTeamItems) {
                 />
               </div>
               <div className="h-[70%] w-[100%] overflow-y-scroll px-[1.25rem] ">
-                {mappedTeamItems &&
-                  mappedTeamItems.mappedTeamItems.map((obj) => (
+                {notificationDetails &&
+                  notificationDetails?.map((obj) => (
                     <TeamsNotificationComponent
-                      src={obj.src}
+                      // src={obj.src}
                       heading={obj.heading}
                       text={obj.text}
                       timeStamp={obj.timeStamp}
@@ -279,10 +490,10 @@ export default function Builder(mappedTeamItems) {
 const TeamsNotificationComponent = ({ src, heading, text, timeStamp }) => {
   return (
     <div className="grid w-[100%] grid-cols-12 pt-4">
-      <div className="col-span-1 w-[100%]">
+      <div className="col-span-1 w-[100%] flex justify-center items-center">
         <div className="flex w-[100%] justify-start">
           <TorusAvatar
-            src={src}
+            // src={src}
             color={"#0736C4"}
             borderColor={"#0736C4"}
             radius={"full"}

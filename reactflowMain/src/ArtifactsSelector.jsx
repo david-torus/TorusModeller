@@ -1,18 +1,169 @@
-import React, { memo, useState } from "react";
-import { TorusAccordianArrow } from "../SVG_Application";
+import React, { memo, useState, useMemo, useEffect, useContext } from "react";
+import { TorusAccordianArrow } from "./SVG_Application";
+import { TorusModellerContext } from "./Layout";
+import TorusAccordion from "./torusComponents/TorusAccordian";
+import { getArtifactsGroups, getprojectLists } from "./commonComponents/api/fabricsApi";
+import { toast } from "react-toastify";
+import TorusToast from "./torusComponents/TorusToaster/TorusToast";
 
-const TorusAccordion = memo(
+const ArtifactsSelector = memo(
   ({
     parent,
     items,
     onToggle,
     onContentToggle,
     onItemClick,
-    toogle = true,
+    toogle = false,
     onNestedItemClick,
     selectedContent,
   }) => {
+    const {
+      client,
+      loadArtifact,
+      selectedArtifactGroup,
+      setSelectedArtifactGroup,
+      selectedTkey,
+      setSelectedTkey,
+      handleTabChange,
+      selectedFabric,
+      selectedArtifact,
+      setSelectedArtifact,
+      selectedVersion,
+      setSelectedVersion,
+      selectedProject,
+      setSelectedProject,
+    } = useContext(TorusModellerContext);
+
     const [openIndex, setOpenIndex] = useState(null);
+    const [projectList, setProjectList] = useState([]);
+    const [accordionItems, setAccordionItems] = useState(items);
+    const [wordLength, setWordLength] = useState(0);
+    const [artifactsGroup, setArtifactsGroup] = useState([]);
+
+    const handleGetProjects = async (
+      selectedTkey,
+      client,
+      selectedFabric,
+      selectedProject,
+    ) => {
+      try {
+        const response = await getprojectLists(
+          selectedTkey,
+          client,
+          JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+        );
+
+        if (response && response.status === 200) {
+          setProjectList(response.data);
+        }
+      } catch (error) {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Cannot save application details`,
+            closeButton: false,
+          },
+        );
+      }
+    };
+
+    const handleGetArtifactsGroup = async (
+      selectedTkey,
+      client,
+      selectedFabric,
+      selectedProject,
+    ) => {
+      try {
+        const response = await getArtifactsGroups(
+          selectedTkey,
+          client,
+          JSON.stringify(["TCL", selectedTkey, selectedFabric, projectList[0]]),
+        );
+        if (response && response.status === 200) {
+          setArtifactsGroup(response.data);
+        }
+      } catch (error) {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Cannot save application details`,
+            closeButton: false,
+          },
+        );
+      }
+    };
+
+    const fetchCatelogues = async (
+      selectedTkey,
+      client,
+      selectedFabric,
+      selectedProject,
+    ) => {};
+
+    const fetchArtifactsGrp = async (catelogueId) => {
+      // API call to fetch artifacts group
+    };
+
+    const fetchArtifacts = async (artifactGrpId) => {
+      // API call to fetch artifacts
+    };
+
+    const handleItemClick = async (item) => {
+      if (item.type === "catelouge") {
+        console.log("Clicked item catelogue:", item);
+        try {
+          const artifactsGrp = await fetchArtifactsGrp(item.id);
+          // Update the corresponding item with the fetched artifacts group
+          setAccordionItems((prevItems) =>
+            prevItems.map((prevItem) =>
+              prevItem.id === item.id
+                ? { ...prevItem, content: artifactsGrp }
+                : prevItem,
+            ),
+          );
+        } catch (error) {
+          console.error("Error fetching artifacts group:", error);
+        }
+      } else if (item.type === "ArtifactsGrp") {
+        console.log("Clicked item Artifacts group:", item);
+        try {
+          const artifacts = await fetchArtifacts(item.id);
+          // Update the corresponding item with the fetched artifacts
+          setAccordionItems((prevItems) =>
+            prevItems.map((prevItem) =>
+              prevItem.id === item.id
+                ? { ...prevItem, content: artifacts }
+                : prevItem,
+            ),
+          );
+        } catch (error) {
+          console.error("Error fetching artifacts:", error);
+        }
+      } else if (item.type === "categery") {
+        try {
+          const catelogues = await fetchCatelogues(
+            selectedTkey,
+            client,
+            selectedFabric,
+            selectedProject,
+          );
+          if (catelogues) setProjectList(catelogues);
+        } catch (error) {
+          console.error("Error fetching projects:", error);
+        }
+        console.log("Clicked item catelouge:", item);
+      }
+    };
 
     const handleToggle = (index, tKey) => {
       const newIndex = openIndex === index ? null : index;
@@ -23,25 +174,11 @@ const TorusAccordion = memo(
       }
     };
 
-    console.log(items, "<<<items>>>");
-
-    const handleItemClick = (item) => {
-      if (onItemClick && toogle) {
-        onItemClick(item);
-      }
-    };
-
-    const handleNestedItemClick = (nestedItem) => {
-      if (onNestedItemClick) {
-        onNestedItemClick(nestedItem);
-      }
-    };
-
     const renderContent = (content, Imetiatdparent) => {
       if (Array.isArray(content)) {
         return content.length === 0
           ? null
-          : content.map((item, index) => (
+          : content?.map((item, index) => (
               <div key={index} className="pl-[0.25rem]">
                 {typeof item === "object" ? (
                   <TorusAccordion
@@ -101,13 +238,17 @@ const TorusAccordion = memo(
       }
     };
 
+    useEffect(() => {
+      setAccordionItems(items);
+    }, [items]);
+
     return (
       <div id="accordion-open" data-accordion="open">
-        {items.map((item, index) => {
+        {accordionItems?.map((item, index) => {
           if (Array.isArray(item.content) && item.content.length === 0) {
             return (
               <div
-                className="cursor-pointer whitespace-nowrap py-[0.5rem] pl-[0.4rem] text-xs font-medium text-[#000000] hover:text-gray-900 dark:text-gray-300"
+                className="whitespace-nowrap py-[0.5rem] pl-[0.4rem] text-xs font-medium text-[#000000] hover:text-gray-900 dark:text-gray-300"
                 key={index}
                 onClick={() => handleItemClick(item)}
               >
@@ -124,11 +265,7 @@ const TorusAccordion = memo(
                   className="flex w-full items-center justify-between gap-3 font-medium text-[#000000] hover:bg-gray-100 dark:hover:bg-gray-800"
                   aria-expanded={openIndex === index}
                   aria-controls={`accordion-open-body-${index}`}
-                  onClick={() => {
-                    handleItemClick(item);
-                    handleToggle(index, item.title);
-                    console.log(item, "item");
-                  }}
+                  onClick={() => handleToggle(index, item.id)}
                 >
                   <div className="flex w-[100%] items-center justify-between py-1.5 pl-2.5">
                     <div className="flex w-[80%] items-center justify-start">
@@ -182,4 +319,4 @@ const TorusAccordion = memo(
   },
 );
 
-export default TorusAccordion;
+export default ArtifactsSelector;

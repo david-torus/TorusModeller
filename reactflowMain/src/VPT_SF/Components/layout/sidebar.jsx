@@ -3,22 +3,26 @@ import { FaPlus } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import TreeView from "./treeView";
 import { DarkmodeContext } from "../../../commonComponents/context/DarkmodeContext";
-import { Tabs, Tab } from "@nextui-org/react";
+// import { Tabs, Tab } from "@nextui-org/react";
+import { Tabs, TabList, Tab, TabPanel } from "react-aria-components";
+import { Collection, Button } from "react-aria-components";
 import { GiOrganigram } from "react-icons/gi";
 import { RiUserSettingsLine } from "react-icons/ri";
 import { FaRegHandshake } from "react-icons/fa";
 const fabrics = [
-  { fabricName: "orgGrp", fabricIcon: <GiOrganigram /> },
-  { fabricName: "roleGrp", fabricIcon: <RiUserSettingsLine /> },
-  { fabricName: "psGrp", fabricIcon: <FaRegHandshake /> },
+  { id: "orgGrp", fabricName: "orgGrp", fabricIcon: <GiOrganigram /> },
+  { id: "roleGrp", fabricName: "roleGrp", fabricIcon: <RiUserSettingsLine /> },
+  { id: "psGrp", fabricName: "psGrp", fabricIcon: <FaRegHandshake /> },
 ];
 const OrpsSidebar = ({ dropdownJson }) => {
   const [open, setOpen] = useState(true);
   const { darkMode } = useContext(DarkmodeContext);
 
   return (
-    <div className="flex w-full flex-col ">
+    <div className="flex w-full flex-row ">
       <Tabs
+        className="mt-2 w-full p-2"
+        orientation="horizontal"
         aria-label="Options"
         variant="solid"
         classNames={{
@@ -35,45 +39,71 @@ const OrpsSidebar = ({ dropdownJson }) => {
             "border-none bg-white dark:bg-[#212121] rounded-md torus-focus:outline-none outline-none torus-focus-within:outline-none",
           base: "p-2 mt-2",
         }}
-        items={
-          fabrics &&
-          fabrics.length > 0 &&
-          fabrics.map((fab) => {
-            return {
-              content: fab.fabricName,
-              id: fab.fabricName,
-              label: fab.fabricName,
-              icon: fab.fabricIcon,
-            };
-          })
-        }
+
+        // items={
+        //   fabrics &&
+        //   fabrics.length > 0 &&
+        //   fabrics.map((fab) => {
+        //     return {
+        //       content: fab.fabricName,
+        //       id: fab.fabricName,
+        //       label: fab.fabricName,
+        //       icon: fab.fabricIcon,
+        //     };
+        //   })
+        // }
       >
-        {(item) => (
-          <Tab
-            key={item.id}
-            title={
-              <div className="flex items-center border-none ">
-                <span>{item.label}</span>
-              </div>
+        <TabList
+          aria-label="Dynamic tabs"
+          items={fabrics}
+          style={{ flex: 1 }}
+          className=" flex h-[36px] w-full items-center justify-center  gap-0 rounded-md border-none bg-[#F4F5FA] px-[1px] py-[2px] text-black outline-none dark:bg-[#0F0F0F] "
+        >
+          {(item) => (
+            <Tab
+              className={({ isSelected }) => `
+            flex h-[34px] w-full cursor-default flex-row items-center justify-center rounded-md text-center  font-medium  shadow-none outline-none transition-colors focus-visible:outline-none
+            ${
+              isSelected
+                ? "bg-white text-sm text-black shadow dark:bg-[#212121] dark:text-white"
+                : "pressed:bg-white/10 text-sm text-black dark:text-white"
             }
-          >
-            {dropdownJson && dropdownJson.hasOwnProperty(item.id) ? (
-              <div className="h-40">
-                <TreeView data={dropdownJson[item.id]} />
-              </div>
-            ) : (
-              <p
-                className={
-                  !darkMode
-                    ? "text-center text-white"
-                    : "text-center text-black"
-                }
-              >
-                No data found
-              </p>
-            )}
-          </Tab>
-        )}
+          `}
+            >
+              {item.fabricName}
+            </Tab>
+          )}
+        </TabList>
+
+        <Collection items={fabrics}>
+          {(item) => (
+            <TabPanel
+              className="mt-2 w-full"
+              key={item.id}
+              title={
+                <div className="flex items-center border-none ">
+                  <span>{item.fabricName}</span>
+                </div>
+              }
+            >
+              {dropdownJson && dropdownJson.hasOwnProperty(item.id) ? (
+                <div className="h-40">
+                  <TreeView data={dropdownJson[item.id]} />
+                </div>
+              ) : (
+                <p
+                  className={
+                    !darkMode
+                      ? "text-center text-white"
+                      : "text-center text-black"
+                  }
+                >
+                  No data found
+                </p>
+              )}
+            </TabPanel>
+          )}
+        </Collection>
       </Tabs>
     </div>
   );

@@ -46,6 +46,8 @@ function App() {
           setFallBack(false);
           return data;
         });
+
+        console.log(res, "ClientResponse");
         if (
           res &&
           res?.hasOwnProperty("client") &&
@@ -83,7 +85,7 @@ function App() {
             clientDetails?.client ? (
               <>
                 <ReactFlowProvider>
-                  <Layout client={clientDetails?.client} />
+                  <Layout client={clientDetails?.client} clientLoginId={clientDetails?.loginId}  />
                 </ReactFlowProvider>
               </>
             ) : (
