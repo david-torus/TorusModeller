@@ -2172,6 +2172,7 @@ export default function Navbar({
                                     Children={"Update"}
                                   />
                                   <TorusButton
+                                    isDisabled={newArtifact ? true : false}
                                     buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]/15 dark:text-[#3063FF] text-[#0736C4] cursor-pointer"}   w-[70px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     onPress={() => {
                                       saveProcessFlow(
@@ -2185,6 +2186,7 @@ export default function Navbar({
                                     Children={"Save"}
                                   />
                                   <TorusButton
+                                    isDisabled={newArtifact ? true : false}
                                     buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]  text-white cursor-pointer"}  w-[80px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     Children={"Save as"}
                                   />
