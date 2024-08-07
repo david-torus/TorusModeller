@@ -66,6 +66,26 @@ export class VptController {
     );
   }
 
+  @Get('catelogue')
+  async getApplicationListwithArtifactsGrp(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.getCatelogue(
+      query.tKey,
+      query.client,
+      query.saveKey,
+    );
+  }
+
+  @Get('artifactsGroup')
+  async getArtifactsGroup(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.getArtifactsGroup(
+      query.saveKey,
+    );
+  }
+
   @Post('applicationCreate')
   async createApplication(
     @Query(new ValidationPipe({ transform: true })) query: any,

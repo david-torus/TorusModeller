@@ -177,6 +177,8 @@ export class VptService {
   }
 
   async getApplication(tenant, appGroup, saveKey): Promise<any> {
+    console.log(saveKey, 'saveKey=====>>>>>>>');
+
     try {
       let arrKey = JSON.parse(saveKey);
       let key = '';
@@ -191,6 +193,9 @@ export class VptService {
           application.add(artifacts[3]);
         }
       }
+      if (application.size > 0) {
+        return {};
+      }
       return {
         data: Array.from(application),
         status: 200,
@@ -199,6 +204,77 @@ export class VptService {
       throw error;
     }
   }
+
+  async getArtifactsGroup(saveKey: string): Promise<any> {
+    console.log(saveKey, '<<<<<<Catelogue>>>>>>>');
+
+    try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      console.log(key, '<<<--key-->>>');
+      const keys = await this.redisService.getKeys(key);
+      const artifactsGroup = new Map<string, Set<string>>();
+      if (keys && keys.length > 0) {
+        for (let i = 0; i < keys.length; i++) {
+          const artifacts = keys[i].split(':');
+          const catelogue = artifacts[3];
+          let apps = artifactsGroup.get(catelogue);
+          if (!apps) {
+            apps = new Set<string>();
+            artifactsGroup.set(catelogue, apps);
+          }
+          apps.add(artifacts[4]);
+        }
+      }
+      const result = Array.from(artifactsGroup.entries()).map(
+        ([catelogue, apps]) => ({
+          catelogue,
+          artifactsGroup: Array.from(apps),
+        }),
+      );
+
+      console.log(result, '<<<--result-->>>');
+
+      return {
+        data: result,
+        status: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getCatelogue(tenant, appGroup, saveKey): Promise<any> {
+    console.log(saveKey, '>>>>>>>===saveKey==<<<<<<<');
+
+    try {
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      const keys = await this.redisService.getKeys(key);
+      let catelogue = new Set([]);
+      console.log(catelogue, '<catelogue>');
+      if (keys && keys.length > 0) {
+        for (let i = 0; i < keys.length; i++) {
+          const artifacts = keys[i].split(':');
+          console.log(artifacts, 'artifacts');
+          catelogue.add(artifacts[3]);
+        }
+      }
+      return {
+        data: Array.from(catelogue),
+        status: 200,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createApplication(tenant, appGroup, application): Promise<any> {
     try {
       const res = await this.readReddis(tenant);
