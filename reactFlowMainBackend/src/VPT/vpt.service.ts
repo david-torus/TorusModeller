@@ -229,11 +229,11 @@ export class VptService {
           apps.add(artifacts[4]);
         }
       }
-      const result = Array.from(artifactsGroup.entries()).map(
-        ([catelogue, apps]) => ({
-          catelogue,
-          artifactsGroup: Array.from(apps),
-        }),
+      console.log(artifactsGroup, '<<<--artifactsGroup-->>>');
+
+      const result = Array.from(artifactsGroup.values()).reduce(
+        (acc, apps) => acc.concat(Array.from(apps)),
+        [],
       );
 
       console.log(result, '<<<--result-->>>');
