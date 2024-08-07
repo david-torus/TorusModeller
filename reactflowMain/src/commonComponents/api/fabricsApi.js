@@ -295,11 +295,12 @@ export const deleteArtifact = async (
   project,
   fabrics,
   artifact,
+  saveKey,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}`,
+      `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}&saveKey=${saveKey}`,
       {
         method: "DELETE",
       },
