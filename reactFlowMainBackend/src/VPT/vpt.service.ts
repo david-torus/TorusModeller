@@ -448,39 +448,37 @@ export class VptService {
     application,
     fabrics,
     artifact,
+    saveKey,
   ): Promise<any> {
     try {
-      // await this.delete(
-      //   tenant +
-      //     ':' +
-      //     appGroup +
-      //     ':' +
-      //     application +
-      //     ':' +
-      //     fabrics +
-      //     ':' +
-      //     artifact,
-      // );
-      // const artifactList = await this.pfPfdService.getArtifact(
-      //   tenant,
-      //   appGroup,
-      //   fabrics,
-      //   application,
-      // );
-      // console.log(artifactList, 'artifactList');
-      // if (artifactList && artifactList.data) {
-      //   return {
-      //     status: 200,
-      //     data: artifactList.data,
-      //     message: 'Artifact Deleted Successfully',
-      //   };
-      // } else {
-      //   return {
-      //     status: 200,
-      //     data: [],
-      //     message: 'Artifact Deleted Successfully',
-      //   };
-      // }
+      let arrKey = JSON.parse(saveKey);
+      let key = '';
+      if (arrKey.length > 0) {
+        key = arrKey.join(':');
+      }
+      await this.delete(key);
+      arrKey.pop();
+      const artifactList = await this.pfPfdService.getArtifactWithVersion(
+        '',
+        ' ',
+        ' ',
+        ' ',
+        JSON.stringify(arrKey),
+      );
+      console.log(artifactList, 'artifactList');
+      if (artifactList && artifactList.data) {
+        return {
+          status: 200,
+          data: artifactList.data,
+          message: 'Artifact Deleted Successfully',
+        };
+      } else {
+        return {
+          status: 200,
+          data: [],
+          message: 'Artifact Deleted Successfully',
+        };
+      }
     } catch (error) {
       throw error;
     }

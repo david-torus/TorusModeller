@@ -37,6 +37,7 @@ import {
   saveWorkFlow,
   applicationLists,
   renameArtifact,
+  deleteArtifact,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -72,7 +73,8 @@ export default function Navbar({
   setToggleReactflow,
   getDataFromFabrics,
   setFabricsKey = null,
-  clientLoginId
+  clientLoginId,
+  deleteFlowArtifact,
 }) {
   const {
     client,
@@ -146,6 +148,7 @@ export default function Navbar({
   const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
   const [newArtifactNameValidation, setNewArtifactNameValidation] =
     useState(false);
+  const [takeArtifactName, setTakeArtifactName] = useState("");
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
@@ -257,7 +260,7 @@ export default function Navbar({
               autoClose: 2000,
               hideProgressBar: true,
               title: "Success",
-              text: `created successfully`,
+              text: `Created successfully`,
               closeButton: false,
             },
           );
@@ -273,7 +276,7 @@ export default function Navbar({
               autoClose: 2000,
               hideProgressBar: true,
               title: "Error",
-              text: `Error while creating`,
+              text: `Error while Creating`,
               closeButton: false,
             },
           );
@@ -653,6 +656,64 @@ export default function Navbar({
           closeButton: false,
         },
       );
+    }
+  };
+
+  const handleDeleteArtifacts = async () => {
+    if (takeArtifactName) {
+      const response = await deleteArtifact(
+        "",
+        "",
+        "",
+        " ",
+        " ",
+        JSON.stringify([
+          "TCL",
+          selectedTkey,
+          selectedFabric,
+          selectedProject,
+          selectedArtifactGroup,
+          takeArtifactName,
+        ]),
+      );
+
+      if (response && response?.status === 200) {
+        setArtifactsList(response?.data);
+      }
+      if (takeArtifactName == selectedArtifact) {
+        setSelectedArtifact("");
+        setTakeArtifactName("");
+        setSelectedVersion("");
+      } else {
+        setTakeArtifactName("");
+      }
+      if (response.status === 200 || response.status === 201) {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "success",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Success",
+            text: `Deleted successfully`,
+            closeButton: false,
+          },
+        );
+      } else {
+        toast(
+          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+          {
+            type: "error",
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: true,
+            title: "Error",
+            text: `Cannot delete artifacts`,
+            closeButton: false,
+          },
+        );
+      }
     }
   };
 
@@ -1441,64 +1502,62 @@ export default function Navbar({
 
   const mappedTeamItems = [
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T13:23:40.195Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T13:23:40.195Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T13:25:19.117Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T13:25:19.117Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:22:12.040Z"
-    },         
-    {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:26:43.661Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:22:12.040Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:26:44.489Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:26:43.661Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-06T04:17:38.810Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:26:44.489Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-06T04:18:07.534Z"
-    }
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-06T04:17:38.810Z",
+    },
+    {
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-06T04:18:07.534Z",
+    },
   ];
-
-
 
   const handleNewArtifactValidation = () => {
     const foundArtifact = artifactsList.find(
@@ -1799,6 +1858,12 @@ export default function Navbar({
                                                           /> */}
 
                                                           <TorusModel
+                                                            onConfirm={() => {
+                                                              handleDeleteArtifacts(
+                                                                obj?.artifact,
+                                                              );
+                                                            }}
+                                                            confirmButtonText="Delete"
                                                             body="Are you sure you want to delete Artifact Name?"
                                                             title={
                                                               <div className="flex w-[50%] justify-around gap-[0.525rem]">
@@ -1818,6 +1883,13 @@ export default function Navbar({
                                                               <BsTrash3
                                                                 color="red"
                                                                 size={13}
+                                                                onClick={() => {
+                                                                  {
+                                                                    setTakeArtifactName(
+                                                                      obj?.artifact,
+                                                                    );
+                                                                  }
+                                                                }}
                                                               />
                                                             }
                                                             triggerButtonStyle={
@@ -2188,7 +2260,10 @@ export default function Navbar({
                             className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
                           >
                             {selectedFabric !== "events" && (
-                              <Builder mappedTeamItems={mappedTeamItems} clientLoginId={clientLoginId} />
+                              <Builder
+                                mappedTeamItems={mappedTeamItems}
+                                clientLoginId={clientLoginId}
+                              />
                             )}
                           </div>
                         )}
