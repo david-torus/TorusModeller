@@ -446,7 +446,7 @@ export default function Layout({ client, currentArtifactKey = null }) {
                         <>
                           <NodeGallery
                             showFabricSideBar={showFabricSideBar}
-                            color={colors[selectedFabric]?.light}
+                            color={""}
                             handleSidebarToggle={handleSidebarToggle}
                             showNodeProperty={showNodeProperty}
                           />
