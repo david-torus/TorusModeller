@@ -93,7 +93,7 @@ export default function SideBar({ showNodeProperty }) {
             classNames={{
               tabs: "cursor-pointer ",
               tabList: "w-full h-[100%]  flex justify-center items-center",
-              tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${colors[selectedFabric === "events" ? "UF" : selectedFabric]?.dark}]`,
+              tab: ` p-1.5 h-full w-full flex justify-center items-center torus-pressed:outline-none torus-focus:outline-none  border-2 border-transparent  torus-selected:border-l-[${selectedFabric === "events" ? "UF" : "#0736C4"}]`,
             }}
             tabs={[
               {
@@ -107,7 +107,7 @@ export default function SideBar({ showNodeProperty }) {
                 content: ({ isSelected }) => (
                   <Data
                     strokeColor={
-                      !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                      !isSelected ? "#A59E92" : "#0736C4"
                     }
                   />
                 ),
@@ -119,9 +119,7 @@ export default function SideBar({ showNodeProperty }) {
                     strokeColor={
                       !isSelected
                         ? "#A59E92"
-                        : colors[
-                            selectedFabric === "events" ? "UF" : selectedFabric
-                          ]?.dark
+                        : "#0736C4"
                     }
                   />
                 ),
@@ -131,7 +129,7 @@ export default function SideBar({ showNodeProperty }) {
                 content: ({ isSelected }) => (
                   <Connect
                     strokeColor={
-                      !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                      !isSelected ? "#A59E92" : "#0736C4"
                     }
                   />
                 ),
@@ -141,7 +139,7 @@ export default function SideBar({ showNodeProperty }) {
                 content: ({ isSelected }) => (
                   <Sheild
                     strokeColor={
-                      !isSelected ? "#A59E92" : colors[selectedFabric]?.dark
+                      !isSelected ? "#A59E92" : "#0736C4"
                     }
                   />
                 ),
