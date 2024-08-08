@@ -11,6 +11,8 @@ import TorusSwitch from "../../torusComponents/TorusSwitch";
 import TorusDialog from "../../commonComponents/torusComponents/TorusDialog";
 import TorusButton from "../../torusComponents/TorusButton";
 import { CiTrash } from "react-icons/ci";
+import { IoAddCircleOutline } from "react-icons/io5";
+import {Button} from 'react-aria-components';
 
 import {
   Modal,
@@ -18,7 +20,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
+  // Button,
   useDisclosure,
 } from "@nextui-org/react";
 import { AddModalContentType } from "./AddModalContentType";
@@ -102,18 +104,15 @@ const RenderDropdown = ({
       {obj && (obj.type == "dropdown" || obj.type == "boolean") && (
         <>
           {
-            <div className="m-2 flex w-full gap-2 bg-gray-200">
-              <div
-                div
-                className="my-2 flex w-full flex-col gap-1 rounded-lg bg-white"
-              >
+            <div className="mb-2 flex w-full rounded-lg bg-[#F4F5FA]">
+              <div div className="my-2 flex w-full flex-col gap-1 rounded-lg">
                 {obj?.selectedValue.length > 0 && (
                   <span className="ml-2 mt-2 text-xs text-gray-400">
                     {obj.label}
                   </span>
                 )}
                 {obj.type == "dropdown" ? (
-                  <div>
+                  <div className="w-[95%] px-2">
                     <TorusDropDown
                       key={path + "." + item + "." + data}
                       renderEmptyState={() => "No Items..."}
@@ -151,6 +150,35 @@ const RenderDropdown = ({
                       }))}
                       btWidth={"md"}
                     />
+                    <div className="w-[105%] pt-2">
+                      <TorusButton
+                        Children={`Delete`}
+                        size={"xs"}
+                        btncolor={"#0736C4"}
+                        radius={"lg"}
+                        color={"#f00"}
+                        gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                        height={"md"}
+                        borderColor={"3px solid #0736C4"}
+                        btheight={"200px"}
+                        startContent={<CiTrash color="white" />}
+                        fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                        onPress={() => handleDeletejs(path + "." + item, "obj")}
+                      />
+                    </div>
+                  </div>
+                ) : obj.type == "boolean" ? (
+                  <div className="w-full px-2">
+                    <div className="ml-4 flex w-full justify-between py-1">
+                      <span className="text-sm text-gray-800">
+                        {obj?.label}
+                      </span>
+                      <TorusSwitch
+                        skey={path + "." + item + "." + data}
+                        isChecked={bool}
+                        setIsChecked={setBool}
+                      />
+                    </div>
                     <TorusButton
                       Children={`Delete`}
                       size={"xs"}
@@ -164,30 +192,6 @@ const RenderDropdown = ({
                       fontStyle={"text-sm font-medium text-[#FFFFFF]"}
                       onPress={() => handleDeletejs(path + "." + item, "obj")}
                     />
-                  </div>
-                ) : obj.type == "boolean" ? (
-                  <div className="flex w-full items-center justify-between p-2 pl-4">
-                    <span className="text-sm text-gray-800">{obj?.label}</span>
-                    <div className="">
-                      <TorusSwitch
-                        skey={path + "." + item + "." + data}
-                        isChecked={bool}
-                        setIsChecked={setBool}
-                      />
-                      <TorusButton
-                        Children={`Delete`}
-                        size={"xs"}
-                        btncolor={"#0736C4"}
-                        radius={"lg"}
-                        color={"#f00"}
-                        gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
-                        height={"md"}
-                        borderColor={"3px solid #0736C4"}
-                        startContent={<CiTrash color="white" />}
-                        fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                        onPress={() => handleDeletejs(path + "." + item, "obj")}
-                      />
-                    </div>
                   </div>
                 ) : (
                   <></>
@@ -206,7 +210,6 @@ const RenderDropdown = ({
                   />
                 }  */}
               </div>
-
               {/* <p className="flex  gap-4 mb-3">
                 {" "}
                 selectedValue :<span>{obj?.selectedValue}</span>
@@ -252,7 +255,7 @@ const RenderJsonArraySidebarDetail = ({
 
   return (
     <>
-      <div className="  flex h-[100%] w-[40%] items-center">
+      <div className="  flex h-[100%] items-center">
         <TorusDialog
           key={"TableDelete"}
           triggerElement={
@@ -285,7 +288,7 @@ const RenderJsonArraySidebarDetail = ({
             />
           )}
         />
-        <TorusButton
+        {/* <TorusButton
           Children={`Delete`}
           size={"xs"}
           btncolor={"#0736C4"}
@@ -297,94 +300,101 @@ const RenderJsonArraySidebarDetail = ({
           startContent={<CiTrash color="white" />}
           fontStyle={"text-sm font-medium text-[#FFFFFF]"}
           onPress={() => handleDeletejs(path)}
-        />
+        /> */}
       </div>
       <div>
         {obj &&
           obj.map((ele, index) => {
             const isExpanded = expandedItem.includes(ele?.label);
             return (
-              <div
-                key={index}
-                className={
-                  " mb-2 w-[100%] rounded-lg bg-[#F4F5FA]  text-black  dark:bg-[#0F0F0F]   dark:text-white"
-                }
-              >
-                <p
-                  className="my-1  flex cursor-pointer items-center gap-2 p-2"
-                  onClick={(e) => {
-                    setShowAccordianItem(ele);
-                    e.stopPropagation();
-                    e.preventDefault();
-                    toggleKey(ele?.label);
-                  }}
+              <>
+                <div
+                  key={index}
+                  className={`flex w-[100%] ${isExpanded ? "rounded-t-lg" : "rounded-lg"} bg-[#d5d9db] justify-between text-black  dark:bg-[#0F0F0F]   dark:text-white `}
                 >
-                  <span className="flex justify-end">
-                    {isExpanded ? (
-                      <MdExpandLess color="gray" size={20} />
-                    ) : (
-                      <IoIosArrowForward color="gray" size={20} />
-                    )}
-                  </span>
-                  <p>{ele?.label} </p>
-                </p>
-
+                  <p
+                    className="my-1  flex cursor-pointer items-center gap-2 p-2"
+                    onClick={() => {
+                      setShowAccordianItem(ele);
+                      toggleKey(ele?.label);
+                    }}
+                  >
+                    <span className="flex justify-end">
+                      {isExpanded ? (
+                        <MdExpandLess color="gray" size={20} />
+                      ) : (
+                        <IoIosArrowForward color="gray" size={20} />
+                      )}
+                    </span>
+                    <p className="w-[70%]">{ele?.label} </p>
+                  </p>
+                  <div className="flex justify-between">
+                    <div className="flex h-[100%] items-center justify-between">
+                      <TorusDialog
+                        key={"TableDelete"}
+                        triggerElement={
+                          // <TorusButton
+                          //   // Children={`Add`}
+                          //   size={"xs"}
+                          //   btncolor={"#0736C4"}
+                          //   radius={"lg"}
+                          //   color={"#ffffff"}
+                          //   gap={"py-[0.2rem] px-[0.2rem] mb-[0.5rem]"}
+                          //   height={"md"}
+                          //   borderColor={"3px solid #0736C4"}
+                          //   startContent={
+                          //     <IoAddCircleOutline color="white" size={20} />
+                          //   }
+                          //   fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                          // />
+                          <Button>
+                            <IoAddCircleOutline color="blue" size={20} />
+                          </Button>
+                        }
+                        classNames={{
+                          modalClassName:
+                            " w-[40%] h-[40%]  flex justify-center items-center  ",
+                          dialogClassName:
+                            " w-full h-full rounded-lg flex-col bg-white",
+                        }}
+                        title={"Add"}
+                        message={"Edit"}
+                        children={({ close }) => (
+                          <AddModalContentType
+                            obj={obj}
+                            showObj={showObj}
+                            close={close}
+                            handleAddjs={handleAddjs}
+                            type="arr-1"
+                            path={index}
+                          />
+                        )}
+                      />
+                      {/* <TorusButton
+                        Children={`kia`}
+                        size={"xs"}
+                        btncolor={"#0736C4"}
+                        radius={"lg"}
+                        color={"#f00"}
+                        gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                        height={"md"}
+                        borderColor={"3px solid #0736C4"}
+                        startContent={<CiTrash color="white" />}
+                        fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                        onPress={() => handleDeletejs(path, "arr-1", ele.label)}
+                      /> */}
+                      <span
+                        onClick={() => {
+                          handleDeletejs(path, "arr-1", ele.label);
+                        }}
+                      >
+                        <CiTrash color="red" size={20} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
                 {isExpanded && (
-                  <div className="mb-2  p-2">
-                    <>
-                      <div className="flex h-[100%] w-[40%] items-center justify-between">
-                        <TorusDialog
-                          key={"TableDelete"}
-                          triggerElement={
-                            <TorusButton
-                              Children={`Add`}
-                              size={"xs"}
-                              btncolor={"#0736C4"}
-                              radius={"lg"}
-                              color={"#ffffff"}
-                              gap={"py-[0.2rem] px-[0.2rem] mb-[0.5rem]"}
-                              height={"md"}
-                              borderColor={"3px solid #0736C4"}
-                              startContent={<PlusIcon />}
-                              fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                            />
-                          }
-                          classNames={{
-                            modalClassName:
-                              " w-[40%] h-[40%]  flex justify-center items-center  ",
-                            dialogClassName:
-                              " w-full h-full rounded-lg flex-col bg-white",
-                          }}
-                          title={"Add"}
-                          message={"Edit"}
-                          children={({ close }) => (
-                            <AddModalContentType
-                              obj={obj}
-                              showObj={showObj}
-                              close={close}
-                              handleAddjs={handleAddjs}
-                              type="arr-1"
-                              path={index}
-                            />
-                          )}
-                        />
-                        <TorusButton
-                          Children={`Delete`}
-                          size={"xs"}
-                          btncolor={"#0736C4"}
-                          radius={"lg"}
-                          color={"#f00"}
-                          gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
-                          height={"md"}
-                          borderColor={"3px solid #0736C4"}
-                          startContent={<CiTrash color="white" />}
-                          fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                          onPress={() =>
-                            handleDeletejs(path, "arr-1", ele.label)
-                          }
-                        />
-                      </div>
-                    </>
+                  <div className={`bg-[#d5d9db] p-2 rounded-b-lg}`}>
                     {objs &&
                       Object.keys(objs[showObj][index])
                         .filter(
@@ -396,64 +406,66 @@ const RenderJsonArraySidebarDetail = ({
                             typeof objs[showObj][index][item] !== "object"
                           ) {
                             return (
-                              <p className="mt-[-25px] flex  flex-col ">
-                                <TorusInput
-                                  key={inds}
-                                  variant="bordered"
-                                  label={item}
-                                  labelColor="text-[#000000]/50"
-                                  borderColor="[#000000]/50"
-                                  outlineColor="torus-focus:ring-[#000000]/50"
-                                  placeholder=""
-                                  isDisabled={false}
-                                  onChange={(e) => {
-                                    handleInput(
-                                      e,
-                                      path + "." + index + "." + item,
-                                      item,
-                                      "arr",
-                                    );
-                                  }}
-                                  radius="lg"
-                                  width="xl"
-                                  height="xl"
-                                  textColor="text-[#000000] dark:text-[#FFFFFF]"
-                                  bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-                                  value={objs[showObj][index][item]}
-                                />
-                                <TorusButton
-                                  Children={`Delete`}
-                                  size={"xs"}
-                                  btncolor={"#0736C4"}
-                                  radius={"lg"}
-                                  color={"#f00"}
-                                  gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
-                                  height={"md"}
-                                  borderColor={"3px solid #0736C4"}
-                                  startContent={<CiTrash color="white" />}
-                                  fontStyle={
-                                    "text-sm font-medium text-[#FFFFFF]"
-                                  }
-                                  onPress={() =>
-                                    handleDeletejs(
-                                      path + "." + index + "." + item,
-                                      "obj",
-                                    )
-                                  }
-                                />
-                                {/* <input
-                                className="border text-blue-500 "
-                                type="text"
-                                Value={objs[showObj][index][item]}
-                                onChange={(e) => {
-                                  handleInput(
-                                    e,
-                                    path + "." + index + "." + item,
-                                    item,
-                                    "arr"
-                                  );
+                              <p
+                                style={{
+                                  display: item === "label" ? "none" : "",
                                 }}
-                              /> */}
+                                className={`mb-2 bg-[#F4F5FA] px-2 pb-2 dark:bg-[#0F0F0F] rounded-lg`}
+                              >
+                                <div className="w-[100%]">
+                                  <TorusInput
+                                    key={inds}
+                                    variant="bordered"
+                                    label={item}
+                                    labelColor="text-[#000000]/50"
+                                    borderColor="[#000000]/50"
+                                    outlineColor="torus-focus:ring-[#000000]/50"
+                                    placeholder=""
+                                    isDisabled={false}
+                                    onChange={(e) => {
+                                      handleInput(
+                                        e,
+                                        path + "." + index + "." + item,
+                                        item,
+                                        "arr",
+                                      );
+                                    }}
+                                    radius="lg"
+                                    width="xl"
+                                    height="xl"
+                                    textColor="text-[#000000] dark:text-[#FFFFFF]"
+                                    bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+                                    value={objs[showObj][index][item]}
+                                  />
+                                  <TorusButton
+                                    Children={`Delete`}
+                                    size={"xs"}
+                                    btncolor={"#0736C4"}
+                                    radius={"lg"}
+                                    color={"#f00"}
+                                    gap={"py-[0.2rem] px-[0.2rem] mb-[0.3rem]"}
+                                    height={"md"}
+                                    borderColor={"3px solid #0736C4"}
+                                    startContent={<CiTrash color="white" />}
+                                    fontStyle={
+                                      "text-sm font-medium text-[#FFFFFF]"
+                                    }
+                                    onPress={() =>
+                                      handleDeletejs(
+                                        path + "." + index + "." + item,
+                                        "obj",
+                                      )
+                                    }
+                                  />
+                                </div>
+                                {/* <input
+                             className="border text-orange-500 "
+                             type="text"
+                             value={obj[showObj][ele]}
+                             onChange={(e) =>
+                               handleInput(e.target.value, path, ele, "obj")
+                             }
+                           /> */}
                               </p>
                             );
                           }
@@ -481,7 +493,7 @@ const RenderJsonArraySidebarDetail = ({
                         })}
                   </div>
                 )}
-              </div>
+              </>
             );
           })}
 
@@ -627,7 +639,7 @@ export default function JsonSidebarDetail({
                     //   </Modal>
                     // </div>
 
-                    <div className="  flex h-[100%] w-[40%] items-center">
+                    <div className="  flex h-[100%] w-[100%] items-center">
                       <TorusDialog
                         key={"TableDelete"}
                         triggerElement={
@@ -662,7 +674,7 @@ export default function JsonSidebarDetail({
                           />
                         )}
                       />
-                      <TorusButton
+                      {/* <TorusButton
                         Children={`Delete`}
                         size={"xs"}
                         btncolor={"#0736C4"}
@@ -674,7 +686,7 @@ export default function JsonSidebarDetail({
                         startContent={<CiTrash color="white" />}
                         fontStyle={"text-sm font-medium text-[#FFFFFF]"}
                         onPress={() => handleDeletejs(path)}
-                      />
+                      /> */}
                     </div>
                   }
                   <div>
@@ -692,7 +704,7 @@ export default function JsonSidebarDetail({
                               style={{
                                 display: ele === "label" ? "none" : "",
                               }}
-                              className="rounded-lg bg-[#F4F5FA]  px-2 dark:bg-[#0F0F0F] "
+                              className="mb-2 rounded-lg bg-[#F4F5FA] px-2 pb-2 dark:bg-[#0F0F0F] "
                             >
                               <div className="w-[100%]">
                                 <TorusInput
