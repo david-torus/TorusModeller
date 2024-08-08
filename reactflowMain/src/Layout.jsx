@@ -28,6 +28,7 @@ import MonacoEditor from "./commonComponents/tabs/Monaco_Editor/MonacoEditor";
 import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
+import { IoCloseCircleOutline } from "react-icons/io5";
 import { changeArtifactLock } from "./commonComponents/api/fabricsApi";
 export const TorusModellerContext = createContext(null);
 const colors = {
@@ -548,16 +549,16 @@ export default function Layout({
 
               {showNodeProperty && (
                 <div
-                  className={`z-50 ${showNodeProperty ? "w-[21%]" : "hidden"} border dark:border-[#212121]  `}
+                  className={`z-50 h-[100%] overflow-hidden  ${showNodeProperty ? "w-[21%]" : "hidden"} border dark:border-[#212121]  `}
                 >
                   <div
-                    className={`h-full transform   bg-[#FFFFFF] transition-transform delay-75 duration-300 ease-in-out dark:bg-[#161616] ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
+                    className={`h-[100%] transform transition-transform delay-75 duration-300 ease-in-out dark:bg-[#161616] ${showNodeProperty ? "translate-x-0" : "translate-x-full"}`}
                   >
                     <div
                       className="top-0 flex w-[100%] cursor-pointer justify-end text-[#161616] dark:text-[#FFFFFF]"
                       onClick={() => setShowNodeProperty(!showNodeProperty)}
                     >
-                      x
+                     <IoCloseCircleOutline size={20} />
                     </div>
 
                     <NewNodeInfoSidebar

@@ -693,12 +693,7 @@ export const nodeInfoTabs = {
       label: "UF",
       icon: <Enumeration />,
       modelOpen: "uf",
-    },
-    {
-      label: "Portel",
-      icon: <ProcessObject />,
-      modelOpen: "portel",
-    },
+    }
   ],
   events: [
     {
@@ -774,7 +769,8 @@ export const RenderJson = ({
         keys.reduce((acc, key, index) => {
             if (index === keys.length - 1) {
                 acc[key] = value;
-            } else {
+            } 
+            else {
                 if (!acc[key]) {
                     acc[key] = {};
                 }
@@ -1076,9 +1072,9 @@ console.log(dupJson, "dupJsonDeletion");
   console.log(json, nodedata, "rrenderjs");
 
   return (
-    <div className="h-full overflow-y-scroll scrollbar-hide">
+    <div className="h-full w-full overflow-y-scroll scrollbar-hide">
       {dupJson && Object.keys(dupJson).length > 0 && (
-        <div className="h-full overflow-y-scroll scrollbar-hide ">
+        <div className="h-full w-full overflow-y-scroll scrollbar-hide ">
           {
             <>
               <RenderObject

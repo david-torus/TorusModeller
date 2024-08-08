@@ -132,9 +132,8 @@ export const getprojectLists = async (tKey, client, saveKey) => {
     );
     const data = await response.json();
     if (response.ok && data) {
-
-      console.log(data, "catelogue")
-      return data
+      console.log(data, "catelogue");
+      return data;
     } else {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -154,7 +153,7 @@ export const getprojectLists = async (tKey, client, saveKey) => {
 
 export const getArtifactsGroups = async (tKey, client, saveKey) => {
   try {
-    console.log( saveKey, "<<>>catelogue<<>>");
+    console.log(saveKey, "<<>>catelogue<<>>");
 
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
@@ -164,7 +163,8 @@ export const getArtifactsGroups = async (tKey, client, saveKey) => {
       },
     );
     const data = await response.json();
-    if (response.ok && data) {
+    console.log(data, "artifactsGroup");
+    if (data) {
       return data;
     } else {
       throw new Error(`HTTP error! status: ${response.status}`);

@@ -155,8 +155,8 @@ export const NodeInfoSidebarNodeInformation = ({
                         <p
                           className={
                             darkMode
-                              ? "text-white font-semibold text-md"
-                              : "text-black font-semibold text-md"
+                              ? "text-white  text-md"
+                              : "text-black  text-md"
                           }
                         >
                           Select Flag for Layout

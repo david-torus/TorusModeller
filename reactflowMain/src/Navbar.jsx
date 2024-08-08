@@ -15,7 +15,6 @@ import {
   Preview,
   PushToBuild,
   Shared,
-  TorusAccordianArrow,
   TorusLogo,
   TorusModelDelete,
   VerticalLine,
@@ -38,7 +37,6 @@ import {
   saveWorkFlow,
   applicationLists,
   renameArtifact,
-  changeArtifactLock,
   getprojectLists,
   getArtifactsGroups,
 } from "./commonComponents/api/fabricsApi";
@@ -69,7 +67,6 @@ import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 import TorusModel from "./torusComponents/TorusModel.jsx";
-import { FaLock, FaLockOpen } from "react-icons/fa";
 
 export default function Navbar({
   project,
@@ -97,10 +94,12 @@ export default function Navbar({
     setSelectedVersion,
     selectedProject,
     setSelectedProject,
-    setArtifactLockToggle,
-    artifactLockToggle,
-    handleArtifactLock,
   } = useContext(TorusModellerContext);
+
+  console.log(
+    `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
+    "NEW API",
+  );
 
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
@@ -166,14 +165,48 @@ export default function Navbar({
 
   console.log(selectedKeys, "selectedKEys===>");
 
-  const handleSelectionChange = (key) => {
+  const handleOnselction = (key) => {
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+  };
+
+  const handleProject = (key) => {
+    console.log(key, "mainKey");
     setSelectedKeys((prevSelectedKeys) =>
       prevSelectedKeys.includes(key)
         ? prevSelectedKeys.filter((k) => k !== key)
         : [...prevSelectedKeys, key],
     );
     handleGetProjects(selectedTkey, selectedClient, selectedFabric);
+    setCatelogue();
   };
+
+  const handleArtifacts = (key) => {
+    console.log(key, "extractCatelogue");
+
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+
+    setCatelogue(key);
+
+    if (catelogue) {
+      handleGetArtifactsGroup(
+        selectedTkey,
+        selectedClient,
+        selectedFabric,
+        catelogue,
+      );
+    }
+  };
+
+  console.log(catelogue, "extractCatelogue");
+
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
   };
@@ -900,7 +933,9 @@ export default function Navbar({
       );
 
       if (response && response.status === 200) {
-        setProjectList(response.data);
+        setTimeout(() => {
+          setProjectList(response.data);
+        }, [2000]);
       }
     } catch (error) {
       toast(
@@ -922,16 +957,25 @@ export default function Navbar({
     selectedTkey,
     client,
     selectedFabric,
-    selectedProject,
+    catelogue,
   ) => {
+    console.log(
+      selectedTkey,
+      client,
+      selectedFabric,
+      catelogue,
+      "extractCatelogue",
+    );
     try {
       const response = await getArtifactsGroups(
         selectedTkey,
         client,
-        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+        JSON.stringify(["TCL", selectedTkey, selectedFabric, catelogue]),
       );
-      if (response && response.status === 200) {
-        setArtifactsGroup(response.data);
+      console.log(response.data, "artifactsGroup res.data");
+      if (response.data) {
+        const data = response.data;
+        setArtifactsGroup(data);
       }
     } catch (error) {
       toast(
@@ -949,7 +993,7 @@ export default function Navbar({
     }
   };
   console.log(projectList, "<<catelogue>>");
-  console.log(artifactsGroup[0]?.artifactsGroup, "<<cateloguearty>>");
+  console.log(artifactsGroup, "artifactsGroup state");
   console.log(destructureData, "<<catelogue>>");
 
   const handleIntialLoad = async (
@@ -1064,7 +1108,6 @@ export default function Navbar({
         ]),
       );
       if (response && response.status === 200) {
-        setArtifactLockToggle(true);
         if (type === "create") {
           await handleIntialLoad(
             selectedTkey,
@@ -1072,7 +1115,6 @@ export default function Navbar({
             selectedFabric,
             selectedApplictionNames || selectedProject,
           );
-
           setNewArtifactsName("");
           setSelectedProject(selectedApplictionNames);
           setSelectedArtifact(selectedArtifactss);
@@ -1170,12 +1212,7 @@ export default function Navbar({
                 ]),
           );
 
-          if (
-            response &&
-            typeof response === "object" &&
-            response?.status === 200
-          ) {
-            setArtifactLockToggle(response?.data?.isLocked ?? false);
+          if (response && typeof response === "object" && response) {
             sendDataToFabrics({
               ...response.data,
             });
@@ -1313,6 +1350,10 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
+        // toast.success(`${e} Deleted Successfully`, {
+        //   position: "bottom-right",
+        //   autoClose: 2000,
+        // });
 
         toast(
           <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
@@ -1333,10 +1374,6 @@ export default function Navbar({
       console.error(error);
     }
   };
-
-  const renderLock = useMemo(() => {
-    return <>{artifactLockToggle ? <FaLock /> : <FaLockOpen />}</>;
-  }, [artifactLockToggle]);
 
   const handleVersionDelete = async (e) => {
     try {
@@ -1497,7 +1534,6 @@ export default function Navbar({
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   const handleAccordionToggle = (index, tkey) => {
-    if (selectedVersion) handleArtifactLock(false);
     if (selectedTkey === tkey && projectList.length !== 0) return;
     setSelectedTkey(tkey);
     handleGetApplications(tkey, client, selectedFabric).catch((err) => {
@@ -1532,7 +1568,6 @@ export default function Navbar({
 
   const handleAccordionContentToggle = (item) => {
     console.log("Accordion content toggled to item:", item);
-    if (selectedVersion) handleArtifactLock(false);
     handleApplicationName(item);
     setProjectCollectionName(item);
     setArtifactCollectionName(null);
@@ -1840,17 +1875,17 @@ export default function Navbar({
 
           {selectedFabric !== "Home" && (
             <>
-              <div className=" flex h-full w-1/3 items-center justify-center gap-2 rounded-md bg-transparent ">
+              <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
                 {selectedFabric !== "Home" && (
                   <>
                     <TorusPopOver
                       parentHeading={
-                        <div className=" flex w-full flex-row items-center justify-center gap-2">
-                          <div className="w-[90%] truncate text-xs font-semibold text-black dark:text-white">
+                        <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
+                          <div className="text-sm font-semibold text-black dark:text-white">
                             {(selectedArtifact && selectedArtifact) ||
                               "Select Artifacts"}
                           </div>
-                          <div className="flex w-[10%] items-center justify-center rounded-xl bg-[#0736C4] px-4 py-1 text-center  text-xs text-white">
+                          <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
                             {(selectedVersion && selectedVersion) || "*"}
                           </div>
                           <div>
@@ -1858,7 +1893,9 @@ export default function Navbar({
                           </div>
                         </div>
                       }
-                      popbuttonClassNames={"w-[35%]"}
+                      popbuttonClassNames={
+                        selectedFabric === "events" && "w-1/3"
+                      }
                       children={({ close }) => (
                         <div
                           className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -1881,7 +1918,7 @@ export default function Navbar({
                                     }
                                   />
                                 </div>
-                                <div className="flex w-full  items-center justify-end gap-2 ">
+                                <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
                                   <TorusButton
                                     isDisabled={
                                       selectedVersion && selectedFabric == "UF"
@@ -1929,38 +1966,106 @@ export default function Navbar({
 
                                     <Accordion
                                       selectedKeys={selectedKeys}
-                                      onSelectionChange={handleSelectionChange}
+                                      onSelectionChange={handleProject}
                                     >
-                                      {categeroryList.map((item, index) => {
+                                      {categeroryList?.map((item, index) => {
                                         return (
                                           <AccordionItem
-                                            key={`${index}-${item}`}
+                                            key={`category-${item}`}
                                             title={item}
                                             eventKey={`${index}-${item}`}
                                           >
-                                            {projectList?.map(
-                                              (project, index) => {
-                                                return (
-                                                  <AccordionItem
-                                                    key={`${index}-${project}`}
-                                                    title={project}
-                                                    eventKey={`${index}-${project}`}
-                                                    onSelectionChange={
-                                                      handleSelectionChange
-                                                    }
-                                                  >
-                                                    {}
-                                                  </AccordionItem>
-                                                );
-                                              },
-                                            )}
+                                            <Accordion
+                                              selectedKeys={selectedKeys}
+                                              onSelectionChange={
+                                                handleArtifacts
+                                              }
+                                            >
+                                              {projectList?.map(
+                                                (project, index) => {
+                                                  return (
+                                                    <AccordionItem
+                                                      key={`project-${index}`}
+                                                      title={project}
+                                                      eventKey={`${project}`}
+                                                    >
+                                                      {/* {artifactsGroup?.map(
+                                                      (item, index) => {
+                                                        return (
+                                                          <AccordionItem
+                                                            key={`artifact-${index}`}
+                                                            title={item}
+                                                            eventKey={`${item}`}
+                                                          >
+
+
+                                                          </AccordionItem>
+                                                        );
+                                                      },
+                                                    )} */}
+
+                                                      {/* <Accordion
+                                                        selectedKeys={
+                                                          selectedKeys
+                                                        }
+                                                        onSelectionChange={
+                                                          handleOnselction
+                                                        }
+                                                      > */}
+                                                      {artifactsGroup?.map(
+                                                        (item, index) => {
+                                                          return (
+                                                            <AccordionItem
+                                                              key={`artifact-${index}`}
+                                                              title={item}
+                                                              eventKey={`${item}`}
+                                                              onSelectionChange={() => {
+                                                                handleOnselction(
+                                                                  item,
+                                                                );
+                                                              }}
+                                                            ></AccordionItem>
+                                                          );
+                                                        },
+                                                      )}
+                                                      {/* </Accordion> */}
+                                                    </AccordionItem>
+                                                  );
+                                                },
+                                              )}
+                                            </Accordion>
                                           </AccordionItem>
                                         );
                                       })}
                                     </Accordion>
                                   </div>
                                 </div>
-
+                                {/* <TorusModularInput
+                       isRequired={true}
+                       isReadOnly={false}
+                       placeholder="Artifact"
+                       // label="Input"
+                       variant="bordered"
+                       labelColor="text-[#000000]/50"
+                       borderColor="border-[#000000]/20"
+                       isDisabled={false}
+                       // onChange={setModular}
+                       radius="lg"
+                       textColor="text-[#000000]"
+                       bgColor="bg-[#FFFFFF]"
+                       value={"this is value from state "}
+                       type="text"
+                       marginT="mt-3"
+                       // startContent={
+                       //   <FaSearchLocation size={15} color="#9CA3AF" />
+                       // }
+                       maxLength={20}
+                       discription="This is a hint text to help user."
+                       isClearable={true}
+                       className="w-[50px] h-[40px] "
+                     />
+ 
+                */}
                                 <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
                                   <div className="flex h-[10%] w-[85%] items-center justify-start bg-white dark:bg-[#161616]">
                                     <Breadcrumbs
@@ -2189,10 +2294,6 @@ export default function Navbar({
                                                         : new Set([])
                                                     }
                                                     setSelected={(e) => {
-                                                      if (selectedVersion)
-                                                        handleArtifactLock(
-                                                          false,
-                                                        );
                                                       getProcessFlowApi(
                                                         obj?.artifact,
                                                         Array.from(e)[0],
@@ -2469,23 +2570,14 @@ export default function Navbar({
                         </div>
                       )}
                     />
+
                     {selectedFabric === "events" && (
                       <TorusButton
                         onPress={() => {
                           selectedFabric === "events" && handleTabChange("UF");
                         }}
                         Children={<ArtifactOpen />}
-                        buttonClassName="flex  w-[5%] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] py-2 px-4 "
-                      />
-                    )}
-                    {selectedVersion && (
-                      <TorusButton
-                        isIconOnly={true}
-                        onPress={() => {
-                          handleArtifactLock(!artifactLockToggle);
-                        }}
-                        buttonClassName="flex h-[27px] w-[10%]"
-                        Children={renderLock}
+                        buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
                       />
                     )}
                   </>

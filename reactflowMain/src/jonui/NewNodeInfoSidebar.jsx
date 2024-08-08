@@ -165,35 +165,38 @@ const NewNodeInfoSidebar = ({
   };
 
   const handleJsonUpdate = (json, type) => {
-    if(type==="AT"){
+    if (type === "AT") {
       setJsonUpdateCompleteAT(true);
     }
-    if(type==="MT"){
+    if (type === "MT") {
       setJsonUpdateCompleteMT(true);
     }
   };
   const getNodeConfig = (jsons, toogle) => {
     try {
       if (toogle === "AT") {
-        setJson((prev) => {
-          if (prev?.entities)
-            return {
-              ...prev,
-              entities: {
-                ...prev.entities,
-                attributes: jsons,
-                methods: handleMethod(jsons, prev),
-              },
-            };
-          else
-            return {
-              ...prev,
-              entities: {
-                attributes: jsons,
-                methods: handleMethod(jsons, prev),
-              },
-            };
-        },handleJsonUpdate(json , "AT") );
+        setJson(
+          (prev) => {
+            if (prev?.entities)
+              return {
+                ...prev,
+                entities: {
+                  ...prev.entities,
+                  attributes: jsons,
+                  methods: handleMethod(jsons, prev),
+                },
+              };
+            else
+              return {
+                ...prev,
+                entities: {
+                  attributes: jsons,
+                  methods: handleMethod(jsons, prev),
+                },
+              };
+          },
+          handleJsonUpdate(json, "AT"),
+        );
         updatedNodeConfig(
           sideBarData?.id,
           {
@@ -208,30 +211,31 @@ const NewNodeInfoSidebar = ({
       }
 
       if (toogle === "MT") {
-        setJson((prev) => {
-          if (prev?.entities)
-            return {
-              ...prev,
-              entities: {
-                ...prev.entities,
-                methods: jsons,
-              },
-            };
-          else
-            return {
-              ...prev,
-              entities: {
-                methods: jsons,
-              },
-            };
-        }, handleJsonUpdate(json , "MT") );
-        
+        setJson(
+          (prev) => {
+            if (prev?.entities)
+              return {
+                ...prev,
+                entities: {
+                  ...prev.entities,
+                  methods: jsons,
+                },
+              };
+            else
+              return {
+                ...prev,
+                entities: {
+                  methods: jsons,
+                },
+              };
+          },
+          handleJsonUpdate(json, "MT"),
+        );
       }
     } catch (err) {
       console.error(err);
     }
   };
-
 
   useEffect(() => {
     if (jsonUpdateCompleteAT) {
@@ -242,7 +246,7 @@ const NewNodeInfoSidebar = ({
           nodeName: sideBarData?.data?.label,
           nodeType: sideBarData?.type,
         },
-        { ...json }
+        { ...json },
       );
       setJsonUpdateCompleteAT(false);
     }
@@ -255,7 +259,7 @@ const NewNodeInfoSidebar = ({
           nodeName: sideBarData?.data?.label,
           nodeType: sideBarData?.type,
         },
-        { ...json }
+        { ...json },
       );
       setJsonUpdateCompleteMT(false);
     }
@@ -441,7 +445,7 @@ const NewNodeInfoSidebar = ({
   const handleRender = (cm, js, side) => {
     console.log(js, side, cm, js[cm], "handle");
     return (
-      <div className="h-[500px]">
+      <div className="h-full w-full">
         <RenderJson
           json={js[cm]}
           setJson={setJson}
@@ -505,7 +509,7 @@ const NewNodeInfoSidebar = ({
     );
   };
 
-  console.log(json,  "sfflow");
+  console.log(json, "sfflow");
   const handleOpenModal = async (
     flowType,
     isDockey = false,
@@ -950,247 +954,259 @@ const NewNodeInfoSidebar = ({
   console.log(sideBarData, "sidebardatatabaasa");
 
   return (
-    <div className="flex w-full flex-col">
-      <div className="h-10 w-full items-center justify-center bg-transparent">
-        {currentDrawing &&
-          nodeInfoTabs &&
-          currentDrawing !== "events" &&
-          nodeInfoTabs[currentDrawing] &&
-          sideBarData.type !== "orgGrp" &&
-          sideBarData.type !== "roleGrp" &&
-          sideBarData.type !== "org" &&
-          sideBarData.type !== "roles" && (
-            <NodeInfoSidebarTabs
-              nodeInfoTabs={nodeInfoTabs}
-              currentDrawing={currentDrawing}
-              activeTab={activeTab}
-              handleContextMenu={handleContextMenu}
-              setSendFabrics={setSendFabrics}
-              handleOpen={handleOpen}
-              handleOpenModal={handleOpenModal}
-              setToggleReactflow={setToggleReactflow}
-              setFiles={setFiles}
-              setJson={setJson}
-              //   darkMode={darkMode}
-              contextMenuVisible={contextMenuVisible}
-              contextMenuPosition={contextMenuPosition}
-            />
-          )}
-        {currentDrawing &&
-          nodeInfoTabs &&
-          currentDrawing === "events" &&
-          nodeInfoTabs[currentDrawing] && (
-            <NodeInfoSidebarTabs
-              nodeInfoTabs={nodeInfoTabs}
-              currentDrawing={currentDrawing}
-              activeTab={activeTab}
-              handleContextMenu={handleContextMenu}
-              setSendFabrics={setSendFabrics}
-              handleOpen={handleOpen}
-              sideBarData={sideBarData}
-              handleOpenModal={handleOpenModal}
-              setToggleReactflow={setToggleReactflow}
-              setFiles={setFiles}
-              //   darkMode={darkMode}
-              contextMenuVisible={contextMenuVisible}
-              contextMenuPosition={contextMenuPosition}
-            />
-          )}
-        {!toggleSFflow.events.eventParams &&
-          !toggleSFflow.events.eventSTS &&
-          !toggleSFflow.events.eventSTT &&
-          currentDrawing === "events" && (
-            <div className=" flex w-[100%] flex-col items-start justify-start">
-              <div className="m-2">
-                <div
-                  className={`${darkMode ? "mb-3 cursor-pointer text-sm font-semibold text-white" : "mb-3 cursor-pointer text-sm font-semibold text-black"}  `}
-                >
-                  nodeID :
+    <div className="flex h-[92%] w-[100%]  flex-col ">
+      <div className=" w-[100%] items-center justify-center bg-transparent">
+     <div className="w-[100%]   overflow-x-scroll px-2 py-1">
+
+          {currentDrawing &&
+            nodeInfoTabs &&
+            currentDrawing !== "events" &&
+            nodeInfoTabs[currentDrawing] &&
+            sideBarData.type !== "orgGrp" &&
+            sideBarData.type !== "roleGrp" &&
+            sideBarData.type !== "org" &&
+            sideBarData.type !== "roles" &&
+            sideBarData.type !== "psGrp" && (
+              <NodeInfoSidebarTabs
+                nodeInfoTabs={nodeInfoTabs}
+                currentDrawing={currentDrawing}
+                activeTab={activeTab}
+                handleContextMenu={handleContextMenu}
+                setSendFabrics={setSendFabrics}
+                handleOpen={handleOpen}
+                handleOpenModal={handleOpenModal}
+                setToggleReactflow={setToggleReactflow}
+                setFiles={setFiles}
+                setJson={setJson}
+                //   darkMode={darkMode}
+                contextMenuVisible={contextMenuVisible}
+                contextMenuPosition={contextMenuPosition}
+              />
+            )}
+          {currentDrawing &&
+            nodeInfoTabs &&
+            currentDrawing === "events" &&
+            nodeInfoTabs[currentDrawing] && (
+              <NodeInfoSidebarTabs
+                nodeInfoTabs={nodeInfoTabs}
+                currentDrawing={currentDrawing}
+                activeTab={activeTab}
+                handleContextMenu={handleContextMenu}
+                setSendFabrics={setSendFabrics}
+                handleOpen={handleOpen}
+                sideBarData={sideBarData}
+                handleOpenModal={handleOpenModal}
+                setToggleReactflow={setToggleReactflow}
+                setFiles={setFiles}
+                //   darkMode={darkMode}
+                contextMenuVisible={contextMenuVisible}
+                contextMenuPosition={contextMenuPosition}
+              />
+            )}
+     
+     </div>
+
+       
+          {!toggleSFflow.events.eventParams &&
+            !toggleSFflow.events.eventSTS &&
+            !toggleSFflow.events.eventSTT &&
+            currentDrawing === "events" && (
+              <div className=" flex w-[100%] flex-col items-start justify-start">
+                <div className="m-2">
+                  <div
+                    className={`${darkMode ? "mb-3 cursor-pointer text-sm font-semibold text-white" : "mb-3 cursor-pointer text-sm font-semibold text-black"}  `}
+                  >
+                    nodeID :
+                  </div>
+                  <div
+                    className={`${darkMode ? "whitespace-nowrap text-xs font-medium text-white" : "whitespace-nowrap text-xs font-medium text-black  "}`}
+                  >
+                    {sideBarData?.id}
+                  </div>
                 </div>
-                <div
-                  className={`${darkMode ? "whitespace-nowrap text-xs font-medium text-white" : "whitespace-nowrap text-xs font-medium text-black  "}`}
-                >
-                  {sideBarData?.id}
-                </div>
-              </div>
-              <div className="col-span-2 w-[100%]">
-                {sideBarData &&
-                  Object.entries(sideBarData) &&
-                  Object.entries(sideBarData).length > 0 &&
-                  Object.entries(sideBarData)?.map(([key, value]) => (
-                    <React.Fragment>
-                      {key === "type" && (
-                        <div className="mt-2 flex w-[100%] justify-between px-2 py-2 ">
-                          <div className="flex w-[30%] justify-start">
-                            <div
+                <div className="col-span-2 w-[100%]">
+                  {sideBarData &&
+                    Object.entries(sideBarData) &&
+                    Object.entries(sideBarData).length > 0 &&
+                    Object.entries(sideBarData)?.map(([key, value]) => (
+                      <React.Fragment>
+                        {key === "type" && (
+                          <div className="mt-2 flex w-[100%] justify-between px-2 py-2 ">
+                            <div className="flex w-[30%] justify-start">
+                              <div
+                                className={
+                                  darkMode
+                                    ? "font-semibold text-white "
+                                    : "font-semibold text-black"
+                                }
+                              >
+                                {key}
+                              </div>{" "}
+                            </div>
+                            <span
                               className={
                                 darkMode
                                   ? "font-semibold text-white "
                                   : "font-semibold text-black"
                               }
                             >
-                              {key}
-                            </div>{" "}
-                          </div>
-                          <span
-                            className={
-                              darkMode
-                                ? "font-semibold text-white "
-                                : "font-semibold text-black"
-                            }
-                          >
-                            :
-                          </span>
-                          <div className="flex w-[50%] justify-start">
-                            <div
-                              className={darkMode ? "text-white" : "text-black"}
-                            >
-                              {value}
+                              :
+                            </span>
+                            <div className="flex w-[50%] justify-start">
+                              <div
+                                className={
+                                  darkMode ? "text-white" : "text-black"
+                                }
+                              >
+                                {value}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {key === "data" &&
-                        Object.entries(value) &&
-                        Object.entries(value).length > 0 &&
-                        Object.entries(value)?.map(([key, value]) => (
-                          <>
-                            {key === "sequence" && (
-                              <div className="mt-2 flex w-[100%] justify-between px-2 py-2 pr-3">
-                                <div className="flex w-[30%] justify-start">
-                                  <div
+                        {key === "data" &&
+                          Object.entries(value) &&
+                          Object.entries(value).length > 0 &&
+                          Object.entries(value)?.map(([key, value]) => (
+                            <>
+                              {key === "sequence" && (
+                                <div className="mt-2 flex w-[100%] justify-between px-2 py-2 pr-3">
+                                  <div className="flex w-[30%] justify-start">
+                                    <div
+                                      className={
+                                        darkMode
+                                          ? "font-semibold text-white "
+                                          : "font-semibold text-black"
+                                      }
+                                    >
+                                      {key}
+                                    </div>{" "}
+                                  </div>
+                                  <span
                                     className={
                                       darkMode
                                         ? "font-semibold text-white "
                                         : "font-semibold text-black"
                                     }
                                   >
-                                    {key}
-                                  </div>{" "}
-                                </div>
-                                <span
-                                  className={
-                                    darkMode
-                                      ? "font-semibold text-white "
-                                      : "font-semibold text-black"
-                                  }
-                                >
-                                  :
-                                </span>
-                                <div className="flex w-[50%] justify-start">
-                                  <div
-                                    className={
-                                      darkMode ? "text-white" : "text-black"
-                                    }
-                                  >
-                                    {value}
+                                    :
+                                  </span>
+                                  <div className="flex w-[50%] justify-start">
+                                    <div
+                                      className={
+                                        darkMode ? "text-white" : "text-black"
+                                      }
+                                    >
+                                      {value}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            )}
-                            {key === "label" && (
-                              <div className="mt-2 w-[100%] px-2 py-2">
-                                <ReusableInput
-                                  key={key + "contextmenu"}
-                                  handleChange={(e) =>
-                                    changeProperty({ [key]: e.target.value })
-                                  }
-                                  label={key}
-                                  darkMode={darkMode}
-                                  defaultValue={value}
-                                />
-                              </div>
-                            )}
-                          </>
-                        ))}
-                    </React.Fragment>
-                  ))}
+                              )}
+                              {key === "label" && (
+                                <div className="mt-2 w-[100%] px-2 py-2">
+                                  <ReusableInput
+                                    key={key + "contextmenu"}
+                                    handleChange={(e) =>
+                                      changeProperty({ [key]: e.target.value })
+                                    }
+                                    label={key}
+                                    darkMode={darkMode}
+                                    defaultValue={value}
+                                  />
+                                </div>
+                              )}
+                            </>
+                          ))}
+                      </React.Fragment>
+                    ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-        {!toggleSFflow.SF.PF &&
-          !toggleSFflow.SF.DF &&
-          !toggleSFflow.SF.UF &&
-          !toggle &&
-          sideBarData &&
-          currentDrawing !== "events" && (
-            <div className="h-40">
-              <div className="grid h-40 w-[100%] grid-cols-4 gap-2">
-                <div
-                  className={` flex items-start ${"col-span-4 mt-3 flex flex-col items-start justify-between  px-2 py-2"} `}
-                >
-                  <h1
-                    className={`${"mb-2  font-bold   text-black/80 dark:text-[#F4F4F5]"}   cursor-pointer  `}
-                  >
-                    nodeID :
-                  </h1>
-
-                  {sideBarData?.id ? (
+          {!toggleSFflow.SF.PF &&
+            !toggleSFflow.SF.DF &&
+            !toggleSFflow.SF.UF &&
+            !toggle &&
+            sideBarData &&
+            currentDrawing !== "events" && (
+              <>
+                <div className=" ">
+                  <div className="  w-[100%] ">
                     <div
-                      className={`${"whitespace-nowrap text-xs font-medium  text-black/80 dark:text-[#F4F4F5]"}`}
+                      className={` flex items-start ${" flex flex-col items-start justify-between  px-2 py-2"} `}
                     >
-                      {sideBarData?.id}
-                    </div>
-                  ) : (
-                    <p
-                      className={`${"text-sm font-medium text-black  dark:text-[#F4F4F5] "}`}
-                    >
-                      there is no value in this field
-                    </p>
-                  )}
-
-                  <div className="mt-4 flex w-full items-center justify-start">
-                    <h1
-                      className={`${"mb-2  font-bold  text-black/80 dark:text-[#F4F4F5] "}cursor-pointer  `}
-                    >
-                      Node Name :{" "}
-                    </h1>
-
-                    {sideBarData?.data?.label ? (
-                      <div
-                        className={`${"whitespace-nowrap pl-3 text-xs font-medium    text-black/80  dark:text-[#F4F4F5]"}`}
+                      <h1
+                        className={`${"mb-2  font-bold   text-black/80 dark:text-[#F4F4F5]"}   cursor-pointer  `}
                       >
-                        {sideBarData?.data?.label}
+                        nodeID :
+                      </h1>
+
+                      {sideBarData?.id ? (
+                        <div
+                          className={`${"whitespace-nowrap text-xs font-medium  text-black/80 dark:text-[#F4F4F5]"}`}
+                        >
+                          {sideBarData?.id}
+                        </div>
+                      ) : (
+                        <p
+                          className={`${"text-sm font-medium text-black  dark:text-[#F4F4F5] "}`}
+                        >
+                          there is no value in this field
+                        </p>
+                      )}
+
+                      <div className="mt-4 flex w-full items-center justify-start">
+                        <h1
+                          className={`${"mb-2  font-bold  text-black/80 dark:text-[#F4F4F5] "}cursor-pointer  `}
+                        >
+                          Node Name :{" "}
+                        </h1>
+
+                        {sideBarData?.data?.label ? (
+                          <div
+                            className={`${"whitespace-nowrap pl-3 text-xs font-medium    text-black/80  dark:text-[#F4F4F5]"}`}
+                          >
+                            {sideBarData?.data?.label}
+                          </div>
+                        ) : (
+                          <p
+                            className={`${"pl-3 text-sm font-medium  text-black dark:text-[#F4F4F5]"}`}
+                          >
+                            there is no value in this field
+                          </p>
+                        )}
                       </div>
-                    ) : (
-                      <p
-                        className={`${"pl-3 text-sm font-medium  text-black dark:text-[#F4F4F5]"}`}
-                      >
-                        there is no value in this field
-                      </p>
-                    )}
+                    </div>
+
+                    <div className="col-span-4 w-[100%] ">
+                      {sideBarData &&
+                        Object.entries(sideBarData?.property).map(
+                          ([key, value]) => (
+                            <React.Fragment>
+                              {key === "nodeType" && (
+                                <div className="mt-0 w-[100%] px-2 py-2">
+                                  <div className="flex flex-row ">
+                                    <h1
+                                      className={` font-bold text-black/80  dark:text-white`}
+                                    >
+                                      nodeType :
+                                    </h1>
+                                    <span
+                                      className={`ml-[5px] font-normal text-black/80 dark:text-white`}
+                                    >
+                                      {value && value}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          ),
+                        )}
+                    </div>
                   </div>
-                </div>
+                </div>  
 
-                <div className="col-span-4 w-[100%] ">
-                  {sideBarData &&
-                    Object.entries(sideBarData?.property).map(
-                      ([key, value]) => (
-                        <React.Fragment>
-                          {key === "nodeType" && (
-                            <div className="mt-0 w-[100%] px-2 py-2">
-                              <div className="flex flex-row ">
-                                <h1
-                                  className={` font-bold text-black/80  dark:text-white`}
-                                >
-                                  nodeType :
-                                </h1>
-                                <span
-                                  className={`ml-[5px] font-normal text-black/80 dark:text-white`}
-                                >
-                                  {value && value}
-                                </span>
-                              </div>
-                            </div>
-                          )}
-                        </React.Fragment>
-                      ),
-                    )}
-                </div>
-
-                <div className="h-100 col-span-4 w-[100%] ">
+                <div className="  w-[100%] h-64 overflow-y-scroll ">
                   {currentDrawing !== "SF" && (
                     <NodeInfoSidebarNodeInformation
                       sideBarData={sideBarData}
@@ -1205,7 +1221,7 @@ const NewNodeInfoSidebar = ({
                   )}
 
                   {sideBarData && currentDrawing === "SF" && (
-                    <div className="h-10">
+                
                       <SideBarDebugandFlag
                         upIdKey={upIdKey}
                         activeTab={activeTab}
@@ -1232,7 +1248,7 @@ const NewNodeInfoSidebar = ({
                         options={options}
                         items={items}
                       />
-                    </div>
+               
                   )}
 
                   {sideBarData && currentDrawing === "PF" && (
@@ -1264,12 +1280,12 @@ const NewNodeInfoSidebar = ({
                     />
                   )}
                 </div>
-              </div>
-            </div>
-          )}
-      </div>
+              </>
+            )}
+        </div>
+   
 
-      <div className=" h-full  ">
+      <div className=" h-[92%]  w-[100%]  ">
         <RenderData
           sideBarData={sideBarData}
           currentModel={currentModel}

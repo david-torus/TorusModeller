@@ -31,7 +31,12 @@ export default function FabricsSideBar({
 
   return (
     <div className="flex h-[100%]   w-full max-w-full flex-row overflow-hidden ">
-      <div className="bg-white  dark:border-[#212121]">
+      <div
+        style={{
+          height: "inherit",
+        }}
+        className="relative   w-[25%] border-r   bg-white  dark:border-[#212121]"
+      >
         {
           <JsonSidebarIcon
             key={"iconBar"}
@@ -47,22 +52,24 @@ export default function FabricsSideBar({
         }
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
-      <div className="w-full bg-white dark:bg-[#161616]">
-        {
-          <JsonSidebarDetail
-            showObj={showObj}
-            obj={obj}
-            handlejs={handlejs}
-            path={path}
-            label={label}
-            OgJson={OgJson}
-            handleAddjs={handleAddjs}
-            handleDeletejs={handleDeletejs}
-            checkActivestatus={checkActivestatus}
-            setExpandedItem={setExpandedItem}
-            expandedItem={expandedItem}
-          />
-        }
+      <div className="   w-full bg-white dark:bg-[#161616]">
+   
+        <div className=" h-full w-full relative   ">
+
+       { <JsonSidebarDetail
+          showObj={showObj}
+          obj={obj}
+          handlejs={handlejs}
+          path={path}
+          label={label}
+          OgJson={OgJson}
+          handleAddjs={handleAddjs}
+          handleDeletejs={handleDeletejs}
+          checkActivestatus={checkActivestatus}
+          setExpandedItem={setExpandedItem}
+          expandedItem={expandedItem}
+        />}
+        </div>
         {/* <FabricsSideBarDetails /> */}
       </div>
     </div>
