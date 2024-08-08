@@ -3,15 +3,12 @@ import React from 'react';
 const Accordion = ({ children, selectedKeys, onSelectionChange }) => {
   return (
     <div className="w-full">
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, {
-            isSelected: selectedKeys.includes(child.props.eventKey),
-            onSelectionChange,
-          });
-        }
-        return child;
-      })}
+      {React.Children.map(children, child =>
+        React.cloneElement(child, {
+          isSelected: selectedKeys.includes(child.props.eventKey),
+          onSelectionChange,
+        })
+      )}
     </div>
   );
 };

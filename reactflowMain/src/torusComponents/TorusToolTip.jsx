@@ -52,9 +52,9 @@ export default function TorusToolTip({
 
       {children ? children : null}
       <Tooltip
-        style={{ backgroundColor: color }}
+        style={{ backgroundColor: "#ccc" }}
         className={
-          "  items-center justify-center rounded-lg  px-3 py-1 font-bold shadow-sm dark:text-white"
+          "  items-center justify-center rounded-lg  px-3 py-1 font-bold shadow-sm "
         }
         placement={placement}
       >
@@ -65,7 +65,7 @@ export default function TorusToolTip({
             transform={`rotate(${placement === "top" ? 0 : placement === "bottom" ? 180 : placement === "right" ? 90 : 270})`}
             viewBox="0 0 8 8"
           >
-            <path d="M0 0 L4 4 L8 0" fill={color} />
+            <path d="M0 0 L4 4 L8 0" fill={"#ccc"} />
           </svg>
         </OverlayArrow>
         {tooltipContent}

@@ -492,17 +492,20 @@ const NewNodeInfoSidebar = ({
             }}
             currentModel={currentModel}
             setJson={setJson}
+            updateconfig={updatedNodeConfig}
             json={json}
             sendFabrics={sendFabrics}
             sidebarVisible={toggle}
             setSidebarVisible={setToggle}
+            sideBarData={sideBarData}
+            cm={tab}
           />
         )}
       </div>
     );
   };
 
-  console.log(toggleSFflow, "sfflow");
+  console.log(json,  "sfflow");
   const handleOpenModal = async (
     flowType,
     isDockey = false,

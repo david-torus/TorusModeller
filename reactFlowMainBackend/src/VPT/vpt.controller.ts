@@ -66,6 +66,26 @@ export class VptController {
     );
   }
 
+  @Get('catelogue')
+  async getApplicationListwithArtifactsGrp(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.getCatelogue(
+      query.tKey,
+      query.client,
+      query.saveKey,
+    );
+  }
+
+  @Get('artifactsGroup')
+  async getArtifactsGroup(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.getArtifactsGroup(
+      query.saveKey,
+    );
+  }
+
   @Post('applicationCreate')
   async createApplication(
     @Query(new ValidationPipe({ transform: true })) query: any,
@@ -144,11 +164,12 @@ export class VptController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ) {
     return await this.vptService.deleteFlowArtifact(
-      query.tenant,
-      query.appGroup,
-      query.applicationName,
-      query.fabrics,
-      query.artifact,
+      query?.tenant,
+      query?.appGroup,
+      query?.applicationName,
+      query?.fabrics,
+      query?.artifact,
+      query.saveKey,
     );
   }
 

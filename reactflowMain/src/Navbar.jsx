@@ -39,6 +39,8 @@ import {
   applicationLists,
   renameArtifact,
   changeArtifactLock,
+  getprojectLists,
+  getArtifactsGroups,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -59,7 +61,10 @@ import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 
-import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
+import TorusAccordion, {
+  Accordion,
+  AccordionItem,
+} from "./torusComponents/TorusAccordian.jsx";
 import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
@@ -148,6 +153,27 @@ export default function Navbar({
   const [newArtifactNameValidation, setNewArtifactNameValidation] =
     useState(false);
 
+  const [catelogue, setCatelogue] = useState(null);
+
+  const [artifactsGroup, setArtifactsGroup] = useState([]);
+  const [destructureData, setDestructureData] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [categeroryList, setCategeroryList] = useState([
+    "My Artifacts",
+    "Shared with me",
+    "Puchased",
+  ]);
+
+  console.log(selectedKeys, "selectedKEys===>");
+
+  const handleSelectionChange = (key) => {
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+    handleGetProjects(selectedTkey, selectedClient, selectedFabric);
+  };
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
   };
@@ -860,6 +886,72 @@ export default function Navbar({
     }
   };
 
+  const handleGetProjects = async (
+    selectedTkey,
+    client,
+    selectedFabric,
+    selectedProject,
+  ) => {
+    try {
+      const response = await getprojectLists(
+        selectedTkey,
+        client,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+      );
+
+      if (response && response.status === 200) {
+        setProjectList(response.data);
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
+    }
+  };
+
+  const handleGetArtifactsGroup = async (
+    selectedTkey,
+    client,
+    selectedFabric,
+    selectedProject,
+  ) => {
+    try {
+      const response = await getArtifactsGroups(
+        selectedTkey,
+        client,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+      );
+      if (response && response.status === 200) {
+        setArtifactsGroup(response.data);
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
+    }
+  };
+  console.log(projectList, "<<catelogue>>");
+  console.log(artifactsGroup[0]?.artifactsGroup, "<<cateloguearty>>");
+  console.log(destructureData, "<<catelogue>>");
+
   const handleIntialLoad = async (
     selectedTkey,
     client,
@@ -1419,6 +1511,25 @@ export default function Navbar({
     setArtifactCollectionName("");
   };
 
+  const handleButtonToggle = async () => {
+    console.log("Button toggled to item:");
+  };
+
+  const handleArtifactstoggle = (project) => {
+    try {
+      handleGetArtifactsGroup(
+        selectedTkey,
+        client,
+        selectedFabric,
+        project,
+      ).catch((err) => {
+        throw err;
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleAccordionContentToggle = (item) => {
     console.log("Accordion content toggled to item:", item);
     if (selectedVersion) handleArtifactLock(false);
@@ -1427,27 +1538,215 @@ export default function Navbar({
     setArtifactCollectionName(null);
   };
 
-  const accordionItems = useMemo(() => {
-    return [
-      {
-        title: "My Artifacts",
-        content: projectList,
-        id: "FRK",
-      },
-      {
-        title: "My Components",
+  const destructure = (ver) => {
+    return ver
+      .map(({ catelogue, artifactsGroup }) => {
+        const titles = Array.isArray(catelogue) ? catelogue : [catelogue];
 
-        content: projectList,
-        id: "CRK",
-      },
-      {
-        title: "Shared with Me",
+        return titles.map((title, index) => ({
+          title: `${title}`,
+          type: "catelogue",
+          id: "FRK" || "CRK",
+          content: artifactsGroup.map((artifact) => ({
+            title: artifact,
+            content: [],
+            type: "ArtifactsGrp",
+          })),
+        }));
+      })
+      .flat(); // Flatten the array if `catelogue` was an array
+  };
 
-        content: projectList,
-        id: "TFRK",
-      },
-    ];
-  }, [projectList]);
+  // useEffect(() => {
+  //   if (artifactsGroup) setDestructureData(destructure(artifactsGroup));
+  // }, [artifactsGroup]);
+
+  const handleItemClick = (item) => {
+    if (item.type === "catelogue") {
+      try {
+        const artifactsGroup = handleGetArtifactsGroup(
+          selectedTkey,
+          client,
+          selectedFabric,
+        );
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    } else if (item.type === "ArtifactsGrp") {
+      console.log("Clicked item Artifacts group:", item);
+    } else if (item.type === "categery") {
+      try {
+        const catelogues = handleGetProjects(
+          selectedTkey,
+          client,
+          selectedFabric,
+          selectedProject,
+        );
+        if (catelogues) setProjectList(catelogues);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+      console.log("Clicked item catelouge:", item);
+    }
+  };
+
+  const handleNestedItemClick = (nestedItem) => {
+    console.log("Clicked nested item:", nestedItem);
+  };
+
+  // const accordionItems = useMemo(() => {
+  //   return [
+  //     {
+  //       title: "My Artifacts",
+  //       type: "categery",
+  //       id: "FRK",
+  //       content: [
+  //         {
+  //           title: projectList[0],
+  //           content: [
+  //             {
+  //               title: artifactsGroup[0]?.artifactsGroup[0],
+  //               content: [],
+  //               type: "ArtifactsGrp",
+  //             },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "FRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             {
+  //               title: artifactsGroup[0]?.artifactsGroup[0],
+  //               content: [],
+  //               type: "ArtifactsGrp",
+  //             },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "FRK",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Shared with me",
+  //       type: "categery",
+  //       id: "FRK",
+  //       content: [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Purchased",
+  //       type: "categery",
+  //       id: "CRK",
+
+  //       content: [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // }, [projectList]);
+
+  // const accordionItems = useMemo(() => {
+  //   const staticTitles = [
+  //     { title: "My Artifacts", type: "categery", id: "FRK" },
+  //     { title: "Shared with Me", type: "categery", id: "FRK" },
+  //     { title: "Purchased", type: "categery", id: "CRK" },
+  //   ];
+
+  //   const dynamicContent = (type) => {
+  //     if (type === "FRK") {
+  //       // projectList?.map((project, index) => ({
+  //       //   title: project,
+  //       //   content: artifactsGroup[index]?.artifactsGroup.map(
+  //       //     (artifact, index) => ({
+  //       //       title: artifact,
+  //       //       content: [],
+  //       //       type: "ArtifactsGrp",
+  //       //     }),
+  //       //   ),
+  //       // }));
+
+  //       return [
+  //         {
+  //           title: projectList[0],
+  //           content: artifactsGroup.map((artifact, index) => ({
+  //             title: artifact,
+  //             content: [],
+  //             type: "ArtifactsGrp",
+  //           })),
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //       ];
+  //     } else if (type === "CRK") {
+  //       return [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //       ];
+  //     }
+  //     return [];
+  //   };
+
+  //   return staticTitles.map(({ title, id }) => ({
+  //     title,
+  //     type: "categery",
+  //     id,
+  //     content: dynamicContent(id),
+  //   }));
+  // }, [projectList, artifactsGroup]);
 
   const mappedTeamItems = [
     {
@@ -1617,14 +1916,48 @@ export default function Navbar({
                               <div className=" flex h-[74%] w-full items-center  justify-center   ">
                                 <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
                                   <div className="flex h-full w-[100%] flex-col overflow-scroll">
-                                    <TorusAccordion
+                                    {/* <TorusAccordion
                                       selectedContent={selectedProject}
                                       items={accordionItems}
-                                      onToggle={handleAccordionToggle}
+                                      onToggle={handleArtifactstoggle}
                                       onContentToggle={
                                         handleAccordionContentToggle
                                       }
-                                    />
+                                      onItemClick={handleItemClick}
+                                      onNestedItemClick={handleNestedItemClick}
+                                    /> */}
+
+                                    <Accordion
+                                      selectedKeys={selectedKeys}
+                                      onSelectionChange={handleSelectionChange}
+                                    >
+                                      {categeroryList.map((item, index) => {
+                                        return (
+                                          <AccordionItem
+                                            key={`${index}-${item}`}
+                                            title={item}
+                                            eventKey={`${index}-${item}`}
+                                          >
+                                            {projectList?.map(
+                                              (project, index) => {
+                                                return (
+                                                  <AccordionItem
+                                                    key={`${index}-${project}`}
+                                                    title={project}
+                                                    eventKey={`${index}-${project}`}
+                                                    onSelectionChange={
+                                                      handleSelectionChange
+                                                    }
+                                                  >
+                                                    {}
+                                                  </AccordionItem>
+                                                );
+                                              },
+                                            )}
+                                          </AccordionItem>
+                                        );
+                                      })}
+                                    </Accordion>
                                   </div>
                                 </div>
 
@@ -2071,7 +2404,8 @@ export default function Navbar({
 
                                 <div className="flex w-2/3 items-center justify-end gap-2">
                                   <TorusButton
-                                    buttonClassName=" bg-[#4CAF50]/15  w-[70px] h-[30px] rounded-md text-[#4CAF50] text-xs  flex justify-center items-center"
+                                    isDisabled={newArtifact ? true : false}
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#4CAF50]/15 text-[#4CAF50] cursor-pointer"}   w-[70px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     onPress={() =>
                                       saveProcessFlow(
                                         "update",
@@ -2084,7 +2418,8 @@ export default function Navbar({
                                     Children={"Update"}
                                   />
                                   <TorusButton
-                                    buttonClassName=" bg-[#0736C4]/15 dark:text-[#3063FF] w-[70px] h-[30px] text-[#0736C4] rounded-md text-xs flex justify-center items-center"
+                                    isDisabled={newArtifact ? true : false}
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]/15 dark:text-[#3063FF] text-[#0736C4] cursor-pointer"}   w-[70px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     onPress={() => {
                                       saveProcessFlow(
                                         "create",
@@ -2097,7 +2432,8 @@ export default function Navbar({
                                     Children={"Save"}
                                   />
                                   <TorusButton
-                                    buttonClassName=" bg-[#0736C4] dark:bg-[#3063FF] w-[80px] h-[30px] text-xs text-white rounded-md flex justify-center items-center"
+                                    isDisabled={newArtifact ? true : false}
+                                    buttonClassName={`${newArtifact ? "bg-[#F4F5FA] text-gray-500 cursor-not-allowed" : "bg-[#0736C4]  text-white cursor-pointer"}  w-[80px] h-[30px] rounded-md text-xs  flex justify-center items-center`}
                                     Children={"Save as"}
                                   />
                                 </div>

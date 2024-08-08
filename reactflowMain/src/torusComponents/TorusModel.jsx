@@ -71,7 +71,7 @@ export default function TorusModel({
                       </div>
 
                       <div
-                        className=" h-6 w-6 flex justify-center items-center cursor-pointer rounded-full stroke-2 text-red-500 torus-hover:ring-1 torus-hover:ring-red-600 torus-hover:ring-offset-1"
+                        className=" flex h-6 w-6 cursor-pointer items-center justify-center rounded-full stroke-2 text-red-500 torus-hover:ring-1 torus-hover:ring-red-600 torus-hover:ring-offset-1"
                         onClick={() => close()}
                       >
                         <TorusModelClose />
@@ -86,7 +86,7 @@ export default function TorusModel({
                   <div className="flex justify-end gap-2 border border-t-1 border-[#E5E9EB]">
                     <div className="flex justify-between gap-3 px-6 py-4">
                       <DialogButton
-                        className={`pressed:bg-slate-300 bg-slate-200 text-slate-800 hover:border-slate-300 ${
+                        className={`pressed:bg-slate-300 cursor-pointer bg-slate-200 text-slate-800 hover:border-slate-300 ${
                           cancelButtonStyle || ""
                         }`}
                         onPress={() => {
@@ -97,7 +97,7 @@ export default function TorusModel({
                         {cancelButtonText}
                       </DialogButton>
                       <DialogButton
-                        className={`pressed:bg-red-600 bg-[#F14336] text-white hover:border-red-600 ${
+                        className={`pressed:bg-red-600 cursor-pointer bg-[#F14336] text-white hover:border-red-600 ${
                           confirmButtonStyle || ""
                         }`}
                         onPress={() => {

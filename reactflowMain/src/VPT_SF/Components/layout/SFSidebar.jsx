@@ -530,6 +530,9 @@ const SFSidebar = ({
   tenant,
   group,
   application,
+  updateconfig,
+  sideBarData,
+  cm,
 }) => {
   const { darkMode } = useContext(DarkmodeContext);
   const [artifactsList, setArtifactsList] = useState([]);
@@ -543,7 +546,7 @@ const SFSidebar = ({
   const [selectionNodeId, setSelectionNodeId] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [fabricsOptions, setFabricsOptions] = useState({});
-  const[fabricsList,setFabricsList]=useState(null);
+  const [fabricsList, setFabricsList] = useState(null);
 
   const {
     client,
@@ -571,6 +574,7 @@ const SFSidebar = ({
    */
   const updateselectedJson = (e) => {
     try {
+      console.log(e, "--josnui=");
       if (Object.keys(e).length > 0) {
         setSelectedJson(e);
       }
@@ -578,7 +582,7 @@ const SFSidebar = ({
       console.error(error);
     }
   };
-
+  console.log(selectedJson, "-<--sdfsf---->");
   const getArtifacts = async (selectedApplicationss) => {
     try {
       const response = await artifactList(
@@ -652,12 +656,14 @@ const SFSidebar = ({
             ...js,
             actionAllowed: {
               ...js?.actionAllowed,
-              type: "allMultipleSelect",
+              label: "Allowed Actions",
+              type: "dropdown",
               selectionList: ["*", ...details?.map((item) => item.resource)],
             },
             actionDenied: {
               ...js?.actionDenied,
-              type: "allMultipleSelect",
+              label: "Denied Actions",
+              type: "dropdown",
               selectionList: ["*", ...details?.map((item) => item.resource)],
             },
             [type]: details,
@@ -666,12 +672,14 @@ const SFSidebar = ({
           return {
             ...js,
             actionAllowed: {
-              type: "allMultipleSelect",
+              label: "Allowed Actions",
+              type: "dropdown",
               selectedValue: ["*"],
               selectionList: ["*", ...details?.map((item) => item.resource)],
             },
             actionDenied: {
-              type: "allMultipleSelect",
+              label: "Denied Actions",
+              type: "dropdown",
               selectedValue: ["*"],
               selectionList: ["*", ...details?.map((item) => item.resource)],
             },
@@ -762,19 +770,23 @@ const SFSidebar = ({
         control &&
         control.map((item) => {
           return {
+            label: "controls",
             resourceType: "controls",
             resource: item.nodeName || "",
             // SIFlag: {
+            //   label:"SI Flag",
             //   type: "dropdown",
             //   selectedValue: "A",
             //   selectionList: ["A", "E"],
             // },
             // actionAllowed: {
+            //   label: "Allowed Actions",
             //   type: "dropdown",
             //   selectedValue: ["*"],
             //   selectionList: ["*", "Y", "N"],
             // },
             // actionDenied: {
+            //   label: "Denied Actions",
             //   type: "dropdown",
             //   selectedValue: ["*"],
             //   selectionList: ["*", "Y", "N"],
@@ -813,10 +825,12 @@ const SFSidebar = ({
                 });
                 let ds = selectedN.map((item) => {
                   return {
+                    label: "Process Flow",
                     id: item.nodeId,
                     resourceType: "ProcessFlow",
                     resource: item.nodeName || item?.data?.label || "",
                     SIFlag: {
+                      label: "SI Flag",
                       type: "dropdown",
                       selectedValue: "A",
                       selectionList: ["A", "E"],
@@ -848,11 +862,13 @@ const SFSidebar = ({
             });
             let ds = selectedN.map((item) => {
               return {
+                label: "Process Flow",
                 id: item.nodeId,
                 resourceType: "ProcessFlow",
                 resource: item.nodeName || item?.data?.label || "",
 
                 SIFlag: {
+                  label: "SI Flag",
                   type: "dropdown",
                   selectedValue: "A",
                   selectionList: ["A", "E"],
@@ -896,10 +912,12 @@ const SFSidebar = ({
                 });
                 let ds = selectedN?.map((item) => {
                   return {
+                    label: "Tables",
                     id: item.nodeId,
                     resourceType: "tables",
                     resource: item.nodeName || item?.data?.label || "",
                     SIFlag: {
+                      label: "SI Flag",
                       type: "dropdown",
                       selectedValue: "A",
                       selectionList: ["A", "E"],
@@ -935,10 +953,12 @@ const SFSidebar = ({
             });
             let ds = selectedN?.map((item) => {
               return {
+                label: "Tables",
                 id: item.nodeId,
                 resourceType: "tables",
                 resource: item.nodeName || item?.data?.label || "",
                 SIFlag: {
+                  label: "SI Flag",
                   type: "dropdown",
                   selectedValue: "A",
                   selectionList: ["A", "E"],
@@ -992,11 +1012,13 @@ const SFSidebar = ({
                   return {
                     ...handleFabricsOptions(
                       {
+                        label: "Components",
                         id: item.nodeId,
                         resourceType: "Component",
                         resource:
                           item.nodeName || item?.data?.label || item.nodeType,
                         SIFlag: {
+                          label: "SI Flag",
                           type: "dropdown",
                           selectedValue: "A",
                           selectionList: ["A", "E"],
@@ -1032,11 +1054,13 @@ const SFSidebar = ({
               return {
                 ...handleFabricsOptions(
                   {
+                    label: "Components",
                     id: item.nodeId,
                     resourceType: "Component",
                     resource:
                       item.nodeName || item?.data?.label || item.nodeType,
                     SIFlag: {
+                      label: "SI Flag",
                       type: "dropdown",
                       selectedValue: "A",
                       selectionList: ["A", "E"],
@@ -1135,22 +1159,24 @@ const SFSidebar = ({
         } else {
           if (sendFabrics === "pf" || sendFabrics === "PF") {
             updateselectedJson({
+              label: "ProcessFlow",
               resourceType: "ProcessFlow",
               resource:
-              "TCL" +
-              ":" +
-              selectedTkey +
-              ":" +
-              sendFabrics +
-              ":" +
-              Array.from(selectedapplication)[0] +
-              ":" +
-              "pgrp" +
-              ":" +
-              Array.from(selectedArtifacts)[0] +
-              ":" +
-              Array.from(selectedVerison)[0],
+                "TCL" +
+                ":" +
+                selectedTkey +
+                ":" +
+                sendFabrics +
+                ":" +
+                Array.from(selectedapplication)[0] +
+                ":" +
+                "pgrp" +
+                ":" +
+                Array.from(selectedArtifacts)[0] +
+                ":" +
+                Array.from(selectedVerison)[0],
               SIFlag: {
+                label: "SI Flag",
                 type: "dropdown",
                 selectedValue: "A",
                 selectionList: ["A", "E"],
@@ -1161,8 +1187,62 @@ const SFSidebar = ({
           }
           if (sendFabrics === "df" || sendFabrics === "DF") {
             updateselectedJson({
+              label: "tables",
               resourceType: "tables",
               resource:
+                "TCL" +
+                ":" +
+                selectedTkey +
+                ":" +
+                sendFabrics +
+                ":" +
+                Array.from(selectedapplication)[0] +
+                ":" +
+                "pgrp" +
+                ":" +
+                Array.from(selectedArtifacts)[0] +
+                ":" +
+                Array.from(selectedVerison)[0],
+
+              tableDetails: [],
+              apiDetails: [],
+            });
+          }
+          if (sendFabrics === "uf" || sendFabrics === "UF") {
+            updateselectedJson({
+              label: "Page",
+              resourceType: "Page",
+              resource:
+                "TCL" +
+                ":" +
+                selectedTkey +
+                ":" +
+                sendFabrics +
+                ":" +
+                Array.from(selectedapplication)[0] +
+                ":" +
+                "pgrp" +
+                ":" +
+                Array.from(selectedArtifacts)[0] +
+                ":" +
+                Array.from(selectedVerison)[0],
+              SIFlag: {
+                label: "SI Flag",
+                type: "dropdown",
+                selectedValue: "A",
+                selectionList: ["A", "E"],
+              },
+              ...fabricsOptions,
+              componentDetails: [],
+            });
+          }
+        }
+      } else if (selectedVerison) {
+        if (sendFabrics === "pf" || sendFabrics === "PF") {
+          updateselectedJson({
+            label: "roote",
+            resourceType: "ProcessFlow",
+            resource:
               "TCL" +
               ":" +
               selectedTkey +
@@ -1177,58 +1257,10 @@ const SFSidebar = ({
               ":" +
               Array.from(selectedVerison)[0],
 
-              tableDetails: [],
-              apiDetails: [],
-            });
-          }
-          if (sendFabrics === "uf" || sendFabrics === "UF") {
-            updateselectedJson({
-              resourceType: "Page",
-              resource:
-                "TCL" +
-              ":" +
-              selectedTkey +
-              ":" +
-              sendFabrics +
-              ":" +
-              Array.from(selectedapplication)[0] +
-              ":" +
-              "pgrp" +
-              ":" +
-              Array.from(selectedArtifacts)[0] +
-              ":" +
-              Array.from(selectedVerison)[0],
-              SIFlag: {
-                type: "dropdown",
-                selectedValue: "A",
-                selectionList: ["A", "E"],
-              },
-              ...fabricsOptions,
-              componentDetails: [],
-            });
-          }
-        }
-      } else if (selectedVerison) {
-        if (sendFabrics === "pf" || sendFabrics === "PF") {
-          updateselectedJson({
-            resourceType: "ProcessFlow",
-            resource:
-             "TCL" +
-              ":" +
-              selectedTkey +
-              ":" +
-              sendFabrics +
-              ":" +
-              Array.from(selectedapplication)[0] +
-              ":" +
-              "pgrp" +
-              ":" +
-              Array.from(selectedArtifacts)[0] +
-              ":" +
-              Array.from(selectedVerison)[0],
             SIFlag: {
+              label: "SI Flag",
               type: "dropdown",
-              selectedValue: "A",
+              selectedValue: ["A"],
               selectionList: ["A", "E"],
             },
             ...fabricsOptions,
@@ -1237,9 +1269,10 @@ const SFSidebar = ({
         }
         if (sendFabrics === "df" || sendFabrics === "DF") {
           updateselectedJson({
+            label: "tables",
             resourceType: "tables",
             resource:
-            "TCL" +
+              "TCL" +
               ":" +
               selectedTkey +
               ":" +
@@ -1258,9 +1291,10 @@ const SFSidebar = ({
         }
         if (sendFabrics === "uf" || sendFabrics === "UF") {
           updateselectedJson({
+            label: "Page",
             resourceType: "Page",
             resource:
-             "TCL" +
+              "TCL" +
               ":" +
               selectedTkey +
               ":" +
@@ -1274,6 +1308,7 @@ const SFSidebar = ({
               ":" +
               Array.from(selectedVerison)[0],
             SIFlag: {
+              label: "SI Flag",
               type: "dropdown",
               selectedValue: "A",
               selectionList: ["A", "E"],
@@ -1308,36 +1343,42 @@ const SFSidebar = ({
 
       if (sendFabrics === "pf" || sendFabrics === "PF") {
         options.actionAllowed = {
-          type: "multipleSelect",
+          label: "optionsAllowed",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "Read", "Execute", "Debug"],
         };
         options.actionDenied = {
-          type: "multipleSelect",
+          label: "optionsDenied",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "Read", "Execute", "Debug"],
         };
       }
       if (sendFabrics === "df" || sendFabrics === "DF") {
         options.actionAllowed = {
-          type: "multipleSelect",
+          label: "optionsAllowed",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "GET", "GETBYONE", "POST", "UPDATE", "DELETE"],
         };
         options.actionDenied = {
-          type: "multipleSelect",
+          label: "optionsDenied",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "GET", "GETBYONE", "POST", "UPDATE", "DELETE"],
         };
       }
       if (sendFabrics === "uf" || sendFabrics === "UF") {
         options.actionAllowed = {
-          type: "multipleSelect",
+          label: "optionsAllowed",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "Y", "N"],
         };
         options.actionDenied = {
-          type: "multipleSelect",
+          label: "optionsDenied",
+          type: "dropdown",
           selectedValue: ["*"],
           selectionList: ["*", "Y", "N"],
         };
@@ -1511,29 +1552,34 @@ const SFSidebar = ({
           size="sm"
           onClick={() => {
             setJson((prev) => {
+              const currentModelData = Array.isArray(prev?.[currentModel])
+                ? prev?.[currentModel]
+                : [];
+              updateconfig(
+                sideBarData?.id,
+                {
+                  nodeId: sideBarData?.id,
+                  nodeName: sideBarData?.data?.label,
+                  nodeType: sideBarData?.type,
+                },
+                {
+                  [currentModel]: [
+                    ...currentModelData.filter(
+                      (item) => item.resource !== selectedJson.resource,
+                    ),
+                    selectedJson,
+                  ],
+                },
+              );
               return {
                 ...prev,
-                [currentModel]:
-                  prev?.[currentModel] && Array.isArray(prev[currentModel])
-                    ? [
-                        ...prev[currentModel].filter(
-                          (item) => item.resource !== selectedJson.resource,
-                        ),
-                        selectedJson,
-                      ]
-                    : [selectedJson],
+                [currentModel]: [
+                  ...currentModelData.filter(
+                    (item) => item.resource !== selectedJson.resource,
+                  ),
+                  selectedJson,
+                ],
               };
-              // if (Array.isArray(prev)) {
-              //   return [
-              //     ...prev.filter(
-              //       (item) => item.resource !== selectedJson.resource
-              //     ),
-              //     selectedJson,
-              //   ];
-              // }
-              //  else {
-              //   return [selectedJson];
-              // }
             });
 
             toast.success("Data saved successfully!", {
@@ -1774,10 +1820,15 @@ const SFSidebar = ({
 
         {/* SI Flag selction */}
       </div>
-{console.log(selectedJson, "sdelectedJson")}
+      {console.log(selectedJson, "sdelectedJson")}
       {selectedJson && (
         <div className="h-96 overflow-y-scroll  dark:bg-[#161616]">
-          <RenderJson json={selectedJson} setJson={updateselectedJson}  updatedNodeConfig={setFabricsList} />
+          <RenderJson
+            json={selectedJson}
+            setSFjson={updateselectedJson}
+            updatedNodeConfig={setFabricsList}
+          />
+          {console.log(selectedJson, "sfjson09")}
           {/* <Builder
           key={"MT"}
           uiPolicy={cardUIPolicy}

@@ -38,6 +38,7 @@ import PortalDropdown from "./torusComponents/PortalDropdown.jsx";
 import TorusModularDatePicker from "./torusComponents/TorusDatePicker/TorusModularDatePicker.tsx";
 import TorusModularTimePicker from "./torusComponents/TorusModularTimePicker/TorusModularTimePicker.tsx";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
+import { Accordion, AccordionItem } from "./torusComponents/torusAccordion.jsx";
 
 export default function SignIn() {
   const [selectedValues, setSelectedValues] = useState([]);
@@ -55,6 +56,19 @@ export default function SignIn() {
   const [textArea, setTextArea] = useState("");
   const [textValue, setTextValue] = useState("");
   const [wordLength, setWordLength] = useState(null);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+
+  console.log(selectedKeys,"selectedKEys===>")
+
+  const handleSelectionChange = (key) => {
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key]
+    );
+  };
+
+  const defaultContent = <p>This is the content of the accordion item.</p>;
 
   console.log(wordLength, "wordLength");
 
@@ -511,6 +525,34 @@ export default function SignIn() {
               </div>
             </div>
           </div>
+
+          <>
+            <Accordion
+              selectedKeys={selectedKeys}
+              onSelectionChange={handleSelectionChange}
+            >
+              <AccordionItem eventKey="1" title="Accordion 1">
+                {defaultContent}
+                <Accordion
+                  selectedKeys={selectedKeys}
+                  onSelectionChange={handleSelectionChange}
+                >
+                  <AccordionItem eventKey="1-1" title="Nested Accordion 1">
+                    <p>This is nested content 1.</p>
+                  </AccordionItem>
+                  <AccordionItem eventKey="1-2" title="Nested Accordion 2">
+                    <p>This is nested content 2.</p>
+                  </AccordionItem>
+                </Accordion>
+              </AccordionItem>
+              <AccordionItem eventKey="2" title="Accordion 2">
+                {defaultContent}
+              </AccordionItem>
+              <AccordionItem eventKey="3" title="Accordion 3">
+                {defaultContent}
+              </AccordionItem>
+            </Accordion>
+          </>
 
           <div className="w-[100%] flex justify-between items-center">
             <Button onPress={() => outPutFn1()}>Warning</Button>

@@ -19,6 +19,7 @@ import {
 import { NodeInfoSidebarTabs } from "../commonComponents/CommonSideBar/NodeInfoSidebarTabs";
 import { MdOutlineEventNote } from "react-icons/md";
 import NewNodeInfoSidebar from "./NewNodeInfoSidebar";
+import { useCallback } from "react";
 
 const js = {
   orgGrp: [
@@ -728,12 +729,14 @@ export const RenderJson = ({
   updatedNodeConfig,
   setJson,
   nodedata,
-    cm,
+  cm,
+  setSFjson,
 }) => {
   const [dupJson, setDupJson] = useState(null);
   const [convertedJson, setConvertedJson] = useState(null);
 
   function convertJson(obj) {
+    console.log(obj, "ctobj");
     const converted = {};
     for (let key in obj) {
       if (typeof obj[key] === "object" && !Array.isArray(obj[key])) {
@@ -766,65 +769,89 @@ export const RenderJson = ({
     }
   }
 
-  const OgJson = () => {
-    const jss = convertJson(dupJson);
-    const newjson = JSON.stringify(jss, null, 2);
+  function unflattenJson(flatJson) {
+    function setNestedItem(obj, keys, value) {
+        keys.reduce((acc, key, index) => {
+            if (index === keys.length - 1) {
+                acc[key] = value;
+            } else {
+                if (!acc[key]) {
+                    acc[key] = {};
+                }
+                return acc[key];
+            }
+        }, obj);
+    }
 
-    let newjs = unflatten(jss);
-    console.log(newjs, nodedata, "new");
+    const unflattened = {};
 
-      updatedNodeConfig(
-        nodedata?.id,
-        {
-          nodeId: nodedata?.id,
-          nodeName: nodedata?.data?.label,
-          nodeType: nodedata?.type,
+    for (const [key, value] of Object.entries(flatJson)) {
+        const keys = key.split('/');
+        setNestedItem(unflattened, keys, value);
+    }
+
+    return unflattened;
+}
+
+  const OgJson = useCallback(() => {
+    console.log(dupJson , "newwjs==>" )
+
+    console.log(dupJson , "newwjs<<<==" )
+    const newjs = unflattenJson(dupJson);
+
+    console.log(newjs["root"], "newwjs=");
+    updatedNodeConfig(
+      nodedata?.id,
+      {
+        nodeId: nodedata?.id,
+        nodeName: nodedata?.data?.label,
+        nodeType: nodedata?.type,
+      },
+      {
+        [cm]: {
+          ...newjs["root"],
         },
-        {
-          [cm]: {
-            ...newjs,
-          },
-        },
-      );
-      setConvertedJson(newjs);
+      },
+    );
+    setConvertedJson(newjs);
+
+    setSFjson && setSFjson(newjs["root"]);
+    setJson &&
       setJson((prev) => {
         return {
           ...prev,
           [cm]: {
-            ...newjs,
+            ...newjs["root"],
           },
         };
       });
-    };
+  }, [dupJson]);
 
-    // useEffect(() => {
-    //   if (convertedJson) {
-    //     setJson(convertedJson);
-    //   }
-    // }, []);
 
-    const handlejs = (e, i, key, type, jskey) => {
-      console.log(e, i, key, type, jskey, "--->rendertype");
-      if (type == "obj") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [i]: {
-              ...prev[i],
-              [key]: e,
-            },
-          };
-        });
+
+  const handlejs = (e, i, key, type, jskey) => {
+    console.log(e, i, key, type, jskey, "--->rendertype");
+    if (type == "obj") {
+      setDupJson((prev) => {
+        const newJson = structuredClone(prev);
+        return {
+          ...newJson,
+          [i]: {
+            ...newJson[i],
+            [key]: e,
+          },
+        };
+      });
+    }
+
+    if (type == "arr-0" || type == "arr-1" || type == "arr") {
+      if (i) {
+        const js = structuredClone(dupJson);
+        _.set(js, i, e);
+        setDupJson(js);
+        console.log(js, "arrjs");
       }
-
-      if (type == "arr-0" || type == "arr-1" || type == "arr") {
-        if (i) {
-          const js = structuredClone(dupJson);
-          _.set(js, i, e);
-          setDupJson(js);
-          console.log(js, "arrjs");
-        }
-      }
+    }
 
     if (type == "dropdown" || type == "boolean") {
       if (i) {
@@ -836,122 +863,123 @@ export const RenderJson = ({
     }
   };
 
-    const handleAddjs = (path, key, value, type, i, selectedType) => {
-      console.log(path, key, value, type, i, selectedType, "handleAddjs");
-      if (type == "obj" && selectedType === "input") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: {
-              ...prev[path],
-              [key]: value,
+  const handleAddjs = (path, key, value, type, i, selectedType) => {
+    console.log(path, key, value, type, i, selectedType, "handleAddjs");
+    if (type == "obj" && selectedType === "input") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: value,
+          },
+        };
+      });
+    } else if (type == "obj" && selectedType === "boolean") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: {
+              label: key,
+              type: "boolean",
+              selectedValue: false,
+              selectionList: [true, false],
             },
-          };
-        });
-      } else if (type == "obj" && selectedType === "boolean") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: {
-              ...prev[path],
-              [key]: {
-                label: key,
-                type: "boolean",
-                selectedValue: false,
-                selectionList: [true, false],
-              },
+          },
+        };
+      });
+    } else if (type == "obj" && selectedType === "dropdown") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: {
+            ...prev[path],
+            [key]: {
+              label: key,
+              type: "dropdown",
+              selectedValue: "",
+              selectionList: value,
             },
-          };
-        });
-      } else if (type == "obj" && selectedType === "dropdown") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: {
-              ...prev[path],
-              [key]: {
-                label: key,
-                type: "dropdown",
-                selectedValue: "",
-                selectionList: value,
-              },
+          },
+        };
+      });
+    } else if (type === "arr-1" && selectedType === "input") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item, index) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: value,
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type === "arr-1" && selectedType === "boolean") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item, index) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: {
+                  label: key,
+                  type: "boolean",
+                  selectedValue: false,
+                  selectionList: [true, false],
+                },
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type == "arr-1" && selectedType === "dropdown") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: prev[path].map((item, index) => {
+            if (index === i) {
+              return {
+                ...item,
+                [key]: {
+                  label: key,
+                  type: "dropdown",
+                  selectedValue: "",
+                  selectionList: value,
+                },
+              };
+            } else {
+              return item;
+            }
+          }),
+        };
+      });
+    } else if (type === "arr-0" && selectedType === "object") {
+      setDupJson((prev) => {
+        return {
+          ...prev,
+          [path]: [
+            ...prev[path],
+            {
+              label: key,
             },
-          };
-        });
-      } else if (type === "arr-1" && selectedType === "input") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: prev[path].map((item, index) => {
-              if (index === i) {
-                return {
-                  ...item,
-                  [key]: value,
-                };
-              } else {
-                return item;
-              }
-            }),
-          };
-        });
-      } else if (type === "arr-1" && selectedType === "boolean") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: prev[path].map((item, index) => {
-              if (index === i) {
-                return {
-                  ...item,
-                  [key]: {
-                    label: key,
-                    type: "boolean",
-                    selectedValue: false,
-                    selectionList: [true, false],
-                  },
-                };
-              } else {
-                return item;
-              }
-            }),
-          };
-        });
-      } else if (type == "arr-1" && selectedType === "dropdown") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: prev[path].map((item, index) => {
-              if (index === i) {
-                return {
-                  ...item,
-                  [key]: {
-                    label: key,
-                    type: "dropdown",
-                    selectedValue: "",
-                    selectionList: value,
-                  },
-                };
-              } else {
-                return item;
-              }
-            }),
-          };
-        });
-      } else if (type === "arr-0" && selectedType === "object") {
-        setDupJson((prev) => {
-          return {
-            ...prev,
-            [path]: [
-              ...prev[path],
-              {
-                label: key,
-              },
-            ],
-          };
-        });
-      }
-    };
-
+          ],
+        };
+      });
+    }
+  };
+  console.log(dupJson, "dupJsonDeletion");
   const handleDeletejs = (path, type, label) => {
+    console.log(path, "bjp");
     if (type === "arr-1") {
       setDupJson((prev) => {
         const updatedObj = _.cloneDeep(prev);
@@ -960,12 +988,11 @@ export const RenderJson = ({
         return updatedObj;
       });
     } else if (type === "obj") {
-      console.log(path, "bjp")
-      const js = structuredClone(dupJson);
+      const js = _.cloneDeep(dupJson);
       _.unset(js, path);
       setDupJson(js);
     } else {
-      const js = structuredClone(dupJson);
+      const js = dupJson;
       const pathsToDelete = Object.keys(js).filter(
         (key) => key == path || key.startsWith(path + "/"),
       );
@@ -975,11 +1002,21 @@ export const RenderJson = ({
       setDupJson(js);
     }
   };
-
+console.log(dupJson, "dupJsonDeletion");
   function denormalizeJson(obj, prefix = "", result = {}, originalObj) {
     const copy = JSON.parse(JSON.stringify(obj));
     for (let key in copy) {
       if (copy.hasOwnProperty(key)) {
+        if (key === "root") {
+          Object.keys(copy).forEach((key) => {
+            if (
+              typeof copy[key] !== "object" ||
+              copy[key].hasOwnProperty("type")
+            ) {
+              result[key] = copy[key];
+            }
+          });
+        }
         let newKey = prefix ? `${prefix}/${key}` : key;
         if (
           typeof copy[key] === "object" &&
@@ -1014,7 +1051,7 @@ export const RenderJson = ({
           });
           delete copy[key];
         } else {
-          if (!prefix) {
+          if (!prefix && key !== "root") {
             result[copy["label"]] = copy;
           }
         }
@@ -1024,8 +1061,8 @@ export const RenderJson = ({
   }
 
   const haandledenormalize = () => {
-    if (json) {
-      const denormalized = denormalizeJson(json);
+    if (json ) {
+      const denormalized = denormalizeJson({ root: json });
       console.log(denormalized, "denormalized");
       setDupJson(structuredClone(denormalized));
     }

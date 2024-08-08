@@ -121,6 +121,64 @@ export const artifactList = async (
   }
 };
 
+export const getprojectLists = async (tKey, client, saveKey) => {
+  try {
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
+    const response = await fetch(
+      `${BASE_URL}/catelogue/?tKey=${tKey}&client=${client}&saveKey=${saveKey}`,
+      {
+        method: "GET",
+      },
+    );
+    const data = await response.json();
+    if (response.ok && data) {
+
+      console.log(data, "catelogue")
+      return data
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    toast.error("Error getting project list", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
+};
+
+export const getArtifactsGroups = async (tKey, client, saveKey) => {
+  try {
+    console.log( saveKey, "<<>>catelogue<<>>");
+
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
+    const response = await fetch(
+      `${BASE_URL}/artifactsGroup/?tKey=${tKey}&client=${client}&saveKey=${saveKey}`,
+      {
+        method: "GET",
+      },
+    );
+    const data = await response.json();
+    if (response.ok && data) {
+      return data;
+    } else {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    toast.error("Error getting project list", {
+      position: "bottom-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+    });
+  }
+};
+
 export const applicationLists = async (tKey, client, fabrics, saveKey) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
@@ -237,11 +295,12 @@ export const deleteArtifact = async (
   project,
   fabrics,
   artifact,
+  saveKey,
 ) => {
   try {
     const BASE_URL = `${process.env.REACT_APP_API_URL}vpt`;
     const response = await fetch(
-      `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}`,
+      `${BASE_URL}/deleteFlowArtifact?tKey=${tKey}&client=${client}&project=${project}&fabrics=${fabrics}&artifact=${artifact}&saveKey=${saveKey}`,
       {
         method: "DELETE",
       },
