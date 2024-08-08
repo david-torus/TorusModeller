@@ -37,7 +37,8 @@ import {
   saveWorkFlow,
   applicationLists,
   renameArtifact,
-  deleteArtifact,
+  getprojectLists,
+  getArtifactsGroups,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -58,7 +59,10 @@ import TorusTab from "./torusComponents/TorusTab";
 import { TorusModellerContext } from "./Layout";
 import TorusToast from "./torusComponents/TorusToaster/TorusToast.jsx";
 
-import TorusAccordion from "./torusComponents/TorusAccordian.jsx";
+import TorusAccordion, {
+  Accordion,
+  AccordionItem,
+} from "./torusComponents/TorusAccordian.jsx";
 import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
@@ -74,7 +78,6 @@ export default function Navbar({
   getDataFromFabrics,
   setFabricsKey = null,
   clientLoginId,
-  deleteFlowArtifact,
 }) {
   const {
     client,
@@ -148,7 +151,61 @@ export default function Navbar({
   const [newArtifactValue, setNewArtifactValue] = useState("Untitled 1");
   const [newArtifactNameValidation, setNewArtifactNameValidation] =
     useState(false);
-  const [takeArtifactName, setTakeArtifactName] = useState("");
+
+  const [catelogue, setCatelogue] = useState(null);
+
+  const [artifactsGroup, setArtifactsGroup] = useState([]);
+  const [destructureData, setDestructureData] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [categeroryList, setCategeroryList] = useState([
+    "My Artifacts",
+    "Shared with me",
+    "Puchased",
+  ]);
+
+  console.log(selectedKeys, "selectedKEys===>");
+
+  const handleOnselction = (key) => {
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+  };
+
+  const handleProject = (key) => {
+    console.log(key, "mainKey");
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+    handleGetProjects(selectedTkey, selectedClient, selectedFabric);
+    setCatelogue();
+  };
+
+  const handleArtifacts = (key) => {
+    console.log(key, "extractCatelogue");
+
+    setSelectedKeys((prevSelectedKeys) =>
+      prevSelectedKeys.includes(key)
+        ? prevSelectedKeys.filter((k) => k !== key)
+        : [...prevSelectedKeys, key],
+    );
+
+    setCatelogue(key);
+
+    if (catelogue) {
+      handleGetArtifactsGroup(
+        selectedTkey,
+        selectedClient,
+        selectedFabric,
+        catelogue,
+      );
+    }
+  };
+
+  console.log(catelogue, "extractCatelogue");
 
   const handleNewArtifact = () => {
     setNewArtifact(!newArtifact);
@@ -260,7 +317,7 @@ export default function Navbar({
               autoClose: 2000,
               hideProgressBar: true,
               title: "Success",
-              text: `Created successfully`,
+              text: `created successfully`,
               closeButton: false,
             },
           );
@@ -276,7 +333,7 @@ export default function Navbar({
               autoClose: 2000,
               hideProgressBar: true,
               title: "Error",
-              text: `Error while Creating`,
+              text: `Error while creating`,
               closeButton: false,
             },
           );
@@ -659,64 +716,6 @@ export default function Navbar({
     }
   };
 
-  const handleDeleteArtifacts = async () => {
-    if (takeArtifactName) {
-      const response = await deleteArtifact(
-        "",
-        "",
-        "",
-        " ",
-        " ",
-        JSON.stringify([
-          "TCL",
-          selectedTkey,
-          selectedFabric,
-          selectedProject,
-          selectedArtifactGroup,
-          takeArtifactName,
-        ]),
-      );
-
-      if (response && response?.status === 200) {
-        setArtifactsList(response?.data);
-      }
-      if (takeArtifactName == selectedArtifact) {
-        setSelectedArtifact("");
-        setTakeArtifactName("");
-        setSelectedVersion("");
-      } else {
-        setTakeArtifactName("");
-      }
-      if (response.status === 200 || response.status === 201) {
-        toast(
-          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
-          {
-            type: "success",
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            title: "Success",
-            text: `Deleted successfully`,
-            closeButton: false,
-          },
-        );
-      } else {
-        toast(
-          <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
-          {
-            type: "error",
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: true,
-            title: "Error",
-            text: `Cannot delete artifacts`,
-            closeButton: false,
-          },
-        );
-      }
-    }
-  };
-
   const handleDomainNameChange = (e) => {
     try {
       setSelectedDomainLIst(e);
@@ -919,6 +918,83 @@ export default function Navbar({
       );
     }
   };
+
+  const handleGetProjects = async (
+    selectedTkey,
+    client,
+    selectedFabric,
+    selectedProject,
+  ) => {
+    try {
+      const response = await getprojectLists(
+        selectedTkey,
+        client,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric]),
+      );
+
+      if (response && response.status === 200) {
+        setTimeout(() => {
+          setProjectList(response.data);
+        }, [2000]);
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
+    }
+  };
+
+  const handleGetArtifactsGroup = async (
+    selectedTkey,
+    client,
+    selectedFabric,
+    catelogue,
+  ) => {
+    console.log(
+      selectedTkey,
+      client,
+      selectedFabric,
+      catelogue,
+      "extractCatelogue",
+    );
+    try {
+      const response = await getArtifactsGroups(
+        selectedTkey,
+        client,
+        JSON.stringify(["TCL", selectedTkey, selectedFabric, catelogue]),
+      );
+      console.log(response.data, "artifactsGroup res.data");
+      if (response.data) {
+        const data = response.data;
+        setArtifactsGroup(data);
+      }
+    } catch (error) {
+      toast(
+        <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
+        {
+          type: "error",
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          title: "Error",
+          text: `Cannot save application details`,
+          closeButton: false,
+        },
+      );
+    }
+  };
+  console.log(projectList, "<<catelogue>>");
+  console.log(artifactsGroup, "artifactsGroup state");
+  console.log(destructureData, "<<catelogue>>");
 
   const handleIntialLoad = async (
     selectedTkey,
@@ -1471,6 +1547,25 @@ export default function Navbar({
     setArtifactCollectionName("");
   };
 
+  const handleButtonToggle = async () => {
+    console.log("Button toggled to item:");
+  };
+
+  const handleArtifactstoggle = (project) => {
+    try {
+      handleGetArtifactsGroup(
+        selectedTkey,
+        client,
+        selectedFabric,
+        project,
+      ).catch((err) => {
+        throw err;
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleAccordionContentToggle = (item) => {
     console.log("Accordion content toggled to item:", item);
     handleApplicationName(item);
@@ -1478,27 +1573,215 @@ export default function Navbar({
     setArtifactCollectionName(null);
   };
 
-  const accordionItems = useMemo(() => {
-    return [
-      {
-        title: "My Artifacts",
-        content: projectList,
-        id: "FRK",
-      },
-      {
-        title: "My Components",
+  const destructure = (ver) => {
+    return ver
+      .map(({ catelogue, artifactsGroup }) => {
+        const titles = Array.isArray(catelogue) ? catelogue : [catelogue];
 
-        content: projectList,
-        id: "CRK",
-      },
-      {
-        title: "Shared with Me",
+        return titles.map((title, index) => ({
+          title: `${title}`,
+          type: "catelogue",
+          id: "FRK" || "CRK",
+          content: artifactsGroup.map((artifact) => ({
+            title: artifact,
+            content: [],
+            type: "ArtifactsGrp",
+          })),
+        }));
+      })
+      .flat(); // Flatten the array if `catelogue` was an array
+  };
 
-        content: projectList,
-        id: "TFRK",
-      },
-    ];
-  }, [projectList]);
+  // useEffect(() => {
+  //   if (artifactsGroup) setDestructureData(destructure(artifactsGroup));
+  // }, [artifactsGroup]);
+
+  const handleItemClick = (item) => {
+    if (item.type === "catelogue") {
+      try {
+        const artifactsGroup = handleGetArtifactsGroup(
+          selectedTkey,
+          client,
+          selectedFabric,
+        );
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    } else if (item.type === "ArtifactsGrp") {
+      console.log("Clicked item Artifacts group:", item);
+    } else if (item.type === "categery") {
+      try {
+        const catelogues = handleGetProjects(
+          selectedTkey,
+          client,
+          selectedFabric,
+          selectedProject,
+        );
+        if (catelogues) setProjectList(catelogues);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+      console.log("Clicked item catelouge:", item);
+    }
+  };
+
+  const handleNestedItemClick = (nestedItem) => {
+    console.log("Clicked nested item:", nestedItem);
+  };
+
+  // const accordionItems = useMemo(() => {
+  //   return [
+  //     {
+  //       title: "My Artifacts",
+  //       type: "categery",
+  //       id: "FRK",
+  //       content: [
+  //         {
+  //           title: projectList[0],
+  //           content: [
+  //             {
+  //               title: artifactsGroup[0]?.artifactsGroup[0],
+  //               content: [],
+  //               type: "ArtifactsGrp",
+  //             },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "FRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             {
+  //               title: artifactsGroup[0]?.artifactsGroup[0],
+  //               content: [],
+  //               type: "ArtifactsGrp",
+  //             },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "FRK",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Shared with me",
+  //       type: "categery",
+  //       id: "FRK",
+  //       content: [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       title: "Purchased",
+  //       type: "categery",
+  //       id: "CRK",
+
+  //       content: [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: "CRK",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // }, [projectList]);
+
+  // const accordionItems = useMemo(() => {
+  //   const staticTitles = [
+  //     { title: "My Artifacts", type: "categery", id: "FRK" },
+  //     { title: "Shared with Me", type: "categery", id: "FRK" },
+  //     { title: "Purchased", type: "categery", id: "CRK" },
+  //   ];
+
+  //   const dynamicContent = (type) => {
+  //     if (type === "FRK") {
+  //       // projectList?.map((project, index) => ({
+  //       //   title: project,
+  //       //   content: artifactsGroup[index]?.artifactsGroup.map(
+  //       //     (artifact, index) => ({
+  //       //       title: artifact,
+  //       //       content: [],
+  //       //       type: "ArtifactsGrp",
+  //       //     }),
+  //       //   ),
+  //       // }));
+
+  //       return [
+  //         {
+  //           title: projectList[0],
+  //           content: artifactsGroup.map((artifact, index) => ({
+  //             title: artifact,
+  //             content: [],
+  //             type: "ArtifactsGrp",
+  //           })),
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //       ];
+  //     } else if (type === "CRK") {
+  //       return [
+  //         {
+  //           title: "example1",
+  //           content: [
+  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //         {
+  //           title: "example2",
+  //           content: [
+  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
+  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
+  //           ],
+  //           type: "catelogue",
+  //           id: type,
+  //         },
+  //       ];
+  //     }
+  //     return [];
+  //   };
+
+  //   return staticTitles.map(({ title, id }) => ({
+  //     title,
+  //     type: "categery",
+  //     id,
+  //     content: dynamicContent(id),
+  //   }));
+  // }, [projectList, artifactsGroup]);
 
   const mappedTeamItems = [
     {
@@ -1670,14 +1953,91 @@ export default function Navbar({
                               <div className=" flex h-[74%] w-full items-center  justify-center   ">
                                 <div className="flex h-full w-1/3 flex-col items-center justify-center gap-1 border-r border-[#E5E9EB] dark:border-[#212121]">
                                   <div className="flex h-full w-[100%] flex-col overflow-scroll">
-                                    <TorusAccordion
+                                    {/* <TorusAccordion
                                       selectedContent={selectedProject}
                                       items={accordionItems}
-                                      onToggle={handleAccordionToggle}
+                                      onToggle={handleArtifactstoggle}
                                       onContentToggle={
                                         handleAccordionContentToggle
                                       }
-                                    />
+                                      onItemClick={handleItemClick}
+                                      onNestedItemClick={handleNestedItemClick}
+                                    /> */}
+
+                                    <Accordion
+                                      selectedKeys={selectedKeys}
+                                      onSelectionChange={handleProject}
+                                    >
+                                      {categeroryList?.map((item, index) => {
+                                        return (
+                                          <AccordionItem
+                                            key={`category-${item}`}
+                                            title={item}
+                                            eventKey={`${index}-${item}`}
+                                          >
+                                            <Accordion
+                                              selectedKeys={selectedKeys}
+                                              onSelectionChange={
+                                                handleArtifacts
+                                              }
+                                            >
+                                              {projectList?.map(
+                                                (project, index) => {
+                                                  return (
+                                                    <AccordionItem
+                                                      key={`project-${index}`}
+                                                      title={project}
+                                                      eventKey={`${project}`}
+                                                    >
+                                                      {/* {artifactsGroup?.map(
+                                                      (item, index) => {
+                                                        return (
+                                                          <AccordionItem
+                                                            key={`artifact-${index}`}
+                                                            title={item}
+                                                            eventKey={`${item}`}
+                                                          >
+
+
+                                                          </AccordionItem>
+                                                        );
+                                                      },
+                                                    )} */}
+
+                                                      {/* <Accordion
+                                                        selectedKeys={
+                                                          selectedKeys
+                                                        }
+                                                        onSelectionChange={
+                                                          handleOnselction
+                                                        }
+                                                      > */}
+                                                      {artifactsGroup?.map(
+                                                        (item, index) => {
+                                                          return (
+                                                            <AccordionItem
+                                                              key={`artifact-${index}`}
+                                                              title={item}
+                                                              eventKey={`${item}`}
+                                                              onSelectionChange={() => {
+                                                                handleOnselction(
+                                                                  item,
+                                                                );
+                                                              }}
+                                                            ></AccordionItem>
+                                                          );
+                                                        },
+                                                      )}
+                                                      {/* </Accordion> */}
+                                                    </AccordionItem>
+                                                  );
+                                                },
+                                              )}
+                                            </Accordion>
+                                          </AccordionItem>
+                                        );
+                                      })}
+                                    </Accordion>
                                   </div>
                                 </div>
                                 {/* <TorusModularInput
@@ -1858,12 +2218,6 @@ export default function Navbar({
                                                           /> */}
 
                                                           <TorusModel
-                                                            onConfirm={() => {
-                                                              handleDeleteArtifacts(
-                                                                obj?.artifact,
-                                                              );
-                                                            }}
-                                                            confirmButtonText="Delete"
                                                             body="Are you sure you want to delete Artifact Name?"
                                                             title={
                                                               <div className="flex w-[50%] justify-around gap-[0.525rem]">
@@ -1883,13 +2237,6 @@ export default function Navbar({
                                                               <BsTrash3
                                                                 color="red"
                                                                 size={13}
-                                                                onClick={() => {
-                                                                  {
-                                                                    setTakeArtifactName(
-                                                                      obj?.artifact,
-                                                                    );
-                                                                  }
-                                                                }}
                                                               />
                                                             }
                                                             triggerButtonStyle={

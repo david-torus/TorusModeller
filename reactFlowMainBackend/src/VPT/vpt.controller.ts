@@ -1,5 +1,5 @@
 import { PfdService } from './pfd/pfd.service';
-import { Controller, Delete } from '@nestjs/common';
+import { Controller, Delete, Patch } from '@nestjs/common';
 import {
   Body,
   Get,
@@ -81,9 +81,7 @@ export class VptController {
   async getArtifactsGroup(
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
-    return await this.vptService.getArtifactsGroup(
-      query.saveKey,
-    );
+    return await this.vptService.getArtifactsGroup(query.saveKey);
   }
 
   @Post('applicationCreate')
@@ -237,6 +235,40 @@ export class VptController {
       query.client,
       query.fabrics,
       query.saveKey,
+    );
+  }
+
+  @Patch('changeArtifactLock')
+  async changeArtifactLock(
+    @Body() body: any,
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.changeArtifactLock(query.saveKey, body.data);
+  }
+
+  @Post('createArtifactInfo')
+  async changeArtifactLockPost(
+    @Body() body: any,
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.createArtifactInfo(
+      body.client,
+      body.type,
+      body.key,
+    );
+  }
+
+  @Post('getArtifactDetail')
+  async getArtifactDetailList(@Body() data: any) {
+    const { client, loginId, artifactType, fabric, catalog, artifactGrp } =
+      data;
+    return this.vptService.getRecentArtifactDetailList(
+      loginId,
+      artifactType,
+      client,
+      fabric,
+      catalog,
+      artifactGrp,
     );
   }
 }

@@ -29,6 +29,7 @@ import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { changeArtifactLock } from "./commonComponents/api/fabricsApi";
 export const TorusModellerContext = createContext(null);
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
@@ -72,12 +73,46 @@ export default function Layout({
   const [eventsNavBarData, setEventsNavBarData] = useState([]);
   const [controlJson, setControlJson] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState("fabrics");
+  const [artifactLockToggle, setArtifactLockToggle] = useState(false);
   //   {
   //   flow: true,
   //   rule: false,
   //   mapper: false,
   //   code: false,
   // }
+  const handleArtifactLock = useCallback(
+    async (toogle) => {
+      try {
+        let res = await changeArtifactLock(
+          JSON.stringify([
+            "TCL",
+            selectedTkey,
+            selectedFabric,
+            selectedProject,
+            selectedArtifactGroup,
+            selectedArtifact,
+            selectedVersion,
+          ]),
+          { data: { value: toogle } },
+        );
+        if (res?.status === 200) {
+          console.log(res);
+          setArtifactLockToggle(toogle);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [
+      artifactLockToggle,
+      selectedTkey,
+      selectedFabric,
+      selectedProject,
+      selectedArtifactGroup,
+      selectedArtifact,
+      selectedVersion,
+    ],
+  );
   const loadArtifact = useMemo(() => {
     if (!currentArtifactKey) return null;
     return currentArtifactKey.split(":");
@@ -131,6 +166,7 @@ export default function Layout({
       setShowFabricSideBar(!showFabricSideBar);
       return;
     }
+    if (selectedVersion) handleArtifactLock(false);
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
@@ -579,6 +615,9 @@ export default function Layout({
   return (
     <TorusModellerContext.Provider
       value={{
+        handleArtifactLock,
+        artifactLockToggle,
+        setArtifactLockToggle,
         ref,
         loadArtifact,
         setSelectedTkey,

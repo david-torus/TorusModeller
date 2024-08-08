@@ -1,9 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { RedisService } from '../../redisService';
+import { VptService } from '../vpt.service';
+import { CommonVptServices } from '../commonVptServices';
 
 @Injectable()
 export class DfErdService {
-  constructor(private readonly redisService: RedisService) {}
+  constructor(
+    private readonly redisService: RedisService,
+    private readonly commonVptServices: CommonVptServices,
+  ) {}
   async getJson(
     project,
     version,
@@ -20,85 +25,96 @@ export class DfErdService {
         key = arrKey.join(':');
       }
       console.log('key : ' + key);
+      let isLocked = await this.commonVptServices.getArtifactLockin(
+        key + ':artifactInfo',
+      );
 
-      let res = {};
-      const nodes: Promise<any> = new Promise((resolve, reject) => {
-        try {
-          const node = this.readReddis(key + ':' + 'nodes');
-          resolve(node);
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-      const nodeEdges: Promise<any> = new Promise((resolve, reject) => {
-        try {
-          const nodeEdge = this.readReddis(key + ':' + 'nodeEdges');
-          resolve(nodeEdge);
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-      const nodeProperty: Promise<any> = new Promise((resolve, reject) => {
-        try {
-          const property = this.readReddis(key + ':' + 'nodeProperty');
-          resolve(property);
-        } catch (error) {
-          reject(error);
-        }
-      });
-
-      const result = await Promise.all([nodes, nodeEdges, nodeProperty])
-        .then((values) => {
-          console.log('🚀 ~ AppService ~ values:', values);
-          return values;
-        })
-        .catch((error) => {
-          throw new BadRequestException(error);
+      console.log('isLocked : ' + isLocked);
+      if (!isLocked !== false) {
+        let res = {};
+        const nodes: Promise<any> = new Promise((resolve, reject) => {
+          try {
+            const node = this.readReddis(key + ':' + 'nodes');
+            resolve(node);
+          } catch (error) {
+            reject(error);
+          }
         });
 
-      console.log('🚀 ~ AppService ~ res:', result);
-      res = {
-        nodes: JSON.parse(result[0]),
-        nodeEdges: JSON.parse(result[1]),
-        nodeProperty: JSON.parse(result[2]),
-      };
+        const nodeEdges: Promise<any> = new Promise((resolve, reject) => {
+          try {
+            const nodeEdge = this.readReddis(key + ':' + 'nodeEdges');
+            resolve(nodeEdge);
+          } catch (error) {
+            reject(error);
+          }
+        });
 
-      let node = res['nodes'].map((node) => {
-        if (
-          res.hasOwnProperty('nodeProperty') &&
-          res['nodeProperty'].hasOwnProperty(node.id)
-        ) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              label: res['nodeProperty'][node.id].nodeName,
-              nodeProperty: res['nodeProperty'][node.id],
-            },
-          };
-        } else {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              nodeProperty: {},
-            },
-          };
-        }
-      });
+        const nodeProperty: Promise<any> = new Promise((resolve, reject) => {
+          try {
+            const property = this.readReddis(key + ':' + 'nodeProperty');
+            resolve(property);
+          } catch (error) {
+            reject(error);
+          }
+        });
 
-      res = {
-        ...res,
-        nodes: node,
-      };
+        const result = await Promise.all([nodes, nodeEdges, nodeProperty])
+          .then((values) => {
+            console.log('🚀 ~ AppService ~ values:', values);
+            return values;
+          })
+          .catch((error) => {
+            throw new BadRequestException(error);
+          });
 
-      console.log('🚀 ~ AppService ~ res:', res);
-      return {
-        data: res,
-        status: 200,
-      };
+        console.log('🚀 ~ AppService ~ res:', result);
+        res = {
+          nodes: JSON.parse(result[0]),
+          nodeEdges: JSON.parse(result[1]),
+          nodeProperty: JSON.parse(result[2]),
+          isLocked: !isLocked,
+        };
+
+        let node = res['nodes'].map((node) => {
+          if (
+            res.hasOwnProperty('nodeProperty') &&
+            res['nodeProperty'].hasOwnProperty(node.id)
+          ) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                label: res['nodeProperty'][node.id].nodeName,
+                nodeProperty: res['nodeProperty'][node.id],
+              },
+            };
+          } else {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                nodeProperty: {},
+              },
+            };
+          }
+        });
+
+        res = {
+          ...res,
+          nodes: node,
+        };
+        this.commonVptServices.setArtifactLockin(
+          key + ':artifactInfo',
+          !isLocked,
+        );
+        return {
+          data: res,
+          status: 200,
+        };
+      } else {
+        return { data: 'Artifact is locked', status: 409 };
+      }
     } catch (error) {
       throw error;
     }
@@ -455,6 +471,12 @@ export class DfErdService {
           result[key],
         );
       });
+      await this.commonVptServices.manageArtifactInfo(
+        client,
+        type,
+        keys + ':' + req.artifact + ':' + newVersion + ':' + 'artifactInfo',
+      );
+
       if (type === 'create') {
         let versions = await this.getVersion(
           tKey,

@@ -20,15 +20,15 @@ export default function FabricsSideBar({
   nodeInfoTabs,
   setDupJson,
   handleAddjs,
-  handleDeletejs
+  handleDeletejs,
 }) {
   const [showObj, setShowObj] = useState();
   const [label, setLabel] = useState(null);
-  const[checkActivestatus , setCheckActivestatus] = useState(null)
+  const [checkActivestatus, setCheckActivestatus] = useState(null);
   const [expandedItem, setExpandedItem] = useState([]);
 
   const [path, setPath] = useState(null);
-  
+
   return (
     <div className="flex h-[100%]   w-full max-w-full flex-row overflow-hidden ">
       <div
@@ -50,7 +50,6 @@ export default function FabricsSideBar({
             setExpandedItem={setExpandedItem}
           />
         }
-
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
       <div className="   w-full bg-white dark:bg-[#161616]">

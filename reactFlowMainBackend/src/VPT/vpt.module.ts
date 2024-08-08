@@ -17,6 +17,7 @@ import { SFModule } from './sf/sf.module';
 import { PfPfdService } from './pf_pfd/pf_pfd.service';
 import { CommonService } from 'src/commonService';
 import { JwtService } from '@nestjs/jwt';
+import { CommonVptServices } from './commonVptServices';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import { JwtService } from '@nestjs/jwt';
     ExecutionModule,
   ],
   controllers: [VptController],
-  providers: [VptService, RedisService, PfdService,PfPfdService, CommonService,JwtService ],
+  providers: [VptService, RedisService, PfdService,PfPfdService, CommonService,JwtService,CommonVptServices ],
 })
 export class VptModule {}

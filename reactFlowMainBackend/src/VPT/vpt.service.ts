@@ -6,14 +6,20 @@ import { PfPfdService } from './pf_pfd/pf_pfd.service';
 import { RedisService } from 'src/redisService';
 import { ZenEngine } from '@gorules/zen-engine';
 import { CommonService } from 'src/commonService';
+import { CommonVptServices } from './commonVptServices';
+interface changeArtifactLockData {
+  value: boolean;
+}
+type fabric = 'pf' | 'uf' | 'sf' | 'df';
 
+type artifactType = 'frk' | 'crk' | 'tpfrk';
 @Injectable()
 export class VptService {
   constructor(
     private readonly redisService: RedisService,
     private readonly pfdService: PfdService,
     private readonly CommonService: CommonService,
-
+    private readonly commonVptServices: CommonVptServices,
     private readonly pfPfdService: PfPfdService,
   ) {}
 
@@ -994,6 +1000,214 @@ export class VptService {
         data: res,
         status: 200,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createArtifactInfo(client, type, saveKey: Array<[string]>) {
+    let redisKey = saveKey.join(':');
+    this.commonVptServices.manageArtifactInfo(client, type, redisKey);
+  }
+
+  async changeArtifactLock(
+    saveKey: string,
+    data: changeArtifactLockData,
+  ): Promise<any> {
+    try {
+      let arrKey = JSON.parse(saveKey);
+      let key = arrKey.join(':');
+      let res: any;
+      console.log(data, 'data');
+      if (data.hasOwnProperty('value'))
+        res = await this.commonVptServices.setArtifactLockin(
+          key + ':artifactInfo',
+          data?.value,
+        );
+
+      console.log(res, 'res');
+      if (res == 'success') {
+        return {
+          status: 200,
+        };
+      } else {
+        throw new BadRequestException('fail');
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getRecentArtifactDetailList(
+    loginId: string,
+    artifactType: artifactType,
+    client?: string,
+    fabric?: fabric | fabric[],
+    catalog?: string | string[],
+    artifactGrp?: string | string[],
+  ) {
+    try {
+      if (loginId && artifactType) {
+        const fabrics =
+          fabric && Array.isArray(fabric)
+            ? fabric
+            : fabric && typeof fabric === 'string'
+              ? [fabric]
+              : ['pf', 'uf', 'sf', 'df'];
+
+        const overAllCatalogArray = await this.getAllCatalogs();
+        const overAllArtifactGrpArray = await this.getArtifactGrp();
+
+        const catalogs =
+          catalog && Array.isArray(catalog)
+            ? catalog
+            : catalog && typeof catalog === 'string'
+              ? [catalog]
+              : overAllCatalogArray; // Default catalog if none provided
+
+        const artifactGrps = artifactGrp
+          ? typeof artifactGrp === 'string'
+            ? [artifactGrp]
+            : artifactGrp
+          : overAllArtifactGrpArray;
+
+        const recentArtifacts = [];
+        const keys = [];
+
+        // Fetch keys for all combinations of fabrics and catalogs
+        for (const fab of fabrics) {
+          for (const cat of catalogs) {
+            for (const artGrp of artifactGrps) {
+              const keyPrefix = `TCL:${artifactType.toUpperCase()}:${fab.toUpperCase()}:${cat}:${artGrp}`;
+              const data: string[] = await this.redisService.getKeys(keyPrefix);
+              if (data && Array.isArray(data)) {
+                data.forEach((key) => {
+                  key.endsWith('artifactInfo') && keys.push({ key, fab });
+                });
+              }
+            }
+          }
+        }
+
+        // Retrieve artifact details
+        for (const artifactKeyDetail of keys) {
+          const artifactDetail = await this.redisService.getJsonData(
+            artifactKeyDetail.key,
+          );
+          if (artifactDetail) {
+            const versionObj = JSON.parse(artifactDetail);
+            const artifactName = artifactKeyDetail.key.split(':')[5];
+            const version = artifactKeyDetail.key.split(':')[6];
+            const catalogDetail = artifactKeyDetail.key.split(':')[3];
+            const artifactGrpDetail = artifactKeyDetail.key.split(':')[4];
+
+            const recentlyWorking =
+              versionObj.updatedOn || versionObj.createdOn;
+
+            if (
+              versionObj.updatedBy === loginId ||
+              versionObj.createdBy === loginId
+            ) {
+              recentArtifacts.push({
+                artifactName,
+                version,
+                recentlyWorking,
+                fabric: artifactKeyDetail.fab,
+                catalog: catalogDetail,
+                artifactGrp: artifactGrpDetail,
+                isLocked: versionObj.isLocked,
+              });
+            }
+          }
+        }
+
+        return recentArtifacts;
+      } else {
+        throw new BadRequestException('Invalid input parameters');
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllCatalogs(artifactType?: artifactType | artifactType[]) {
+    try {
+      const accessKeyArray = artifactType
+        ? typeof artifactType === 'string'
+          ? [artifactType]
+          : artifactType
+        : ['crk', 'frk'];
+
+      // Use map to create an array of promises
+      const promises = accessKeyArray.map(async (accessKey) => {
+        // Fetch keys for each accessKey
+        const response = await this.redisService.getKeys(
+          `TCL:${accessKey.toUpperCase()}`,
+        );
+        return Array.from(
+          new Set(response.map((key: string) => key.split(':')[3])),
+        );
+      });
+
+      // Wait for all promises to resolve
+      const results = await Promise.all(promises);
+
+      // Flatten the array of arrays into a single array
+      const val = Array.from(new Set(results.flat()));
+
+      return val;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getArtifactGrp(
+    artifactType?: artifactType | artifactType[],
+    fabric?: fabric | fabric[],
+    catalog?: string | string[],
+  ) {
+    try {
+      const accessKeyArray = artifactType
+        ? typeof artifactType === 'string'
+          ? [artifactType]
+          : artifactType
+        : ['crk', 'frk'];
+
+      const contextKeyArray = fabric
+        ? typeof fabric === 'string'
+          ? [fabric]
+          : fabric
+        : ['df', 'uf', 'pf', 'sf'];
+
+      const catalogArray = catalog
+        ? typeof catalog === 'string'
+          ? [catalog]
+          : catalog
+        : null;
+
+      const promises = accessKeyArray.flatMap((accessKey) =>
+        contextKeyArray.flatMap((fab) =>
+          catalogArray
+            ? catalogArray.map((catalogKey) =>
+                this.redisService.getKeys(
+                  `TCL:${accessKey.toUpperCase()}:${fab.toUpperCase()}:${catalogKey}`,
+                ),
+              )
+            : [
+                this.redisService.getKeys(
+                  `TCL:${accessKey.toUpperCase()}:${fab.toUpperCase()}`,
+                ),
+              ],
+        ),
+      );
+
+      // Wait for all promises to resolve
+      const results = await Promise.all(promises);
+
+      // Flatten the array of results (if necessary)
+      const val = results.flat();
+
+      return Array.from(new Set(val.map((key) => key.split(':')[4])));
     } catch (error) {
       throw error;
     }
