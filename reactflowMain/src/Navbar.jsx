@@ -15,6 +15,7 @@ import {
   Preview,
   PushToBuild,
   Shared,
+  TorusAccordianArrow,
   TorusLogo,
   TorusModelDelete,
   VerticalLine,
@@ -37,6 +38,7 @@ import {
   saveWorkFlow,
   applicationLists,
   renameArtifact,
+  changeArtifactLock,
 } from "./commonComponents/api/fabricsApi";
 
 import { toast, ToastContainer } from "react-toastify";
@@ -62,6 +64,7 @@ import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 import TorusModel from "./torusComponents/TorusModel.jsx";
+import { FaLock, FaLockOpen } from "react-icons/fa";
 
 export default function Navbar({
   project,
@@ -72,7 +75,7 @@ export default function Navbar({
   setToggleReactflow,
   getDataFromFabrics,
   setFabricsKey = null,
-  clientLoginId
+  clientLoginId,
 }) {
   const {
     client,
@@ -89,12 +92,10 @@ export default function Navbar({
     setSelectedVersion,
     selectedProject,
     setSelectedProject,
+    setArtifactLockToggle,
+    artifactLockToggle,
+    handleArtifactLock,
   } = useContext(TorusModellerContext);
-
-  console.log(
-    `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
-    "NEW API",
-  );
 
   const [openArtifactsCreate, setOpenArtifactsCreate] = useState(false);
   const [openProjectCreate, setOpenProjectCreate] = useState(false);
@@ -971,6 +972,7 @@ export default function Navbar({
         ]),
       );
       if (response && response.status === 200) {
+        setArtifactLockToggle(true);
         if (type === "create") {
           await handleIntialLoad(
             selectedTkey,
@@ -978,6 +980,7 @@ export default function Navbar({
             selectedFabric,
             selectedApplictionNames || selectedProject,
           );
+
           setNewArtifactsName("");
           setSelectedProject(selectedApplictionNames);
           setSelectedArtifact(selectedArtifactss);
@@ -1075,7 +1078,12 @@ export default function Navbar({
                 ]),
           );
 
-          if (response && typeof response === "object" && response) {
+          if (
+            response &&
+            typeof response === "object" &&
+            response?.status === 200
+          ) {
+            setArtifactLockToggle(response?.data?.isLocked ?? false);
             sendDataToFabrics({
               ...response.data,
             });
@@ -1213,10 +1221,6 @@ export default function Navbar({
           nodeEdges: [],
           nodeProperty: {},
         });
-        // toast.success(`${e} Deleted Successfully`, {
-        //   position: "bottom-right",
-        //   autoClose: 2000,
-        // });
 
         toast(
           <TorusToast setWordLength={setWordLength} wordLength={wordLength} />,
@@ -1237,6 +1241,10 @@ export default function Navbar({
       console.error(error);
     }
   };
+
+  const renderLock = useMemo(() => {
+    return <>{artifactLockToggle ? <FaLock /> : <FaLockOpen />}</>;
+  }, [artifactLockToggle]);
 
   const handleVersionDelete = async (e) => {
     try {
@@ -1397,6 +1405,7 @@ export default function Navbar({
   // }, [selectedProject, selectedFabric, client, selectedTkey]);
 
   const handleAccordionToggle = (index, tkey) => {
+    if (selectedVersion) handleArtifactLock(false);
     if (selectedTkey === tkey && projectList.length !== 0) return;
     setSelectedTkey(tkey);
     handleGetApplications(tkey, client, selectedFabric).catch((err) => {
@@ -1412,6 +1421,7 @@ export default function Navbar({
 
   const handleAccordionContentToggle = (item) => {
     console.log("Accordion content toggled to item:", item);
+    if (selectedVersion) handleArtifactLock(false);
     handleApplicationName(item);
     setProjectCollectionName(item);
     setArtifactCollectionName(null);
@@ -1441,64 +1451,62 @@ export default function Navbar({
 
   const mappedTeamItems = [
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T13:23:40.195Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T13:23:40.195Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T13:25:19.117Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T13:25:19.117Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:22:12.040Z"
-    },         
-    {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:26:43.661Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:22:12.040Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-05T14:26:44.489Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:26:43.661Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-06T04:17:38.810Z"
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-05T14:26:44.489Z",
     },
     {
-      "artifactName": "bankmaster",
-      "artifactKeyPrefix": "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
-      "buildKeyPrefix": "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
-      "version": "v2",
-      "loginId": "test",
-      "timestamp": "2024-08-06T04:18:07.534Z"
-    }
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:GSS:testApp:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-06T04:17:38.810Z",
+    },
+    {
+      artifactName: "bankmaster",
+      artifactKeyPrefix: "TCL:FRK:UF:domain:pgrp:bankmaster:v2",
+      buildKeyPrefix: "TGA:ABKUF:BUILD:ABC:ME:bankmaster:v2",
+      version: "v2",
+      loginId: "test",
+      timestamp: "2024-08-06T04:18:07.534Z",
+    },
   ];
-
-
 
   const handleNewArtifactValidation = () => {
     const foundArtifact = artifactsList.find(
@@ -1533,17 +1541,17 @@ export default function Navbar({
 
           {selectedFabric !== "Home" && (
             <>
-              <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
+              <div className=" flex h-full w-1/3 items-center justify-center gap-2 rounded-md bg-transparent ">
                 {selectedFabric !== "Home" && (
                   <>
                     <TorusPopOver
                       parentHeading={
-                        <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
-                          <div className="text-sm font-semibold text-black dark:text-white">
+                        <div className=" flex w-full flex-row items-center justify-center gap-2">
+                          <div className="w-[90%] truncate text-xs font-semibold text-black dark:text-white">
                             {(selectedArtifact && selectedArtifact) ||
                               "Select Artifacts"}
                           </div>
-                          <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
+                          <div className="flex w-[10%] items-center justify-center rounded-xl bg-[#0736C4] px-4 py-1 text-center  text-xs text-white">
                             {(selectedVersion && selectedVersion) || "*"}
                           </div>
                           <div>
@@ -1551,9 +1559,7 @@ export default function Navbar({
                           </div>
                         </div>
                       }
-                      popbuttonClassNames={
-                        selectedFabric === "events" && "w-1/3"
-                      }
+                      popbuttonClassNames={"w-[35%]"}
                       children={({ close }) => (
                         <div
                           className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -1576,7 +1582,7 @@ export default function Navbar({
                                     }
                                   />
                                 </div>
-                                <div className="flex-r0w flex w-full  items-center justify-end gap-2 ">
+                                <div className="flex w-full  items-center justify-end gap-2 ">
                                   <TorusButton
                                     isDisabled={
                                       selectedVersion && selectedFabric == "UF"
@@ -1621,32 +1627,7 @@ export default function Navbar({
                                     />
                                   </div>
                                 </div>
-                                {/* <TorusModularInput
-                       isRequired={true}
-                       isReadOnly={false}
-                       placeholder="Artifact"
-                       // label="Input"
-                       variant="bordered"
-                       labelColor="text-[#000000]/50"
-                       borderColor="border-[#000000]/20"
-                       isDisabled={false}
-                       // onChange={setModular}
-                       radius="lg"
-                       textColor="text-[#000000]"
-                       bgColor="bg-[#FFFFFF]"
-                       value={"this is value from state "}
-                       type="text"
-                       marginT="mt-3"
-                       // startContent={
-                       //   <FaSearchLocation size={15} color="#9CA3AF" />
-                       // }
-                       maxLength={20}
-                       discription="This is a hint text to help user."
-                       isClearable={true}
-                       className="w-[50px] h-[40px] "
-                     />
- 
-                */}
+
                                 <div className="flex h-[100%] w-2/3 scroll-m-1  flex-col items-center justify-center gap-1 ">
                                   <div className="flex h-[10%] w-[85%] items-center justify-start bg-white dark:bg-[#161616]">
                                     <Breadcrumbs
@@ -1875,6 +1856,10 @@ export default function Navbar({
                                                         : new Set([])
                                                     }
                                                     setSelected={(e) => {
+                                                      if (selectedVersion)
+                                                        handleArtifactLock(
+                                                          false,
+                                                        );
                                                       getProcessFlowApi(
                                                         obj?.artifact,
                                                         Array.from(e)[0],
@@ -2148,14 +2133,23 @@ export default function Navbar({
                         </div>
                       )}
                     />
-
                     {selectedFabric === "events" && (
                       <TorusButton
                         onPress={() => {
                           selectedFabric === "events" && handleTabChange("UF");
                         }}
                         Children={<ArtifactOpen />}
-                        buttonClassName="flex h-[27px] w-[27px] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] p-[5px]"
+                        buttonClassName="flex  w-[5%] cursor-pointer items-center justify-center rounded-md bg-[#0736C4] py-2 px-4 "
+                      />
+                    )}
+                    {selectedVersion && (
+                      <TorusButton
+                        isIconOnly={true}
+                        onPress={() => {
+                          handleArtifactLock(!artifactLockToggle);
+                        }}
+                        buttonClassName="flex h-[27px] w-[10%]"
+                        Children={renderLock}
                       />
                     )}
                   </>
@@ -2188,7 +2182,10 @@ export default function Navbar({
                             className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
                           >
                             {selectedFabric !== "events" && (
-                              <Builder mappedTeamItems={mappedTeamItems} clientLoginId={clientLoginId} />
+                              <Builder
+                                mappedTeamItems={mappedTeamItems}
+                                clientLoginId={clientLoginId}
+                              />
                             )}
                           </div>
                         )}

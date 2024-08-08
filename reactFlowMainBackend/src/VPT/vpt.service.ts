@@ -6,14 +6,17 @@ import { PfPfdService } from './pf_pfd/pf_pfd.service';
 import { RedisService } from 'src/redisService';
 import { ZenEngine } from '@gorules/zen-engine';
 import { CommonService } from 'src/commonService';
-
+import { CommonVptServices } from './commonVptServices';
+interface changeArtifactLockData {
+  value: boolean;
+}
 @Injectable()
 export class VptService {
   constructor(
     private readonly redisService: RedisService,
     private readonly pfdService: PfdService,
     private readonly CommonService: CommonService,
-
+    private readonly commonVptServices: CommonVptServices,
     private readonly pfPfdService: PfPfdService,
   ) {}
 
@@ -920,6 +923,34 @@ export class VptService {
         data: res,
         status: 200,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async changeArtifactLock(
+    saveKey: string,
+    data: changeArtifactLockData,
+  ): Promise<any> {
+    try {
+      let arrKey = JSON.parse(saveKey);
+      let key = arrKey.join(':');
+      let res: any;
+      console.log(data, 'data');
+      if (data.hasOwnProperty('value'))
+        res = await this.commonVptServices.setArtifactLockin(
+          key + ':artifactInfo',
+          data?.value,
+        );
+
+      console.log(res, 'res');
+      if (res == 'success') {
+        return {
+          status: 200,
+        };
+      } else {
+        throw new BadRequestException('fail');
+      }
     } catch (error) {
       throw error;
     }
