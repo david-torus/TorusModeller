@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import { TorusAccordianArrow } from "../SVG_Application";
 
 const Accordion = ({ children, selectedKeys, onSelectionChange }) => {
   return (
@@ -16,21 +17,45 @@ const Accordion = ({ children, selectedKeys, onSelectionChange }) => {
   );
 };
 
-const AccordionItem = ({ eventKey, title, children, isSelected, onSelectionChange }) => {
+const AccordionItem = ({
+  eventKey,
+  title,
+  children,
+  isSelected,
+  onSelectionChange,
+}) => {
   const handleToggle = () => {
     onSelectionChange(eventKey);
   };
 
   return (
     <div className="mb-2">
-      <button
-        className="w-full text-left py-2 px-4 bg-blue-500 text-white cursor-pointer"
-        onClick={handleToggle}
-        aria-expanded={isSelected}
-      >
-        {title}
-      </button>
-      {isSelected && <div className="p-4 border border-t-0 border-blue-500">{children}</div>}
+      <div className="flex w-[100%] items-center justify-center">
+        <button
+          className="flex w-full  cursor-pointer bg-transparent pl-[0.25rem] pr-[0.5rem] text-left "
+          onClick={handleToggle}
+          aria-expanded={isSelected}
+        >
+          <span
+            className={`w-[20%] transition duration-300 ease-in-out ${
+              isSelected ? "rotate-[0deg]" : "rotate-[-90deg]"
+            }`}
+          >
+            {children ? <TorusAccordianArrow /> : null}
+          </span>
+          <span
+            className={`flex w-[80%] justify-center ${children ? "text-sm font-medium text-[#000000]/75" : `text-sm font-medium ${isSelected ? "text-[#000000]/80" : "text-[#000000]/30"} `}`}
+          >
+            {title}
+          </span>
+        </button>
+      </div>
+
+      {isSelected && (
+        <div className="ml-[0.7rem] border border-b-0 border-l-1 border-r-0 border-t-0 border-[#000000]/15 p-[0.2rem]">
+          {children}
+        </div>
+      )}
     </div>
   );
 };
