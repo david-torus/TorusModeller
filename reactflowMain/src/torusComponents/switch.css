@@ -1,6 +1,7 @@
 .switch {
   display: inline-block;
   width: 60px !important;
+  margin-top: 4px !important;
 }
 
 .switch input {

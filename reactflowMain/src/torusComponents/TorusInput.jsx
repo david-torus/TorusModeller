@@ -55,8 +55,7 @@ export default function TorusInput(props) {
 
   const defaultClassNames = {
     bordered: {
-      textFieldClassName:
-        "relative  pb-2.5 pt-4  text-sm text-gray-200 bg-transparent rounded-lg",
+      textFieldClassName: `relative  pb-2.5 pt-4  text-sm text-gray-200 bg-transparent ${props.NoneRightRadius ? "rounded-r-none" : "rounded-lg"}`,
       labelClassNames: `absolute top-0 left-0 p-4 dark:text-gray-400 text-xs transition-all duration-300 outline-none `,
       inputClassNames:
         "w-full px-2 text-sm font-normal py-3 pb-0 mt-1 border border-gray-300 rounded-md outline-none ",
@@ -84,12 +83,12 @@ export default function TorusInput(props) {
       return props?.height === "sm"
         ? "6"
         : props?.height === "md"
-        ? "8"
-        : props?.height === "lg"
-        ? "10"
-        : props?.height === "xl"
-        ? "12"
-        : "10";
+          ? "8"
+          : props?.height === "lg"
+            ? "10"
+            : props?.height === "xl"
+              ? "12"
+              : "10";
     };
 
     const value = getting();
@@ -108,12 +107,12 @@ export default function TorusInput(props) {
       return props?.height === "sm"
         ? "6"
         : props?.height === "md"
-        ? "8"
-        : props?.height === "lg"
-        ? "10"
-        : props?.height === "xl"
-        ? "12"
-        : "10";
+          ? "8"
+          : props?.height === "lg"
+            ? "10"
+            : props?.height === "xl"
+              ? "12"
+              : "10";
     };
 
     const value = getting();
@@ -148,7 +147,7 @@ export default function TorusInput(props) {
       isDisabled={props?.isDisabled ? props?.isDisabled : false}
     >
       {props?.startContent && (
-        <div className="absolute top-[2.5rem] left-4 text-gray-400 text-sm">
+        <div className="absolute left-4 top-[2.5rem] text-sm text-gray-400">
           <div>{props?.startContent}</div>
         </div>
       )}
@@ -200,7 +199,7 @@ export default function TorusInput(props) {
       ${props?.variant === "bordered" ? "pl-[1rem]" : ""}
         ${
           props?.variant === "bordered"
-            ? `torus-focus:ring-1 torus-focus:outline-none ${
+            ? `torus-focus:outline-none torus-focus:ring-1 ${
                 props?.outlineColor
                   ? `${outline}`
                   : "torus-focus:outline-none torus-focus:ring-1 torus-focus:ring-blue-500"
@@ -226,48 +225,50 @@ export default function TorusInput(props) {
         ${
           props?.textColor
             ? `${props?.textColor} font-base font-normal `
-            : "text-black font-base font-normal"
+            : "font-base font-normal text-black"
         } 
         
         ${
           props?.height === "sm"
             ? "h-6"
             : props?.height === "md"
-            ? "h-8"
-            : props?.height === "lg"
-            ? "h-10"
-            : props?.height === "xl"
-            ? "h-12"
-            : "h-10"
+              ? "h-8"
+              : props?.height === "lg"
+                ? "h-10"
+                : props?.height === "xl"
+                  ? "h-12"
+                  : "h-10"
         } 
 
         ${
           props?.width === "sm"
             ? "w-[30%]"
             : props?.width === "md"
-            ? "w-[45%]"
-            : props?.width === "lg"
-            ? "w-[60%]"
-            : props?.width === "xl"
-            ? "w-[75%]"
-            : props?.width === "full"
-            ? "w-[100%]"
-            : "w-[80%]"
+              ? "w-[45%]"
+              : props?.width === "lg"
+                ? "w-[60%]"
+                : props?.width === "xl"
+                  ? "w-[75%]"
+                  : props?.width === "full"
+                    ? "w-[100%]"
+                    : "w-[80%]"
         } 
           ${
             props?.radius === "sm"
               ? "rounded-sm"
               : props?.radius === "md"
-              ? "rounded-md"
-              : props?.radius === "lg"
-              ? "rounded-lg"
-              : props?.radius === "full"
-              ? "rounded-full"
-              : "rounded-none"
+                ? "rounded-md"
+                : props?.radius === "lg" && props.NoneRightRadius
+                  ? "rounded-l-lg rounded-r-none"
+                  : props?.radius === "lg"
+                    ? "rounded-lg"
+                    : props?.radius === "full"
+                      ? "rounded-full"
+                      : "rounded-none"
           }`}
       />
       {props?.endContent && (
-        <div className="absolute  top-[2.5rem]  right-4 text-gray-400 text-sm">
+        <div className="absolute  right-4  top-[2.5rem] text-sm text-gray-400">
           {" "}
           <span> {props?.endContent}</span>
         </div>
