@@ -18,7 +18,7 @@ export class VptController {
     private readonly vptService: VptService,
     pfdService: PfdService,
   ) {}
-  
+
   @Get('domainList')
   async getDomain(
     @Query(new ValidationPipe({ transform: true })) query: any,
@@ -81,9 +81,7 @@ export class VptController {
   async getArtifactsGroup(
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
-    return await this.vptService.getArtifactsGroup(
-      query.saveKey,
-    );
+    return await this.vptService.getArtifactsGroup(query.saveKey);
   }
 
   @Post('applicationCreate')
@@ -246,5 +244,31 @@ export class VptController {
     @Query(new ValidationPipe({ transform: true })) query: any,
   ): Promise<any> {
     return await this.vptService.changeArtifactLock(query.saveKey, body.data);
+  }
+
+  @Post('createArtifactInfo')
+  async changeArtifactLockPost(
+    @Body() body: any,
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ): Promise<any> {
+    return await this.vptService.createArtifactInfo(
+      body.client,
+      body.type,
+      body.key,
+    );
+  }
+
+  @Post('getArtifactDetail')
+  async getArtifactDetailList(@Body() data: any) {
+    const { client, loginId, artifactType, fabric, catalog, artifactGrp } =
+      data;
+    return this.vptService.getRecentArtifactDetailList(
+      loginId,
+      artifactType,
+      client,
+      fabric,
+      catalog,
+      artifactGrp,
+    );
   }
 }
