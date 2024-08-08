@@ -35,7 +35,7 @@ export const SideBarDebugandFlag = ({
   upIdKey,
 }) => {
   return (
-    <div className="h-30">
+    <div className="">
       {sideBarData && currentDrawing === "SF" && (
         <>
           <div className="flex flex-wrap">

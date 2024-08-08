@@ -35,7 +35,7 @@ export default function FabricsSideBar({
         style={{
           height: "inherit",
         }}
-        className="relative   max-w-[40%] border-r   bg-white  dark:border-[#212121]"
+        className="relative   w-[25%] border-r   bg-white  dark:border-[#212121]"
       >
         {
           <JsonSidebarIcon
@@ -53,9 +53,9 @@ export default function FabricsSideBar({
 
         {/* <FabricsSideBarIconTab  color={color}/> */}
       </div>
-      <div className="   max-w-full bg-white dark:bg-[#161616]">
+      <div className="   w-full bg-white dark:bg-[#161616]">
    
-        <div className="h-[480px] relative   ">
+        <div className=" h-full w-full relative   ">
 
        { <JsonSidebarDetail
           showObj={showObj}

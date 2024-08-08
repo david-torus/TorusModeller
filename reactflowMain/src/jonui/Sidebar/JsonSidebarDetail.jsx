@@ -564,7 +564,7 @@ export default function JsonSidebarDetail({
   };
 
   return (
-    <div className="relative mt-3 flex h-[100%]  flex-col gap-3 p-2 text-sm  font-semibold">
+    <div className="relative mt-3 flex h-[100%]  w-full flex-col gap-3 p-2 text-sm  font-semibold">
       <span className="flex h-[20%]  flex-col">
         <span className="flex justify-between">
           <p className="mt-2 p-2  text-black dark:text-white"> Properties</p>
@@ -576,9 +576,9 @@ export default function JsonSidebarDetail({
           </span>
         </span>
         {label && (
-          <span className="m-2 mt-1 w-[100%] font-normal text-black dark:text-white">
+          <span className="m-2 mt-1 w-full font-normal text-black dark:text-white">
             Label :
-            <span className="m-2 w-full font-poppins text-[#6600ff] dark:text-[#c4b707]  ">
+            <span className="m-2 w-40 overflow-ellipsis font-poppins text-[#6600ff] dark:text-[#c4b707]  ">
               {label}
             </span>
           </span>
