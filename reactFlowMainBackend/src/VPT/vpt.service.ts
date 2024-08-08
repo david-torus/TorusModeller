@@ -199,9 +199,7 @@ export class VptService {
           application.add(artifacts[3]);
         }
       }
-      if (application.size > 0) {
-        return {};
-      }
+
       return {
         data: Array.from(application),
         status: 200,
@@ -1208,6 +1206,99 @@ export class VptService {
       const val = results.flat();
 
       return Array.from(new Set(val.map((key) => key.split(':')[4])));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllArtifacts(saveKey: Array<string>) {
+    try {
+      let key = JSON.stringify(saveKey);
+      let catalog = await this.getApplication('', '', key).then(
+        (res) => res.data,
+      );
+      const handleVersion = async (verion, saveKey) => {
+        let response = [];
+        for (let i = 0; i < verion.length; i++) {
+          response.push({
+            verion: verion[i],
+            redisKey: [...saveKey, verion[i]].join(':'),
+          });
+        }
+        return response;
+      };
+
+      const handleArtifact = async (artifact, saveKey) => {
+        let response = [];
+        for (let i = 0; i < artifact.length; i++) {
+          let verion = await this.pfPfdService
+            .getVersion('', '', '', '', artifact[i], JSON.stringify(saveKey))
+            .then((res) => res.data);
+          let versionList = await handleVersion(verion, [
+            ...saveKey,
+            artifact[i],
+          ]);
+          response.push({
+            artifact: artifact[i],
+            versionList: versionList,
+          });
+        }
+
+        return response;
+      };
+
+      const handleArtifactGroup = async (artifactGroup, saveKey) => {
+        let response = [];
+        for (let i = 0; i < artifactGroup.length; i++) {
+          let artifact = await this.pfPfdService
+            .getArtifact(
+              '',
+              '',
+              '',
+              '',
+              JSON.stringify([...saveKey, artifactGroup[i]]),
+            )
+            .then((res) => res.data);
+          let artifactList = await handleArtifact(artifact, [
+            ...saveKey,
+            artifactGroup[i],
+          ]);
+          response.push({
+            artifactGroup: artifactGroup[i],
+            artifactList: artifactList,
+          });
+        }
+
+        return response;
+      };
+
+      const handleCatalog = async (catalog, saveKey) => {
+        let response = [];
+
+        for (let i = 0; i < catalog.length; i++) {
+          let artifactGrp = await this.getArtifactsGroup(
+            JSON.stringify([...saveKey, catalog[i]]),
+          ).then((res) => res.data);
+          let artifactGrps = await handleArtifactGroup(artifactGrp, [
+            ...saveKey,
+            catalog[i],
+          ]);
+          response.push({
+            catalog: catalog[i],
+            artifactGroupList: artifactGrps,
+          });
+        }
+
+        return response;
+      };
+
+      let response = [];
+      console.log(catalog, 'catalog');
+      response = await handleCatalog(catalog, saveKey);
+      return {
+        status: 200,
+        data: response,
+      };
     } catch (error) {
       throw error;
     }

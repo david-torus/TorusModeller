@@ -271,4 +271,9 @@ export class VptController {
       artifactGrp,
     );
   }
+
+  @Post('getAllArtifacts')
+  async getAllArtifacts(@Body() data: any) {
+    return this.vptService.getAllArtifacts(data.saveKey);
+  }
 }
