@@ -67,6 +67,7 @@ import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 import TorusModel from "./torusComponents/TorusModel.jsx";
+import CatalogAccordian from "./CatalogAccordian.jsx";
 
 export default function Navbar({
   project,
@@ -80,6 +81,7 @@ export default function Navbar({
   clientLoginId,
 }) {
   const {
+    cataLogListWithArtifactGroup,
     client,
     loadArtifact,
     selectedArtifactGroup,
@@ -95,7 +97,7 @@ export default function Navbar({
     selectedProject,
     setSelectedProject,
   } = useContext(TorusModellerContext);
-
+  console.log(cataLogListWithArtifactGroup);
   console.log(
     `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
     "NEW API",
@@ -806,13 +808,21 @@ export default function Navbar({
     }
   };
 
-  const handleApplicationName = async (e) => {
+  const handleApplicationName = async (item) => {
     try {
       setSelectedArtifact("");
       setSelectedVersion("");
-      setSelectedProject(e);
+      setSelectedTkey(item?.tKey);
+      setSelectedProject(item?.catalog);
+      setSelectedArtifactGroup(item?.artifactGroup);
 
-      handleIntialLoad(selectedTkey, client, selectedFabric, e).catch((err) => {
+      handleIntialLoad(
+        item?.tKey,
+        client,
+        selectedFabric,
+        item?.catalog,
+        item?.artifactGroup,
+      ).catch((err) => {
         throw err;
       });
     } catch (err) {
@@ -1001,6 +1011,7 @@ export default function Navbar({
     client,
     selectedFabric,
     applications,
+    selectedArtifactGroup,
   ) => {
     try {
       console.log("handleIntialLoad", applications);
@@ -1114,6 +1125,7 @@ export default function Navbar({
             client,
             selectedFabric,
             selectedApplictionNames || selectedProject,
+            selectedArtifactGroup,
           );
           setNewArtifactsName("");
           setSelectedProject(selectedApplictionNames);
@@ -1124,6 +1136,7 @@ export default function Navbar({
             client,
             selectedFabric,
             selectedApplictionNames,
+            selectedArtifactGroup,
           );
           setSelectedVersion(response.data[response.data.length - 1]);
 
@@ -1567,10 +1580,10 @@ export default function Navbar({
   };
 
   const handleAccordionContentToggle = (item) => {
-    console.log("Accordion content toggled to item:", item);
+    // console.log("Accordion content toggled to item:", item);
     handleApplicationName(item);
-    setProjectCollectionName(item);
-    setArtifactCollectionName(null);
+    // setProjectCollectionName(item);
+    // setArtifactCollectionName(null);
   };
 
   const destructure = (ver) => {
@@ -1629,159 +1642,29 @@ export default function Navbar({
     console.log("Clicked nested item:", nestedItem);
   };
 
-  // const accordionItems = useMemo(() => {
-  //   return [
-  //     {
-  //       title: "My Artifacts",
-  //       type: "categery",
-  //       id: "FRK",
-  //       content: [
-  //         {
-  //           title: projectList[0],
-  //           content: [
-  //             {
-  //               title: artifactsGroup[0]?.artifactsGroup[0],
-  //               content: [],
-  //               type: "ArtifactsGrp",
-  //             },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "FRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             {
-  //               title: artifactsGroup[0]?.artifactsGroup[0],
-  //               content: [],
-  //               type: "ArtifactsGrp",
-  //             },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "FRK",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Shared with me",
-  //       type: "categery",
-  //       id: "FRK",
-  //       content: [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Purchased",
-  //       type: "categery",
-  //       id: "CRK",
+  const accordionItems = useMemo(() => {
+    return [
+      {
+        title: "My Artifacts",
+        type: "categery",
+        id: "FRK",
+        content: cataLogListWithArtifactGroup?.["FRK"] ?? [],
+      },
+      {
+        title: "Shared with me",
+        type: "categery",
+        id: "TFRK",
+        content: cataLogListWithArtifactGroup?.["TFRK"] ?? [],
+      },
+      {
+        title: "Purchased",
+        type: "categery",
+        id: "CRK",
 
-  //       content: [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // }, [projectList]);
-
-  // const accordionItems = useMemo(() => {
-  //   const staticTitles = [
-  //     { title: "My Artifacts", type: "categery", id: "FRK" },
-  //     { title: "Shared with Me", type: "categery", id: "FRK" },
-  //     { title: "Purchased", type: "categery", id: "CRK" },
-  //   ];
-
-  //   const dynamicContent = (type) => {
-  //     if (type === "FRK") {
-  //       // projectList?.map((project, index) => ({
-  //       //   title: project,
-  //       //   content: artifactsGroup[index]?.artifactsGroup.map(
-  //       //     (artifact, index) => ({
-  //       //       title: artifact,
-  //       //       content: [],
-  //       //       type: "ArtifactsGrp",
-  //       //     }),
-  //       //   ),
-  //       // }));
-
-  //       return [
-  //         {
-  //           title: projectList[0],
-  //           content: artifactsGroup.map((artifact, index) => ({
-  //             title: artifact,
-  //             content: [],
-  //             type: "ArtifactsGrp",
-  //           })),
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //       ];
-  //     } else if (type === "CRK") {
-  //       return [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //       ];
-  //     }
-  //     return [];
-  //   };
-
-  //   return staticTitles.map(({ title, id }) => ({
-  //     title,
-  //     type: "categery",
-  //     id,
-  //     content: dynamicContent(id),
-  //   }));
-  // }, [projectList, artifactsGroup]);
+        content: cataLogListWithArtifactGroup?.["CRK"] ?? [],
+      },
+    ];
+  }, [cataLogListWithArtifactGroup]);
 
   const mappedTeamItems = [
     {
@@ -1963,81 +1846,12 @@ export default function Navbar({
                                       onItemClick={handleItemClick}
                                       onNestedItemClick={handleNestedItemClick}
                                     /> */}
-
-                                    <Accordion
-                                      selectedKeys={selectedKeys}
-                                      onSelectionChange={handleProject}
-                                    >
-                                      {categeroryList?.map((item, index) => {
-                                        return (
-                                          <AccordionItem
-                                            key={`category-${item}`}
-                                            title={item}
-                                            eventKey={`${index}-${item}`}
-                                          >
-                                            <Accordion
-                                              selectedKeys={selectedKeys}
-                                              onSelectionChange={
-                                                handleArtifacts
-                                              }
-                                            >
-                                              {projectList?.map(
-                                                (project, index) => {
-                                                  return (
-                                                    <AccordionItem
-                                                      key={`project-${index}`}
-                                                      title={project}
-                                                      eventKey={`${project}`}
-                                                    >
-                                                      {/* {artifactsGroup?.map(
-                                                      (item, index) => {
-                                                        return (
-                                                          <AccordionItem
-                                                            key={`artifact-${index}`}
-                                                            title={item}
-                                                            eventKey={`${item}`}
-                                                          >
-
-
-                                                          </AccordionItem>
-                                                        );
-                                                      },
-                                                    )} */}
-
-                                                      {/* <Accordion
-                                                        selectedKeys={
-                                                          selectedKeys
-                                                        }
-                                                        onSelectionChange={
-                                                          handleOnselction
-                                                        }
-                                                      > */}
-                                                      {artifactsGroup?.map(
-                                                        (item, index) => {
-                                                          return (
-                                                            <AccordionItem
-                                                              key={`artifact-${index}`}
-                                                              title={item}
-                                                              eventKey={`${item}`}
-                                                              onSelectionChange={() => {
-                                                                handleOnselction(
-                                                                  item,
-                                                                );
-                                                              }}
-                                                            ></AccordionItem>
-                                                          );
-                                                        },
-                                                      )}
-                                                      {/* </Accordion> */}
-                                                    </AccordionItem>
-                                                  );
-                                                },
-                                              )}
-                                            </Accordion>
-                                          </AccordionItem>
-                                        );
-                                      })}
-                                    </Accordion>
+                                    <CatalogAccordian
+                                      items={accordionItems}
+                                      onSelectionChange={
+                                        handleAccordionContentToggle
+                                      }
+                                    />
                                   </div>
                                 </div>
                                 {/* <TorusModularInput

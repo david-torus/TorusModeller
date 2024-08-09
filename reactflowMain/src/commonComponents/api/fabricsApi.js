@@ -506,3 +506,21 @@ export const getCatelogueList = async (data) => {
     console.error(error);
   }
 };
+
+export const getAllCatalogWithArtifactGroup = async (fabric) => {
+  try {
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt/getAllCatalogWithArtifactGroup`;
+    let res = await fetch(`${BASE_URL}/?fabric=${fabric}`, {
+      method: "GET",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
