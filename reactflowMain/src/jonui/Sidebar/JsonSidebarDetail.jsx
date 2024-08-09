@@ -696,7 +696,7 @@ export default function JsonSidebarDetail({
                           <AddModalContentType
                             obj={obj}
                             showObj={showObj}
-                            // close={close}
+                            // close={close()}
                             handleAddjs={handleAddjs}
                             type={"obj"}
                           />
@@ -733,7 +733,7 @@ export default function JsonSidebarDetail({
                         confirmButtonStyle={
                           "pressed:bg-blue-600 cursor-pointer bg-[#4C8DF7] text-white hover:border-blue-600"
                         }
-                        modelClassName={"max-h-120 max-w-[45%] min-w-[43%] bg-white dark:bg-[#161616] rounded-lg shadow-xl"} 
+                        modelClassName={"max-h-130 max-w-[45%] min-w-[43%] bg-white dark:bg-[#161616] rounded-lg shadow-xl"} 
                       />
                       {/* <TorusButton
                         Children={`Delete`}
