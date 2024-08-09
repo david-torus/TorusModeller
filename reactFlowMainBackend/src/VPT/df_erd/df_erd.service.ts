@@ -465,17 +465,21 @@ export class DfErdService {
         newVersion = version;
       }
 
-      Object.keys(result).forEach(async (key) => {
+      let objkeys = Object.keys(result);
+
+      for (let i = 0; i < objkeys.length; i++) {
         await this.writeReddis(
-          keys + ':' + req.artifact + ':' + newVersion + ':' + key,
-          result[key],
+          keys + ':' + req.artifact + ':' + newVersion + ':' + objkeys[i],
+          result[objkeys[i]],
         );
-      });
-      await this.commonVptServices.manageArtifactInfo(
-        client,
-        type,
-        keys + ':' + req.artifact + ':' + newVersion + ':' + 'artifactInfo',
-      );
+      }
+
+      // Object.keys(result).forEach(async (key) => {});
+      // await this.commonVptServices.manageArtifactInfo(
+      //   client,
+      //   type,
+      //   keys + ':' + req.artifact + ':' + newVersion + ':' + 'artifactInfo',
+      // );
 
       if (type === 'create') {
         let versions = await this.getVersion(

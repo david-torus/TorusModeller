@@ -1119,7 +1119,7 @@ export default function Navbar({
           "TCL",
           selectedTkey,
           selectedFabric,
-          "domain",
+          selectedProject,
           selectedArtifactGroup,
         ]),
       );

@@ -33,6 +33,7 @@ import {
   changeArtifactLock,
   getAllCatalogWithArtifactGroup,
   getCatelogueList,
+  getJson,
 } from "./commonComponents/api/fabricsApi";
 export const TorusModellerContext = createContext(null);
 const colors = {
@@ -122,6 +123,61 @@ export default function Layout({
   const handleCatalogWithArtifactGroup = useCallback(async (fabric) => {
     return await getAllCatalogWithArtifactGroup(fabric).then((res) => res.data);
   });
+  const handleCurrentArtifactKey = async (key) => {
+    const { tKey, fabric, project, artifactGroup, artifact, version } = key;
+    if (tKey && fabric && project && artifactGroup && artifact && version) {
+      console.log(
+        tKey,
+        fabric,
+        project,
+        artifactGroup,
+        artifact,
+        version,
+        "current artifact key",
+      );
+      let response = await getJson(
+        "",
+        "",
+        "",
+        "",
+        "",
+        fabric.toUpperCase(),
+        JSON.stringify([
+          "TCL",
+          tKey.toUpperCase(),
+          fabric.toUpperCase(),
+          project,
+          artifactGroup,
+          artifact,
+          version,
+        ]),
+      ).then((res) => res?.data);
+      if (response) {
+        setSelectedArtifactGroup(artifactGroup);
+        setSelectedProject(project);
+        handleTabChange(fabric.toUpperCase(), true);
+        setSelectedArtifact(artifact);
+        setSelectedVersion(version);
+        setSelectedTkey(tKey.toUpperCase());
+
+        getDataFromNavbar(response);
+        setArtifactLockToggle(response?.isLoccked ?? true);
+      }
+    } else {
+      tKey && setSelectedTkey(tKey);
+      fabric && handleTabChange(fabric.toUpperCase());
+      project && setSelectedProject(project);
+      artifactGroup && setSelectedArtifactGroup(artifactGroup);
+      artifact && setSelectedArtifact(artifact);
+      version && setSelectedVersion(version);
+    }
+  };
+
+  useEffect(() => {
+    if (currentArtifactKey) {
+      handleCurrentArtifactKey(currentArtifactKey);
+    }
+  }, [currentArtifactKey]);
   const loadArtifact = useMemo(() => {
     if (!currentArtifactKey) return null;
     return null;
@@ -170,12 +226,12 @@ export default function Layout({
     }
   };
 
-  const handleTabChange = async (fabric) => {
+  const handleTabChange = async (fabric, isLoaded = false) => {
     if (fabric == selectedFabric) {
       setShowFabricSideBar(!showFabricSideBar);
       return;
     }
-    if (selectedVersion) handleArtifactLock(false);
+    if (selectedVersion && !isLoaded) handleArtifactLock(false);
     setSelectedFabric(fabric);
     setrecentClicked(!recentClicked);
     setShowFabricSideBar(true);
@@ -213,14 +269,15 @@ export default function Layout({
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
-    if (fabric !== "events") {
+    if (fabric !== "events" && !isLoaded) {
       setSelectedProject("");
       setSelectedArtifact("");
       setSelectedVersion("");
     }
-
-    setNodes([]);
-    setEdges([]);
+    if (!isLoaded) {
+      setNodes([]);
+      setEdges([]);
+    }
 
     setShowNodeProperty(false);
   };
@@ -461,6 +518,12 @@ export default function Layout({
       nodeEdges: edges,
     };
   }, [nodes, edges]);
+
+  const getDataFromNavbar = (data) => {
+    setEdges(data?.nodeEdges ?? []);
+    setNodes(data?.nodes ?? []);
+  };
+
   const switchReactFlow = (toogle) => {
     switch (toogle) {
       case "fabrics":
@@ -472,10 +535,7 @@ export default function Layout({
                 project={""}
                 handleTabChange={handleTabChange}
                 color={colors[selectedFabric]?.light}
-                sendDataToFabrics={(data) => {
-                  setEdges(data?.nodeEdges ?? []);
-                  setNodes(data?.nodes ?? []);
-                }}
+                sendDataToFabrics={getDataFromNavbar}
                 getDataFromFabrics={sendDataToFabrics}
                 clientLoginId={clientLoginId}
               />
