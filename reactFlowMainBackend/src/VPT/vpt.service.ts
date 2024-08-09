@@ -1211,7 +1211,7 @@ export class VptService {
     }
   }
 
-  async getAllArtifacts(saveKey: Array<string>) {
+  async getAllArtifacts(saveKey: Array<string>, stopAt: string = 'none') {
     try {
       let key = JSON.stringify(saveKey);
       let catalog = await this.getApplication('', '', key).then(
@@ -1234,10 +1234,14 @@ export class VptService {
           let verion = await this.pfPfdService
             .getVersion('', '', '', '', artifact[i], JSON.stringify(saveKey))
             .then((res) => res.data);
-          let versionList = await handleVersion(verion, [
-            ...saveKey,
-            artifact[i],
-          ]);
+          let versionList;
+          if (stopAt == 'version') {
+            versionList = verion;
+          } else
+            versionList = await handleVersion(verion, [
+              ...saveKey,
+              artifact[i],
+            ]);
           response.push({
             artifact: artifact[i],
             versionList: versionList,
@@ -1259,10 +1263,14 @@ export class VptService {
               JSON.stringify([...saveKey, artifactGroup[i]]),
             )
             .then((res) => res.data);
-          let artifactList = await handleArtifact(artifact, [
-            ...saveKey,
-            artifactGroup[i],
-          ]);
+          let artifactList;
+          if (stopAt == 'artifact') {
+            artifactList = artifact;
+          } else
+            artifactList = await handleArtifact(artifact, [
+              ...saveKey,
+              artifactGroup[i],
+            ]);
           response.push({
             artifactGroup: artifactGroup[i],
             artifactList: artifactList,
@@ -1279,10 +1287,15 @@ export class VptService {
           let artifactGrp = await this.getArtifactsGroup(
             JSON.stringify([...saveKey, catalog[i]]),
           ).then((res) => res.data);
-          let artifactGrps = await handleArtifactGroup(artifactGrp, [
-            ...saveKey,
-            catalog[i],
-          ]);
+          let artifactGrps;
+          if (stopAt == 'artifactGroup') {
+            artifactGrps = artifactGrp;
+          } else {
+            artifactGrps = await handleArtifactGroup(artifactGrp, [
+              ...saveKey,
+              catalog[i],
+            ]);
+          }
           response.push({
             catalog: catalog[i],
             artifactGroupList: artifactGrps,
@@ -1293,7 +1306,7 @@ export class VptService {
       };
 
       let response = [];
-      console.log(catalog, 'catalog');
+
       response = await handleCatalog(catalog, saveKey);
       return {
         status: 200,
