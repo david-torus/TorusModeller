@@ -68,6 +68,7 @@ import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 import TorusModel from "./torusComponents/TorusModel.jsx";
 import CatalogAccordian from "./CatalogAccordian.jsx";
+import { FaLock, FaLockOpen } from "react-icons/fa6";
 
 export default function Navbar({
   project,
@@ -96,6 +97,9 @@ export default function Navbar({
     setSelectedVersion,
     selectedProject,
     setSelectedProject,
+    artifactLockToggle,
+    setArtifactLockToggle,
+    handleArtifactLock,
   } = useContext(TorusModellerContext);
   console.log(cataLogListWithArtifactGroup);
   console.log(
@@ -645,6 +649,7 @@ export default function Navbar({
 
   const handleArtifactsChange = (e) => {
     try {
+      if (selectedVersion) handleArtifactLock(false);
       setSelectedVersion(null);
       // if (Array.from(e)[0]) {
       //   getVersion(Array.from(e)[0]);
@@ -1202,6 +1207,7 @@ export default function Navbar({
   const getProcessFlowApi = useCallback(
     async (artiFact, version) => {
       try {
+        if (selectedVersion) handleArtifactLock(false);
         if ((artiFact, version)) {
           setSelectedArtifact(artiFact);
           setSelectedVersion(version);
@@ -1229,6 +1235,7 @@ export default function Navbar({
             sendDataToFabrics({
               ...response.data,
             });
+            setArtifactLockToggle(response.data?.isLocked);
           } else {
             toast(
               <TorusToast
@@ -1580,6 +1587,7 @@ export default function Navbar({
   };
 
   const handleAccordionContentToggle = (item) => {
+    if (selectedVersion) handleArtifactLock(false);
     // console.log("Accordion content toggled to item:", item);
     handleApplicationName(item);
     // setProjectCollectionName(item);
@@ -1758,27 +1766,31 @@ export default function Navbar({
 
           {selectedFabric !== "Home" && (
             <>
-              <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
+              <div className=" flex h-full w-1/3 items-center justify-center gap-2 rounded-md bg-transparent ">
                 {selectedFabric !== "Home" && (
                   <>
                     <TorusPopOver
                       parentHeading={
-                        <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
-                          <div className="text-sm font-semibold text-black dark:text-white">
+                        <div className=" flex w-[100%] flex-row items-center justify-center gap-1">
+                          <div
+                            title={
+                              (selectedArtifact && selectedArtifact) ||
+                              "Select Artifacts"
+                            }
+                            className="w-[80%] truncate text-xs font-semibold text-black dark:text-white"
+                          >
                             {(selectedArtifact && selectedArtifact) ||
                               "Select Artifacts"}
                           </div>
-                          <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
+                          <div className="flex w-[15%] justify-center rounded-xl bg-[#0736C4] px-4 py-1  text-xs text-white">
                             {(selectedVersion && selectedVersion) || "*"}
                           </div>
                           <div>
-                            <IoIosArrowDown className="text-black dark:text-white" />
+                            <IoIosArrowDown className="  text-black dark:text-white" />
                           </div>
                         </div>
                       }
-                      popbuttonClassNames={
-                        selectedFabric === "events" && "w-1/3"
-                      }
+                      popbuttonClassNames={"w-1/3 h-full"}
                       children={({ close }) => (
                         <div
                           className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -2002,34 +2014,6 @@ export default function Navbar({
                                                               size={13}
                                                             />
                                                           </span>
-                                                          {/* <span
-                                                        className="cursor-pointer"
-                                                        onClick={setDeleteOpen(
-                                                          true,
-                                                        )}
-                                                      >
-                                                        <BsTrash3
-                                                          color="red"
-                                                          size={13}
-                                                        />
-                                                      </span> */}
-                                                          {/* <TorusDialog
-                                                            key={
-                                                              "DeleteArtifact"
-                                                            }
-                                                            className="z-[1000] bg-red-200"
-                                                            triggerElement={
-                                                              <TorusButton
-                                                                Children={
-                                                                  <BsTrash3
-                                                                    color="red"
-                                                                    size={13}
-                                                                  />
-                                                                }
-                                                              />
-                                                            }
-                                                            children={"hi"}
-                                                          /> */}
 
                                                           <TorusModel
                                                             body="Are you sure you want to delete Artifact Name?"
@@ -2384,7 +2368,17 @@ export default function Navbar({
                         </div>
                       )}
                     />
-
+                    {selectedVersion && (
+                      <TorusButton
+                        onPress={() => {
+                          handleArtifactLock(!artifactLockToggle);
+                        }}
+                        Children={
+                          artifactLockToggle ? <FaLock /> : <FaLockOpen />
+                        }
+                        buttonClassName="flex w-[27px] cursor-pointer items-center justify-center rounded-md  p-[5px]"
+                      />
+                    )}
                     {selectedFabric === "events" && (
                       <TorusButton
                         onPress={() => {
