@@ -40,8 +40,12 @@ const DisplayTkeys = ({ title, id, items, onSelectionChange }) => {
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-start gap-2"
       >
-        <span className={`${open ? "rotate-0" : "rotate-90"}}`}>
-          <Arrow open={open} />
+        <span
+          className={`transition duration-300 ease-in-out ${
+            open ? "rotate-[0deg]" : "rotate-[-90deg]"
+          }`}
+        >
+          <TorusAccordianArrow />
         </span>
         <span className="cursor-pointer select-none text-sm ">{title}</span>
       </div>
@@ -71,8 +75,12 @@ const DisplayCatalog = ({ title, id, items, onSelectionChange }) => {
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-start gap-2"
       >
-        <span className={"cursor-pointer " + open ? "rotate-0" : "rotate-90"}>
-          <Arrow open={open} />
+        <span
+          className={`transition duration-300 ease-in-out ${
+            open ? "rotate-[0deg]" : "rotate-[-90deg]"
+          }`}
+        >
+          <TorusAccordianArrow />
         </span>
         <span className="cursor-pointer select-none text-sm ">{title}</span>
       </div>
