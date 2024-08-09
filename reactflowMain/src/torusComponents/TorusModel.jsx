@@ -105,7 +105,7 @@ export default function TorusModel({
                       <DialogButton
                         className={` ${confirmButtonStyle || ""}`}
                         onPress={() => {
-                          if (onConfirm) onConfirm();
+                          document.getElementById("btn-add").click();
                           close();
                         }}
                       >
