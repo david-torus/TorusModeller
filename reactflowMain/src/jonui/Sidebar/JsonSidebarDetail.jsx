@@ -696,7 +696,7 @@ export default function JsonSidebarDetail({
                           <AddModalContentType
                             obj={obj}
                             showObj={showObj}
-                            // close={close}
+                            // close={close()}
                             handleAddjs={handleAddjs}
                             type={"obj"}
                           />

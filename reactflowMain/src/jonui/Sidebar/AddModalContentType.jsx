@@ -26,19 +26,19 @@ export const AddModalContentType = ({
   const handleAdd = (selectedValue) => {
     if (selectedValue == "input" && keyinput && valueinput) {
       handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
-      close();
+      // close();
     }
     if (selectedValue == "object" && keyinput) {
       handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
-      close();
+      // close();
     }
     if (selectedValue === "boolean") {
       handleAddjs(showObj, keyinput, valueinput, type, path, selectedValue);
-      close();
+      // close();
     }
     if (selectedValue === "dropdown") {
       handleAddjs(showObj, keyinput, dropdownValues, type, path, selectedValue);
-      close();
+      // close();
     }
   };
 
@@ -310,16 +310,16 @@ export const AddModalContentType = ({
       </div>
 
       {/* <div className=" flex h-[20%] w-[100%] justify-around "> */}
-      {/* <div className="items-center">
+      <div className="items-center">
           {value && (
-            <button
-              className="rounded-md bg-violet-600 px-3 py-1 dark:text-white"
+            <button id="btn-add"
+              className="rounded-md bg-violet-600 px-3 py-1 dark:text-white hidden"
               onClick={() => handleAdd(Array.from(value)[0])}
             >
               Add
             </button>
           )}
-        </div> */}
+        </div>
       {/* <div className="justify-end">
           <button
             className="rounded-md bg-violet-600  px-3 py-1 dark:text-white"
