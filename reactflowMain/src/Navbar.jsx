@@ -2041,6 +2041,9 @@ export default function Navbar({
                                                               "cursor-pointer bg=transparent"
                                                             }
                                                             titleStyle="text-red-500"
+                                                            confirmButtonStyle={
+                                                              "pressed:bg-red-600 cursor-pointer bg-[#F14336] text-white hover:border-red-600"
+                                                            }
                                                           />
                                                         </div>
                                                       </div>

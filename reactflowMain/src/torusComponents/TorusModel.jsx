@@ -25,6 +25,7 @@ export default function TorusModel({
   titleStyle,
   bodyStyle,
   triggerButtonStyle,
+  modelClassName,
   onPress,
 }) {
   return (
@@ -50,8 +51,11 @@ export default function TorusModel({
           }}
         >
           <Modal
-            className={({ isEntering, isExiting }) => `
-              max-h-60 w-full max-w-lg overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl
+            className={({
+              isEntering,
+              isExiting,
+            }) => `${modelClassName || "max-h-60 w-full max-w-lg overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl"}
+              
               ${isEntering ? "duration-300 ease-out animate-in zoom-in-95" : ""}
               ${isExiting ? "duration-200 ease-in animate-out zoom-out-95" : ""}
               ${modalStyle || ""}
@@ -66,7 +70,7 @@ export default function TorusModel({
                         titleStyle || ""
                       }`}
                     >
-                      <div className="flex w-full items-center justify-center">
+                      <div className="flex w-full items-center justify-start">
                         {isValidElement(title) ? title : title}
                       </div>
 
@@ -78,9 +82,11 @@ export default function TorusModel({
                       </div>
                     </div>
 
-                    <p className={`mt-3 text-slate-500 ${bodyStyle || ""}`}>
+                    <div
+                      className={`mt-3 overflow-x-scroll text-slate-500 ${bodyStyle || ""}`}
+                    >
                       {body}
-                    </p>
+                    </div>
                   </div>
 
                   <div className="flex justify-end gap-2 border border-t-1 border-[#E5E9EB]">
@@ -97,9 +103,7 @@ export default function TorusModel({
                         {cancelButtonText}
                       </DialogButton>
                       <DialogButton
-                        className={`pressed:bg-red-600 cursor-pointer bg-[#F14336] text-white hover:border-red-600 ${
-                          confirmButtonStyle || ""
-                        }`}
+                        className={` ${confirmButtonStyle || ""}`}
                         onPress={() => {
                           if (onConfirm) onConfirm();
                           close();
