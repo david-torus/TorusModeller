@@ -84,12 +84,7 @@ export default function Layout({
       CRK: [],
       TFRK: [],
     });
-  //   {
-  //   flow: true,
-  //   rule: false,
-  //   mapper: false,
-  //   code: false,
-  // }
+
   const handleArtifactLock = useCallback(
     async (toogle) => {
       try {
@@ -129,7 +124,7 @@ export default function Layout({
   });
   const loadArtifact = useMemo(() => {
     if (!currentArtifactKey) return null;
-    return currentArtifactKey.split(":");
+    return null;
   }, [currentArtifactKey]);
   const getTenantPolicy = async (tenant) => {
     try {
