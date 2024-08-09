@@ -44,7 +44,7 @@ export const AddModalContentType = ({
 
   console.log(obj, showObj, keyinput, valueinput, path, "df", type);
   return (
-    <div className="mb-3 flex  h-[10rem]  w-[100%] items-center rounded dark:bg-[#070707]">
+    <div className="mb-3 flex  h-[100%] transition-all ease-in-out duration-100  w-[100%] items-center rounded dark:bg-[#070707] ">
       <div className="flex h-[100%] w-[50%] justify-start border-r border-gray-400/25">
         <TorusDropDown
           renderEmptyState={() => "No Items..."}
@@ -91,6 +91,7 @@ export const AddModalContentType = ({
                 display:
                   value && Array.from(value)[0] !== "object" ? "flex" : "none",
                 width: "50%",
+                paddingTop: "2rem",
               }}
             >
               <TorusModularInput
@@ -120,26 +121,10 @@ export const AddModalContentType = ({
               style={{
                 display:
                   value && Array.from(value)[0] === "input" ? "block" : "none",
+                width: "50%",
               }}
               className="input==>"
             >
-              {/* <TorusInput
-          label="Value"
-          variant="fade"
-          labelColor="text-[#000000]/50"
-          borderColor="[#000000]/50"
-          placeholder=""
-          isDisabled={false}
-          onChange={(e) => {
-            setvalueinput(e);
-          }}
-          radius="lg"
-          width="md"
-          height="md"
-          textColor="text-[#000000] dark:text-[#FFFFFF]"
-          bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-          value={valueinput}
-        /> */}
               <TorusModularInput
                 label="Value"
                 defaultValue={valueinput}
@@ -170,91 +155,89 @@ export const AddModalContentType = ({
                   value && Array.from(value)[0] === "dropdown"
                     ? "block"
                     : "none",
+                width: "50%",
               }}
             >
-              {
-                <div className="flex w-[100%] flex-col items-center justify-center">
-                  {/* <button
-              onClick={() =>
+              <div className="flex flex-col items-center justify-center pt-2">
+                {/* <button
+                   onClick={() =>
                 dropdownValues[dropdownValues.length - 1] !== "" &&
                 setdropdownValues([...dropdownValues, ""])
-              }
-            >
+                  }
+                  >
               Add Field
-            </button> */}
+                        </button> */}
 
-                  <TorusButton
-                    Children={<PlusIcon />}
-                    size={"xs"}
-                    btncolor={"#0736C4"}
-                    radius={"lg"}
-                    color={"#ffffff"}
-                    gap={"py-[0.2rem] px-[0.2rem]"}
-                    height={"md"}
-                    borderColor={"3px solid #0736C4"}
-                    fontStyle={"text-sm font-medium text-[#FFFFFF]"}
-                    buttonClassName={"w-[100%]"}
-                    isIconOnly={true}
-                    onPress={() =>
-                      dropdownValues[dropdownValues.length - 1] !== "" &&
-                      setdropdownValues([...dropdownValues, ""])
-                    }
-                  />
+                <TorusButton
+                  Children={<PlusIcon />}
+                  size={"xs"}
+                  btncolor={"#0736C4"}
+                  radius={"lg"}
+                  color={"#ffffff"}
+                  gap={"py-[0.2rem] px-[0.2rem]"}
+                  height={"md"}
+                  borderColor={"3px solid #0736C4"}
+                  fontStyle={"text-sm font-medium text-[#FFFFFF]"}
+                  buttonClassName={"w-[100%]"}
+                  isIconOnly={true}
+                  onPress={() =>
+                    dropdownValues[dropdownValues.length - 1] !== "" &&
+                    setdropdownValues([...dropdownValues, ""])
+                  }
+                />
 
-                  <div className="h-[100px] overflow-y-scroll">
-                    {dropdownValues.map((item, i) => {
-                      return (
-                        // <TorusInput
-                        //   label={`Item ${i + 1}`}
-                        //   variant="fade"
-                        //   labelColor="text-[#000000]/50"
-                        //   borderColor="[#000000]/50"
-                        //   placeholder=""
-                        //   isDisabled={false}
-                        //   onChange={(e) => {
-                        //     setdropdownValues((prev) =>
-                        //       prev.map((item, index) => (index === i ? e : item)),
-                        //     );
-                        //   }}
-                        //   radius="lg"
-                        //   width="md"
-                        //   height="md"
-                        //   textColor="text-[#000000] dark:text-[#FFFFFF]"
-                        //   bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
-                        //   value={item}
-                        // />
-                        <TorusModularInput
-                          label={`Item ${i + 1}`}
-                          defaultValue={item}
-                          value={item}
-                          onChange={(e) => {
-                            setdropdownValues((prev) =>
-                              prev.map((item, index) =>
-                                index === i ? e : item,
-                              ),
-                            );
-                          }}
-                          isRequired={true}
-                          maxLength={10}
-                          type="text"
-                          placeholder="Type Key..."
-                          bgColor="bg-transparent"
-                          labelColor="text-gray-400/60"
-                          outlineColor="text-gray-400/60"
-                          textColor="text-black"
-                          radius="md"
-                          size="sm"
-                          isReadOnly={false}
-                          isDisabled={false}
-                          errorShown={false}
-                          isClearable={true}
-                          backgroundColor={"bg-gray-300/25"}
-                        />
-                      );
-                    })}
-                  </div>
+                <div className="h-[100px]  w-[100%] overflow-y-scroll pt-2">
+                  {dropdownValues.map((item, i) => {
+                    return (
+                      // <TorusInput
+                      //   label={`Item ${i + 1}`}
+                      //   variant="fade"
+                      //   labelColor="text-[#000000]/50"
+                      //   borderColor="[#000000]/50"
+                      //   placeholder=""
+                      //   isDisabled={false}
+                      //   onChange={(e) => {
+                      //     setdropdownValues((prev) =>
+                      //       prev.map((item, index) => (index === i ? e : item)),
+                      //     );
+                      //   }}
+                      //   radius="lg"
+                      //   width="md"
+                      //   height="md"
+                      //   textColor="text-[#000000] dark:text-[#FFFFFF]"
+                      //   bgColor="bg-[#FFFFFF] dark:bg-[#161616]"
+                      //   value={item}
+                      // />
+                      
+                      <TorusModularInput
+                        label={`Item ${i + 1}`}
+                        defaultValue={item}
+                        value={item}
+                        onChange={(e) => {
+                          setdropdownValues((prev) =>
+                            prev.map((item, index) => (index === i ? e : item)),
+                          );
+                        }}
+                        isRequired={true}
+                        maxLength={10}
+                        type="text"
+                        placeholder="Type Key..."
+                        bgColor="bg-transparent"
+                        labelColor="text-gray-400/60"
+                        outlineColor="text-gray-400/60"
+                        textColor="text-black"
+                        radius="md"
+                        size="sm"
+                        isReadOnly={false}
+                        isDisabled={false}
+                        errorShown={false}
+                        isClearable={true}
+                        backgroundColor={"bg-gray-300/25"}
+                      />
+                    );
+                  })}
                 </div>
-              }
+              </div>
             </div>
           </div>
         </>
