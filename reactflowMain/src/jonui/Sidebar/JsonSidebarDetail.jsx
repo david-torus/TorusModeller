@@ -13,6 +13,7 @@ import TorusButton from "../../torusComponents/TorusButton";
 import { CiTrash } from "react-icons/ci";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { Button } from "react-aria-components";
+import { Switch } from "@nextui-org/react";
 
 import {
   Modal,
@@ -47,38 +48,13 @@ const RenderDropdown = ({
   handleDeletejs,
 }) => {
   const [value, setValue] = useState(null);
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [data, setData] = useState(null);
   const [bool, setBool] = useState();
-
-  console.log(obj, "jk");
-  const handleDropdownClick = (event) => {
-    event.stopPropagation();
-  };
-
-  //   {
-  //     "type": "dropdown",
-  //     "label": "tags",
-  //     "value": [
-  //         "user",
-  //         "premium"
-  //     ],
-  //     "selectedValue": ""
-  // }
-
-  useEffect(() => {
-    obj && setData(Object.keys(obj).filter((item) => item == "selectedValue"));
-    if (obj && obj?.type == "boolean") {
-      setBool(obj?.selectedValue);
-    }
-  }, []);
-
   useEffect(() => {
     if (value) {
       handlejs(
         Array.from(value),
-        path + "." + item + "." + data,
-        data,
+        path + "." + item + "." + "selectedValue",
+        "selectedValue",
         "dropdown",
         showObj,
       );
@@ -86,18 +62,15 @@ const RenderDropdown = ({
   }, [value]);
 
   useEffect(() => {
-    if (data !== null && bool !== undefined)
-      handlejs(bool, path + "." + item + "." + data, data, "boolean", showObj);
+    if (bool !== undefined)
+      handlejs(
+        bool,
+        path + "." + item + "." + "selectedValue",
+        "selectedValue",
+        "boolean",
+        showObj,
+      );
   }, [bool]);
-
-  const handleDropdownChange = (e) => {
-    console.log(e, "st");
-    setValue(e);
-
-    handlejs(e, path + "." + item + "." + data, data, "dropdown", showObj);
-
-    console.log(e, "kj");
-  };
 
   return (
     <>
@@ -112,9 +85,9 @@ const RenderDropdown = ({
                   </span>
                 )}
                 {obj.type == "dropdown" ? (
-                  <div className="w-full justify-between px-2 flex">
+                  <div className="flex w-full justify-between px-2">
                     <TorusDropDown
-                      key={path + "." + item + "." + data}
+                      key={path + "." + item + "." + obj?.label}
                       renderEmptyState={() => "No Items..."}
                       classNames={{
                         buttonClassName: `bg-white dark:bg-[#161616] w-[105%] h-[40px] text-black dark:text-white mt-2`,
@@ -150,13 +123,14 @@ const RenderDropdown = ({
                       }))}
                       btWidth={"md"}
                     />
-                    <Button className={"mt-1"}
-                        onPress={() => handleDeletejs(path + "." + item, "obj")}
-                      >
-                        <CiTrash color="red" size={20} />
-                      </Button>
+                    <Button
+                      className={"mt-1"}
+                      onPress={() => handleDeletejs(path + "." + item, "obj")}
+                    >
+                      <CiTrash color="red" size={20} />
+                    </Button>
                     {/* <div className="w-[105%] pt-2"> */}
-                      {/* <TorusButton
+                    {/* <TorusButton
                         Children={`Delete`}
                         size={"xs"}
                         btncolor={"#0736C4"}
@@ -175,13 +149,18 @@ const RenderDropdown = ({
                 ) : obj.type == "boolean" ? (
                   <div className="w-full px-2">
                     <div className="flex w-full justify-between py-1">
-                      <span className="text-sm text-gray-800 mt-1 pl-0.5">
+                      <span className="mt-1 pl-0.5 text-sm text-gray-800">
                         {obj?.label}
                       </span>
-                      <TorusSwitch
-                        skey={path + "." + item + "." + data}
-                        isChecked={bool}
+                      {/* <TorusSwitch
+                        skey={path + "." + item + obj?.label}
+                        isChecked={obj?.selectedValue}
                         setIsChecked={setBool}
+                      /> */}
+                      <Switch
+                        key={path + "." + item + obj?.label}
+                        isSelected={obj?.selectedValue}
+                        onValueChange={setBool}
                       />
                       <Button
                         onPress={() => handleDeletejs(path + "." + item, "obj")}
@@ -246,14 +225,12 @@ const RenderJsonArraySidebarDetail = ({
   const [showAccordianItem, setShowAccordianItem] = useState(null);
   const [value, setValue] = useState(null);
   const handleInput = (e, i, key, type) => {
-    console.log(e, i, key, type, "renderinput");
     setValue(e);
     if (value) {
       handlejs(e, i, key, type, showObj);
     }
   };
 
-  console.log(obj, "dropdown-->");
 
   const toggleKey = (key) => {
     if (expandedItem.includes(key)) {
@@ -712,7 +689,6 @@ export default function JsonSidebarDetail({
                     </div>
                   }
                   <div>
-                    {console.log(obj, showObj, "jio")}
                     {obj &&
                       showObj &&
                       obj[showObj] &&
