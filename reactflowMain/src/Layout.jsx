@@ -29,7 +29,11 @@ import NewNodeInfoSidebar from "./jonui/NewNodeInfoSidebar";
 import { getInitialEvents } from "./commonComponents/api/eventsApi";
 import { ToastContainer } from "react-toastify";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import { changeArtifactLock } from "./commonComponents/api/fabricsApi";
+import {
+  changeArtifactLock,
+  getAllCatalogWithArtifactGroup,
+  getCatelogueList,
+} from "./commonComponents/api/fabricsApi";
 export const TorusModellerContext = createContext(null);
 const colors = {
   hidden: { dark: "#008080", light: "#008080" },
@@ -74,6 +78,12 @@ export default function Layout({
   const [controlJson, setControlJson] = useState(null);
   const [toggleReactflow, setToggleReactflow] = useState("fabrics");
   const [artifactLockToggle, setArtifactLockToggle] = useState(false);
+  const [cataLogListWithArtifactGroup, setCataLogListWithArtifactGroup] =
+    useState({
+      FRK: [],
+      CRK: [],
+      TFRK: [],
+    });
   //   {
   //   flow: true,
   //   rule: false,
@@ -113,6 +123,10 @@ export default function Layout({
       selectedVersion,
     ],
   );
+
+  const handleCatalogWithArtifactGroup = useCallback(async (fabric) => {
+    return await getAllCatalogWithArtifactGroup(fabric).then((res) => res.data);
+  });
   const loadArtifact = useMemo(() => {
     if (!currentArtifactKey) return null;
     return currentArtifactKey.split(":");
@@ -161,7 +175,7 @@ export default function Layout({
     }
   };
 
-  const handleTabChange = (fabric) => {
+  const handleTabChange = async (fabric) => {
     if (fabric == selectedFabric) {
       setShowFabricSideBar(!showFabricSideBar);
       return;
@@ -195,6 +209,12 @@ export default function Layout({
           }
         });
     }
+    if (fabric !== "events" && fabric !== "Home") {
+      handleCatalogWithArtifactGroup(fabric).then((data) => {
+        setCataLogListWithArtifactGroup(data);
+      });
+    }
+
     if (fabric == "SF") {
       getTenantPolicy("ABC").then((data) => setSfNodeGalleryData(data));
     }
@@ -558,7 +578,7 @@ export default function Layout({
                       className="top-0 flex w-[100%] cursor-pointer justify-end text-[#161616] dark:text-[#FFFFFF]"
                       onClick={() => setShowNodeProperty(!showNodeProperty)}
                     >
-                     <IoCloseCircleOutline size={20} />
+                      <IoCloseCircleOutline size={20} />
                     </div>
 
                     <NewNodeInfoSidebar
@@ -615,6 +635,7 @@ export default function Layout({
   return (
     <TorusModellerContext.Provider
       value={{
+        cataLogListWithArtifactGroup,
         handleArtifactLock,
         artifactLockToggle,
         setArtifactLockToggle,

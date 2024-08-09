@@ -1,18 +1,32 @@
 import React from "react";
 import { TorusAccordianArrow } from "../SVG_Application";
 
-const Accordion = ({ children, selectedKeys, onSelectionChange }) => {
+const Accordion = ({
+  children,
+  selectedKeys,
+  onSelectionChange,
+  items,
+  contentKey,
+  tittleKey,
+}) => {
   return (
     <div className="w-full">
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, {
-            isSelected: selectedKeys.includes(child.props.eventKey),
-            onSelectionChange,
-          });
-        }
-        return child;
-      })}
+      {items.map((item) => (
+        <>
+          {children && typeof children === "function" ? (
+            children(item)
+          ) : (
+            <AccordionItem
+              key={item[contentKey]}
+              {...item}
+              title={item[tittleKey]}
+              content={item[contentKey]}
+              // isSelected={selectedKeys.includes(item[contentKey])}
+              // onSelectionChange={onSelectionChange}
+            />
+          )}
+        </>
+      ))}
     </div>
   );
 };
@@ -20,6 +34,7 @@ const Accordion = ({ children, selectedKeys, onSelectionChange }) => {
 const AccordionItem = ({
   eventKey,
   title,
+  content,
   children,
   isSelected,
   onSelectionChange,

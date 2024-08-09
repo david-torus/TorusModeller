@@ -1316,4 +1316,23 @@ export class VptService {
       throw error;
     }
   }
+
+  async getAllCatalogWithArtifactGroup(fabric: string) {
+    let Tkeys = ['FRK', 'CRK', 'TFRK'];
+    let data = {};
+    for (let i = 0; i < Tkeys.length; i++) {
+      data = {
+        ...data,
+        [Tkeys[i]]: await this.getAllArtifacts(
+          ['TCL', Tkeys[i], fabric],
+          'artifactGroup',
+        ).then((res) => res.data),
+      };
+    }
+
+    return {
+      status: 200,
+      data: data,
+    };
+  }
 }

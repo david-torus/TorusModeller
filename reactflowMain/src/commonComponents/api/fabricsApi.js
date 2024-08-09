@@ -484,3 +484,43 @@ export const changeArtifactLock = async (saveKey, data) => {
     console.error(error);
   }
 };
+
+export const getCatelogueList = async (data) => {
+  try {
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt/getAllArtifacts`;
+    let res = await fetch(`${BASE_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getAllCatalogWithArtifactGroup = async (fabric) => {
+  try {
+    const BASE_URL = `${process.env.REACT_APP_API_URL}vpt/getAllCatalogWithArtifactGroup`;
+    let res = await fetch(`${BASE_URL}/?fabric=${fabric}`, {
+      method: "GET",
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    } else {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};

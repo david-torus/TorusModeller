@@ -67,6 +67,8 @@ import { getDataPushToBuild } from "./commonComponents/api/pushToBuildApi.js";
 import Builder from "./pushToBuild.jsx";
 import TorusDialog from "./commonComponents/torusComponents/TorusDialog.jsx";
 import TorusModel from "./torusComponents/TorusModel.jsx";
+import CatalogAccordian from "./CatalogAccordian.jsx";
+import { FaLock, FaLockOpen } from "react-icons/fa6";
 
 export default function Navbar({
   project,
@@ -80,6 +82,7 @@ export default function Navbar({
   clientLoginId,
 }) {
   const {
+    cataLogListWithArtifactGroup,
     client,
     loadArtifact,
     selectedArtifactGroup,
@@ -94,8 +97,11 @@ export default function Navbar({
     setSelectedVersion,
     selectedProject,
     setSelectedProject,
+    artifactLockToggle,
+    setArtifactLockToggle,
+    handleArtifactLock,
   } = useContext(TorusModellerContext);
-
+  console.log(cataLogListWithArtifactGroup);
   console.log(
     `TCL:${selectedTkey}:${selectedFabric}:${selectedProject}:${selectedArtifactGroup}:${selectedArtifact}:${selectedVersion}`,
     "NEW API",
@@ -643,6 +649,7 @@ export default function Navbar({
 
   const handleArtifactsChange = (e) => {
     try {
+      if (selectedVersion) handleArtifactLock(false);
       setSelectedVersion(null);
       // if (Array.from(e)[0]) {
       //   getVersion(Array.from(e)[0]);
@@ -806,13 +813,21 @@ export default function Navbar({
     }
   };
 
-  const handleApplicationName = async (e) => {
+  const handleApplicationName = async (item) => {
     try {
       setSelectedArtifact("");
       setSelectedVersion("");
-      setSelectedProject(e);
+      setSelectedTkey(item?.tKey);
+      setSelectedProject(item?.catalog);
+      setSelectedArtifactGroup(item?.artifactGroup);
 
-      handleIntialLoad(selectedTkey, client, selectedFabric, e).catch((err) => {
+      handleIntialLoad(
+        item?.tKey,
+        client,
+        selectedFabric,
+        item?.catalog,
+        item?.artifactGroup,
+      ).catch((err) => {
         throw err;
       });
     } catch (err) {
@@ -1001,6 +1016,7 @@ export default function Navbar({
     client,
     selectedFabric,
     applications,
+    selectedArtifactGroup,
   ) => {
     try {
       console.log("handleIntialLoad", applications);
@@ -1114,6 +1130,7 @@ export default function Navbar({
             client,
             selectedFabric,
             selectedApplictionNames || selectedProject,
+            selectedArtifactGroup,
           );
           setNewArtifactsName("");
           setSelectedProject(selectedApplictionNames);
@@ -1124,6 +1141,7 @@ export default function Navbar({
             client,
             selectedFabric,
             selectedApplictionNames,
+            selectedArtifactGroup,
           );
           setSelectedVersion(response.data[response.data.length - 1]);
 
@@ -1189,6 +1207,7 @@ export default function Navbar({
   const getProcessFlowApi = useCallback(
     async (artiFact, version) => {
       try {
+        if (selectedVersion) handleArtifactLock(false);
         if ((artiFact, version)) {
           setSelectedArtifact(artiFact);
           setSelectedVersion(version);
@@ -1216,6 +1235,7 @@ export default function Navbar({
             sendDataToFabrics({
               ...response.data,
             });
+            setArtifactLockToggle(response.data?.isLocked);
           } else {
             toast(
               <TorusToast
@@ -1567,10 +1587,11 @@ export default function Navbar({
   };
 
   const handleAccordionContentToggle = (item) => {
-    console.log("Accordion content toggled to item:", item);
+    if (selectedVersion) handleArtifactLock(false);
+    // console.log("Accordion content toggled to item:", item);
     handleApplicationName(item);
-    setProjectCollectionName(item);
-    setArtifactCollectionName(null);
+    // setProjectCollectionName(item);
+    // setArtifactCollectionName(null);
   };
 
   const destructure = (ver) => {
@@ -1629,159 +1650,29 @@ export default function Navbar({
     console.log("Clicked nested item:", nestedItem);
   };
 
-  // const accordionItems = useMemo(() => {
-  //   return [
-  //     {
-  //       title: "My Artifacts",
-  //       type: "categery",
-  //       id: "FRK",
-  //       content: [
-  //         {
-  //           title: projectList[0],
-  //           content: [
-  //             {
-  //               title: artifactsGroup[0]?.artifactsGroup[0],
-  //               content: [],
-  //               type: "ArtifactsGrp",
-  //             },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "FRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             {
-  //               title: artifactsGroup[0]?.artifactsGroup[0],
-  //               content: [],
-  //               type: "ArtifactsGrp",
-  //             },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "FRK",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Shared with me",
-  //       type: "categery",
-  //       id: "FRK",
-  //       content: [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //       ],
-  //     },
-  //     {
-  //       title: "Purchased",
-  //       type: "categery",
-  //       id: "CRK",
+  const accordionItems = useMemo(() => {
+    return [
+      {
+        title: "My Artifacts",
+        type: "categery",
+        id: "FRK",
+        content: cataLogListWithArtifactGroup?.["FRK"] ?? [],
+      },
+      {
+        title: "Shared with me",
+        type: "categery",
+        id: "TFRK",
+        content: cataLogListWithArtifactGroup?.["TFRK"] ?? [],
+      },
+      {
+        title: "Purchased",
+        type: "categery",
+        id: "CRK",
 
-  //       content: [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: "CRK",
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // }, [projectList]);
-
-  // const accordionItems = useMemo(() => {
-  //   const staticTitles = [
-  //     { title: "My Artifacts", type: "categery", id: "FRK" },
-  //     { title: "Shared with Me", type: "categery", id: "FRK" },
-  //     { title: "Purchased", type: "categery", id: "CRK" },
-  //   ];
-
-  //   const dynamicContent = (type) => {
-  //     if (type === "FRK") {
-  //       // projectList?.map((project, index) => ({
-  //       //   title: project,
-  //       //   content: artifactsGroup[index]?.artifactsGroup.map(
-  //       //     (artifact, index) => ({
-  //       //       title: artifact,
-  //       //       content: [],
-  //       //       type: "ArtifactsGrp",
-  //       //     }),
-  //       //   ),
-  //       // }));
-
-  //       return [
-  //         {
-  //           title: projectList[0],
-  //           content: artifactsGroup.map((artifact, index) => ({
-  //             title: artifact,
-  //             content: [],
-  //             type: "ArtifactsGrp",
-  //           })),
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //       ];
-  //     } else if (type === "CRK") {
-  //       return [
-  //         {
-  //           title: "example1",
-  //           content: [
-  //             { title: "artifact1", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact2", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //         {
-  //           title: "example2",
-  //           content: [
-  //             { title: "artifact3", content: [], type: "ArtifactsGrp" },
-  //             { title: "artifact4", content: [], type: "ArtifactsGrp" },
-  //           ],
-  //           type: "catelogue",
-  //           id: type,
-  //         },
-  //       ];
-  //     }
-  //     return [];
-  //   };
-
-  //   return staticTitles.map(({ title, id }) => ({
-  //     title,
-  //     type: "categery",
-  //     id,
-  //     content: dynamicContent(id),
-  //   }));
-  // }, [projectList, artifactsGroup]);
+        content: cataLogListWithArtifactGroup?.["CRK"] ?? [],
+      },
+    ];
+  }, [cataLogListWithArtifactGroup]);
 
   const mappedTeamItems = [
     {
@@ -1875,27 +1766,31 @@ export default function Navbar({
 
           {selectedFabric !== "Home" && (
             <>
-              <div className=" flex h-full w-1/3 items-center justify-center rounded-md bg-transparent ">
+              <div className=" flex h-full w-1/3 items-center justify-center gap-2 rounded-md bg-transparent ">
                 {selectedFabric !== "Home" && (
                   <>
                     <TorusPopOver
                       parentHeading={
-                        <div className="z-[50] flex w-[100%] flex-row items-center justify-center gap-2">
-                          <div className="text-sm font-semibold text-black dark:text-white">
+                        <div className=" flex w-[100%] flex-row items-center justify-center gap-1">
+                          <div
+                            title={
+                              (selectedArtifact && selectedArtifact) ||
+                              "Select Artifacts"
+                            }
+                            className="w-[80%] truncate text-xs font-semibold text-black dark:text-white"
+                          >
                             {(selectedArtifact && selectedArtifact) ||
                               "Select Artifacts"}
                           </div>
-                          <div className="rounded-xl  bg-[#0736C4]  px-4 text-white">
+                          <div className="flex w-[15%] justify-center rounded-xl bg-[#0736C4] px-4 py-1  text-xs text-white">
                             {(selectedVersion && selectedVersion) || "*"}
                           </div>
                           <div>
-                            <IoIosArrowDown className="text-black dark:text-white" />
+                            <IoIosArrowDown className="  text-black dark:text-white" />
                           </div>
                         </div>
                       }
-                      popbuttonClassNames={
-                        selectedFabric === "events" && "w-1/3"
-                      }
+                      popbuttonClassNames={"w-1/3 h-full"}
                       children={({ close }) => (
                         <div
                           className={`${selectedFabric === "events" ? "h-[400px] w-[380px]" : "h-[400px] w-[450px]"} mt-[3%] flex flex-col justify-between rounded-lg border border-[#E5E9EB] bg-white dark:border-[#212121] dark:bg-[#161616] 2xl:h-[580px] 2xl:w-[700px]`}
@@ -1963,81 +1858,12 @@ export default function Navbar({
                                       onItemClick={handleItemClick}
                                       onNestedItemClick={handleNestedItemClick}
                                     /> */}
-
-                                    <Accordion
-                                      selectedKeys={selectedKeys}
-                                      onSelectionChange={handleProject}
-                                    >
-                                      {categeroryList?.map((item, index) => {
-                                        return (
-                                          <AccordionItem
-                                            key={`category-${item}`}
-                                            title={item}
-                                            eventKey={`${index}-${item}`}
-                                          >
-                                            <Accordion
-                                              selectedKeys={selectedKeys}
-                                              onSelectionChange={
-                                                handleArtifacts
-                                              }
-                                            >
-                                              {projectList?.map(
-                                                (project, index) => {
-                                                  return (
-                                                    <AccordionItem
-                                                      key={`project-${index}`}
-                                                      title={project}
-                                                      eventKey={`${project}`}
-                                                    >
-                                                      {/* {artifactsGroup?.map(
-                                                      (item, index) => {
-                                                        return (
-                                                          <AccordionItem
-                                                            key={`artifact-${index}`}
-                                                            title={item}
-                                                            eventKey={`${item}`}
-                                                          >
-
-
-                                                          </AccordionItem>
-                                                        );
-                                                      },
-                                                    )} */}
-
-                                                      {/* <Accordion
-                                                        selectedKeys={
-                                                          selectedKeys
-                                                        }
-                                                        onSelectionChange={
-                                                          handleOnselction
-                                                        }
-                                                      > */}
-                                                      {artifactsGroup?.map(
-                                                        (item, index) => {
-                                                          return (
-                                                            <AccordionItem
-                                                              key={`artifact-${index}`}
-                                                              title={item}
-                                                              eventKey={`${item}`}
-                                                              onSelectionChange={() => {
-                                                                handleOnselction(
-                                                                  item,
-                                                                );
-                                                              }}
-                                                            ></AccordionItem>
-                                                          );
-                                                        },
-                                                      )}
-                                                      {/* </Accordion> */}
-                                                    </AccordionItem>
-                                                  );
-                                                },
-                                              )}
-                                            </Accordion>
-                                          </AccordionItem>
-                                        );
-                                      })}
-                                    </Accordion>
+                                    <CatalogAccordian
+                                      items={accordionItems}
+                                      onSelectionChange={
+                                        handleAccordionContentToggle
+                                      }
+                                    />
                                   </div>
                                 </div>
                                 {/* <TorusModularInput
@@ -2188,34 +2014,6 @@ export default function Navbar({
                                                               size={13}
                                                             />
                                                           </span>
-                                                          {/* <span
-                                                        className="cursor-pointer"
-                                                        onClick={setDeleteOpen(
-                                                          true,
-                                                        )}
-                                                      >
-                                                        <BsTrash3
-                                                          color="red"
-                                                          size={13}
-                                                        />
-                                                      </span> */}
-                                                          {/* <TorusDialog
-                                                            key={
-                                                              "DeleteArtifact"
-                                                            }
-                                                            className="z-[1000] bg-red-200"
-                                                            triggerElement={
-                                                              <TorusButton
-                                                                Children={
-                                                                  <BsTrash3
-                                                                    color="red"
-                                                                    size={13}
-                                                                  />
-                                                                }
-                                                              />
-                                                            }
-                                                            children={"hi"}
-                                                          /> */}
 
                                                           <TorusModel
                                                             body="Are you sure you want to delete Artifact Name?"
@@ -2573,7 +2371,17 @@ export default function Navbar({
                         </div>
                       )}
                     />
-
+                    {selectedVersion && (
+                      <TorusButton
+                        onPress={() => {
+                          handleArtifactLock(!artifactLockToggle);
+                        }}
+                        Children={
+                          artifactLockToggle ? <FaLock /> : <FaLockOpen />
+                        }
+                        buttonClassName="flex w-[27px] cursor-pointer items-center justify-center rounded-md  p-[5px]"
+                      />
+                    )}
                     {selectedFabric === "events" && (
                       <TorusButton
                         onPress={() => {

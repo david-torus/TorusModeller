@@ -276,4 +276,11 @@ export class VptController {
   async getAllArtifacts(@Body() data: any) {
     return this.vptService.getAllArtifacts(data.saveKey, data?.stopAt);
   }
+
+  @Get('getAllCatalogWithArtifactGroup')
+  async getAllCatalogWithArtifactGroup(
+    @Query(new ValidationPipe({ transform: true })) query: any,
+  ) {
+    return this.vptService.getAllCatalogWithArtifactGroup(query.fabric);
+  }
 }
