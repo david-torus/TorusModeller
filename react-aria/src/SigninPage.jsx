@@ -338,11 +338,11 @@ export default function SignIn() {
             textColor="text-black" // Text color
             radius="md" // Border radius
             size="sm" // Height of the input
-            startContent={
-              <span>
-                <FaSearch size={15} color="#9CA3AF" />
-              </span>
-            } // Optional start content (like an icon)
+            // startContent={
+            //   <span>
+            //     <FaSearch size={15} color="#9CA3AF" />
+            //   </span>
+            // } // Optional start content (like an icon)
             endContent={
               <span>
                 <BsApple size={15} color="#9CA3AF" />
